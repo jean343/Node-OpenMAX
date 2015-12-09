@@ -7,8 +7,8 @@ int main(int argc, char** argv) {
   bcm_host_init();
 
   FILE *in;
-  if ((in = fopen("../hello_video.bin", "rb")) == NULL) {
-    printf("../hello_video.bin not found \n");
+  if ((in = fopen("../test.h264", "rb")) == NULL) {
+    printf("../test.h264 not found \n");
     return -2;
   }
 
@@ -69,20 +69,12 @@ int main(int argc, char** argv) {
       port_settings_changed = 1;
       printf("port_settings_changed = true\n");
 
-      //      if (ilclient_setup_tunnel(tunnel, 0, 0) != 0) {
-      //        status = -7;
-      //        break;
-      //      }
-      //
-      //      ilclient_change_component_state(video_scheduler, OMX_StateExecuting);
-      //
-      //      // now setup tunnel to video_render
-      //      if (ilclient_setup_tunnel(tunnel + 1, 0, 1000) != 0) {
-      //        status = -12;
-      //        break;
-      //      }
-      //
-      //      ilclient_change_component_state(video_render, OMX_StateExecuting);
+      if (ilclient_setup_tunnel(&tunnel, 0, 0) != 0) {
+        return -7;
+        break;
+      }
+
+      ilclient_change_component_state(vr->component, OMX_StateExecuting);
     }
     if (!data_len)
       break;
