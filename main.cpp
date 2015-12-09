@@ -4,26 +4,13 @@
 #include <nan.h>
 #include <unistd.h>
 
+#include "main.h"
+#include "sleepAsync.h"
+
 using v8::Value;
 using v8::Local;
 using v8::Function;
 using v8::FunctionTemplate;
-
-class MyObject : public Nan::ObjectWrap {
-public:
-  static NAN_MODULE_INIT(Init);
-
-private:
-  explicit MyObject(double value = 0);
-  ~MyObject();
-
-  static NAN_METHOD(New);
-  static NAN_METHOD(PlusOne);
-  static NAN_METHOD(SleepSync);
-  static NAN_METHOD(Sleep);
-  static Nan::Persistent<v8::Function> constructor;
-  double value_;
-};
 
 Nan::Persistent<v8::Function> MyObject::constructor;
 
@@ -69,36 +56,6 @@ NAN_METHOD(MyObject::PlusOne) {
 NAN_METHOD(MyObject::SleepSync) {
   int value = info[0]->IsUndefined() ? 0 : Nan::To<int>(info[0]).FromJust();
   sleep(value);
-}
-
-class AsyncSleepWorker : public Nan::AsyncWorker {
-public:
-
-  AsyncSleepWorker(Nan::Callback *callback, MyObject* obj, int value) : Nan::AsyncWorker(callback), obj(obj), value(value) {
-  }
-
-  ~AsyncSleepWorker() {
-  }
-
-  void Execute() {
-    sleep(value);
-  }
-
-private:
-  MyObject *obj;
-  int value;
-};
-
-NAN_METHOD(MyObject::Sleep) {
-  MyObject* obj = Nan::ObjectWrap::Unwrap<MyObject>(info.This());
-
-  int value = info[0]->IsUndefined() ? 0 : Nan::To<int>(info[0]).FromJust();
-
-  Local<Function> callbackHandle = info[1].As<Function>();
-  Nan::Callback *callback = new Nan::Callback(callbackHandle);
-
-//  Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 0, 0);
-  Nan::AsyncQueueWorker(new AsyncSleepWorker(callback, obj, value));
 }
 
 void hello(const Nan::FunctionCallbackInfo<Value>& info) {
