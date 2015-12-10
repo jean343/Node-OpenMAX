@@ -9,8 +9,10 @@
 
 #include "init.h"
 
-#include "test/VideoDecoder.h"
-#include "test/VideoRender.h"
+#include "bcm_host.h"
+extern "C" {
+#include "ilclient.h"
+}
 
 using v8::Value;
 using v8::Local;
@@ -91,38 +93,78 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
     return;
   }
 
-  VideoDecoder* vd = new VideoDecoder();
-  vd->createComponent();
-  vd->changeState(OMX_StateIdle);
-
-  VideoRender* vr = new VideoRender();
-  vr->createComponent();
-  vr->changeState(OMX_StateIdle);
-
   TUNNEL_T tunnel;
+  ILCLIENT_T *client;
+  COMPONENT_T *video_decode, *video_render;
   memset(&tunnel, 0, sizeof (tunnel));
-  set_tunnel(&tunnel, vd->component, vd->out_port, vr->component, vr->in_port);
 
-  vd->setup();
-  vd->enableInputPortBuffer();
-  vd->changeState(OMX_StateExecuting);
-  //  vd->enableOutputPortBuffer();
+  if ((client = ilclient_init()) == NULL) {
+    return;
+  }
 
-  int data_len = 0;
-  unsigned char dest[1024 * 10];
-  do {
-    data_len = fread(dest, 1, sizeof (dest), in);
-    if (vd->newPacket(dest, data_len)) {
+  if (OMX_Init() != OMX_ErrorNone) {
+    ilclient_destroy(client);
+    return;
+  }
+
+  // create video_decode
+  if (ilclient_create_component(client, &video_decode, "video_decode", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS)) != 0)
+    return;
+
+  // create video_render
+  if (ilclient_create_component(client, &video_render, "video_render", ILCLIENT_DISABLE_ALL_PORTS) != 0)
+    return;
+
+  set_tunnel(&tunnel, video_decode, 131, video_render, 90);
+
+  ilclient_change_component_state(video_decode, OMX_StateIdle);
+
+  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
+  memset(&format, 0, sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE));
+  format.nSize = sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE);
+  format.nVersion.nVersion = OMX_VERSION;
+  format.nPortIndex = 130;
+  format.eCompressionFormat = OMX_VIDEO_CodingAVC;
+
+  if (OMX_SetParameter(ILC_GET_HANDLE(video_decode), OMX_IndexParamVideoPortFormat, &format) == OMX_ErrorNone &&
+          ilclient_enable_port_buffers(video_decode, 130, NULL, NULL, NULL) == 0) {
+
+    ilclient_change_component_state(video_decode, OMX_StateExecuting);
+  }
+
+  bool port_settings_changed = false;
+  bool first_packet = true;
+
+  OMX_BUFFERHEADERTYPE *buf;
+  while ((buf = ilclient_get_input_buffer(video_decode, 130, 1)) != NULL) {
+    buf->nFilledLen = fread(buf->pBuffer, 1, buf->nAllocLen, in);
+
+    if (port_settings_changed == false &&
+            ((buf->nFilledLen > 0 && ilclient_remove_event(video_decode, OMX_EventPortSettingsChanged, 131, 0, 0, 1) == 0) ||
+            (buf->nFilledLen == 0 && ilclient_wait_for_event(video_decode, OMX_EventPortSettingsChanged, 131, 0, 0, 1, ILCLIENT_EVENT_ERROR | ILCLIENT_PARAMETER_CHANGED, 10000) == 0))) {
+      port_settings_changed = true;
+
       if (ilclient_setup_tunnel(&tunnel, 0, 0) != 0) {
+        printf("ilclient_setup_tunnel 0 failed\n");
         return;
       }
-      vr->changeState(OMX_StateExecuting);
+
+      ilclient_change_component_state(video_render, OMX_StateExecuting);
     }
 
+    printf("Got a filled buffer with %d, allocated %d\n", buf->nFilledLen, buf->nAllocLen);
 
-  } while (data_len > 0);
+    if (first_packet) {
+      buf->nFlags = OMX_BUFFERFLAG_STARTTIME;
+      first_packet = false;
+    } else
+      buf->nFlags = OMX_BUFFERFLAG_TIME_UNKNOWN;
 
-  delete vd;
+    if (OMX_EmptyThisBuffer(ILC_GET_HANDLE(video_decode), buf) != OMX_ErrorNone) {
+      printf("OMX_EmptyThisBuffer 1 failed\n");
+      return;
+    }
+  }
 
   info.GetReturnValue().Set(Nan::New("world").ToLocalChecked());
 }

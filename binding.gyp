@@ -5,9 +5,6 @@
       "sources": [
         "main.cpp",
         "init.cpp",
-
-        "test/VideoDecoder.cpp",
-        "test/Component.cpp"
       ],
       "defines": [
         "OMX",

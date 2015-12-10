@@ -12,7 +12,7 @@ console.log(Parent.getValue());
 
 myaddon.bcm_host_init();
 
-console.log(myaddon.hello("test/test.h264"));
+console.log(myaddon.play("test/test.h264"));
 
 myaddon.bcm_host_deinit();
 
