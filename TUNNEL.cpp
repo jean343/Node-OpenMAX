@@ -14,14 +14,15 @@ NAN_MODULE_INIT(TUNNEL::Init) {
   tpl->SetClassName(Nan::New("TUNNEL").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-  Nan::SetPrototypeMethod(tpl, "set", set);
-  
+  Nan::SetPrototypeMethod(tpl, "enable", enable);
+
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("TUNNEL").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
-TUNNEL::TUNNEL() {
+TUNNEL::TUNNEL(COMPONENT* source, COMPONENT* sink) {
   memset(&tunnel, 0, sizeof (tunnel));
+  set_tunnel(&tunnel, source->component, source->out_port, sink->component, sink->in_port);
 }
 
 TUNNEL::~TUNNEL() {
@@ -29,22 +30,28 @@ TUNNEL::~TUNNEL() {
 
 NAN_METHOD(TUNNEL::New) {
   if (info.IsConstructCall()) {
-    TUNNEL *obj = new TUNNEL();
+    COMPONENT* source = Nan::ObjectWrap::Unwrap<COMPONENT>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+    COMPONENT* sink = Nan::ObjectWrap::Unwrap<COMPONENT>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
+
+    TUNNEL *obj = new TUNNEL(source, sink);
     obj->Wrap(info.This());
     info.GetReturnValue().Set(info.This());
   } else {
-    const int argc = 1;
-    v8::Local<v8::Value> argv[argc] = {info[0]};
+    const int argc = 2;
+    v8::Local<v8::Value> argv[argc] = {info[0], info[1]};
     v8::Local<v8::Function> cons = Nan::New(constructor);
     info.GetReturnValue().Set(cons->NewInstance(argc, argv));
   }
 }
 
-NAN_METHOD(TUNNEL::set) {
+NAN_METHOD(TUNNEL::enable) {
   TUNNEL* tunnel = Nan::ObjectWrap::Unwrap<TUNNEL>(info.This());
-  
-  COMPONENT* _video_decode = Nan::ObjectWrap::Unwrap<COMPONENT>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
-  COMPONENT* _video_render = Nan::ObjectWrap::Unwrap<COMPONENT>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
-  
-  set_tunnel(&tunnel->tunnel, _video_decode->component, _video_decode->out_port, _video_render->component, _video_render->in_port);
+
+  int rc = ilclient_setup_tunnel(&tunnel->tunnel, 0, 0);
+  if (rc != 0) {
+    char buf[255];
+    sprintf(buf, "enable tunnel failed with rc: %d", rc);
+    Nan::ThrowError(buf);
+    return;
+  }
 }

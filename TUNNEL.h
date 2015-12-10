@@ -8,10 +8,10 @@ public:
 
   TUNNEL_T tunnel;
 private:
-  explicit TUNNEL();
+  explicit TUNNEL(COMPONENT* source, COMPONENT* sink);
   ~TUNNEL();
 
   static NAN_METHOD(New);
-  static NAN_METHOD(set);
+  static NAN_METHOD(enable);
   static Nan::Persistent<v8::Function> constructor;
 };

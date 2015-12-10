@@ -222,9 +222,7 @@ video_decode.setPorts(130, 131);
 var video_render = myaddon.COMPONENT(ILCLIENT, "video_render", ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS);
 video_render.setPorts(90);
 
-var TUNNEL = myaddon.TUNNEL();
-
-TUNNEL.set(video_decode, video_render);
+var TUNNEL = myaddon.TUNNEL(video_decode, video_render);
 
 video_decode.changeState(OMX_STATETYPE.OMX_StateIdle);
 
@@ -237,6 +235,11 @@ video_decode.changeState(OMX_STATETYPE.OMX_StateExecuting);
 
 var inputBuffer = video_decode.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
 console.log(inputBuffer.nAllocLen);
+
+video_decode.onEventPortSettingsChanged(function () {
+  TUNNEL.enable();
+  video_render.changeState(OMX_STATETYPE.OMX_StateExecuting);
+});
 
 var CHUNK_SIZE = inputBuffer.nAllocLen;
 var buffer = new Buffer(CHUNK_SIZE);
@@ -271,13 +274,10 @@ fs.open("test/test.h264", 'r', function (err, fd) {
 
       setTimeout(function () {
         readNextChunk();
-      }, 100);
+      }, 20);
     });
   }
   readNextChunk();
 });
-
-
-//console.log(myaddon.play("test/test.h264", video_decode, video_render, TUNNEL));
 
 //myaddon.bcm_host_deinit();

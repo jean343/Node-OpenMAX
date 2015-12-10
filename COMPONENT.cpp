@@ -33,6 +33,7 @@ NAN_MODULE_INIT(COMPONENT::Init) {
 
   Nan::SetPrototypeMethod(tpl, "getInputBuffer", getInputBuffer);
   Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
+  Nan::SetPrototypeMethod(tpl, "onEventPortSettingsChanged", onEventPortSettingsChanged);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -257,12 +258,10 @@ NAN_METHOD(COMPONENT::emptyBuffer) {
   BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
   if (ilclient_remove_event(obj->component, OMX_EventPortSettingsChanged, obj->out_port, 0, 0, 1) == 0) {
-    printf("ilclient_remove_event yay!!\n");
+//    v8::Local<v8::Value> argv[argc] = {Nan::New(42)};
+    obj->onEventPortSettingsChangedCallback->Call(0, 0);
   }
 
-  
-//  printf("OMX_EmptyThisBuffer(0x%p);\n", _buf->buf->pBuffer);
-  
   OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->handle, _buf->buf);
   if (rc != OMX_ErrorNone) {
     char buf[255];
@@ -270,4 +269,12 @@ NAN_METHOD(COMPONENT::emptyBuffer) {
     Nan::ThrowError(buf);
     return;
   }
+}
+
+NAN_METHOD(COMPONENT::onEventPortSettingsChanged) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  obj->onEventPortSettingsChangedCallback = new Nan::Callback(info[0].As<Function>());
+  
+  info.GetReturnValue().Set(info.This());
 }
