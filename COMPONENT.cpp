@@ -12,6 +12,8 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   tpl->SetClassName(Nan::New("COMPONENT").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
+  Nan::SetPrototypeMethod(tpl, "setPorts", setPorts);
+  
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
@@ -59,5 +61,16 @@ NAN_METHOD(COMPONENT::New) {
     v8::Local<v8::Value> argv[argc] = {info[0], info[1], info[2]};
     v8::Local<v8::Function> cons = Nan::New(constructor);
     info.GetReturnValue().Set(cons->NewInstance(argc, argv));
+  }
+}
+
+NAN_METHOD(COMPONENT::setPorts) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  
+  if (!info[0]->IsUndefined()) {
+    obj->in_port = Nan::To<int>(info[0]).FromJust();
+  }
+  if (!info[1]->IsUndefined()) {
+    obj->out_port = Nan::To<int>(info[1]).FromJust();
   }
 }

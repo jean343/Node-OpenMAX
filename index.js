@@ -15,14 +15,18 @@ myaddon.bcm_host_init();
 var ILCLIENT = myaddon.ILCLIENT();
 
 var video_decode = myaddon.COMPONENT(ILCLIENT, "video_decode", ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS);
+video_decode.setPorts(130, 131);
 
 var video_render = myaddon.COMPONENT(ILCLIENT, "video_render", ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS);
+video_render.setPorts(90);
+
+var TUNNEL = myaddon.TUNNEL();
+
+TUNNEL.set(video_decode, video_render);
 
 
 
-
-
-console.log(myaddon.play("test/test.h264", video_decode, video_render));
+console.log(myaddon.play("test/test.h264", video_decode, video_render, TUNNEL));
 
 myaddon.bcm_host_deinit();
 

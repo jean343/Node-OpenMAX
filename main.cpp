@@ -10,6 +10,7 @@
 #include "init.h"
 #include "ILCLIENT.h"
 #include "COMPONENT.h"
+#include "TUNNEL.h"
 
 #include "Sample.h"
 
@@ -32,17 +33,15 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
   
   COMPONENT* _video_render = Nan::ObjectWrap::Unwrap<COMPONENT>(Nan::To<v8::Object>(info[2]).ToLocalChecked());
   COMPONENT_T *video_render = _video_render->component;
+  
+  TUNNEL* _tunnel = Nan::ObjectWrap::Unwrap<TUNNEL>(Nan::To<v8::Object>(info[3]).ToLocalChecked());
+  TUNNEL_T *tunnel = &_tunnel->tunnel;
 
   FILE *in;
   if ((in = fopen(*filePath, "rb")) == NULL) {
     printf("%s not found \n", *filePath);
     return;
   }
-
-  TUNNEL_T tunnel;
-  memset(&tunnel, 0, sizeof (tunnel));
-
-  set_tunnel(&tunnel, video_decode, 131, video_render, 90);
 
   ilclient_change_component_state(video_decode, OMX_StateIdle);
 
@@ -70,8 +69,8 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
             ((buf->nFilledLen > 0 && ilclient_remove_event(video_decode, OMX_EventPortSettingsChanged, 131, 0, 0, 1) == 0) ||
             (buf->nFilledLen == 0 && ilclient_wait_for_event(video_decode, OMX_EventPortSettingsChanged, 131, 0, 0, 1, ILCLIENT_EVENT_ERROR | ILCLIENT_PARAMETER_CHANGED, 10000) == 0))) {
       port_settings_changed = true;
-
-      if (ilclient_setup_tunnel(&tunnel, 0, 0) != 0) {
+      
+      if (ilclient_setup_tunnel(tunnel, 0, 0) != 0) {
         printf("ilclient_setup_tunnel 0 failed\n");
         return;
       }
@@ -104,6 +103,7 @@ NAN_MODULE_INIT(Init) {
 
   ILCLIENT::Init(target);
   COMPONENT::Init(target);
+  TUNNEL::Init(target);
 
   Sample::Init(target);
 }

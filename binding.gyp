@@ -7,6 +7,7 @@
         "init.cpp",
         "ILCLIENT.cpp",
         "COMPONENT.cpp",
+        "TUNNEL.cpp",
 
         "Sample.cpp"
       ],
