@@ -19,7 +19,7 @@ public:
 
   int createComponent();
   void setup();
-  int newPacket(unsigned char * dest, int bufferSize);
+  bool newPacket(unsigned char * dest, int bufferSize);
 
   static void _fill_done_callback(void *userdata, COMPONENT_T *comp) {
     VideoDecoder* dummySink = (VideoDecoder*) userdata;

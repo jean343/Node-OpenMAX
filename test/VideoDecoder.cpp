@@ -1,7 +1,7 @@
 #include "VideoDecoder.h"
 
 int VideoDecoder::createComponent() {
-  return Component::createComponent("video_decode", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS | ILCLIENT_ENABLE_OUTPUT_BUFFERS));
+  return Component::createComponent("video_decode", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS));
 }
 
 void VideoDecoder::setup() {
@@ -35,15 +35,17 @@ void VideoDecoder::fill_done_callback(COMPONENT_T *comp) {
   }
 }
 
-int VideoDecoder::newPacket(unsigned char * dest, int bufferSize) {
+bool VideoDecoder::newPacket(unsigned char * dest, int bufferSize) {
   unsigned char const start_code[4] = {0x00, 0x00, 0x00, 0x01};
+
+  bool rc = false;
 
   OMX_BUFFERHEADERTYPE* buf;
   //  printf("getInputBuffer\n");
   if ((buf = getInputBuffer(DO_BLOCK)) != NULL) {
     // feed data and wait until we get port settings changed
 
-    buf->nOffset = 0;
+    //    buf->nOffset = 0;
     buf->nFilledLen = bufferSize;
     memcpy(buf->pBuffer, dest, bufferSize);
 
@@ -57,21 +59,21 @@ int VideoDecoder::newPacket(unsigned char * dest, int bufferSize) {
             (buf->nFilledLen == 0 && ilclient_wait_for_event(component, OMX_EventPortSettingsChanged, out_port, 0, 0, 1, ILCLIENT_EVENT_ERROR | ILCLIENT_PARAMETER_CHANGED, 10000) == 0))) {
       port_settings_changed = true;
       printf("port_settings_changed = true\n");
-
-      enableOutputPortBuffer();
-
-      printf("getOutputBuffer\n");
-      outBuf = getOutputBuffer(Component::DO_BLOCK);
-      if (outBuf != NULL) {
-        printf("got buffer\n");
-
-        ilclient_set_fill_buffer_done_callback(clientHandle, VideoDecoder::_fill_done_callback, this);
-
-        OMX_ERRORTYPE r = OMX_FillThisBuffer(handle, outBuf);
-        if (r != OMX_ErrorNone) {
-          printf("Error filling buffer: %s\n", Component::err2str(r));
-        }
-      }
+      rc = true;
+      //      enableOutputPortBuffer();
+      //
+      //      printf("getOutputBuffer\n");
+      //      outBuf = getOutputBuffer(Component::DO_BLOCK);
+      //      if (outBuf != NULL) {
+      //        printf("got buffer\n");
+      //
+      //        ilclient_set_fill_buffer_done_callback(clientHandle, VideoDecoder::_fill_done_callback, this);
+      //
+      //        OMX_ERRORTYPE r = OMX_FillThisBuffer(handle, outBuf);
+      //        if (r != OMX_ErrorNone) {
+      //          printf("Error filling buffer: %s\n", Component::err2str(r));
+      //        }
+      //      }
     }
 
     if (first_packet) {
@@ -83,10 +85,10 @@ int VideoDecoder::newPacket(unsigned char * dest, int bufferSize) {
     //    printf("OMX_EmptyThisBuffer\n");
     if (OMX_EmptyThisBuffer(handle, buf) != OMX_ErrorNone) {
       printf("OMX_EmptyThisBuffer 1 failed\n");
-      return -6;
+      return false;
     }
   } else {
-    return -1;
+    return false;
   }
-  return 0;
+  return rc;
 }

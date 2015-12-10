@@ -28,25 +28,32 @@ int main(int argc, char** argv) {
 
   VideoDecoder* vd = new VideoDecoder(clientHandle);
   vd->createComponent();
-
-  //  VideoRender* vr = new VideoRender(clientHandle);
-  //  vr->createComponent();
-
-  //  TUNNEL_T tunnel;
-  //  memset(&tunnel, 0, sizeof (tunnel));
-  //  set_tunnel(&tunnel, vd->component, vd->out_port, vr->component, vr->in_port);
-
   vd->changeState(OMX_StateIdle);
+
+  VideoRender* vr = new VideoRender(clientHandle);
+  vr->createComponent();
+  vr->changeState(OMX_StateIdle);
+
+  TUNNEL_T tunnel;
+  memset(&tunnel, 0, sizeof (tunnel));
+  set_tunnel(&tunnel, vd->component, vd->out_port, vr->component, vr->in_port);
+
   vd->setup();
   vd->enableInputPortBuffer();
   vd->changeState(OMX_StateExecuting);
-//  vd->enableOutputPortBuffer();
+  //  vd->enableOutputPortBuffer();
 
   int data_len = 0;
   unsigned char dest[1024 * 10];
   do {
     data_len = fread(dest, 1, sizeof (dest), in);
-    vd->newPacket(dest, data_len);
+    if (vd->newPacket(dest, data_len)) {
+      if (ilclient_setup_tunnel(&tunnel, 0, 0) != 0) {
+        return -7;
+      }
+      vr->changeState(OMX_StateExecuting);
+    }
+
 
   } while (data_len > 0);
 
