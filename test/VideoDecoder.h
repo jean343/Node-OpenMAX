@@ -20,6 +20,12 @@ public:
   int createComponent();
   void setup();
   int newPacket(unsigned char * dest, int bufferSize);
+
+  static void _fill_done_callback(void *userdata, COMPONENT_T *comp) {
+    VideoDecoder* dummySink = (VideoDecoder*) userdata;
+    dummySink->fill_done_callback(comp);
+  }
+  void fill_done_callback(COMPONENT_T *comp);
 private:
 
   bool port_settings_changed;
