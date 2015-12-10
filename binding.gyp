@@ -6,6 +6,7 @@
         "main.cpp",
         "init.cpp",
         "ILCLIENT.cpp",
+        "COMPONENT.cpp",
 
         "Sample.cpp"
       ],

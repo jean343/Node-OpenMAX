@@ -9,6 +9,7 @@
 
 #include "init.h"
 #include "ILCLIENT.h"
+#include "COMPONENT.h"
 
 #include "Sample.h"
 
@@ -26,8 +27,11 @@ using v8::String;
 void play(const Nan::FunctionCallbackInfo<Value>& info) {
   String::Utf8Value filePath(info[0]);
   
-  ILCLIENT* _client = Nan::ObjectWrap::Unwrap<ILCLIENT>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
-  ILCLIENT_T *client = _client->client;
+  COMPONENT* _video_decode = Nan::ObjectWrap::Unwrap<COMPONENT>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
+  COMPONENT_T *video_decode = _video_decode->component;
+  
+  COMPONENT* _video_render = Nan::ObjectWrap::Unwrap<COMPONENT>(Nan::To<v8::Object>(info[2]).ToLocalChecked());
+  COMPONENT_T *video_render = _video_render->component;
 
   FILE *in;
   if ((in = fopen(*filePath, "rb")) == NULL) {
@@ -36,16 +40,7 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
   }
 
   TUNNEL_T tunnel;
-  COMPONENT_T *video_decode, *video_render;
   memset(&tunnel, 0, sizeof (tunnel));
-
-  // create video_decode
-  if (ilclient_create_component(client, &video_decode, "video_decode", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS)) != 0)
-    return;
-
-  // create video_render
-  if (ilclient_create_component(client, &video_render, "video_render", ILCLIENT_DISABLE_ALL_PORTS) != 0)
-    return;
 
   set_tunnel(&tunnel, video_decode, 131, video_render, 90);
 
@@ -108,6 +103,7 @@ NAN_MODULE_INIT(Init) {
   Nan::Set(target, Nan::New("play").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(play)).ToLocalChecked());
 
   ILCLIENT::Init(target);
+  COMPONENT::Init(target);
 
   Sample::Init(target);
 }
