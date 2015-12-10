@@ -198,6 +198,11 @@ var OMX_VIDEO_CODINGTYPE = {
   OMX_VIDEO_CodingMax: 0x7FFFFFFF
 };
 
+var BLOCK_TYPE = {
+  DO_BLOCK: 1,
+  DO_NOT_BLOCK: 0
+};
+
 var OMX_VIDEO_PARAM_PORTFORMATTYPE = {
   nIndex: 0, // Indicates the enumeration index for the format from 0x0 to N-1 
   eCompressionFormat: 0, // Compression format used in this instance of the component. When OMX_VIDEO_CodingUnused is specified , eColorFormat is used
@@ -228,6 +233,8 @@ video_decode.setParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, form
 
 video_decode.enableInputPortBuffer();
 video_decode.changeState(OMX_STATETYPE.OMX_StateExecuting);
+
+var buffer = video_decode.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
 
 console.log(myaddon.play("test/test.h264", video_decode, video_render, TUNNEL));
 

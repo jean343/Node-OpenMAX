@@ -1,4 +1,5 @@
 #include "COMPONENT.h"
+#include "BUFFERHEADERTYPE.h"
 Nan::Persistent<v8::Function> COMPONENT::constructor;
 
 #include "bcm_host.h"
@@ -6,6 +7,10 @@ Nan::Persistent<v8::Function> COMPONENT::constructor;
 #include "OMX_consts.h"
 
 using v8::String;
+using v8::Local;
+using v8::Value;
+using v8::Function;
+using v8::Object;
 
 NAN_MODULE_INIT(COMPONENT::Init) {
   v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
@@ -16,7 +21,7 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   Nan::SetPrototypeMethod(tpl, "changeState", changeState);
   Nan::SetPrototypeMethod(tpl, "getParameter", getParameter);
   Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
-  
+
   Nan::SetPrototypeMethod(tpl, "enableInputPort", enableInputPort);
   Nan::SetPrototypeMethod(tpl, "enableOutputPort", enableOutputPort);
   Nan::SetPrototypeMethod(tpl, "enableInputPortBuffer", enableInputPortBuffer);
@@ -25,6 +30,8 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   Nan::SetPrototypeMethod(tpl, "disableOutputPort", disableOutputPort);
   Nan::SetPrototypeMethod(tpl, "disableInputPortBuffer", disableInputPortBuffer);
   Nan::SetPrototypeMethod(tpl, "disableOutputPortBuffer", disableOutputPortBuffer);
+
+  Nan::SetPrototypeMethod(tpl, "getInputBuffer", getInputBuffer);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -226,4 +233,19 @@ void COMPONENT::disablePort(int port) {
 void COMPONENT::disablePortBuffer(int port) {
   //  printf("disablePortBuffer: %d\n", port);
   ilclient_disable_port_buffers(component, port, NULL, NULL, NULL);
+}
+
+NAN_METHOD(COMPONENT::getInputBuffer) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  int block = info[0]->IsUndefined() ? 0 : Nan::To<int>(info[0]).FromJust();
+
+  OMX_BUFFERHEADERTYPE *buf = ilclient_get_input_buffer(obj->component, obj->in_port, block);
+
+  const unsigned argc = 1;
+  Local<Value> argv[argc] = {Nan::New<v8::External>((void*) buf)};
+  Local<Function> cons = Nan::New(BUFFERHEADERTYPE::constructor);
+  Local<Object> instance = cons->NewInstance(argc, argv);
+
+  info.GetReturnValue().Set(instance);
 }

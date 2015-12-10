@@ -11,6 +11,7 @@
 #include "ILCLIENT.h"
 #include "COMPONENT.h"
 #include "TUNNEL.h"
+#include "BUFFERHEADERTYPE.h"
 
 #include "Sample.h"
 
@@ -89,6 +90,7 @@ NAN_MODULE_INIT(Init) {
   ILCLIENT::Init(target);
   COMPONENT::Init(target);
   TUNNEL::Init(target);
+  BUFFERHEADERTYPE::Init(target);
 
   Sample::Init(target);
 }

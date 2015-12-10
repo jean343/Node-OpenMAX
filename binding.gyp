@@ -8,6 +8,7 @@
         "ILCLIENT.cpp",
         "COMPONENT.cpp",
         "TUNNEL.cpp",
+        "BUFFERHEADERTYPE.cpp",
 
         "Sample.cpp"
       ],
