@@ -13,13 +13,14 @@ public:
 
   static Nan::Persistent<v8::Function> constructor;
   OMX_BUFFERHEADERTYPE* buf;
-  
+
 private:
   explicit BUFFERHEADERTYPE(OMX_BUFFERHEADERTYPE* buf);
   ~BUFFERHEADERTYPE();
 
   static NAN_METHOD(New);
-  static NAN_METHOD(setValue);
-  static NAN_METHOD(getValue);
-  int value;
+  static NAN_METHOD(set);
+  static NAN_GETTER(nAllocLenGet);
+  
+  bool first_packet;
 };

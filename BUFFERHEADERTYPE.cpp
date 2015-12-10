@@ -6,15 +6,14 @@ NAN_MODULE_INIT(BUFFERHEADERTYPE::Init) {
   tpl->SetClassName(Nan::New("BUFFERHEADERTYPE").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-  Nan::SetPrototypeMethod(tpl, "setValue", setValue);
-  Nan::SetPrototypeMethod(tpl, "getValue", getValue);
+  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nAllocLen").ToLocalChecked(), nAllocLenGet);
+  Nan::SetPrototypeMethod(tpl, "set", set);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("BUFFERHEADERTYPE").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
-BUFFERHEADERTYPE::BUFFERHEADERTYPE(OMX_BUFFERHEADERTYPE* buf) {
-  this->buf = buf;
+BUFFERHEADERTYPE::BUFFERHEADERTYPE(OMX_BUFFERHEADERTYPE* buf) : buf(buf), first_packet(true) {
 }
 
 BUFFERHEADERTYPE::~BUFFERHEADERTYPE() {
@@ -35,13 +34,34 @@ NAN_METHOD(BUFFERHEADERTYPE::New) {
   }
 }
 
-NAN_METHOD(BUFFERHEADERTYPE::setValue) {
-  int value = info[0]->IsUndefined() ? 0 : Nan::To<int>(info[0]).FromJust();
+NAN_GETTER(BUFFERHEADERTYPE::nAllocLenGet) {
   BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
-  obj->value = value;
+  info.GetReturnValue().Set(obj->buf->nAllocLen);
 }
 
-NAN_METHOD(BUFFERHEADERTYPE::getValue) {
+NAN_METHOD(BUFFERHEADERTYPE::set) {
   BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
-  info.GetReturnValue().Set(obj->value);
+  OMX_BUFFERHEADERTYPE* buf = obj->buf;
+
+  v8::Local<v8::Object> bufferObj = info[0]->ToObject();
+  char* bufferData = node::Buffer::Data(bufferObj);
+  size_t bufferLength = node::Buffer::Length(bufferObj);
+
+  if (bufferLength > buf->nAllocLen) { // bound check
+    bufferLength = buf->nAllocLen;
+  }
+  
+//  printf("memcpy(0x%p, 0x%p, %d);\n", buf->pBuffer, bufferData, bufferLength);
+  
+  memcpy(buf->pBuffer, bufferData, bufferLength);
+  
+  buf->nFilledLen = bufferLength;
+
+  if (obj->first_packet) {
+    buf->nFlags = OMX_BUFFERFLAG_STARTTIME;
+    obj->first_packet = false;
+  } else {
+    buf->nFlags = OMX_BUFFERFLAG_TIME_UNKNOWN;
+  }
+  info.GetReturnValue().Set(info.This());
 }

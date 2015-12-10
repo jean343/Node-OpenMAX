@@ -40,6 +40,7 @@ private:
   void disablePortBuffer(int port);
   
   static NAN_METHOD(getInputBuffer);
+  static NAN_METHOD(emptyBuffer);
   
   static Nan::Persistent<v8::Function> constructor;
 };

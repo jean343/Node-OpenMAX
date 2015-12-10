@@ -1,4 +1,5 @@
 var async = require("async");
+var fs = require('fs');
 
 var ILCLIENT_CREATE_FLAGS = {
   ILCLIENT_FLAGS_NONE: 0x0, // Used if no flags are set.
@@ -234,53 +235,49 @@ video_decode.setParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, form
 video_decode.enableInputPortBuffer();
 video_decode.changeState(OMX_STATETYPE.OMX_StateExecuting);
 
-var buffer = video_decode.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
+var inputBuffer = video_decode.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
+console.log(inputBuffer.nAllocLen);
 
-console.log(myaddon.play("test/test.h264", video_decode, video_render, TUNNEL));
+var CHUNK_SIZE = inputBuffer.nAllocLen;
+var buffer = new Buffer(CHUNK_SIZE);
 
-myaddon.bcm_host_deinit();
+fs.open("test/test.h264", 'r', function (err, fd) {
+  if (err)
+    throw err;
+  function readNextChunk() {
+    fs.read(fd, buffer, 0, CHUNK_SIZE, null, function (err, nread) {
+      if (err)
+        throw err;
+
+      if (nread === 0) {
+        // done reading file, do any necessary finalization steps
+
+        fs.close(fd, function (err) {
+          if (err)
+            throw err;
+        });
+        return;
+      }
+
+      var data;
+      if (nread < CHUNK_SIZE)
+        data = buffer.slice(0, nread);
+      else
+        data = buffer;
+
+//      console.log(inputBuffer);
+      inputBuffer.set(data);
+      video_decode.emptyBuffer(inputBuffer);
+
+      setTimeout(function () {
+        readNextChunk();
+      }, 100);
+    });
+  }
+  readNextChunk();
+});
 
 
-//try {
-//
-//  var obj = new myaddon.MyObject(0);
-//  console.log('obj', obj);
-//  console.log(obj.plusOne());
-//  console.log(obj.plusOne());
-//  console.log(obj.plusOne());
-//
-//  console.log('t');
-//  var obj2 = myaddon.MyObject();
-//  console.log('obj2', obj2);
-//  console.log(obj2.plusOne());
-//  console.log(obj2.plusOne());
-//  console.log(obj2.plusOne());
-//
-//} catch (e) {
-//  console.error(e, e.stack);
-//}
-//
-////console.time("sleepSync");
-////myaddon.MyObject().sleepSync(1);
-////console.timeEnd("sleepSync");
-////
-////console.time("sleep");
-////console.time("sleep done");
-////myaddon.MyObject().sleep(1, function () {
-////  console.timeEnd("sleep done");
-////});
-////console.timeEnd("sleep");
-//
-//var arr = [];
-//for (var i = 0; i < 8; i++) {
-//  arr.push(i);
-//}
-//
-//console.time("sleep");
-//console.time("call");
-//async.each(arr, function (item, callback) {
-//  myaddon.MyObject().sleep(1, callback);
-//}, function () {
-//  console.timeEnd("sleep");
-//});
-//console.timeEnd("call");
+//console.log(myaddon.play("test/test.h264", video_decode, video_render, TUNNEL));
+
+//myaddon.bcm_host_deinit();
