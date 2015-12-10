@@ -11,8 +11,7 @@ extern "C" {
 class VideoDecoder : public Component {
 public:
 
-  VideoDecoder(ILCLIENT_T *clientHandle) : Component(130, 131) {
-    this->clientHandle = clientHandle;
+  VideoDecoder() : Component(130, 131) {
     port_settings_changed = false;
     first_packet = true;
   }

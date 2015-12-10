@@ -3,6 +3,19 @@
 Component::Component(int in_port, int out_port) :
 in_port(in_port),
 out_port(out_port) {
+  clientHandle = ilclient_init();
+  if (clientHandle == NULL) {
+    fprintf(stderr, "IL client init failed\n");
+    exit(1);
+  }
+
+  if (OMX_Init() != OMX_ErrorNone) {
+    ilclient_destroy(clientHandle);
+    fprintf(stderr, "OMX init failed\n");
+    exit(1);
+  }
+
+  ilclient_set_error_callback(clientHandle, Component::error_callback, NULL);
 }
 
 Component::~Component() {

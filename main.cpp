@@ -73,25 +73,11 @@ void hello(const Nan::FunctionCallbackInfo<Value>& info) {
     return;
   }
 
-  ILCLIENT_T *clientHandle = ilclient_init();
-  if (clientHandle == NULL) {
-    fprintf(stderr, "IL client init failed\n");
-    exit(1);
-  }
-
-  if (OMX_Init() != OMX_ErrorNone) {
-    ilclient_destroy(clientHandle);
-    fprintf(stderr, "OMX init failed\n");
-    exit(1);
-  }
-
-  ilclient_set_error_callback(clientHandle, Component::error_callback, NULL);
-
-  VideoDecoder* vd = new VideoDecoder(clientHandle);
+  VideoDecoder* vd = new VideoDecoder();
   vd->createComponent();
   vd->changeState(OMX_StateIdle);
 
-  VideoRender* vr = new VideoRender(clientHandle);
+  VideoRender* vr = new VideoRender();
   vr->createComponent();
   vr->changeState(OMX_StateIdle);
 

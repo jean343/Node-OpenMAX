@@ -11,8 +11,7 @@ extern "C" {
 class VideoRender : public Component {
 public:
 
-  VideoRender(ILCLIENT_T *clientHandle) : Component(90, -1) {
-    this->clientHandle = clientHandle;
+  VideoRender() : Component(90, -1) {
   }
 
   int createComponent() {
