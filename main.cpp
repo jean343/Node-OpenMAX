@@ -7,6 +7,8 @@
 #include "main.h"
 #include "sleepAsync.h"
 
+#include "init.h"
+
 #include "test/VideoDecoder.h"
 #include "test/VideoRender.h"
 
@@ -64,8 +66,6 @@ NAN_METHOD(MyObject::SleepSync) {
 
 void hello(const Nan::FunctionCallbackInfo<Value>& info) {
   String::Utf8Value filePath(info[0]);
-
-  bcm_host_init();
 
   FILE *in;
   if ((in = fopen(*filePath, "rb")) == NULL) {
@@ -134,10 +134,12 @@ void hello(const Nan::FunctionCallbackInfo<Value>& info) {
 }
 
 NAN_MODULE_INIT(Init) {
-  Nan::Set(target, Nan::New("hello").ToLocalChecked(),
-          Nan::GetFunction(Nan::New<FunctionTemplate>(hello)).ToLocalChecked());
+  Nan::Set(target, Nan::New("bcm_host_init").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::bcm_host_init)).ToLocalChecked());
+  Nan::Set(target, Nan::New("bcm_host_deinit").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::bcm_host_deinit)).ToLocalChecked());
+
+  Nan::Set(target, Nan::New("hello").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(hello)).ToLocalChecked());
 
   MyObject::Init(target);
 }
 
-NODE_MODULE(hello, Init)
+NODE_MODULE(Node_OMX, Init)

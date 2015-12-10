@@ -1,9 +1,10 @@
 {
   "targets": [
     {
-      "target_name": "hello",
+      "target_name": "Node_OMX",
       "sources": [
         "main.cpp",
+        "init.cpp",
         "sleepAsync.cpp",
 
         "test/VideoDecoder.cpp",

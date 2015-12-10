@@ -1,8 +1,11 @@
 var async = require("async");
 
-var myaddon = require("./build/Release/hello.node");
+var myaddon = require("./build/Release/Node_OMX.node");
+myaddon.bcm_host_init();
+
 console.log(myaddon.hello("test/test.h264"));
 
+myaddon.bcm_host_deinit();
 //try {
 //
 //  var obj = new myaddon.MyObject(0);
