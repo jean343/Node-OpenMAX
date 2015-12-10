@@ -5,7 +5,9 @@
       "sources": [
         "main.cpp",
         "init.cpp",
-        "Sample.cpp",
+        "ILCLIENT.cpp",
+
+        "Sample.cpp"
       ],
       "defines": [
         "OMX",

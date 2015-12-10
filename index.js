@@ -2,16 +2,14 @@ var async = require("async");
 
 var myaddon = require("./build/Release/Node_OMX.node");
 
-var Sample = new myaddon.Sample();
-Sample.setValue(422);
-console.log(Sample.getValue());
-
-
-
-
 myaddon.bcm_host_init();
+var ILCLIENT = myaddon.ILCLIENT();
 
-console.log(myaddon.play("test/test.h264"));
+
+
+
+
+console.log(myaddon.play("test/test.h264", ILCLIENT));
 
 myaddon.bcm_host_deinit();
 

@@ -8,6 +8,8 @@
 #include "main.h"
 
 #include "init.h"
+#include "ILCLIENT.h"
+
 #include "Sample.h"
 
 #include "bcm_host.h"
@@ -21,10 +23,11 @@ using v8::Function;
 using v8::FunctionTemplate;
 using v8::String;
 
-
-
 void play(const Nan::FunctionCallbackInfo<Value>& info) {
   String::Utf8Value filePath(info[0]);
+  
+  ILCLIENT* _client = Nan::ObjectWrap::Unwrap<ILCLIENT>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
+  ILCLIENT_T *client = _client->client;
 
   FILE *in;
   if ((in = fopen(*filePath, "rb")) == NULL) {
@@ -33,18 +36,8 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
   }
 
   TUNNEL_T tunnel;
-  ILCLIENT_T *client;
   COMPONENT_T *video_decode, *video_render;
   memset(&tunnel, 0, sizeof (tunnel));
-
-  if ((client = ilclient_init()) == NULL) {
-    return;
-  }
-
-  if (OMX_Init() != OMX_ErrorNone) {
-    ilclient_destroy(client);
-    return;
-  }
 
   // create video_decode
   if (ilclient_create_component(client, &video_decode, "video_decode", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS)) != 0)
@@ -114,7 +107,8 @@ NAN_MODULE_INIT(Init) {
 
   Nan::Set(target, Nan::New("play").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(play)).ToLocalChecked());
 
-  Parent::Init(target);
+  ILCLIENT::Init(target);
+
   Sample::Init(target);
 }
 
