@@ -21,5 +21,6 @@ private:
 
   static NAN_METHOD(New);
   static NAN_METHOD(setPorts);
+  static NAN_METHOD(changeState);
   static Nan::Persistent<v8::Function> constructor;
 };

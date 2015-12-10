@@ -43,8 +43,6 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
     return;
   }
 
-  ilclient_change_component_state(video_decode, OMX_StateIdle);
-
   OMX_VIDEO_PARAM_PORTFORMATTYPE format;
   memset(&format, 0, sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE));
   format.nSize = sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE);

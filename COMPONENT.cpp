@@ -13,7 +13,8 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   Nan::SetPrototypeMethod(tpl, "setPorts", setPorts);
-  
+  Nan::SetPrototypeMethod(tpl, "changeState", changeState);
+
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
@@ -28,6 +29,8 @@ COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_
     Nan::ThrowError(buf);
     return;
   }
+
+  handle = ilclient_get_handle(component);
 }
 
 COMPONENT::~COMPONENT() {
@@ -53,7 +56,7 @@ NAN_METHOD(COMPONENT::New) {
 
     int flags = info[2]->IsUndefined() ? 0 : Nan::To<int>(info[2]).FromJust();
 
-    COMPONENT *obj = new COMPONENT(_client, *name, (ILCLIENT_CREATE_FLAGS_T)flags);
+    COMPONENT *obj = new COMPONENT(_client, *name, (ILCLIENT_CREATE_FLAGS_T) flags);
     obj->Wrap(info.This());
     info.GetReturnValue().Set(info.This());
   } else {
@@ -66,11 +69,32 @@ NAN_METHOD(COMPONENT::New) {
 
 NAN_METHOD(COMPONENT::setPorts) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
-  
+
   if (!info[0]->IsUndefined()) {
     obj->in_port = Nan::To<int>(info[0]).FromJust();
   }
   if (!info[1]->IsUndefined()) {
     obj->out_port = Nan::To<int>(info[1]).FromJust();
+  }
+}
+
+NAN_METHOD(COMPONENT::changeState) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  OMX_STATETYPE state = (OMX_STATETYPE) Nan::To<int>(info[0]).FromJust();
+
+  int rc = ilclient_change_component_state(obj->component, state);
+  if (rc != 0) {
+    char buf[255];
+    sprintf(buf, "changeState failed with rc: %d", rc);
+    Nan::ThrowError(buf);
+    return;
+  }
+
+  OMX_STATETYPE stateOut;
+  OMX_ERRORTYPE err;
+  err = OMX_GetState(obj->handle, &stateOut);
+  if (err != OMX_ErrorNone) {
+    info.GetReturnValue().Set((int) stateOut);
   }
 }
