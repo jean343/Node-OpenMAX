@@ -35,6 +35,7 @@ var TUNNEL = myaddon.TUNNEL();
 TUNNEL.set(video_decode, video_render);
 
 video_decode.changeState(OMX_STATETYPE.OMX_StateIdle);
+video_decode.setParameter();
 
 
 console.log(myaddon.play("test/test.h264", video_decode, video_render, TUNNEL));

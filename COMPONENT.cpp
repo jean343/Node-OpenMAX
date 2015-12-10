@@ -14,6 +14,7 @@ NAN_MODULE_INIT(COMPONENT::Init) {
 
   Nan::SetPrototypeMethod(tpl, "setPorts", setPorts);
   Nan::SetPrototypeMethod(tpl, "changeState", changeState);
+  Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -96,5 +97,21 @@ NAN_METHOD(COMPONENT::changeState) {
   err = OMX_GetState(obj->handle, &stateOut);
   if (err != OMX_ErrorNone) {
     info.GetReturnValue().Set((int) stateOut);
+  }
+}
+
+NAN_METHOD(COMPONENT::setParameter) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
+  OMX_consts::InitOMXParams(&format, 130);
+  format.eCompressionFormat = OMX_VIDEO_CodingAVC;
+
+  OMX_ERRORTYPE rc = OMX_SetParameter(obj->handle, OMX_IndexParamVideoPortFormat, &format);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "setParameter() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
   }
 }

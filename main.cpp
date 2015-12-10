@@ -43,15 +43,7 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
     return;
   }
 
-  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
-  memset(&format, 0, sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE));
-  format.nSize = sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE);
-  format.nVersion.nVersion = OMX_VERSION;
-  format.nPortIndex = 130;
-  format.eCompressionFormat = OMX_VIDEO_CodingAVC;
-
-  if (OMX_SetParameter(ILC_GET_HANDLE(video_decode), OMX_IndexParamVideoPortFormat, &format) == OMX_ErrorNone &&
-          ilclient_enable_port_buffers(video_decode, 130, NULL, NULL, NULL) == 0) {
+  if (          ilclient_enable_port_buffers(video_decode, 130, NULL, NULL, NULL) == 0) {
 
     ilclient_change_component_state(video_decode, OMX_StateExecuting);
   }
