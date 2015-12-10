@@ -2,10 +2,9 @@ var async = require("async");
 
 var myaddon = require("./build/Release/Node_OMX.node");
 
-var Parent = new myaddon.Parent();
-
-Parent.setValue(42);
-console.log(Parent.getValue());
+var Sample = new myaddon.Sample();
+Sample.setValue(422);
+console.log(Sample.getValue());
 
 
 

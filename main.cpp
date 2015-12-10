@@ -8,6 +8,7 @@
 #include "main.h"
 
 #include "init.h"
+#include "Sample.h"
 
 #include "bcm_host.h"
 extern "C" {
@@ -19,68 +20,6 @@ using v8::Local;
 using v8::Function;
 using v8::FunctionTemplate;
 using v8::String;
-
-class Parent : public Nan::ObjectWrap {
-public:
-  static NAN_MODULE_INIT(Init);
-
-private:
-  explicit Parent();
-  ~Parent();
-
-  static NAN_METHOD(New);
-  static NAN_METHOD(setValue);
-  static NAN_METHOD(getValue);
-  static Nan::Persistent<v8::Function> constructor;
-  int value;
-};
-Nan::Persistent<v8::Function> Parent::constructor;
-
-NAN_MODULE_INIT(Parent::Init) {
-  v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-  tpl->SetClassName(Nan::New("Parent").ToLocalChecked());
-  tpl->InstanceTemplate()->SetInternalFieldCount(1);
-
-  Nan::SetPrototypeMethod(tpl, "setValue", setValue);
-  Nan::SetPrototypeMethod(tpl, "getValue", getValue);
-
-  constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
-  Nan::Set(target, Nan::New("Parent").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
-}
-
-Parent::Parent() {
-}
-
-Parent::~Parent() {
-}
-
-NAN_METHOD(Parent::New) {
-  if (info.IsConstructCall()) {
-    Parent *obj = new Parent();
-    obj->Wrap(info.This());
-    info.GetReturnValue().Set(info.This());
-  } else {
-    const int argc = 1;
-    v8::Local<v8::Value> argv[argc] = {info[0]};
-    v8::Local<v8::Function> cons = Nan::New(constructor);
-    info.GetReturnValue().Set(cons->NewInstance(argc, argv));
-  }
-}
-
-NAN_METHOD(Parent::setValue) {
-  int value = info[0]->IsUndefined() ? 0 : Nan::To<int>(info[0]).FromJust();
-  Parent* obj = Nan::ObjectWrap::Unwrap<Parent>(info.This());
-  obj->value = value;
-}
-
-NAN_METHOD(Parent::getValue) {
-  Parent* obj = Nan::ObjectWrap::Unwrap<Parent>(info.This());
-  info.GetReturnValue().Set(obj->value);
-}
-
-
-
-
 
 
 
@@ -176,6 +115,7 @@ NAN_MODULE_INIT(Init) {
   Nan::Set(target, Nan::New("play").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(play)).ToLocalChecked());
 
   Parent::Init(target);
+  Sample::Init(target);
 }
 
 NODE_MODULE(Node_OMX, Init)
