@@ -13,9 +13,23 @@ void VideoDecoder::setup() {
   format.nPortIndex = in_port;
   format.eCompressionFormat = OMX_VIDEO_CodingAVC;
 
+  printf("OMX_SetParameter eCompressionFormat : %d\n", format.eCompressionFormat);
   if (OMX_SetParameter(handle, OMX_IndexParamVideoPortFormat, &format) != OMX_ErrorNone) {
     printf("OMX_SetParameter Failed\n");
   }
+
+
+  memset(&format, 0, sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE));
+  format.nSize = sizeof (OMX_VIDEO_PARAM_PORTFORMATTYPE);
+  format.nVersion.nVersion = OMX_VERSION;
+  format.nPortIndex = in_port;
+
+  OMX_ERRORTYPE rc = OMX_GetParameter(handle, OMX_IndexParamVideoPortFormat, &format);
+  if (rc != OMX_ErrorNone) {
+    printf("OMX_SetParameter Failed\n");
+  }
+
+  printf("getParameter eCompressionFormat : %d\n", format.eCompressionFormat);
 }
 
 OMX_BUFFERHEADERTYPE* outBuf;

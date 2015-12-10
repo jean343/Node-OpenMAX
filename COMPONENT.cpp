@@ -14,6 +14,7 @@ NAN_MODULE_INIT(COMPONENT::Init) {
 
   Nan::SetPrototypeMethod(tpl, "setPorts", setPorts);
   Nan::SetPrototypeMethod(tpl, "changeState", changeState);
+  Nan::SetPrototypeMethod(tpl, "getParameter", getParameter);
   Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
@@ -100,14 +101,50 @@ NAN_METHOD(COMPONENT::changeState) {
   }
 }
 
+// port, 
+NAN_METHOD(COMPONENT::getParameter) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  int port = (OMX_STATETYPE) Nan::To<int>(info[0]).FromJust();
+  OMX_INDEXTYPE indexType = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
+  
+  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
+  OMX_consts::InitOMXParams(&format, port);
+
+  OMX_ERRORTYPE rc = OMX_GetParameter(obj->handle, indexType, &format);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "getParameter() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
+
+  // Return object
+  v8::Local<v8::Object> ret = Nan::New<v8::Object>();
+  Nan::Set(ret, Nan::New("nIndex").ToLocalChecked(), Nan::New(format.nIndex));
+  Nan::Set(ret, Nan::New("eCompressionFormat").ToLocalChecked(), Nan::New(format.eCompressionFormat));
+  Nan::Set(ret, Nan::New("eColorFormat").ToLocalChecked(), Nan::New(format.eColorFormat));
+  Nan::Set(ret, Nan::New("xFramerate").ToLocalChecked(), Nan::New(format.xFramerate));
+  info.GetReturnValue().Set(ret);
+}
+
 NAN_METHOD(COMPONENT::setParameter) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
-  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
-  OMX_consts::InitOMXParams(&format, 130);
-  format.eCompressionFormat = OMX_VIDEO_CodingAVC;
+  int port = (OMX_STATETYPE) Nan::To<int>(info[0]).FromJust();
+  OMX_INDEXTYPE indexType = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
 
-  OMX_ERRORTYPE rc = OMX_SetParameter(obj->handle, OMX_IndexParamVideoPortFormat, &format);
+  v8::Local<v8::Object> param = Nan::To<v8::Object>(info[2]).ToLocalChecked();
+  
+  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
+  OMX_consts::InitOMXParams(&format, port);
+  
+  format.nIndex = (int)Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eCompressionFormat = (OMX_VIDEO_CODINGTYPE)Nan::To<int>(Nan::Get(param, Nan::New("eCompressionFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eColorFormat = (OMX_COLOR_FORMATTYPE)Nan::To<int>(Nan::Get(param, Nan::New("eColorFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xFramerate = (int)Nan::To<int>(Nan::Get(param, Nan::New("xFramerate").ToLocalChecked()).ToLocalChecked()).FromJust();
+  
+  OMX_ERRORTYPE rc = OMX_SetParameter(obj->handle, indexType, &format);
   if (rc != OMX_ErrorNone) {
     char buf[255];
     sprintf(buf, "setParameter() returned error: %s", OMX_consts::err2str(rc));
