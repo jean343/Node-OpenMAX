@@ -1,11 +1,22 @@
 var async = require("async");
 
 var myaddon = require("./build/Release/Node_OMX.node");
+
+var Parent = new myaddon.Parent();
+
+Parent.setValue(42);
+console.log(Parent.getValue());
+
+
+
+
 myaddon.bcm_host_init();
 
 console.log(myaddon.hello("test/test.h264"));
 
 myaddon.bcm_host_deinit();
+
+
 //try {
 //
 //  var obj = new myaddon.MyObject(0);

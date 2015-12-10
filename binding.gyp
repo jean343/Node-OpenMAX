@@ -5,7 +5,6 @@
       "sources": [
         "main.cpp",
         "init.cpp",
-        "sleepAsync.cpp",
 
         "test/VideoDecoder.cpp",
         "test/Component.cpp"

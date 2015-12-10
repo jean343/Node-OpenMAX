@@ -1,11 +1,11 @@
 //https://github.com/fcanas/node-native-boilerplate
 //https://github.com/nodejs/nan/blob/master/doc/object_wrappers.md
+//https://gist.github.com/bellbind/a68620383e0180b3afc6
 
 #include <nan.h>
 #include <unistd.h>
 
 #include "main.h"
-#include "sleepAsync.h"
 
 #include "init.h"
 
@@ -18,31 +18,43 @@ using v8::Function;
 using v8::FunctionTemplate;
 using v8::String;
 
-Nan::Persistent<v8::Function> MyObject::constructor;
+class Parent : public Nan::ObjectWrap {
+public:
+  static NAN_MODULE_INIT(Init);
 
-NAN_MODULE_INIT(MyObject::Init) {
+private:
+  explicit Parent();
+  ~Parent();
+
+  static NAN_METHOD(New);
+  static NAN_METHOD(setValue);
+  static NAN_METHOD(getValue);
+  static Nan::Persistent<v8::Function> constructor;
+  int value;
+};
+Nan::Persistent<v8::Function> Parent::constructor;
+
+NAN_MODULE_INIT(Parent::Init) {
   v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-  tpl->SetClassName(Nan::New("MyObject").ToLocalChecked());
+  tpl->SetClassName(Nan::New("Parent").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-  Nan::SetPrototypeMethod(tpl, "plusOne", PlusOne);
-  Nan::SetPrototypeMethod(tpl, "sleepSync", SleepSync);
-  Nan::SetPrototypeMethod(tpl, "sleep", Sleep);
+  Nan::SetPrototypeMethod(tpl, "setValue", setValue);
+  Nan::SetPrototypeMethod(tpl, "getValue", getValue);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
-  Nan::Set(target, Nan::New("MyObject").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
+  Nan::Set(target, Nan::New("Parent").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
-MyObject::MyObject(double value) : value_(value) {
+Parent::Parent() {
 }
 
-MyObject::~MyObject() {
+Parent::~Parent() {
 }
 
-NAN_METHOD(MyObject::New) {
+NAN_METHOD(Parent::New) {
   if (info.IsConstructCall()) {
-    double value = info[0]->IsUndefined() ? 0 : Nan::To<double>(info[0]).FromJust();
-    MyObject *obj = new MyObject(value);
+    Parent *obj = new Parent();
     obj->Wrap(info.This());
     info.GetReturnValue().Set(info.This());
   } else {
@@ -53,18 +65,24 @@ NAN_METHOD(MyObject::New) {
   }
 }
 
-NAN_METHOD(MyObject::PlusOne) {
-  MyObject* obj = Nan::ObjectWrap::Unwrap<MyObject>(info.This());
-  obj->value_ += 1;
-  info.GetReturnValue().Set(obj->value_);
-}
-
-NAN_METHOD(MyObject::SleepSync) {
+NAN_METHOD(Parent::setValue) {
   int value = info[0]->IsUndefined() ? 0 : Nan::To<int>(info[0]).FromJust();
-  sleep(value);
+  Parent* obj = Nan::ObjectWrap::Unwrap<Parent>(info.This());
+  obj->value = value;
 }
 
-void hello(const Nan::FunctionCallbackInfo<Value>& info) {
+NAN_METHOD(Parent::getValue) {
+  Parent* obj = Nan::ObjectWrap::Unwrap<Parent>(info.This());
+  info.GetReturnValue().Set(obj->value);
+}
+
+
+
+
+
+
+
+void play(const Nan::FunctionCallbackInfo<Value>& info) {
   String::Utf8Value filePath(info[0]);
 
   FILE *in;
@@ -106,16 +124,6 @@ void hello(const Nan::FunctionCallbackInfo<Value>& info) {
 
   delete vd;
 
-
-
-
-
-
-
-
-
-
-
   info.GetReturnValue().Set(Nan::New("world").ToLocalChecked());
 }
 
@@ -123,9 +131,9 @@ NAN_MODULE_INIT(Init) {
   Nan::Set(target, Nan::New("bcm_host_init").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::bcm_host_init)).ToLocalChecked());
   Nan::Set(target, Nan::New("bcm_host_deinit").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::bcm_host_deinit)).ToLocalChecked());
 
-  Nan::Set(target, Nan::New("hello").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(hello)).ToLocalChecked());
+  Nan::Set(target, Nan::New("play").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(play)).ToLocalChecked());
 
-  MyObject::Init(target);
+  Parent::Init(target);
 }
 
 NODE_MODULE(Node_OMX, Init)
