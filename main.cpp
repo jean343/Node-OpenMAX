@@ -43,11 +43,6 @@ void play(const Nan::FunctionCallbackInfo<Value>& info) {
     return;
   }
 
-  if (          ilclient_enable_port_buffers(video_decode, 130, NULL, NULL, NULL) == 0) {
-
-    ilclient_change_component_state(video_decode, OMX_StateExecuting);
-  }
-
   bool port_settings_changed = false;
   bool first_packet = true;
 

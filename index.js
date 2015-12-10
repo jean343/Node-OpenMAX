@@ -226,6 +226,8 @@ format = video_decode.getParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFor
 format.eCompressionFormat = OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
 video_decode.setParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
 
+video_decode.enableInputPortBuffer();
+video_decode.changeState(OMX_STATETYPE.OMX_StateExecuting);
 
 console.log(myaddon.play("test/test.h264", video_decode, video_render, TUNNEL));
 

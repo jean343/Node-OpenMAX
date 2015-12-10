@@ -16,6 +16,15 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   Nan::SetPrototypeMethod(tpl, "changeState", changeState);
   Nan::SetPrototypeMethod(tpl, "getParameter", getParameter);
   Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
+  
+  Nan::SetPrototypeMethod(tpl, "enableInputPort", enableInputPort);
+  Nan::SetPrototypeMethod(tpl, "enableOutputPort", enableOutputPort);
+  Nan::SetPrototypeMethod(tpl, "enableInputPortBuffer", enableInputPortBuffer);
+  Nan::SetPrototypeMethod(tpl, "enableOutputPortBuffer", enableOutputPortBuffer);
+  Nan::SetPrototypeMethod(tpl, "disableInputPort", disableInputPort);
+  Nan::SetPrototypeMethod(tpl, "disableOutputPort", disableOutputPort);
+  Nan::SetPrototypeMethod(tpl, "disableInputPortBuffer", disableInputPortBuffer);
+  Nan::SetPrototypeMethod(tpl, "disableOutputPortBuffer", disableOutputPortBuffer);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -102,12 +111,13 @@ NAN_METHOD(COMPONENT::changeState) {
 }
 
 // port, 
+
 NAN_METHOD(COMPONENT::getParameter) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
   int port = (OMX_STATETYPE) Nan::To<int>(info[0]).FromJust();
   OMX_INDEXTYPE indexType = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
-  
+
   OMX_VIDEO_PARAM_PORTFORMATTYPE format;
   OMX_consts::InitOMXParams(&format, port);
 
@@ -135,15 +145,15 @@ NAN_METHOD(COMPONENT::setParameter) {
   OMX_INDEXTYPE indexType = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
 
   v8::Local<v8::Object> param = Nan::To<v8::Object>(info[2]).ToLocalChecked();
-  
+
   OMX_VIDEO_PARAM_PORTFORMATTYPE format;
   OMX_consts::InitOMXParams(&format, port);
-  
-  format.nIndex = (int)Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
-  format.eCompressionFormat = (OMX_VIDEO_CODINGTYPE)Nan::To<int>(Nan::Get(param, Nan::New("eCompressionFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
-  format.eColorFormat = (OMX_COLOR_FORMATTYPE)Nan::To<int>(Nan::Get(param, Nan::New("eColorFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
-  format.xFramerate = (int)Nan::To<int>(Nan::Get(param, Nan::New("xFramerate").ToLocalChecked()).ToLocalChecked()).FromJust();
-  
+
+  format.nIndex = (int) Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eCompressionFormat = (OMX_VIDEO_CODINGTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eCompressionFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eColorFormat = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eColorFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xFramerate = (int) Nan::To<int>(Nan::Get(param, Nan::New("xFramerate").ToLocalChecked()).ToLocalChecked()).FromJust();
+
   OMX_ERRORTYPE rc = OMX_SetParameter(obj->handle, indexType, &format);
   if (rc != OMX_ErrorNone) {
     char buf[255];
@@ -151,4 +161,69 @@ NAN_METHOD(COMPONENT::setParameter) {
     Nan::ThrowError(buf);
     return;
   }
+}
+
+NAN_METHOD(COMPONENT::enableInputPort) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->enablePort(obj->in_port);
+}
+
+NAN_METHOD(COMPONENT::enableOutputPort) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->enablePort(obj->out_port);
+}
+
+NAN_METHOD(COMPONENT::enableInputPortBuffer) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->enablePortBuffer(obj->in_port);
+}
+
+NAN_METHOD(COMPONENT::enableOutputPortBuffer) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->enablePortBuffer(obj->out_port);
+}
+
+NAN_METHOD(COMPONENT::disableInputPort) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->disablePort(obj->in_port);
+}
+
+NAN_METHOD(COMPONENT::disableOutputPort) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->disablePort(obj->out_port);
+}
+
+NAN_METHOD(COMPONENT::disableInputPortBuffer) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->disablePortBuffer(obj->in_port);
+}
+
+NAN_METHOD(COMPONENT::disableOutputPortBuffer) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  obj->disablePortBuffer(obj->out_port);
+}
+
+void COMPONENT::enablePort(int port) {
+  ilclient_enable_port(component, port);
+}
+
+void COMPONENT::enablePortBuffer(int port) {
+  //  printf("enablePortBuffer: %d\n", port);
+  int rc = ilclient_enable_port_buffers(component, port, NULL, NULL, NULL);
+  if (rc != 0) {
+    char buf[255];
+    sprintf(buf, "enablePortBuffer failed with rc: %d on port: %d", rc, port);
+    Nan::ThrowError(buf);
+    return;
+  }
+}
+
+void COMPONENT::disablePort(int port) {
+  //  printf("disablePort: %d\n", port);
+  ilclient_disable_port(component, port);
+}
+
+void COMPONENT::disablePortBuffer(int port) {
+  //  printf("disablePortBuffer: %d\n", port);
+  ilclient_disable_port_buffers(component, port, NULL, NULL, NULL);
 }

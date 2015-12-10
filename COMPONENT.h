@@ -24,5 +24,20 @@ private:
   static NAN_METHOD(changeState);
   static NAN_METHOD(getParameter);
   static NAN_METHOD(setParameter);
+  
+  static NAN_METHOD(enableInputPort);
+  static NAN_METHOD(enableOutputPort);
+  static NAN_METHOD(enableInputPortBuffer);
+  static NAN_METHOD(enableOutputPortBuffer);
+  static NAN_METHOD(disableInputPort);
+  static NAN_METHOD(disableOutputPort);
+  static NAN_METHOD(disableInputPortBuffer);
+  static NAN_METHOD(disableOutputPortBuffer);
+  
+  void enablePort(int port);
+  void enablePortBuffer(int port);
+  void disablePort(int port);
+  void disablePortBuffer(int port);
+  
   static Nan::Persistent<v8::Function> constructor;
 };
