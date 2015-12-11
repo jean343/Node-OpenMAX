@@ -53,15 +53,15 @@ COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_
   handle = ilclient_get_handle(component);
 
   if (flags & ILCLIENT_ENABLE_INPUT_BUFFERS) {
-    ilclient_set_empty_buffer_done_callback(client, _empty_buffer_done_callback, this);
+    ilclient_set_empty_buffer_done_callback(client, emptyBufferDoneCallback, this);
   }
 
   async = new uv_async_t;
-  uv_async_init(uv_default_loop(), async, AsyncProgress_);
+  uv_async_init(uv_default_loop(), async, asyncEmptyBufferDone);
   async->data = this;
 }
 
-void COMPONENT::_empty_buffer_done_callback(void *userdata, COMPONENT_T *comp) {
+void COMPONENT::emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp) {
   COMPONENT *component = (COMPONENT*) userdata;
   uv_async_send(component->async);
 }

@@ -22,9 +22,9 @@ private:
   explicit COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags);
   ~COMPONENT();
 
-  static void _empty_buffer_done_callback(void *userdata, COMPONENT_T *comp);
+  static void emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp);
 
-  NAN_INLINE static NAUV_WORK_CB(AsyncProgress_) {
+  NAN_INLINE static NAUV_WORK_CB(asyncEmptyBufferDone) {
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
     if (obj->lastEmptyBufferCallback != NULL) {
       obj->lastEmptyBufferCallback->Call(0, 0);
