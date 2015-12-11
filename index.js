@@ -1,5 +1,12 @@
 var async = require("async");
 var fs = require('fs');
+var EventEmitter = require('events').EventEmitter;
+
+function inherits(target, source) {
+  for (var k in source.prototype) {
+    target.prototype[k] = source.prototype[k];
+  }
+}
 
 var ILCLIENT_CREATE_FLAGS = {
   ILCLIENT_FLAGS_NONE: 0x0, // Used if no flags are set.
@@ -212,6 +219,7 @@ var OMX_VIDEO_PARAM_PORTFORMATTYPE = {
 };
 
 var myaddon = require("./build/Release/Node_OMX.node");
+inherits(myaddon.COMPONENT, EventEmitter);
 
 myaddon.bcm_host_init();
 var ILCLIENT = myaddon.ILCLIENT();
@@ -234,9 +242,8 @@ video_decode.enableInputPortBuffer();
 video_decode.changeState(OMX_STATETYPE.OMX_StateExecuting);
 
 var inputBuffer = video_decode.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
-console.log(inputBuffer.nAllocLen);
 
-video_decode.onEventPortSettingsChanged(function () {
+video_decode.on("eventPortSettingsChanged", function () {
   TUNNEL.enable();
   video_render.changeState(OMX_STATETYPE.OMX_StateExecuting);
 });
@@ -253,7 +260,9 @@ fs.open("test/test.h264", 'r', function (err, fd) {
         throw err;
 
       if (nread === 0) {
+        console.log('done');
         // done reading file, do any necessary finalization steps
+        myaddon.bcm_host_deinit();
 
         fs.close(fd, function (err) {
           if (err)
@@ -268,16 +277,11 @@ fs.open("test/test.h264", 'r', function (err, fd) {
       else
         data = buffer;
 
-//      console.log(inputBuffer);
       inputBuffer.set(data);
-      video_decode.emptyBuffer(inputBuffer);
-
-      setTimeout(function () {
+      video_decode.emptyBuffer(inputBuffer, function () {
         readNextChunk();
-      }, 20);
+      });
     });
   }
   readNextChunk();
 });
-
-//myaddon.bcm_host_deinit();

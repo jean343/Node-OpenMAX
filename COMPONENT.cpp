@@ -39,7 +39,7 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
-COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags) {
+COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags) : lastEmptyBufferCallback(NULL) {
   ILCLIENT_T *client = _client->client;
 
   int rc = ilclient_create_component(client, &component, (char*) name, flags);
@@ -51,6 +51,19 @@ COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_
   }
 
   handle = ilclient_get_handle(component);
+
+  if (flags & ILCLIENT_ENABLE_INPUT_BUFFERS) {
+    ilclient_set_empty_buffer_done_callback(client, _empty_buffer_done_callback, this);
+  }
+
+  async = new uv_async_t;
+  uv_async_init(uv_default_loop(), async, AsyncProgress_);
+  async->data = this;
+}
+
+void COMPONENT::_empty_buffer_done_callback(void *userdata, COMPONENT_T *comp) {
+  COMPONENT *component = (COMPONENT*) userdata;
+  uv_async_send(component->async);
 }
 
 COMPONENT::~COMPONENT() {
@@ -256,10 +269,12 @@ NAN_METHOD(COMPONENT::emptyBuffer) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
   BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+  obj->lastEmptyBufferCallback = new Nan::Callback(info[1].As<Function>());
 
   if (ilclient_remove_event(obj->component, OMX_EventPortSettingsChanged, obj->out_port, 0, 0, 1) == 0) {
-//    v8::Local<v8::Value> argv[argc] = {Nan::New(42)};
-    obj->onEventPortSettingsChangedCallback->Call(0, 0);
+    int argc = 1;
+    v8::Local<v8::Value> argv[argc] = {Nan::New("eventPortSettingsChanged").ToLocalChecked()};
+    Nan::MakeCallback(info.This(), "emit", argc, argv);
   }
 
   OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->handle, _buf->buf);
@@ -275,6 +290,6 @@ NAN_METHOD(COMPONENT::onEventPortSettingsChanged) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
   obj->onEventPortSettingsChangedCallback = new Nan::Callback(info[0].As<Function>());
-  
+
   info.GetReturnValue().Set(info.This());
 }
