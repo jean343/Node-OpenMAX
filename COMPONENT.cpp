@@ -268,16 +268,26 @@ NAN_METHOD(COMPONENT::getInputBuffer) {
 NAN_METHOD(COMPONENT::emptyBuffer) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
-  BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
-  obj->lastEmptyBufferCallback = new Nan::Callback(info[1].As<Function>());
+  OMX_BUFFERHEADERTYPE* buf;
+  if (info[0]->IsUndefined()) {
+    // Flush last buffer
+    buf = ilclient_get_input_buffer(obj->component, obj->in_port, 1);
+    buf->nFilledLen = 0;
+    buf->nFlags = OMX_BUFFERFLAG_TIME_UNKNOWN | OMX_BUFFERFLAG_EOS;
+  } else {
+    BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
-  if (ilclient_remove_event(obj->component, OMX_EventPortSettingsChanged, obj->out_port, 0, 0, 1) == 0) {
-    int argc = 1;
-    v8::Local<v8::Value> argv[argc] = {Nan::New("eventPortSettingsChanged").ToLocalChecked()};
-    Nan::MakeCallback(info.This(), "emit", argc, argv);
+    if (ilclient_remove_event(obj->component, OMX_EventPortSettingsChanged, obj->out_port, 0, 0, 1) == 0) {
+      int argc = 1;
+      v8::Local<v8::Value> argv[argc] = {Nan::New("eventPortSettingsChanged").ToLocalChecked()};
+      Nan::MakeCallback(info.This(), "emit", argc, argv);
+    }
+    buf = _buf->buf;
   }
 
-  OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->handle, _buf->buf);
+  obj->lastEmptyBufferCallback = new Nan::Callback(info[1].As<Function>());
+
+  OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->handle, buf);
   if (rc != OMX_ErrorNone) {
     char buf[255];
     sprintf(buf, "emptyBuffer() returned error: %s", OMX_consts::err2str(rc));

@@ -15,6 +15,9 @@ NAN_MODULE_INIT(TUNNEL::Init) {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   Nan::SetPrototypeMethod(tpl, "enable", enable);
+  Nan::SetPrototypeMethod(tpl, "flush", flush);
+  Nan::SetPrototypeMethod(tpl, "disable", enable);
+  Nan::SetPrototypeMethod(tpl, "teardown", flush);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("TUNNEL").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -54,4 +57,27 @@ NAN_METHOD(TUNNEL::enable) {
     Nan::ThrowError(buf);
     return;
   }
+}
+
+NAN_METHOD(TUNNEL::flush) {
+  TUNNEL* tunnel = Nan::ObjectWrap::Unwrap<TUNNEL>(info.This());
+  
+  TUNNEL_T list[2];
+  memset(list, 0, sizeof (list));
+  list[0] = tunnel->tunnel;
+  ilclient_flush_tunnels(list, 1);
+}
+
+NAN_METHOD(TUNNEL::disable) {
+  TUNNEL* tunnel = Nan::ObjectWrap::Unwrap<TUNNEL>(info.This());
+  ilclient_disable_tunnel(&tunnel->tunnel);
+}
+
+NAN_METHOD(TUNNEL::teardown) {
+  TUNNEL* tunnel = Nan::ObjectWrap::Unwrap<TUNNEL>(info.This());
+  
+  TUNNEL_T list[2];
+  memset(list, 0, sizeof (list));
+  list[0] = tunnel->tunnel;
+  ilclient_teardown_tunnels(list);
 }

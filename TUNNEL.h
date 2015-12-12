@@ -13,5 +13,8 @@ private:
 
   static NAN_METHOD(New);
   static NAN_METHOD(enable);
+  static NAN_METHOD(flush);
+  static NAN_METHOD(disable);
+  static NAN_METHOD(teardown);
   static Nan::Persistent<v8::Function> constructor;
 };

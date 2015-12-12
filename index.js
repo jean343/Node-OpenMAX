@@ -251,37 +251,64 @@ video_decode.on("eventPortSettingsChanged", function () {
 var CHUNK_SIZE = inputBuffer.nAllocLen;
 var buffer = new Buffer(CHUNK_SIZE);
 
-fs.open("test/test.h264", 'r', function (err, fd) {
-  if (err)
-    throw err;
-  function readNextChunk() {
-    fs.read(fd, buffer, 0, CHUNK_SIZE, null, function (err, nread) {
-      if (err)
-        throw err;
+function readAll(file, nextBlock, done) {
+  fs.open(file, 'r', function (err, fd) {
+    if (err)
+      throw err;
+    function readNextChunk() {
+      fs.read(fd, buffer, 0, CHUNK_SIZE, null, function (err, nread) {
+        if (err)
+          throw err;
 
-      if (nread === 0) {
-        console.log('done');
-        // done reading file, do any necessary finalization steps
-        myaddon.bcm_host_deinit();
+        if (nread === 0) {
+          fs.close(fd, function (err) {
+            if (err)
+              throw err;
+          });
 
-        fs.close(fd, function (err) {
-          if (err)
-            throw err;
-        });
-        return;
-      }
+          done();
+          return;
+        }
 
-      var data;
-      if (nread < CHUNK_SIZE)
-        data = buffer.slice(0, nread);
-      else
-        data = buffer;
+        var data;
+        if (nread < CHUNK_SIZE)
+          data = buffer.slice(0, nread);
+        else
+          data = buffer;
 
-      inputBuffer.set(data);
-      video_decode.emptyBuffer(inputBuffer, function () {
-        readNextChunk();
+        nextBlock.call(this, data, readNextChunk);
       });
-    });
-  }
-  readNextChunk();
+    }
+    readNextChunk();
+  });
+}
+
+readAll("test/test.h264", function (data, complete) {
+  inputBuffer.set(data);
+  video_decode.emptyBuffer(inputBuffer, function () {
+    complete();
+  });
+}, function () {
+  console.log('teardown');
+
+  video_decode.emptyBuffer(undefined, function () {
+    TUNNEL.flush();
+    console.log('disableInputPortBuffer');
+    video_decode.disableInputPortBuffer();
+    console.log('disable');
+    TUNNEL.disable();
+    console.log('teardown');
+    TUNNEL.teardown();
+
+    console.log('changeState');
+    video_decode.changeState(OMX_STATETYPE.OMX_StateIdle);
+    video_render.changeState(OMX_STATETYPE.OMX_StateIdle);
+    console.log('OMX_StateLoaded');
+    video_decode.changeState(OMX_STATETYPE.OMX_StateLoaded);
+    video_render.changeState(OMX_STATETYPE.OMX_StateLoaded);
+
+    console.log('bcm_host_deinit');
+    myaddon.bcm_host_deinit();
+  });
+
 });
