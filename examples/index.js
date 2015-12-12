@@ -219,7 +219,7 @@ var OMX_VIDEO_PARAM_PORTFORMATTYPE = {
 };
 
 (function () {
-  var myaddon = require("./build/Release/Node_OMX.node");
+  var myaddon = require('bindings')('Node_OMX');//require("./build/Release/Node_OMX.node");
   inherits(myaddon.COMPONENT, EventEmitter);
 
   myaddon.bcm_host_init();
@@ -315,10 +315,10 @@ var OMX_VIDEO_PARAM_PORTFORMATTYPE = {
       console.log('bcm_host_deinit');
       myaddon.bcm_host_deinit();
       console.log('done');
-      global.gc();
+//      global.gc();
     });
 
   });
 
 })();
-global.gc();
+//global.gc();

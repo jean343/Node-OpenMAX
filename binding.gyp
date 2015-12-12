@@ -3,14 +3,14 @@
     {
       "target_name": "Node_OMX",
       "sources": [
-        "main.cpp",
-        "init.cpp",
-        "ILCLIENT.cpp",
-        "COMPONENT.cpp",
-        "TUNNEL.cpp",
-        "BUFFERHEADERTYPE.cpp",
+        "src/main.cpp",
+        "src/init.cpp",
+        "src/ILCLIENT.cpp",
+        "src/COMPONENT.cpp",
+        "src/TUNNEL.cpp",
+        "src/BUFFERHEADERTYPE.cpp",
 
-        "Sample.cpp"
+        "src/Sample.cpp"
       ],
       "defines": [
         "OMX",
