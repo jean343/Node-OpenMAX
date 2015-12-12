@@ -218,97 +218,107 @@ var OMX_VIDEO_PARAM_PORTFORMATTYPE = {
   xFramerate: 0//Indicates the video frame rate in Q16 format 
 };
 
-var myaddon = require("./build/Release/Node_OMX.node");
-inherits(myaddon.COMPONENT, EventEmitter);
+(function () {
+  var myaddon = require("./build/Release/Node_OMX.node");
+  inherits(myaddon.COMPONENT, EventEmitter);
 
-myaddon.bcm_host_init();
-var ILCLIENT = myaddon.ILCLIENT();
+  myaddon.bcm_host_init();
+  var ILCLIENT = myaddon.ILCLIENT();
 
-var video_decode = myaddon.COMPONENT(ILCLIENT, "video_decode", ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS);
-video_decode.setPorts(130, 131);
+  var video_decode = myaddon.COMPONENT(ILCLIENT, "video_decode", ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS);
+  video_decode.setPorts(130, 131);
 
-var video_render = myaddon.COMPONENT(ILCLIENT, "video_render", ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS);
-video_render.setPorts(90);
+  var video_render = myaddon.COMPONENT(ILCLIENT, "video_render", ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS);
+  video_render.setPorts(90);
 
-var TUNNEL = myaddon.TUNNEL(video_decode, video_render);
+  var TUNNEL = myaddon.TUNNEL(video_decode, video_render);
 
-video_decode.changeState(OMX_STATETYPE.OMX_StateIdle);
+  video_decode.changeState(OMX_STATETYPE.OMX_StateIdle);
 
-format = video_decode.getParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
-format.eCompressionFormat = OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
-video_decode.setParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+  format = video_decode.getParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+  format.eCompressionFormat = OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
+  video_decode.setParameter(130, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
 
-video_decode.enableInputPortBuffer();
-video_decode.changeState(OMX_STATETYPE.OMX_StateExecuting);
+  video_decode.enableInputPortBuffer();
+  video_decode.changeState(OMX_STATETYPE.OMX_StateExecuting);
 
-var inputBuffer = video_decode.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
+  var inputBuffer = video_decode.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
 
-video_decode.on("eventPortSettingsChanged", function () {
-  TUNNEL.enable();
-  video_render.changeState(OMX_STATETYPE.OMX_StateExecuting);
-});
-
-var CHUNK_SIZE = inputBuffer.nAllocLen;
-var buffer = new Buffer(CHUNK_SIZE);
-
-function readAll(file, nextBlock, done) {
-  fs.open(file, 'r', function (err, fd) {
-    if (err)
-      throw err;
-    function readNextChunk() {
-      fs.read(fd, buffer, 0, CHUNK_SIZE, null, function (err, nread) {
-        if (err)
-          throw err;
-
-        if (nread === 0) {
-          fs.close(fd, function (err) {
-            if (err)
-              throw err;
-          });
-
-          done();
-          return;
-        }
-
-        var data;
-        if (nread < CHUNK_SIZE)
-          data = buffer.slice(0, nread);
-        else
-          data = buffer;
-
-        nextBlock.call(this, data, readNextChunk);
-      });
-    }
-    readNextChunk();
+  video_decode.on("eventPortSettingsChanged", function () {
+    TUNNEL.enable();
+    video_render.changeState(OMX_STATETYPE.OMX_StateExecuting);
   });
-}
 
-readAll("test/test.h264", function (data, complete) {
-  inputBuffer.set(data);
-  video_decode.emptyBuffer(inputBuffer, function () {
-    complete();
-  });
-}, function () {
-  console.log('teardown');
+  var CHUNK_SIZE = inputBuffer.nAllocLen;
+  var buffer = new Buffer(CHUNK_SIZE);
 
-  video_decode.emptyBuffer(undefined, function () {
-    TUNNEL.flush();
-    console.log('disableInputPortBuffer');
-    video_decode.disableInputPortBuffer();
-    console.log('disable');
-    TUNNEL.disable();
+  function readAll(file, nextBlock, done) {
+    fs.open(file, 'r', function (err, fd) {
+      if (err)
+        throw err;
+      function readNextChunk() {
+        fs.read(fd, buffer, 0, CHUNK_SIZE, null, function (err, nread) {
+          if (err)
+            throw err;
+
+          if (nread === 0) {
+            fs.close(fd, function (err) {
+              if (err)
+                throw err;
+            });
+
+            done();
+            return;
+          }
+
+          var data;
+          if (nread < CHUNK_SIZE)
+            data = buffer.slice(0, nread);
+          else
+            data = buffer;
+
+          nextBlock.call(this, data, readNextChunk);
+        });
+      }
+      readNextChunk();
+    });
+  }
+
+  readAll("test/test.h264", function (data, complete) {
+    inputBuffer.set(data);
+    video_decode.emptyBuffer(inputBuffer, function () {
+      complete();
+    });
+  }, function () {
     console.log('teardown');
-    TUNNEL.teardown();
 
-    console.log('changeState');
-    video_decode.changeState(OMX_STATETYPE.OMX_StateIdle);
-    video_render.changeState(OMX_STATETYPE.OMX_StateIdle);
-    console.log('OMX_StateLoaded');
-    video_decode.changeState(OMX_STATETYPE.OMX_StateLoaded);
-    video_render.changeState(OMX_STATETYPE.OMX_StateLoaded);
+    video_decode.emptyBuffer(undefined, function () {
 
-    console.log('bcm_host_deinit');
-    myaddon.bcm_host_deinit();
+      video_render.waitForEvent();
+
+      TUNNEL.flush();
+
+      console.log('disableInputPortBuffer');
+      video_decode.disableInputPortBuffer();
+      console.log('disable');
+      TUNNEL.disable();
+      console.log('teardown');
+      TUNNEL.teardown();
+
+      console.log('changeState');
+      video_decode.changeState(OMX_STATETYPE.OMX_StateIdle);
+      video_render.changeState(OMX_STATETYPE.OMX_StateIdle);
+      console.log('OMX_StateLoaded');
+      video_decode.changeState(OMX_STATETYPE.OMX_StateLoaded);
+      video_render.changeState(OMX_STATETYPE.OMX_StateLoaded);
+
+      console.log('bcm_host_deinit');
+      myaddon.bcm_host_deinit();
+      console.log('done');
+      global.gc();
+    });
+
   });
 
-});
+})();
+global.gc();

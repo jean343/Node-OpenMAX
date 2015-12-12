@@ -54,9 +54,7 @@ private:
 
   static NAN_METHOD(getInputBuffer);
   static NAN_METHOD(emptyBuffer);
-
-  static NAN_METHOD(onEventPortSettingsChanged);
-  Nan::Callback *onEventPortSettingsChangedCallback;
+  static NAN_METHOD(waitForEvent);
 
   static Nan::Persistent<v8::Function> constructor;
 };

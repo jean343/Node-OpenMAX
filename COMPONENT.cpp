@@ -2,6 +2,7 @@
 #include "BUFFERHEADERTYPE.h"
 Nan::Persistent<v8::Function> COMPONENT::constructor;
 
+#include "log.h"
 #include "bcm_host.h"
 
 #include "OMX_consts.h"
@@ -33,13 +34,14 @@ NAN_MODULE_INIT(COMPONENT::Init) {
 
   Nan::SetPrototypeMethod(tpl, "getInputBuffer", getInputBuffer);
   Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
-  Nan::SetPrototypeMethod(tpl, "onEventPortSettingsChanged", onEventPortSettingsChanged);
+  Nan::SetPrototypeMethod(tpl, "waitForEvent", waitForEvent);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
 COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags) : lastEmptyBufferCallback(NULL) {
+  log("COMPONENT()");
   ILCLIENT_T *client = _client->client;
 
   int rc = ilclient_create_component(client, &component, (char*) name, flags);
@@ -67,6 +69,7 @@ void COMPONENT::emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp) {
 }
 
 COMPONENT::~COMPONENT() {
+  log("~COMPONENT()");
   COMPONENT_T * list[2];
 
   list[0] = component;
@@ -296,10 +299,8 @@ NAN_METHOD(COMPONENT::emptyBuffer) {
   }
 }
 
-NAN_METHOD(COMPONENT::onEventPortSettingsChanged) {
+NAN_METHOD(COMPONENT::waitForEvent) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
-  obj->onEventPortSettingsChangedCallback = new Nan::Callback(info[0].As<Function>());
-
-  info.GetReturnValue().Set(info.This());
+  ilclient_wait_for_event(obj->component, OMX_EventBufferFlag, obj->in_port, 0, OMX_BUFFERFLAG_EOS, 0, ILCLIENT_BUFFER_FLAG_EOS, 100);
 }

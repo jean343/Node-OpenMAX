@@ -1,6 +1,7 @@
 #include "ILCLIENT.h"
 Nan::Persistent<v8::Function> ILCLIENT::constructor;
 
+#include "log.h"
 #include "bcm_host.h"
 extern "C" {
 #include "ilclient.h"
@@ -18,6 +19,7 @@ NAN_MODULE_INIT(ILCLIENT::Init) {
 }
 
 ILCLIENT::ILCLIENT() {
+  log("ILCLIENT()");
   if ((client = ilclient_init()) == NULL) {
     Nan::ThrowError("ilclient_init() is NULL");
     return;
@@ -34,6 +36,7 @@ ILCLIENT::ILCLIENT() {
 }
 
 ILCLIENT::~ILCLIENT() {
+  log("~ILCLIENT()");
   ilclient_destroy(client);
 }
 

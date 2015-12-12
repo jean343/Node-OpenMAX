@@ -5,6 +5,7 @@
 #include <nan.h>
 #include <unistd.h>
 
+#include "log.h"
 #include "main.h"
 
 #include "init.h"
@@ -23,6 +24,7 @@ extern "C" {
 using v8::FunctionTemplate;
 
 NAN_MODULE_INIT(Init) {
+  log("NAN_MODULE_INIT");
   Nan::Set(target, Nan::New("bcm_host_init").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::bcm_host_init)).ToLocalChecked());
   Nan::Set(target, Nan::New("bcm_host_deinit").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::bcm_host_deinit)).ToLocalChecked());
 
