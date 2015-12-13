@@ -33,7 +33,11 @@ private:
   }
 
   static NAN_METHOD(New);
+  
   static NAN_METHOD(setPorts);
+  static NAN_GETTER(_in_port);
+  static NAN_GETTER(_out_port);
+  
   static NAN_METHOD(changeState);
   static NAN_METHOD(getParameter);
   static NAN_METHOD(setParameter);

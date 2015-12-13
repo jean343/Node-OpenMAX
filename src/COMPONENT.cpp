@@ -19,6 +19,9 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   Nan::SetPrototypeMethod(tpl, "setPorts", setPorts);
+  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("in_port").ToLocalChecked(), _in_port);
+  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("out_port").ToLocalChecked(), _out_port);
+  
   Nan::SetPrototypeMethod(tpl, "changeState", changeState);
   Nan::SetPrototypeMethod(tpl, "getParameter", getParameter);
   Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
@@ -112,6 +115,14 @@ NAN_METHOD(COMPONENT::setPorts) {
   if (!info[1]->IsUndefined()) {
     obj->out_port = Nan::To<int>(info[1]).FromJust();
   }
+}
+NAN_GETTER(COMPONENT::_in_port) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  info.GetReturnValue().Set(obj->in_port);
+}
+NAN_GETTER(COMPONENT::_out_port) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+  info.GetReturnValue().Set(obj->out_port);
 }
 
 NAN_METHOD(COMPONENT::changeState) {
