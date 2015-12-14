@@ -39,6 +39,7 @@ private:
   static NAN_GETTER(_out_port);
   
   static NAN_METHOD(changeState);
+  static NAN_METHOD(getState);
   static NAN_METHOD(getParameter);
   static NAN_METHOD(setParameter);
 

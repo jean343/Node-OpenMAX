@@ -21,8 +21,9 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   Nan::SetPrototypeMethod(tpl, "setPorts", setPorts);
   Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("in_port").ToLocalChecked(), _in_port);
   Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("out_port").ToLocalChecked(), _out_port);
-  
+
   Nan::SetPrototypeMethod(tpl, "changeState", changeState);
+  Nan::SetPrototypeMethod(tpl, "getState", getState);
   Nan::SetPrototypeMethod(tpl, "getParameter", getParameter);
   Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
 
@@ -116,10 +117,12 @@ NAN_METHOD(COMPONENT::setPorts) {
     obj->out_port = Nan::To<int>(info[1]).FromJust();
   }
 }
+
 NAN_GETTER(COMPONENT::_in_port) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
   info.GetReturnValue().Set(obj->in_port);
 }
+
 NAN_GETTER(COMPONENT::_out_port) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
   info.GetReturnValue().Set(obj->out_port);
@@ -141,7 +144,23 @@ NAN_METHOD(COMPONENT::changeState) {
   OMX_STATETYPE stateOut;
   OMX_ERRORTYPE err;
   err = OMX_GetState(obj->handle, &stateOut);
-  if (err != OMX_ErrorNone) {
+  if (err == OMX_ErrorNone) {
+    info.GetReturnValue().Set((int) stateOut);
+  }
+}
+
+NAN_METHOD(COMPONENT::getState) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  OMX_STATETYPE stateOut;
+  OMX_ERRORTYPE rc;
+  rc = OMX_GetState(obj->handle, &stateOut);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "OMX_GetState() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  } else {
     info.GetReturnValue().Set((int) stateOut);
   }
 }
