@@ -14,8 +14,6 @@ setInterval(function () { // test
 
   var TUNNEL = Node_OMX.TUNNEL(VideoDecode.component, VideoRender.component);
 
-  VideoDecode.component.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
-
   format = VideoDecode.component.getParameter(130, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
   format.eCompressionFormat = omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
   VideoDecode.component.setParameter(130, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
