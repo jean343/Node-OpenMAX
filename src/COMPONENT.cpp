@@ -37,14 +37,17 @@ NAN_MODULE_INIT(COMPONENT::Init) {
   Nan::SetPrototypeMethod(tpl, "disableOutputPortBuffer", disableOutputPortBuffer);
 
   Nan::SetPrototypeMethod(tpl, "getInputBuffer", getInputBuffer);
+  Nan::SetPrototypeMethod(tpl, "getOutputBuffer", getOutputBuffer);
   Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
+  Nan::SetPrototypeMethod(tpl, "fillBuffer", fillBuffer);
   Nan::SetPrototypeMethod(tpl, "waitForEvent", waitForEvent);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENT").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
-COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags) : lastEmptyBufferCallback(NULL) {
+COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags)
+: lastEmptyBufferCallback(NULL), lastFillBufferCallback(NULL) {
   log("COMPONENT()");
   ILCLIENT_T *client = _client->client;
 
@@ -61,15 +64,27 @@ COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_
   if (flags & ILCLIENT_ENABLE_INPUT_BUFFERS) {
     ilclient_set_empty_buffer_done_callback(client, emptyBufferDoneCallback, this);
   }
+  if (flags & ILCLIENT_ENABLE_OUTPUT_BUFFERS) {
+    ilclient_set_fill_buffer_done_callback(client, fillBufferDoneCallback, this);
+  }
 
-  async = new uv_async_t;
-  uv_async_init(uv_default_loop(), async, asyncEmptyBufferDone);
-  async->data = this;
+  asyncEmpty = new uv_async_t;
+  uv_async_init(uv_default_loop(), asyncEmpty, asyncEmptyBufferDone);
+  asyncEmpty->data = this;
+
+  asyncFill = new uv_async_t;
+  uv_async_init(uv_default_loop(), asyncFill, asyncFillBufferDone);
+  asyncFill->data = this;
 }
 
 void COMPONENT::emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp) {
   COMPONENT *component = (COMPONENT*) userdata;
-  uv_async_send(component->async);
+  uv_async_send(component->asyncEmpty);
+}
+
+void COMPONENT::fillBufferDoneCallback(void *userdata, COMPONENT_T *comp) {
+  COMPONENT *component = (COMPONENT*) userdata;
+  uv_async_send(component->asyncFill);
 }
 
 COMPONENT::~COMPONENT() {
@@ -298,6 +313,21 @@ NAN_METHOD(COMPONENT::getInputBuffer) {
   info.GetReturnValue().Set(instance);
 }
 
+NAN_METHOD(COMPONENT::getOutputBuffer) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  int block = info[0]->IsUndefined() ? 0 : Nan::To<int>(info[0]).FromJust();
+
+  OMX_BUFFERHEADERTYPE *buf = ilclient_get_output_buffer(obj->component, obj->out_port, block);
+
+  const unsigned argc = 1;
+  Local<Value> argv[argc] = {Nan::New<v8::External>((void*) buf)};
+  Local<Function> cons = Nan::New(BUFFERHEADERTYPE::constructor);
+  Local<Object> instance = cons->NewInstance(argc, argv);
+
+  info.GetReturnValue().Set(instance);
+}
+
 NAN_METHOD(COMPONENT::emptyBuffer) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
@@ -324,6 +354,24 @@ NAN_METHOD(COMPONENT::emptyBuffer) {
   if (rc != OMX_ErrorNone) {
     char buf[255];
     sprintf(buf, "emptyBuffer() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
+}
+
+NAN_METHOD(COMPONENT::fillBuffer) {
+  COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
+
+  BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+
+  OMX_BUFFERHEADERTYPE* buf = _buf->buf;
+
+  obj->lastFillBufferCallback = new Nan::Callback(info[1].As<Function>());
+
+  OMX_ERRORTYPE rc = OMX_FillThisBuffer(obj->handle, buf);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "fillBuffer() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
     return;
   }

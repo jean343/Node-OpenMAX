@@ -20,6 +20,7 @@ private:
 
   static NAN_METHOD(New);
   static NAN_METHOD(set);
+  static NAN_METHOD(get);
   static NAN_GETTER(nAllocLenGet);
   
   bool first_packet;

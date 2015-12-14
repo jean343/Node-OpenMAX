@@ -16,19 +16,28 @@ public:
   int in_port;
   int out_port;
 
-  uv_async_t* async;
+  uv_async_t *asyncEmpty, *asyncFill;
   Nan::Callback *lastEmptyBufferCallback;
+  Nan::Callback *lastFillBufferCallback;
 private:
   explicit COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags);
   ~COMPONENT();
 
   static void emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp);
+  static void fillBufferDoneCallback(void *userdata, COMPONENT_T *comp);
 
   NAN_INLINE static NAUV_WORK_CB(asyncEmptyBufferDone) {
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
     if (obj->lastEmptyBufferCallback != NULL) {
       obj->lastEmptyBufferCallback->Call(0, 0);
       obj->lastEmptyBufferCallback = NULL;
+    }
+  }
+  NAN_INLINE static NAUV_WORK_CB(asyncFillBufferDone) {
+    COMPONENT *obj = static_cast<COMPONENT*> (async->data);
+    if (obj->lastFillBufferCallback != NULL) {
+      obj->lastFillBufferCallback->Call(0, 0);
+      obj->lastFillBufferCallback = NULL;
     }
   }
 
@@ -58,7 +67,9 @@ private:
   void disablePortBuffer(int port);
 
   static NAN_METHOD(getInputBuffer);
+  static NAN_METHOD(getOutputBuffer);
   static NAN_METHOD(emptyBuffer);
+  static NAN_METHOD(fillBuffer);
   static NAN_METHOD(waitForEvent);
 
   static Nan::Persistent<v8::Function> constructor;

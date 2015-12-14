@@ -6,7 +6,6 @@ setInterval(function () { // test
 }, 100);
 (function () {
   var VideoDecode = omx.VideoDecode();
-  console.log('VideoDecode', VideoDecode, VideoDecode.__proto__);
 
   var VideoRender = omx.VideoRender();
 
@@ -69,8 +68,6 @@ setInterval(function () { // test
       complete();
     });
   }, function () {
-    console.log('teardown');
-
     VideoDecode.component.emptyBuffer(undefined, function () {
 
       VideoRender.component.waitForEvent();
