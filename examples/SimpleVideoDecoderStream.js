@@ -7,12 +7,10 @@ var omx = require('../');
 
   VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 
-  fs.createReadStream("test/test.h264")
+  fs.createReadStream("test/cut.avi")
+//  fs.createReadStream("test/test.h264")
       .pipe(VideoDecode)
-      .tunnel(VideoRender)
-      .on('finish', function () {
-        console.log('finish');
-      });
+      .tunnel(VideoRender);
 
 })();
 global.gc();
