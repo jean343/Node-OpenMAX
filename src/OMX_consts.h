@@ -1,6 +1,11 @@
 #pragma once
 
+extern "C" {
+#include "ilclient.h"
+}
+
 #include "bcm_host.h"
+#include <stdio.h>
 
 class OMX_consts {
 public:

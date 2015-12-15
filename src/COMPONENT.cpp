@@ -6,6 +6,7 @@ Nan::Persistent<v8::Function> COMPONENT::constructor;
 #include "bcm_host.h"
 
 #include "OMX_consts.h"
+#include "Parameters.h"
 
 using v8::String;
 using v8::Local;
@@ -47,7 +48,7 @@ NAN_MODULE_INIT(COMPONENT::Init) {
 }
 
 COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags)
-: lastEmptyBufferCallback(NULL), lastFillBufferCallback(NULL), in_port(0), out_port(0) {
+: in_port(0), out_port(0), lastEmptyBufferCallback(NULL), lastFillBufferCallback(NULL) {
   log("COMPONENT()");
   ILCLIENT_T *client = _client->client;
 
@@ -180,31 +181,14 @@ NAN_METHOD(COMPONENT::getState) {
   }
 }
 
-// port, 
-
 NAN_METHOD(COMPONENT::getParameter) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
   int port = (OMX_STATETYPE) Nan::To<int>(info[0]).FromJust();
-  OMX_INDEXTYPE indexType = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
+  OMX_INDEXTYPE nParamIndex = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
 
-  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
-  OMX_consts::InitOMXParams(&format, port);
+  v8::Local<v8::Object> ret = Parameters::GetParameter(&obj->handle, port, nParamIndex);
 
-  OMX_ERRORTYPE rc = OMX_GetParameter(obj->handle, indexType, &format);
-  if (rc != OMX_ErrorNone) {
-    char buf[255];
-    sprintf(buf, "getParameter() returned error: %s", OMX_consts::err2str(rc));
-    Nan::ThrowError(buf);
-    return;
-  }
-
-  // Return object
-  v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("nIndex").ToLocalChecked(), Nan::New(format.nIndex));
-  Nan::Set(ret, Nan::New("eCompressionFormat").ToLocalChecked(), Nan::New(format.eCompressionFormat));
-  Nan::Set(ret, Nan::New("eColorFormat").ToLocalChecked(), Nan::New(format.eColorFormat));
-  Nan::Set(ret, Nan::New("xFramerate").ToLocalChecked(), Nan::New(format.xFramerate));
   info.GetReturnValue().Set(ret);
 }
 
@@ -212,25 +196,11 @@ NAN_METHOD(COMPONENT::setParameter) {
   COMPONENT* obj = Nan::ObjectWrap::Unwrap<COMPONENT>(info.This());
 
   int port = (OMX_STATETYPE) Nan::To<int>(info[0]).FromJust();
-  OMX_INDEXTYPE indexType = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
+  OMX_INDEXTYPE nParamIndex = (OMX_INDEXTYPE) Nan::To<int>(info[1]).FromJust();
 
   v8::Local<v8::Object> param = Nan::To<v8::Object>(info[2]).ToLocalChecked();
 
-  OMX_VIDEO_PARAM_PORTFORMATTYPE format;
-  OMX_consts::InitOMXParams(&format, port);
-
-  format.nIndex = (int) Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
-  format.eCompressionFormat = (OMX_VIDEO_CODINGTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eCompressionFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
-  format.eColorFormat = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eColorFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
-  format.xFramerate = (int) Nan::To<int>(Nan::Get(param, Nan::New("xFramerate").ToLocalChecked()).ToLocalChecked()).FromJust();
-
-  OMX_ERRORTYPE rc = OMX_SetParameter(obj->handle, indexType, &format);
-  if (rc != OMX_ErrorNone) {
-    char buf[255];
-    sprintf(buf, "setParameter() returned error: %s", OMX_consts::err2str(rc));
-    Nan::ThrowError(buf);
-    return;
-  }
+  Parameters::SetParameter(&obj->handle, port, nParamIndex, param);
 }
 
 NAN_METHOD(COMPONENT::enableInputPort) {
