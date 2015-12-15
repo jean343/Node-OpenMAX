@@ -15,8 +15,6 @@
 #include "TUNNEL.h"
 #include "BUFFERHEADERTYPE.h"
 
-#include "Sample.h"
-
 #include "bcm_host.h"
 extern "C" {
 #include "ilclient.h"
@@ -33,8 +31,6 @@ NAN_MODULE_INIT(Init) {
   COMPONENT::Init(target);
   TUNNEL::Init(target);
   BUFFERHEADERTYPE::Init(target);
-
-  Sample::Init(target);
 }
 
 NODE_MODULE(Node_OMX, Init)

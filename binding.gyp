@@ -9,9 +9,7 @@
         "src/COMPONENT.cpp",
         "src/TUNNEL.cpp",
         "src/BUFFERHEADERTYPE.cpp",
-        "src/Parameters.cpp",
-
-        "src/Sample.cpp"
+        "src/Parameters.cpp"
       ],
       "defines": [
         "OMX",

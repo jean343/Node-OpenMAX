@@ -29,6 +29,7 @@ private:
   static void fillBufferDoneCallback(void *userdata, COMPONENT_T *comp);
 
   NAN_INLINE static NAUV_WORK_CB(asyncEmptyBufferDone) {
+    Nan::HandleScope scope;
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
     log("asyncEmptyBufferDone(0x%p, 0x%p)", obj, obj->lastEmptyBufferCallback);
     if (obj->lastEmptyBufferCallback != NULL) {
@@ -39,6 +40,7 @@ private:
   }
 
   NAN_INLINE static NAUV_WORK_CB(asyncFillBufferDone) {
+    Nan::HandleScope scope;
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
     log("asyncFillBufferDone(0x%p, 0x%p)", obj, obj->lastFillBufferCallback);
     if (obj->lastFillBufferCallback != NULL) {
