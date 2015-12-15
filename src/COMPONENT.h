@@ -7,6 +7,8 @@ extern "C" {
 #include "ilclient.h"
 }
 
+#include "log.h"
+
 class COMPONENT : public Nan::ObjectWrap {
 public:
   static NAN_MODULE_INIT(Init);
@@ -28,25 +30,30 @@ private:
 
   NAN_INLINE static NAUV_WORK_CB(asyncEmptyBufferDone) {
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
+    log("asyncEmptyBufferDone(0x%p, 0x%p)", obj, obj->lastEmptyBufferCallback);
     if (obj->lastEmptyBufferCallback != NULL) {
-      obj->lastEmptyBufferCallback->Call(0, 0);
+      Nan::Callback *callback = obj->lastEmptyBufferCallback;
       obj->lastEmptyBufferCallback = NULL;
+      callback->Call(0, 0);
     }
   }
+
   NAN_INLINE static NAUV_WORK_CB(asyncFillBufferDone) {
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
+    log("asyncFillBufferDone(0x%p, 0x%p)", obj, obj->lastFillBufferCallback);
     if (obj->lastFillBufferCallback != NULL) {
-      obj->lastFillBufferCallback->Call(0, 0);
+      Nan::Callback *callback = obj->lastFillBufferCallback;
       obj->lastFillBufferCallback = NULL;
+      callback->Call(0, 0);
     }
   }
 
   static NAN_METHOD(New);
-  
+
   static NAN_METHOD(setPorts);
   static NAN_GETTER(_in_port);
   static NAN_GETTER(_out_port);
-  
+
   static NAN_METHOD(changeState);
   static NAN_METHOD(getState);
   static NAN_METHOD(getParameter);

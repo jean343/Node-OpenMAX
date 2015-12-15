@@ -1,7 +1,7 @@
 #include "VideoDecoder.h"
 
 int VideoDecoder::createComponent() {
-  return Component::createComponent("video_decode", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS));
+  return Component::createComponent("video_decode", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS | ILCLIENT_ENABLE_OUTPUT_BUFFERS));
 }
 
 void VideoDecoder::setup() {
@@ -55,7 +55,7 @@ bool VideoDecoder::newPacket(unsigned char * dest, int bufferSize) {
   bool rc = false;
 
   OMX_BUFFERHEADERTYPE* buf;
-  //  printf("getInputBuffer\n");
+//    printf("getInputBuffer\n");
   if ((buf = getInputBuffer(DO_BLOCK)) != NULL) {
     // feed data and wait until we get port settings changed
 

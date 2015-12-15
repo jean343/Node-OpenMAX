@@ -15,6 +15,6 @@ public:
   }
 
   int createComponent() {
-    return Component::createComponent("video_render", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS));
+    return Component::createComponent("video_render", (ILCLIENT_CREATE_FLAGS_T) (ILCLIENT_DISABLE_ALL_PORTS | ILCLIENT_ENABLE_INPUT_BUFFERS));
   }
 };

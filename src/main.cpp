@@ -1,6 +1,7 @@
 //https://github.com/fcanas/node-native-boilerplate
 //https://github.com/nodejs/nan/blob/master/doc/object_wrappers.md
 //https://gist.github.com/bellbind/a68620383e0180b3afc6
+//https://n8.io/converting-a-c-library-to-gyp/
 
 #include <nan.h>
 #include <unistd.h>

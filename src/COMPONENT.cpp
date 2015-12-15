@@ -64,9 +64,11 @@ COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_
 
   if (flags & ILCLIENT_ENABLE_INPUT_BUFFERS) {
     ilclient_set_empty_buffer_done_callback(client, emptyBufferDoneCallback, this);
+    log("ilclient_set_empty_buffer_done_callback(0x%p,0x%p,0x%p)", client, emptyBufferDoneCallback, this);
   }
   if (flags & ILCLIENT_ENABLE_OUTPUT_BUFFERS) {
     ilclient_set_fill_buffer_done_callback(client, fillBufferDoneCallback, this);
+    log("ilclient_set_fill_buffer_done_callback(0x%p,0x%p,0x%p)", client, fillBufferDoneCallback, this);
   }
 
   asyncEmpty = new uv_async_t;
@@ -79,11 +81,13 @@ COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_
 }
 
 void COMPONENT::emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp) {
+  log("emptyBufferDoneCallback(0x%p)", userdata);
   COMPONENT *component = (COMPONENT*) userdata;
   uv_async_send(component->asyncEmpty);
 }
 
 void COMPONENT::fillBufferDoneCallback(void *userdata, COMPONENT_T *comp) {
+  log("fillBufferDoneCallback(0x%p)", userdata);
   COMPONENT *component = (COMPONENT*) userdata;
   uv_async_send(component->asyncFill);
 }
