@@ -7,8 +7,6 @@ extern "C" {
 #include "ilclient.h"
 }
 
-#include "log.h"
-
 class COMPONENT : public Nan::ObjectWrap {
 public:
   static NAN_MODULE_INIT(Init);
@@ -31,7 +29,6 @@ private:
   NAN_INLINE static NAUV_WORK_CB(asyncEmptyBufferDone) {
     Nan::HandleScope scope;
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
-    log("asyncEmptyBufferDone(0x%p, 0x%p)", obj, obj->lastEmptyBufferCallback);
     if (obj->lastEmptyBufferCallback != NULL) {
       Nan::Callback *callback = obj->lastEmptyBufferCallback;
       obj->lastEmptyBufferCallback = NULL;
@@ -42,7 +39,6 @@ private:
   NAN_INLINE static NAUV_WORK_CB(asyncFillBufferDone) {
     Nan::HandleScope scope;
     COMPONENT *obj = static_cast<COMPONENT*> (async->data);
-    log("asyncFillBufferDone(0x%p, 0x%p)", obj, obj->lastFillBufferCallback);
     if (obj->lastFillBufferCallback != NULL) {
       Nan::Callback *callback = obj->lastFillBufferCallback;
       obj->lastFillBufferCallback = NULL;

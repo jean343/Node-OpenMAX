@@ -65,11 +65,13 @@ NAN_METHOD(BUFFERHEADERTYPE::set) {
   info.GetReturnValue().Set(info.This());
 }
 
+static void freeCallback(char *data, void *hint){}
+
 NAN_METHOD(BUFFERHEADERTYPE::get) {
   BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
 
-  // !!! Note that NewBuffer takes ownership of the pointer and will call free on it when garbage collection occurs.
-  Nan::MaybeLocal<v8::Object> buffer = Nan::NewBuffer((char*)obj->buf->pBuffer, obj->buf->nFilledLen);
+  // Note that NewBuffer takes ownership of the pointer and will call free on it when garbage collection occurs.
+  Nan::MaybeLocal<v8::Object> buffer = Nan::NewBuffer((char*)obj->buf->pBuffer, obj->buf->nFilledLen, &freeCallback, NULL);
 
   obj->buf->nFilledLen = 0;
 
