@@ -47,7 +47,7 @@ NAN_MODULE_INIT(COMPONENT::Init) {
 }
 
 COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags)
-: lastEmptyBufferCallback(NULL), lastFillBufferCallback(NULL) {
+: lastEmptyBufferCallback(NULL), lastFillBufferCallback(NULL), in_port(0), out_port(0) {
   log("COMPONENT()");
   ILCLIENT_T *client = _client->client;
 
