@@ -1,14 +1,40 @@
-'use strict';
-
+'use strict'; 
 module.exports = {
-  VideoDecode: require('./lib/VideoDecode'),
-  VideoRender: require('./lib/VideoRender'),
-  Component: require('./lib/Component'),
-  
+  AudioCapture: require('./lib/AudioCapture'),
+  AudioDecode: require('./lib/AudioDecode'),
+  AudioEncode: require('./lib/AudioEncode'),
+  AudioLowpower: require('./lib/AudioLowpower'),
+  AudioMixer: require('./lib/AudioMixer'),
+  AudioProcessor: require('./lib/AudioProcessor'),
+  AudioRender: require('./lib/AudioRender'),
+  AudioSplitter: require('./lib/AudioSplitter'),
   BLOCK_TYPE: require('./lib/BLOCK_TYPE'),
+  Camera: require('./lib/Camera'),
+  Clock: require('./lib/Clock'),
+  Component: require('./lib/Component'),
+  EglRender: require('./lib/EglRender'),
   ILCLIENT_CREATE_FLAGS: require('./lib/ILCLIENT_CREATE_FLAGS'),
+  ImageDecode: require('./lib/ImageDecode'),
+  ImageEncode: require('./lib/ImageEncode'),
+  ImageFx: require('./lib/ImageFx'),
+  ImageRead: require('./lib/ImageRead'),
+  ImageWrite: require('./lib/ImageWrite'),
+  NullSink: require('./lib/NullSink'),
   OMX_INDEXTYPE: require('./lib/OMX_INDEXTYPE'),
   OMX_STATETYPE: require('./lib/OMX_STATETYPE'),
   OMX_VIDEO_CODINGTYPE: require('./lib/OMX_VIDEO_CODINGTYPE'),
-  OMX_VIDEO_PARAM_PORTFORMATTYPE: require('./lib/OMX_VIDEO_PARAM_PORTFORMATTYPE')
+  OMX_VIDEO_PARAM_PORTFORMATTYPE: require('./lib/OMX_VIDEO_PARAM_PORTFORMATTYPE'),
+  ReadMedia: require('./lib/ReadMedia'),
+  Resize: require('./lib/Resize'),
+  Source: require('./lib/Source'),
+  TextScheduler: require('./lib/TextScheduler'),
+  Transition: require('./lib/Transition'),
+  VideoDecode: require('./lib/VideoDecode'),
+  VideoEncode: require('./lib/VideoEncode'),
+  VideoRender: require('./lib/VideoRender'),
+  VideoScheduler: require('./lib/VideoScheduler'),
+  VideoSplitter: require('./lib/VideoSplitter'),
+  Visualisation: require('./lib/Visualisation'),
+  WriteMedia: require('./lib/WriteMedia'),
+  WriteStill: require('./lib/WriteStill')
 };

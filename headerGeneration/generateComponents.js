@@ -37,6 +37,23 @@ request(url, function (err, resp, body) {
   });
 });
 
+fs.readdir('../lib', function (err, items) {
+  console.log(items);
+
+  var index = "'use strict'; \n\
+module.exports = {\n";
+
+  for (var k in items) {
+    var file = items[k].slice(0, -3);
+    if (file === 'utils')
+      continue;
+    index += "  " + file + ": require('./lib/" + file + "'),\n";
+  }
+  index = index.slice(0, -2);// Remove the last comma
+  index += "\n};";
+  fs.writeFileSync('../index.js', index);
+});
+
 function template(name, nameCamel, inPorts, outPorts) {
 
   var inPort = inPorts[0] || '0';
