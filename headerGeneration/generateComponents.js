@@ -2,6 +2,8 @@ var request = require('request');
 var cheerio = require('cheerio');
 var upperCamelCase = require('uppercamelcase');
 var fs = require('fs');
+var path = require('path');
+var glob = require("glob");
 
 var url = 'http://home.nouwen.name/RaspberryPi/documentation/ilcomponents/index.html';
 request(url, function (err, resp, body) {
@@ -32,25 +34,38 @@ request(url, function (err, resp, body) {
 
     var data = template(name, nameCamel, getArray(inPorts), getArray(outPorts));
 
-    fs.writeFileSync('../lib/' + nameCamel + '.js', data);
+    fs.writeFileSync('../lib/components/' + nameCamel + '.js', data);
 
   });
 });
 
-fs.readdir('../lib', function (err, items) {
-  console.log(items);
+glob("../lib/**/*.js", function (er, files) {
 
-  var index = "'use strict'; \n\
-module.exports = {\n";
+  var index = "";
 
-  for (var k in items) {
-    var file = items[k].slice(0, -3);
+  files = files.sort(function (a, b) {
+    var aFlags = a.indexOf('/flags/') > -1;
+    var bFlags = b.indexOf('/flags/') > -1;
+
+    if (aFlags && !bFlags) {
+      return -1;
+    }
+
+    if (!aFlags && bFlags) {
+      return 1;
+    }
+
+    return a > b ? 1 : -1;
+  });
+
+  console.log(files);
+  for (var k in files) {
+    var file = path.basename(files[k], '.js');
     if (file === 'utils')
       continue;
-    index += "  " + file + ": require('./lib/" + file + "'),\n";
+    index += "module.exports." + file + " = require('" + path.dirname(files[k].slice(1)) + '/' + file + "');\n";
   }
-  index = index.slice(0, -2);// Remove the last comma
-  index += "\n};";
+  console.log(index);
   fs.writeFileSync('../index.js', index);
 });
 
@@ -78,10 +93,11 @@ function template(name, nameCamel, inPorts, outPorts) {
 
   return "//This file is auto-generated from 'node headerGeneration/generateComponents.js' \n\
 \n\
-var Component = require('./Component');\n\
-var ILCLIENT_CREATE_FLAGS = require('./ILCLIENT_CREATE_FLAGS');\n\
-var OMX_STATETYPE = require('./OMX_STATETYPE');\n\
-var OMX_INDEXTYPE = require('./OMX_INDEXTYPE');\n\
+var omx = require('../../');\n\
+var Component = omx.Component;\n\
+var ILCLIENT_CREATE_FLAGS = omx.ILCLIENT_CREATE_FLAGS;\n\
+var OMX_STATETYPE = omx.OMX_STATETYPE;\n\
+var OMX_INDEXTYPE = omx.OMX_INDEXTYPE;\n\
 \n\
 function " + nameCamel + "() {\n\
   if (!(this instanceof " + nameCamel + ")) {\n\
