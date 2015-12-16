@@ -4,21 +4,19 @@ var upperCamelCase = require('uppercamelcase');
 var fs = require('fs');
 
 var url = 'http://home.nouwen.name/RaspberryPi/documentation/ilcomponents/index.html';
-//request(url, function (err, resp, body) {
-
-fs.readFile('VMCS-X OpenMAX IL Components.html', function (err, body) {
+request(url, function (err, resp, body) {
   var $ = cheerio.load(body);
   var tables = $('table[cellspacing=0][cellpadding=2]');
   tables.each(function () {
-    var tr = this.children[0].children;
+    var tr = this.children[0];
 
     function getArray(obj) {
       return $(obj).text().trim().split(/[\s,]+/);
     }
 
-    var a = tr[0].children[1];
-    var b = tr[0].children[3];
-    var c = tr[0].children[5];
+    var a = tr.children[1];
+    var b = tr.children[3];
+    var c = tr.children[5];
     var inPorts, name, outPorts;
     if (!isNaN(getArray(a)[0])) {
       inPorts = a;
@@ -62,6 +60,7 @@ function template(name, nameCamel, inPorts, outPorts) {
   }
 
   return "//This file is auto-generated from 'node headerGeneration/generateComponents.js' \n\
+\n\
 var Component = require('./Component');\n\
 var ILCLIENT_CREATE_FLAGS = require('./ILCLIENT_CREATE_FLAGS');\n\
 var OMX_STATETYPE = require('./OMX_STATETYPE');\n\
