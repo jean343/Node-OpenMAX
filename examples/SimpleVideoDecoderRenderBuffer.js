@@ -1,22 +1,24 @@
 var fs = require('fs');
 var omx = require('../');
 
-var dp = require('stream').Duplex();
-dp._read = function () {
+var TransformFilter = require('stream').Duplex();
+TransformFilter._read = function () {
 };
-dp._write = function (chunk, enc, next) {
+TransformFilter._write = function (chunk, enc, next) {
 
+  // Write a black square 200 x 200 in the Y channel of th YUV stream
   for (var x = 0; x < 200; x++) {
     for (var y = 0; y < 200; y++) {
       chunk.writeUInt8(0x0, y * 1920 + x);
     }
   }
-  
+
   this.push(chunk);
 
   next();
 };
-dp.on('pipe', function (source) {
+// Needed to forward the portDefinitionChanged from the VideoDecode to the VideoRender
+TransformFilter.on('pipe', function (source) {
   var self = this;
   source.on('portDefinitionChanged', function (portDefinition) {
     self.emit('portDefinitionChanged', portDefinition);
@@ -30,5 +32,5 @@ VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 
 fs.createReadStream("test/test.h264")
     .pipe(VideoDecode)
-    .pipe(dp)
+    .pipe(TransformFilter)
     .pipe(VideoRender);
