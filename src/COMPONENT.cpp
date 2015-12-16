@@ -52,6 +52,8 @@ COMPONENT::COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_
   log("COMPONENT()");
   ILCLIENT_T *client = _client->client;
 
+  this->name = name;
+
   int rc = ilclient_create_component(client, &component, (char*) name, flags);
   if (rc != 0) {
     char buf[255];
@@ -256,7 +258,7 @@ void COMPONENT::enablePortBuffer(int port) {
   int rc = ilclient_enable_port_buffers(component, port, NULL, NULL, NULL);
   if (rc != 0) {
     char buf[255];
-    sprintf(buf, "enablePortBuffer failed with rc: %d on port: %d", rc, port);
+    sprintf(buf, "enablePortBuffer failed with rc: %d on port: %d for component %s", rc, port, this->name.c_str());
     Nan::ThrowError(buf);
     return;
   }

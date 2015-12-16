@@ -23,6 +23,8 @@ private:
   explicit COMPONENT(ILCLIENT* _client, char const *name, ILCLIENT_CREATE_FLAGS_T flags);
   ~COMPONENT();
 
+  std::string name;
+  
   static void emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp);
   static void fillBufferDoneCallback(void *userdata, COMPONENT_T *comp);
 
