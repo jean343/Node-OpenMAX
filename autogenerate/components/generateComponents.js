@@ -63,7 +63,7 @@ glob("../../lib/**/*.js", function (er, files) {
     var file = path.basename(files[k], '.js');
     if (file === 'utils')
       continue;
-    index += "module.exports." + file + " = require('" + path.dirname(files[k].slice(1)) + '/' + file + "');\n";
+    index += "module.exports." + file + " = require('" + path.dirname(files[k].slice(4)) + '/' + file + "');\n";
   }
   console.log(index);
   fs.writeFileSync('../../index.js', index);
