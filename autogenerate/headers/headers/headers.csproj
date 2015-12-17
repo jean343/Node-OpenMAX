@@ -56,6 +56,7 @@
     <Compile Include="OMX_Types.cs" />
     <Compile Include="OMX_Video.cs" />
     <Compile Include="OMX_VideoExt.cs" />
+    <Compile Include="ProcessEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
