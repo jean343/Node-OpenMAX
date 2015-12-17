@@ -96,8 +96,8 @@ function template(name, nameCamel, inPorts, outPorts) {
 var omx = require('../../');\n\
 var Component = omx.Component;\n\
 var ILCLIENT_CREATE_FLAGS = omx.ILCLIENT_CREATE_FLAGS;\n\
-var OMX_STATETYPE = omx.OMX_STATETYPE;\n\
-var OMX_INDEXTYPE = omx.OMX_INDEXTYPE;\n\
+var OMX_STATETYPE = omx.Core.OMX_STATETYPE;\n\
+var OMX_INDEXTYPE = omx.Index.OMX_INDEXTYPE;\n\
 \n\
 function " + nameCamel + "() {\n\
   if (!(this instanceof " + nameCamel + ")) {\n\

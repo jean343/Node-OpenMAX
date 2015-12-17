@@ -1,9 +1,6 @@
 var fs = require('fs');
 var omx = require('../');
 
-setInterval(function () { // test
-  global.gc();
-}, 100);
 (function () {
   var VideoDecode = omx.VideoDecode();
 
@@ -13,18 +10,18 @@ setInterval(function () { // test
 
   var TUNNEL = Node_OMX.TUNNEL(VideoDecode.component, VideoRender.component);
 
-  format = VideoDecode.component.getParameter(130, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
-  format.eCompressionFormat = omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
-  VideoDecode.component.setParameter(130, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+  format = VideoDecode.component.getParameter(130, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+  format.eCompressionFormat = omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
+  VideoDecode.component.setParameter(130, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
 
   VideoDecode.component.enableInputPortBuffer();
-  VideoDecode.component.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+  VideoDecode.component.changeState(omx.Core.OMX_STATETYPE.OMX_StateExecuting);
 
   var inputBuffer = VideoDecode.component.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
 
   VideoDecode.component.on("eventPortSettingsChanged", function () {
     TUNNEL.enable();
-    VideoRender.component.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+    VideoRender.component.changeState(omx.Core.OMX_STATETYPE.OMX_StateExecuting);
   });
 
   var CHUNK_SIZE = inputBuffer.nAllocLen;
@@ -82,18 +79,16 @@ setInterval(function () { // test
       TUNNEL.teardown();
 
       console.log('changeState');
-      VideoDecode.component.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
-      VideoRender.component.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
+      VideoDecode.component.changeState(omx.Core.OMX_STATETYPE.OMX_StateIdle);
+      VideoRender.component.changeState(omx.Core.OMX_STATETYPE.OMX_StateIdle);
       console.log('OMX_StateLoaded');
-      VideoDecode.component.changeState(omx.OMX_STATETYPE.OMX_StateLoaded);
-      VideoRender.component.changeState(omx.OMX_STATETYPE.OMX_StateLoaded);
+      VideoDecode.component.changeState(omx.Core.OMX_STATETYPE.OMX_StateLoaded);
+      VideoRender.component.changeState(omx.Core.OMX_STATETYPE.OMX_StateLoaded);
 
       console.log('bcm_host_deinit');
       Node_OMX.bcm_host_deinit();
       console.log('done');
-      global.gc();
     });
 
   });
 })();
-global.gc();
