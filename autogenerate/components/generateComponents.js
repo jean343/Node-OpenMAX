@@ -34,12 +34,12 @@ request(url, function (err, resp, body) {
 
     var data = template(name, nameCamel, getArray(inPorts), getArray(outPorts));
 
-    fs.writeFileSync('../lib/components/' + nameCamel + '.js', data);
+    fs.writeFileSync('../../lib/components/' + nameCamel + '.js', data);
 
   });
 });
 
-glob("../lib/**/*.js", function (er, files) {
+glob("../../lib/**/*.js", function (er, files) {
 
   var index = "";
 
@@ -66,7 +66,7 @@ glob("../lib/**/*.js", function (er, files) {
     index += "module.exports." + file + " = require('" + path.dirname(files[k].slice(1)) + '/' + file + "');\n";
   }
   console.log(index);
-  fs.writeFileSync('../index.js', index);
+  fs.writeFileSync('../../index.js', index);
 });
 
 function template(name, nameCamel, inPorts, outPorts) {
