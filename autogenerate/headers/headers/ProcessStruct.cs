@@ -51,18 +51,23 @@ namespace headers
 
         private void writeGetterSetter(StreamWriter sw, List<CStruct> cstructs, WriteType t)
         {
-            string[] whiteList = new string[] {
+            /*string[] whiteList = new string[] {
                 "OMX_PARAM_PORTDEFINITIONTYPE" ,
                 "OMX_AUDIO_PORTDEFINITIONTYPE",
                 "OMX_VIDEO_PORTDEFINITIONTYPE",
                 "OMX_IMAGE_PORTDEFINITIONTYPE",
                 "OMX_OTHER_PORTDEFINITIONTYPE",
                 "OMX_VIDEO_PARAM_PORTFORMATTYPE"
+            };*/
+            string[] blackList = new string[] {
+                "OMX_COMPONENTTYPE",
+                "OMX_COMPONENTREGISTERTYPE",
+                "OMX_CALLBACKTYPE"
             };
-
             foreach (CStruct cstruct in cstructs)
             {
-                if (!whiteList.Contains(cstruct.name)) continue;
+                //if (!whiteList.Contains(cstruct.name)) continue;
+                if (blackList.Contains(cstruct.name)) continue;
 
                 if (t == WriteType.get)
                 {
@@ -78,7 +83,8 @@ namespace headers
 
             foreach (CStruct cstruct in cstructs)
             {
-                if (!whiteList.Contains(cstruct.name)) continue;
+                //if (!whiteList.Contains(cstruct.name)) continue;
+                if (blackList.Contains(cstruct.name)) continue;
 
                 if (t == WriteType.get)
                 {
@@ -101,7 +107,7 @@ namespace headers
                 if (field.reference.Length == 0) continue;
 
                 /*tmp*/
-                if (field.name != "OMX_IndexParamPortDefinition" && field.name != "OMX_IndexParamVideoPortFormat") continue;
+                //if (field.name != "OMX_IndexParamPortDefinition" && field.name != "OMX_IndexParamVideoPortFormat") continue;
 
                 CStruct cstruct = cstructs.Where(a => a.name == field.reference).FirstOrDefault();
                 if (cstruct != null)
@@ -156,18 +162,7 @@ namespace headers
                     f.type == "OMX_TICKS" ||
                     f.type == "OMX_BU32" ||
                     f.type == "OMX_BS32" ||
-                    f.type == "OMX_STRING" ||
-                    f.type == "OMX_FRAMESIZETYPE" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == ""
+                    f.type == "OMX_FRAMESIZETYPE"
                     ) continue;
 
                 // Special code for OMX_IndexParamPortDefinition
@@ -179,7 +174,14 @@ namespace headers
                     continue;
                 }
 
-                sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New(format.{1}));{2}", nameNoArray, fname, f.comment.Length == 0 ? "" : " // " + f.comment);
+                bool canBeNull = f.type == "OMX_STRING";
+
+                if (canBeNull)
+                {
+                    sw.WriteLine(@"  if (format.{0} != NULL)", nameNoArray);
+                    sw.Write("  ");
+                }
+                sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New(format.{1}){2});{3}", nameNoArray, fname, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
             }
 
             sw.WriteLine(@"  return scope.Escape(ret);");
@@ -207,17 +209,7 @@ namespace headers
                     f.type == "OMX_BU32" ||
                     f.type == "OMX_BS32" ||
                     f.type == "OMX_STRING" ||
-                    f.type == "OMX_FRAMESIZETYPE" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == ""
+                    f.type == "OMX_FRAMESIZETYPE"
                     ) continue;
 
                 // Special code for OMX_IndexParamPortDefinition
@@ -268,38 +260,6 @@ namespace headers
 
             sw.WriteLine("      SET_{0}(format, param);", cstruct.name);
 
-            /*foreach (CField f in cstruct.fields)
-            {
-                if (f.name == "nSize" || f.name == "nVersion" || f.name == "nPortIndex") continue;
-
-                // Remove the array info
-                if (Regex.IsMatch(f.name, @"\[\w*?\]"))
-                {
-                    continue;
-                }
-                string nameNoArray = Regex.Replace(f.name, @"\[\w*?\]", "");
-
-                if (
-                    f.type == "OMX_TICKS" ||
-                    f.type == "OMX_BU32" ||
-                    f.type == "OMX_BS32" ||
-                    f.type == "OMX_STRING" ||
-                    f.type == "OMX_FRAMESIZETYPE" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == "" ||
-                    f.type == ""
-                    ) continue;
-
-
-                sw.WriteLine(@"      format.{1} = ({0}) Nan::To<int>(Nan::Get(param, Nan::New(""{1}"").ToLocalChecked()).ToLocalChecked()).FromJust();{2}", f.type, nameNoArray, f.comment.Length == 0 ? "" : " // " + f.comment);
-            }*/
             sw.WriteLine("");
             sw.WriteLine(@"      SetParameterTemplate(&format, handle, nParamIndex);");
             sw.WriteLine("    }");
