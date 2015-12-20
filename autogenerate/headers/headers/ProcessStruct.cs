@@ -25,103 +25,42 @@ namespace headers
                 cstruct.AddRange(StructParser.parse(sourcestring, "struct"));
             }
 
-            using (StreamWriter sw = new StreamWriter(Path.GetFullPath(Path.Combine(path, @"..\..\..\src", "Parameters.cpp"))))
+            using (StreamWriter sw = new StreamWriter(Path.GetFullPath(Path.Combine(path, @"..\..\..\src", "ParametersGet.cpp"))))
             {
                 sw.WriteLine(@"#include ""Parameters.h""
 
 v8::Local<v8::Object> Parameters::GetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nParamIndex) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-
-  switch (nParamIndex) {");
+");
                 writeCpp(sw, OMX_INDEXTYPE, cstruct, WriteType.get);
-                sw.WriteLine(@"    default:
-    break;
-  }
+                sw.WriteLine(@"
   return scope.Escape(ret);
 }");
-                
-                sw.WriteLine(@"void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nParamIndex, v8::Local<v8::Object> param) {
-
-  switch (nParamIndex) {");
+            }
+            using (StreamWriter sw = new StreamWriter(Path.GetFullPath(Path.Combine(path, @"..\..\..\src", "ParametersSet.cpp"))))
+            {
+                sw.WriteLine(@"#include ""Parameters.h""");
+                sw.WriteLine();
+                sw.WriteLine(@"void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nParamIndex, v8::Local<v8::Object> param) {");
                 writeCpp(sw, OMX_INDEXTYPE, cstruct, WriteType.set);
-                sw.WriteLine(@"
-    /*case OMX_IndexParamPortDefinition:
-    {
-      OMX_PARAM_PORTDEFINITIONTYPE format;
-      OMX_consts::InitOMXParams(&format, port);
-
-      format.eDir = (OMX_DIRTYPE) Nan::To<int>(Nan::Get(param, Nan::New(""eDir"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.nBufferCountActual = (int) Nan::To<int>(Nan::Get(param, Nan::New(""nBufferCountActual"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.nBufferCountMin = (int) Nan::To<int>(Nan::Get(param, Nan::New(""nBufferCountMin"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.nBufferSize = (int) Nan::To<int>(Nan::Get(param, Nan::New(""nBufferSize"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.bEnabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New(""bEnabled"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.bPopulated = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New(""bPopulated"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.eDomain = (OMX_PORTDOMAINTYPE) Nan::To<int>(Nan::Get(param, Nan::New(""eDomain"").ToLocalChecked()).ToLocalChecked()).FromJust();
-
-      if (format.eDomain == OMX_PortDomainVideo) {
-        v8::Local<v8::Object> video = Nan::To<v8::Object>(Nan::Get(param, Nan::New(""video"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked();
-
-        format.format.video.nFrameWidth = (int) Nan::To<int>(Nan::Get(video, Nan::New(""nFrameWidth"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.nFrameHeight = (int) Nan::To<int>(Nan::Get(video, Nan::New(""nFrameHeight"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.nStride = (int) Nan::To<int>(Nan::Get(video, Nan::New(""nStride"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.nSliceHeight = (int) Nan::To<int>(Nan::Get(video, Nan::New(""nSliceHeight"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.nBitrate = (int) Nan::To<int>(Nan::Get(video, Nan::New(""nBitrate"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.xFramerate = (int) Nan::To<int>(Nan::Get(video, Nan::New(""xFramerate"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.bFlagErrorConcealment = (OMX_BOOL) Nan::To<int>(Nan::Get(video, Nan::New(""bFlagErrorConcealment"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.eCompressionFormat = (OMX_VIDEO_CODINGTYPE) Nan::To<int>(Nan::Get(video, Nan::New(""eCompressionFormat"").ToLocalChecked()).ToLocalChecked()).FromJust();
-        format.format.video.eColorFormat = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(video, Nan::New(""eColorFormat"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      }
-
-      format.bBuffersContiguous = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New(""bBuffersContiguous"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.nBufferAlignment = (int) Nan::To<int>(Nan::Get(param, Nan::New(""nBufferAlignment"").ToLocalChecked()).ToLocalChecked()).FromJust();
-
-//      printf(""format.eDir: %d\n"", format.eDir);
-//      printf(""format.nBufferCountActual: %d\n"", format.nBufferCountActual);
-//      printf(""format.nBufferCountMin: %d\n"", format.nBufferCountMin);
-//      printf(""format.nBufferSize: %d\n"", format.nBufferSize);
-//      printf(""format.bEnabled: %d\n"", format.bEnabled);
-//      printf(""format.bPopulated: %d\n"", format.bPopulated);
-//      printf(""format.eDomain: %d\n"", format.eDomain);
-//      printf(""format.bBuffersContiguous: %d\n"", format.bBuffersContiguous);
-//      printf(""format.nBufferAlignment: %d\n"", format.nBufferAlignment);
-
-      SetParameterTemplate(&format, port, handle, nParamIndex);
-    }
-      break;
-    case OMX_IndexParamVideoPortFormat:
-    {
-      OMX_VIDEO_PARAM_PORTFORMATTYPE format;
-      OMX_consts::InitOMXParams(&format, port);
-
-      format.nIndex = (int) Nan::To<int>(Nan::Get(param, Nan::New(""nIndex"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.eCompressionFormat = (OMX_VIDEO_CODINGTYPE) Nan::To<int>(Nan::Get(param, Nan::New(""eCompressionFormat"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.eColorFormat = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New(""eColorFormat"").ToLocalChecked()).ToLocalChecked()).FromJust();
-      format.xFramerate = (int) Nan::To<int>(Nan::Get(param, Nan::New(""xFramerate"").ToLocalChecked()).ToLocalChecked()).FromJust();
-
-      SetParameterTemplate(&format, port, handle, nParamIndex);
-    }
-      break;*/
-    default:
-      break;
-  }
-}");
+                sw.WriteLine(@"}");
             }
         }
 
         private void writeCpp(StreamWriter sw, CStruct OMX_INDEXTYPE, List<CStruct> cstructs, WriteType t)
         {
+            sw.WriteLine(@"  switch (nParamIndex) {");
             foreach (CField field in OMX_INDEXTYPE.fields)
             {
                 if (field.reference.Length == 0) continue;
                 Console.WriteLine(field.reference);
 
+                /*tmp*/
+                if (field.name != "OMX_IndexParamPortDefinition" && field.name != "OMX_IndexParamVideoPortFormat") continue;
+
                 CStruct cstruct = cstructs.Where(a => a.name == field.reference).FirstOrDefault();
-                if (cstruct == null)
-                {
-                    //Console.WriteLine("{0} is null",field.reference);
-                }
-                else
+                if (cstruct != null)
                 {
                     if (t == WriteType.get)
                     {
@@ -133,6 +72,9 @@ v8::Local<v8::Object> Parameters::GetParameter(OMX_HANDLETYPE *handle, int port,
                     }
                 }
             }
+            sw.WriteLine(@"    default:");
+            sw.WriteLine(@"      break;");
+            sw.WriteLine(@"  }");
         }
 
         private void writeCaseGet(StreamWriter sw, string indexName, CStruct cstruct)
