@@ -56,9 +56,11 @@
     <Compile Include="OMX_Types.cs" />
     <Compile Include="OMX_Video.cs" />
     <Compile Include="OMX_VideoExt.cs" />
+    <Compile Include="ProcessStruct.cs" />
     <Compile Include="ProcessEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StructParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

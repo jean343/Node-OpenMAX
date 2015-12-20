@@ -13,9 +13,7 @@ public:
 private:
 
   template<class T>
-  static void GetParameterTemplate(T *format, int port, OMX_HANDLETYPE *handle, OMX_INDEXTYPE nParamIndex) {
-    OMX_consts::InitOMXParams(format, port);
-
+  static inline void GetParameter(OMX_HANDLETYPE *handle, OMX_INDEXTYPE nParamIndex, T *format) {
     OMX_ERRORTYPE rc = OMX_GetParameter(*handle, nParamIndex, format);
     if (rc != OMX_ErrorNone) {
       char buf[255];
@@ -24,9 +22,20 @@ private:
       return;
     }
   }
+  
+  template<class T>
+  static void GetParameterTemplate(T *format, OMX_HANDLETYPE *handle, OMX_INDEXTYPE nParamIndex) {
+    OMX_consts::InitOMXParams(format);
+    GetParameter<T>(handle, nParamIndex, format);
+  }
+  template<class T>
+  static void GetParameterTemplate(T *format, int port, OMX_HANDLETYPE *handle, OMX_INDEXTYPE nParamIndex) {
+    OMX_consts::InitOMXParams(format, port);
+    GetParameter<T>(handle, nParamIndex, format);
+  }
 
   template<class T>
-  static void SetParameterTemplate(T *format, int port, OMX_HANDLETYPE *handle, OMX_INDEXTYPE nParamIndex) {
+  static void SetParameterTemplate(T *format, OMX_HANDLETYPE *handle, OMX_INDEXTYPE nParamIndex) {
     OMX_ERRORTYPE rc = OMX_SetParameter(*handle, nParamIndex, format);
     if (rc != OMX_ErrorNone) {
       char buf[255];

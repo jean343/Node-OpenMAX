@@ -14,6 +14,8 @@ namespace headers
         static void Main(string[] args)
         {
             ProcessEnum processEnum = new ProcessEnum();
+            ProcessStruct processStruct = new ProcessStruct();
+
             // Assume we are in the Debug folder
             string appFolder = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"..\..\");
 
@@ -22,6 +24,9 @@ namespace headers
             {
                 processEnum.convertHeader(appFolder, Path.GetFileNameWithoutExtension(file));
             }
+
+            var fileNames = files.Select(a => Path.GetFileNameWithoutExtension(a)).ToList();
+            processStruct.convertStruct(appFolder, fileNames);
 
             Console.ReadKey();
         }

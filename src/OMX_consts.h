@@ -11,6 +11,12 @@ class OMX_consts {
 public:
 
   template<class T>
+  static void InitOMXParams(T *params) {
+    memset(params, 0, sizeof (T));
+    params->nSize = sizeof (T);
+    params->nVersion.nVersion = OMX_VERSION;
+  }
+  template<class T>
   static void InitOMXParams(T *params, int port) {
     memset(params, 0, sizeof (T));
     params->nSize = sizeof (T);
