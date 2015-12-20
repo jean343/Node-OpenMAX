@@ -134,5 +134,15 @@ function prototypes(nameCamel) {
         };"
       };
       break;
+    case 'VideoEncode':
+      return {
+        setVideoPortFormat: "function (eCompressionFormat) {\n\
+          var format = {\n\
+            eCompressionFormat: eCompressionFormat\n\
+          };\n\
+          this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+        };"
+      };
+      break;
   }
 }
