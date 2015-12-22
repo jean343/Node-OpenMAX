@@ -128,20 +128,20 @@ function prototypes(nameCamel) {
     case 'VideoDecode':
       return {
         setVideoPortFormat: "function (eCompressionFormat) {\n\
-          var format = this.component.getParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);\n\
-          format.eCompressionFormat = eCompressionFormat;\n\
-          this.component.setParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
-        };"
+  var format = this.component.getParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);\n\
+  format.eCompressionFormat = eCompressionFormat;\n\
+  this.component.setParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+};"
       };
       break;
     case 'VideoEncode':
       return {
         setVideoPortFormat: "function (eCompressionFormat) {\n\
-          var format = {\n\
-            eCompressionFormat: eCompressionFormat\n\
-          };\n\
-          this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
-        };"
+  var format = {\n\
+    eCompressionFormat: eCompressionFormat\n\
+  };\n\
+  this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+};"
       };
       break;
   }
