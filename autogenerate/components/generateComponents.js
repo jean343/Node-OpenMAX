@@ -93,6 +93,7 @@ function template(name, nameCamel, inPorts, outPorts) {
 
   return "//This file is auto-generated from 'node headerGeneration/generateComponents.js' \n\
 \n\
+var util = require('util');\n\
 var omx = require('../../');\n\
 var Component = omx.Component;\n\
 var ILCLIENT_CREATE_FLAGS = omx.ILCLIENT_CREATE_FLAGS;\n\
@@ -103,6 +104,8 @@ function " + nameCamel + "() {\n\
   if (!(this instanceof " + nameCamel + ")) {\n\
     return new " + nameCamel + "();\n\
   }\n\
+  Component.call(this, '" + name + "'); // call parent constructor\n\
+  \n\
   var self = this;\n\
   this.init(" + flags.join(' | ') + ");\n\
   this.component.setPorts(" + inPort + ", " + outPort + ");\n\
@@ -116,7 +119,7 @@ function " + nameCamel + "() {\n\
   });\n\
 }\n\
 \n\
-" + nameCamel + ".prototype = new Component('" + name + "');\n\
+util.inherits(" + nameCamel + ", Component);\n\
 \n\
 " + protoText + "\n\
 \n\

@@ -10,7 +10,7 @@ var TransformFilter = require('stream').Duplex();
 TransformFilter._read = function () {
 };
 TransformFilter._write = function (chunk, enc, next) {
-//  console.log('chunk', chunk.length, chunk);
+  console.log('chunk', chunk.length);
   fps.tick();
 
   this.push(chunk);
@@ -24,10 +24,13 @@ TransformFilter.on('pipe', function (source) {
   });
 });
 
-var VideoDecode = omx.VideoDecode();
+var VideoDecode1 = omx.VideoDecode();
+var VideoDecode2 = omx.VideoDecode();
 var VideoEncode = omx.VideoEncode();
+var VideoRender = omx.VideoRender();
 
-VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+VideoDecode1.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+VideoDecode2.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 VideoEncode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 
 VideoEncode.component.setParameter(VideoEncode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoBitrate, {
@@ -40,7 +43,9 @@ quantizationType.nQpP = quantizationType.nQpI;
 VideoEncode.component.setParameter(VideoEncode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization, quantizationType);
 
 fs.createReadStream("test/test.h264")
-    .pipe(VideoDecode)
+    .pipe(VideoDecode1)
     .pipe(VideoEncode)
     .pipe(TransformFilter)
+    .pipe(VideoDecode2)
+    .pipe(VideoRender)
     .pipe(fs.createWriteStream("test/test-recode.h264"));
