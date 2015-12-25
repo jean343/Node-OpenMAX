@@ -6,18 +6,20 @@ fps.on('data', function (framerate) {
   console.log("Fps: ", framerate);
 });
 
-var TransformFilter = require('stream').Duplex();
-TransformFilter._read = function () {
+var stream = fs.createWriteStream("test/test-recode.h264");
+var WriteFileFilter = require('stream').Duplex();
+WriteFileFilter._read = function () {
 };
-TransformFilter._write = function (chunk, enc, next) {
-  console.log('chunk', chunk.length);
+WriteFileFilter._write = function (chunk, enc, next) {
+//  console.log('chunk', chunk.length);
+  stream.write(chunk);
   fps.tick();
 
   this.push(chunk);
   next();
 };
 // Needed to forward the portDefinitionChanged from the VideoDecode to the VideoRender
-TransformFilter.on('pipe', function (source) {
+WriteFileFilter.on('pipe', function (source) {
   var self = this;
   source.on('portDefinitionChanged', function (portDefinition) {
     self.emit('portDefinitionChanged', portDefinition);
@@ -45,7 +47,6 @@ VideoEncode.component.setParameter(VideoEncode.component.out_port, omx.Index.OMX
 fs.createReadStream("test/test.h264")
     .pipe(VideoDecode1)
     .pipe(VideoEncode)
-    .pipe(TransformFilter)
+    .pipe(WriteFileFilter)
     .pipe(VideoDecode2)
     .pipe(VideoRender)
-    .pipe(fs.createWriteStream("test/test-recode.h264"));
