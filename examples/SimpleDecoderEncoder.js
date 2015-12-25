@@ -44,9 +44,20 @@ quantizationType.nQpI = 43;
 quantizationType.nQpP = quantizationType.nQpI;
 VideoEncode.component.setParameter(VideoEncode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization, quantizationType);
 
-fs.createReadStream("test/test.h264")
-    .pipe(VideoDecode1)
-    .pipe(VideoEncode)
-    .pipe(WriteFileFilter)
-    .pipe(VideoDecode2)
-    .pipe(VideoRender)
+var useTunnel = true; // By using the tunnel, we send less data to node and can reduce the CPU load.
+
+if (useTunnel) {
+  fs.createReadStream("test/test.h264")
+      .pipe(VideoDecode1)
+      .tunnel(VideoEncode)
+      .pipe(WriteFileFilter)
+      .pipe(VideoDecode2)
+      .tunnel(VideoRender);
+} else {
+  fs.createReadStream("test/test.h264")
+      .pipe(VideoDecode1)
+      .pipe(VideoEncode)
+      .pipe(WriteFileFilter)
+      .pipe(VideoDecode2)
+      .pipe(VideoRender);
+}
