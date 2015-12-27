@@ -11,7 +11,8 @@
     "nan": "^2.1.0"
   },
   "scripts": {
-    "install": "node-gyp rebuild"
+    "install": "node-gyp rebuild",
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",

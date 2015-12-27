@@ -11,6 +11,6 @@ var VideoDecode = omx.VideoDecode();
 
 VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 
-fs.createReadStream("test/test.h264")
+fs.createReadStream("spec/video-LQ.h264")
     .pipe(VideoDecode)
     .pipe(ws);

@@ -6,7 +6,7 @@ fps.on('data', function (framerate) {
   console.log("Fps: ", framerate);
 });
 
-var stream = fs.createWriteStream("test/test-recode.h264");
+var stream = fs.createWriteStream("spec/video-recode.h264");
 var WriteFileFilter = require('stream').Duplex();
 WriteFileFilter._read = function () {
 };
@@ -47,14 +47,14 @@ VideoEncode.component.setParameter(VideoEncode.component.out_port, omx.Index.OMX
 var useTunnel = true; // By using the tunnel, we send less data to node and can reduce the CPU load.
 
 if (useTunnel) {
-  fs.createReadStream("test/test.h264")
+  fs.createReadStream("spec/video-LQ.h264")
       .pipe(VideoDecode1)
       .tunnel(VideoEncode)
       .pipe(WriteFileFilter)
       .pipe(VideoDecode2)
       .tunnel(VideoRender);
 } else {
-  fs.createReadStream("test/test.h264")
+  fs.createReadStream("spec/video-LQ.h264")
       .pipe(VideoDecode1)
       .pipe(VideoEncode)
       .pipe(WriteFileFilter)

@@ -59,7 +59,7 @@ var omx = require('../');
     });
   }
 
-  readAll("test/test.h264", function (data, complete) {
+  readAll("spec/video-LQ.h264", function (data, complete) {
     inputBuffer.set(data);
     VideoDecode.component.emptyBuffer(inputBuffer, function () {
       complete();
