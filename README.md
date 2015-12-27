@@ -40,6 +40,21 @@ node examples/SimpleDecoderEncoder
 npm test
 ```
 
+### Project ideas ###
+This project was started with the idea of transcoding H.264 videos, converting it to and from JPEGs. But so much more can be done with the OMX library, Please let me know what you are up to and we can write a module to make this task simpler.
+Here is a list of ideas, who is interested?
+- Video transcoding
+- RTSP integration
+- FFMPEG integration
+- YUV -> RGB conversion
+- Remote desktop client or server
+- CCTV camera MJPEG -> H.264 and H.264 -> MJPEG
+- Video viewer like omxplayer but with complete setting control
+- PI Camera
+ - Connection, grabbing, encoding
+ - Face detection on the PI camera
+- Anything with the YUV / RGB stream such as Video analytics
+
 ### Why Node ###
 The Open MAX library uses heavily Buffers, asynchronous code and this is a perfect fit for Node. Getting emptyBufferDoneCallback and EventPortSettingsChanged right in C is quite difficult. Node pipes have proven to be a good fit for the data flow. Finally, Node is great at networking and lots of OMX buffer in or out are likely to go onto the network.
 
