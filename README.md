@@ -70,27 +70,27 @@ Get the complete OMX_IndexParamPortDefinition
 var format = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
 // Outputs
 {
-    eDir: 1,
-    nBufferCountActual: 1,
-    nBufferCountMin: 1,
-    nBufferSize: 115200,
-    bEnabled: 0,
-    bPopulated: 0,
-    eDomain: 1,
-    video: {
-      pNativeRender: false,
-      nFrameWidth: 320,
-      nFrameHeight: 240,
-      nStride: 320,
-      nSliceHeight: 240,
-      nBitrate: 0,
-      xFramerate: 0,
-      bFlagErrorConcealment: 0,
-      eCompressionFormat: 0,
-      eColorFormat: 20,
-      pNativeWindow: false
-    }
+  eDir: 1,
+  nBufferCountActual: 1,
+  nBufferCountMin: 1,
+  nBufferSize: 3133440,
+  bEnabled: 0,
+  bPopulated: 0,
+  eDomain: 1,
+  video: {
+    pNativeRender: false,
+    nFrameWidth: 1920,
+    nFrameHeight: 1080,
+    nStride: 1920,
+    nSliceHeight: 1088,
+    nBitrate: 0,
+    xFramerate: 0,
+    bFlagErrorConcealment: 0,
+    eCompressionFormat: 0,
+    eColorFormat: 20,
+    pNativeWindow: false
   }
+}
 ```
 
 ### Project ideas ###
