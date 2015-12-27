@@ -2,11 +2,26 @@
 =================
 Using the OMX library in C can be tricky and be a painful experience. I wanted a library which can greatly simplify the process while allowing me to modify any settings such as the H.264 I-frame interval and qp parameter. With this library, any OMX components can be linked with any other components with hardware tunnel or software Node Buffers. With the buffers, we can do data manipulation directly in Node.
 
-The goal of this library is to:
+###To compile the server in windows###
+The goal of this library is to
 - Provide a complete wrapper of the OpenMAX https://www.khronos.org/openmax/ library with auto-generated functions and headers.
-- 
 
-### To run the server ###
+### Install ###
+```
+npm install
+```
+
+### Run samples ###
+```
+node examples/SimpleVideoDecoderRenderTunnel
+node examples/SimpleVideoDecoderBuffer
+node examples/SimpleVideoDecoderRenderBuffer
+```
+
+### Test with jasmine ###
+```
+npm test
+```
 
 ### NOTES ###
 The list of components for the Raspberry PI is at http://home.nouwen.name/RaspberryPi/documentation/ilcomponents/
