@@ -1,5 +1,7 @@
 # Node-OpenMAX
 
+[![NPM version](http://img.shields.io/npm/v/openmax.svg)](https://www.npmjs.org/package/openmax)
+
 Using the OMX library in C can be tricky and be a painful experience. I wanted a library which can greatly simplify the process while allowing me to modify any settings such as the H.264 I-frame interval and qp parameter. With this library, any OMX components can be linked with any other components with hardware tunnel or software Node Buffers. With the buffers, we can do data manipulation directly in Node.
 
 The goal of this library is to:
@@ -9,7 +11,23 @@ The goal of this library is to:
 
 ### Install ###
 ```
-npm install
+npm install --save openmax
+```
+
+## Quick Example
+
+```javascript
+var fs = require('fs');
+var omx = require('openmax');
+
+var VideoDecode = omx.VideoDecode();
+var VideoRender = omx.VideoRender();
+
+VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+
+fs.createReadStream("video-LQ.h264")
+    .pipe(VideoDecode)
+    .tunnel(VideoRender);
 ```
 
 ### Run samples ###
