@@ -1,9 +1,8 @@
 {
-  "name": "Node-OMX",
+  "name": "OpenMAX",
   "version": "0.0.1",
-  "author": "",
-  "description": "Node-OMX",
-  "main": "./lib/Cap",
+  "author": "Jean-Philippe Bergeron",
+  "description": "Node wrapper for the OpenMAX library",
   "dependencies": {
     "async": "^1.5.0",
     "bindings": "~1.2.1",
@@ -16,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jean343/Node-OMX.git"
+    "url": "https://github.com/jean343/Node-OpenMAX.git"
   },
   "license": "MIT",
   "devDependencies": {
