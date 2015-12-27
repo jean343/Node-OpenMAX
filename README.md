@@ -12,6 +12,22 @@ The goal of this library is to:
 npm install --save openmax
 ```
 
+## Quick Example
+
+```javascript
+var fs = require('fs');
+var omx = require('openmax');
+
+var VideoDecode = omx.VideoDecode();
+var VideoRender = omx.VideoRender();
+
+VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+
+fs.createReadStream("video-LQ.h264")
+    .pipe(VideoDecode)
+    .tunnel(VideoRender);
+```
+
 ### Run samples ###
 
 Example to read an H.264 file, decode it using video_decode and tunnel it to the video_render.
