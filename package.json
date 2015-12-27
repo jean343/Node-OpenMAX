@@ -1,6 +1,6 @@
 {
   "name": "openmax",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": "Jean-Philippe Bergeron",
   "description": "Node wrapper for the OpenMAX library",
   "keywords": [
