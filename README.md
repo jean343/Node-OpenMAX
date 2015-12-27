@@ -42,20 +42,55 @@ npm test
 
 ### Code samples ###
 Pipe a file into a VideoDecode then tunnel to the Render
-```
+```javascript
 fs.createReadStream("spec/video-LQ.h264")
   .pipe(VideoDecode)
   .tunnel(VideoRender);
 ```
 
 Pipe a file to a VideoDecoder, encode it, write the result to a file, decode the result and display it.
-```
+```javascript
 fs.createReadStream("spec/video-LQ.h264")
   .pipe(VideoDecode1)
   .tunnel(VideoEncode)
   .pipe(WriteFileFilter)
   .pipe(VideoDecode2)
   .tunnel(VideoRender);
+```
+
+Use the OMX OMX_GetParameter and OMX_SetParameter to change eCompressionFormat to
+```javascript
+var format = VideoDecode.component.getParameter(VideoDecode.component.in_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+format.eCompressionFormat = omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
+VideoDecode.component.setParameter(VideoDecode.component.in_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+```
+
+Get the complete OMX_IndexParamPortDefinition
+```javascript
+var format = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+// Outputs
+{
+    eDir: 1,
+    nBufferCountActual: 1,
+    nBufferCountMin: 1,
+    nBufferSize: 115200,
+    bEnabled: 0,
+    bPopulated: 0,
+    eDomain: 1,
+    video: {
+      pNativeRender: false,
+      nFrameWidth: 320,
+      nFrameHeight: 240,
+      nStride: 320,
+      nSliceHeight: 240,
+      nBitrate: 0,
+      xFramerate: 0,
+      bFlagErrorConcealment: 0,
+      eCompressionFormat: 0,
+      eColorFormat: 20,
+      pNativeWindow: false
+    }
+  }
 ```
 
 ### Project ideas ###
