@@ -40,6 +40,17 @@ node examples/SimpleDecoderEncoder
 npm test
 ```
 
+### Code samples ###
+```
+// Pipe a file to a VideoDecoder, encode it, write the result to a file, decode the result and display it.
+fs.createReadStream("spec/video-LQ.h264")
+  .pipe(VideoDecode1)
+  .tunnel(VideoEncode)
+  .pipe(WriteFileFilter)
+  .pipe(VideoDecode2)
+  .tunnel(VideoRender);
+```
+
 ### Project ideas ###
 This project was started with the idea of transcoding H.264 videos, converting it to and from JPEGs. But so much more can be done with the OMX library, Please let me know what you are up to and we can write a module to make this task simpler.
 Here is a list of ideas, who is interested?
