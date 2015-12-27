@@ -2,3 +2,7 @@ autogenerate
 examples/test.js
 test
 spec
+lib/jasmine_examples
+notes
+build
+examples

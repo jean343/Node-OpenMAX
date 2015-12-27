@@ -1,8 +1,13 @@
 {
-  "name": "OpenMAX",
-  "version": "0.0.1",
+  "name": "openmax",
+  "version": "0.0.2",
   "author": "Jean-Philippe Bergeron",
   "description": "Node wrapper for the OpenMAX library",
+  "keywords": [
+    "OMX",
+    "OpenMAX",
+    "Raspberry Pi"
+  ],
   "dependencies": {
     "async": "^1.5.0",
     "bindings": "~1.2.1",
