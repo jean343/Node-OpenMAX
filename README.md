@@ -41,8 +41,15 @@ npm test
 ```
 
 ### Code samples ###
+Pipe a file into a VideoDecode then tunnel to the Render
 ```
-// Pipe a file to a VideoDecoder, encode it, write the result to a file, decode the result and display it.
+fs.createReadStream("spec/video-LQ.h264")
+  .pipe(VideoDecode)
+  .tunnel(VideoRender);
+```
+
+Pipe a file to a VideoDecoder, encode it, write the result to a file, decode the result and display it.
+```
 fs.createReadStream("spec/video-LQ.h264")
   .pipe(VideoDecode1)
   .tunnel(VideoEncode)
