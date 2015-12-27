@@ -9,7 +9,7 @@ The goal of this library is to:
 
 ### Install ###
 ```
-npm install
+npm install --save openmax
 ```
 
 ### Run samples ###
