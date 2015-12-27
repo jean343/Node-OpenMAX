@@ -1,3 +1,4 @@
+var fs = require('fs');
 var omx = require('../../');
 
 describe("Player", function () {
@@ -22,7 +23,7 @@ describe("Player", function () {
     });
   });
 
-  it("should have the right port fefinition", function () {
+  it("should have the right port definition", function () {
     var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
     expect(f).toEqual({
       eDir: 1,
@@ -48,5 +49,41 @@ describe("Player", function () {
     });
   });
 
+  it("should set video port format", function () {
+    VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+  });
+
+  it("should trigger port definition changed and have right settings", function (done) {
+    VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+    fs.createReadStream("spec/video-LQ.h264")
+        .pipe(VideoDecode);
+
+    VideoDecode.component.on("eventPortSettingsChanged", function () {
+      var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      expect(f).toEqual({
+        eDir: 1,
+        nBufferCountActual: 1,
+        nBufferCountMin: 1,
+        nBufferSize: 3133440,
+        bEnabled: 0,
+        bPopulated: 0,
+        eDomain: 1,
+        video: {
+          pNativeRender: false,
+          nFrameWidth: 1920,
+          nFrameHeight: 1080,
+          nStride: 1920,
+          nSliceHeight: 1088,
+          nBitrate: 0,
+          xFramerate: 0,
+          bFlagErrorConcealment: 0,
+          eCompressionFormat: 0,
+          eColorFormat: 20,
+          pNativeWindow: false
+        }
+      });
+      done();
+    });
+  });
 
 });
