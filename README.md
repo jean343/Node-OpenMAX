@@ -5,7 +5,7 @@ Using the OMX library in C can be tricky and be a painful experience. I wanted a
 The goal of this library is to:
 - Provide a complete wrapper of the OpenMAX https://www.khronos.org/openmax/ library with auto-generated functions and headers with code signature similar to the C code.
 - Add JavaScript modules to link user code and OpenMAX
-- Use Node pipes to provide an efficient and simple transport between OMX components.
+- Use Node Streams to provide an efficient and simple transport between OMX components.
 
 ### Install ###
 ```
@@ -13,10 +13,26 @@ npm install
 ```
 
 ### Run samples ###
+
+Example to read an H.264 file, decode it using video_decode and tunnel it to the video_render.
 ```
 node examples/SimpleVideoDecoderRenderTunnel
+```
+
+Example to pipe the RAW YUV to a custom Node.js Stream.
+```
 node examples/SimpleVideoDecoderBuffer
+```
+
+Example to pipe the RAW YUV to a custom Node.js Duplex Stream, do in-memory YUV manipulation the pipe the result to the monitor.
+```
 node examples/SimpleVideoDecoderRenderBuffer
+```
+
+This example can be run with pipe or tunnel, the tunnel is faster as the intermediate RAW data doesn't touch Node.
+Decodes an H.264 stream, encode it using custom settings of constant QP, write the result to a file then decode this result and display on the screen.
+```
+node examples/SimpleDecoderEncoder
 ```
 
 ### Test with jasmine ###
