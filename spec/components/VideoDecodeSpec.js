@@ -1,7 +1,7 @@
 var fs = require('fs');
 var omx = require('../../');
 
-describe("Player", function () {
+describe("VideoDecode", function () {
   var VideoDecode;
 
   beforeEach(function () {
