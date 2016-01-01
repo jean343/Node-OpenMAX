@@ -1,6 +1,6 @@
 module.exports.Audio = require('./lib/flags/Audio');
 module.exports.BLOCK_TYPE = require('./lib/flags/BLOCK_TYPE');
-module.exports.Component = require('./lib/flags/Component');
+module.exports.ComponentFlag = require('./lib/flags/Component');
 module.exports.ContentPipe = require('./lib/flags/ContentPipe');
 module.exports.Core = require('./lib/flags/Core');
 module.exports.CoreExt = require('./lib/flags/CoreExt');

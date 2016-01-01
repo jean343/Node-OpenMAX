@@ -109,14 +109,6 @@ function " + nameCamel + "() {\n\
   var self = this;\n\
   this.init(" + flags.join(' | ') + ");\n\
   this.component.setPorts(" + inPort + ", " + outPort + ");\n\
-\n\
-  self.on('finish', function () {\n\
-    console.log('" + nameCamel + " on finish');\n\
-    self.component.emptyBuffer(undefined, function () {\n\
-      self.component.changeState(OMX_STATETYPE.OMX_StateIdle);\n\
-      self.component.changeState(OMX_STATETYPE.OMX_StateLoaded);\n\
-    });\n\
-  });\n\
 }\n\
 \n\
 util.inherits(" + nameCamel + ", Component);\n\
@@ -144,6 +136,22 @@ function prototypes(nameCamel) {
     eCompressionFormat: eCompressionFormat\n\
   };\n\
   this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+};"
+      };
+    case 'ImageDecode':
+      return {
+        setInputFormat: "function (eCompressionFormat) {\n\
+  var format = this.component.getParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
+  format.eCompressionFormat = eCompressionFormat;\n\
+  this.component.setParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+};"
+      };
+    case 'ImageEncode':
+      return {
+        setInputFormat: "function (eCompressionFormat) {\n\
+  var format = this.component.getParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
+  format.eCompressionFormat = eCompressionFormat;\n\
+  this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
 };"
       };
       break;
