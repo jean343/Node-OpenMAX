@@ -25,13 +25,13 @@ NAN_MODULE_INIT(TUNNEL::Init) {
 }
 
 TUNNEL::TUNNEL(COMPONENT* source, COMPONENT* sink) {
-  log("TUNNEL()");
+  plog("TUNNEL()");
   memset(&tunnel, 0, sizeof (tunnel));
   set_tunnel(&tunnel, source->component, source->out_port, sink->component, sink->in_port);
 }
 
 TUNNEL::~TUNNEL() {
-  log("~TUNNEL()");
+  plog("~TUNNEL()");
 }
 
 NAN_METHOD(TUNNEL::New) {

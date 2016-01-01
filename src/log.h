@@ -4,7 +4,7 @@
 #include <stdarg.h>
 //#define VERBOSE
 
-static void log(const char * format, ...) {
+static void plog(const char * format, ...) {
 #ifdef VERBOSE
   va_list args;
   va_start(args, format);

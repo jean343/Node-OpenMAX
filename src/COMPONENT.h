@@ -2,6 +2,8 @@
 
 #include <nan.h>
 
+#include "log.h"
+
 #include "ILCLIENT.h"
 extern "C" {
 #include "ilclient.h"
@@ -12,11 +14,11 @@ public:
   static NAN_MODULE_INIT(Init);
 
   COMPONENT_T *component;
-  OMX_HANDLETYPE handle;
+  OMX_HANDLETYPE _handle;
   int in_port;
   int out_port;
 
-  uv_async_t *asyncEmpty, *asyncFill;
+  uv_async_t *asyncEmpty, *asyncFill, *asyncSettingsChanged;
   Nan::Callback *lastEmptyBufferCallback;
   Nan::Callback *lastFillBufferCallback;
 private:
@@ -27,6 +29,7 @@ private:
   
   static void emptyBufferDoneCallback(void *userdata, COMPONENT_T *comp);
   static void fillBufferDoneCallback(void *userdata, COMPONENT_T *comp);
+  static void portSettingsChangedCallback(void *userdata, COMPONENT_T *comp, OMX_U32 data);
 
   NAN_INLINE static NAUV_WORK_CB(asyncEmptyBufferDone) {
     Nan::HandleScope scope;
@@ -46,6 +49,14 @@ private:
       obj->lastFillBufferCallback = NULL;
       callback->Call(0, 0);
     }
+  }
+
+  NAN_INLINE static NAUV_WORK_CB(asyncSettingsChangedDone) {
+    Nan::HandleScope scope;
+    COMPONENT *obj = static_cast<COMPONENT*> (async->data);
+    int argc = 1;
+    v8::Local<v8::Value> argv[argc] = {Nan::New("eventPortSettingsChanged").ToLocalChecked()};
+    Nan::MakeCallback(obj->handle(), "emit", argc, argv);
   }
 
   static NAN_METHOD(New);

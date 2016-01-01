@@ -19,7 +19,7 @@ NAN_MODULE_INIT(ILCLIENT::Init) {
 }
 
 ILCLIENT::ILCLIENT() {
-  log("ILCLIENT()");
+  plog("ILCLIENT()");
   if ((client = ilclient_init()) == NULL) {
     Nan::ThrowError("ilclient_init() is NULL");
     return;
@@ -36,7 +36,7 @@ ILCLIENT::ILCLIENT() {
 }
 
 ILCLIENT::~ILCLIENT() {
-  log("~ILCLIENT()");
+  plog("~ILCLIENT()");
   ilclient_destroy(client);
 }
 

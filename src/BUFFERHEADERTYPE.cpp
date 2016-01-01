@@ -40,6 +40,7 @@ NAN_GETTER(BUFFERHEADERTYPE::nAllocLenGet) {
   info.GetReturnValue().Set(obj->buf->nAllocLen);
 }
 
+// Paramerers: buffer, bool lastPacket
 NAN_METHOD(BUFFERHEADERTYPE::set) {
   BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
   OMX_BUFFERHEADERTYPE* buf = obj->buf;
@@ -47,6 +48,11 @@ NAN_METHOD(BUFFERHEADERTYPE::set) {
   v8::Local<v8::Object> bufferObj = info[0]->ToObject();
   char* bufferData = node::Buffer::Data(bufferObj);
   size_t bufferLength = node::Buffer::Length(bufferObj);
+
+  bool lastPacket = false;
+  if (!info[1]->IsUndefined()) {
+    lastPacket = Nan::To<bool>(info[1]).FromJust();
+  }
 
   if (bufferLength > buf->nAllocLen) { // bound check
     bufferLength = buf->nAllocLen;
@@ -62,6 +68,11 @@ NAN_METHOD(BUFFERHEADERTYPE::set) {
   } else {
     buf->nFlags = OMX_BUFFERFLAG_TIME_UNKNOWN;
   }
+
+  if (lastPacket) {
+    buf->nFlags |= OMX_BUFFERFLAG_EOS;
+  }
+
   info.GetReturnValue().Set(info.This());
 }
 
