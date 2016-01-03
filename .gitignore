@@ -44,3 +44,6 @@ obj
 /autogenerate/headers/headers/OMX_Types.cs
 /autogenerate/headers/headers/OMX_Video.cs
 /autogenerate/headers/headers/OMX_VideoExt.cs
+/build
+/js
+/typings

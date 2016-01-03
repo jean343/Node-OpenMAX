@@ -1,6 +1,6 @@
 {
   "name": "openmax",
-  "version": "0.0.4",
+  "version": "0.1.4",
   "author": "Jean-Philippe Bergeron",
   "description": "Node wrapper for the OpenMAX library",
   "keywords": [
@@ -8,6 +8,7 @@
     "OpenMAX",
     "Raspberry Pi"
   ],
+  "typings": "typings",
   "dependencies": {
     "async": "^1.5.0",
     "bindings": "~1.2.1",
@@ -15,7 +16,7 @@
     "nan": "^2.1.0"
   },
   "scripts": {
-    "install": "node-gyp rebuild",
+    "install": "node-gyp rebuild || exit 0",
     "test": "jasmine"
   },
   "repository": {

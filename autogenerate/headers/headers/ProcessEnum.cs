@@ -58,23 +58,23 @@ namespace headers
             var allClasses = GetClasses(file);
             if (allClasses.Count == 0) return;
 
-            using (StreamWriter sw = new StreamWriter(Path.Combine(destinationFolder, file.Replace("OMX_", "") + ".js")))
+            using (StreamWriter sw = new StreamWriter(Path.Combine(destinationFolder, file.Replace("OMX_", "") + ".ts")))
             {
                 foreach (Type clazz in allClasses)
                 {
                     MemberInfo[] memberInfos = clazz.GetMembers(BindingFlags.Public | BindingFlags.Static);
                     Array enumValues = Enum.GetValues(clazz);
 
-                    sw.WriteLine("module.exports." + clazz.Name + " = {");
+                    sw.WriteLine("export enum " + clazz.Name + " {");
                     for (int i = 0; i < memberInfos.Length; i++)
                     {
-                        sw.Write("  {0}: 0x{1:X}", memberInfos[i].Name, (long)enumValues.GetValue(i));
+                        sw.Write("  {0} = 0x{1:X}", memberInfos[i].Name, (long)enumValues.GetValue(i));
                         if (i < memberInfos.Length - 1)
                         {
                             sw.WriteLine(",");
                         }
                     }
-                    sw.WriteLine("\n};");
+                    sw.WriteLine("\n}");
                 }
             }
         }
