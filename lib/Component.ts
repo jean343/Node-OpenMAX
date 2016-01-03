@@ -62,6 +62,7 @@ export class Component extends stream.Duplex {
 
     this.on('finish', function () {
       console.log(self.name, 'on finish');
+      self.hasFinished = true;
     });
     this.on('end', function () {
       console.log(self.name, 'on end');

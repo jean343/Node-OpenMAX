@@ -2,7 +2,7 @@ autogenerate
 examples/test.js
 test
 spec
-lib/jasmine_examples
+lib
 notes
 build
 examples

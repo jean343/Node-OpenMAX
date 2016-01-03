@@ -16,15 +16,17 @@
         "!./node_modules/**/*.ts"
     ],
     "files": [
-        "./examples/a.ts",
+        "./examples/AdvancedVideoDecoderRenderer.ts",
+        "./examples/SimpleDecoderEncoder.ts",
         "./examples/SimpleVideoDecoderBuffer.ts",
         "./examples/SimpleVideoDecoderRenderBuffer.ts",
         "./examples/SimpleVideoDecoderRenderTunnel.ts",
         "./index.ts",
-        "./js/examples/a.d.ts",
+        "./js/examples/AdvancedVideoDecoderRenderer.d.ts",
+        "./js/examples/SimpleDecoderEncoder.d.ts",
+        "./js/examples/SimpleVideoDecoderBuffer.d.ts",
         "./js/examples/SimpleVideoDecoderRenderBuffer.d.ts",
         "./js/examples/SimpleVideoDecoderRenderTunnel.d.ts",
-        "./js/examples/testTypeScript.d.ts",
         "./js/index.d.ts",
         "./js/lib/Component.d.ts",
         "./js/lib/components/AudioCapture.d.ts",
@@ -114,7 +116,9 @@
         "./lib/flags/Types.ts",
         "./lib/flags/Video.ts",
         "./lib/utils.ts",
-        "./typings/node/node.d.ts"
+        "./typings/async/async.d.ts",
+        "./typings/node/node.d.ts",
+        "./typings/tsd.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
