@@ -1,13 +1,9 @@
 import omx = require('../');
-
 import stream = require('stream');
-var Node_OMX = require('bindings')('Node_OMX');
 import events = require('events');
-var OMX_STATETYPE = omx.OMX_STATETYPE;
-var OMX_INDEXTYPE = omx.OMX_INDEXTYPE;
-var BLOCK_TYPE = omx.BLOCK_TYPE;
-
 import utils = require('./utils');
+
+var Node_OMX = require('bindings')('Node_OMX');
 
 export class Component extends stream.Duplex {
   ILCLIENT: any;
@@ -18,28 +14,26 @@ export class Component extends stream.Duplex {
   hasPortSettingsChanged: boolean;
   hasFinished : boolean;
 
-  constructor(public name) {
+  constructor(public name: string) {
     super();
     this.component = null;
 
     this.firstReadPacket = true;
     this.firstWritePacket = true;
     this.hasPortSettingsChanged = false;
-
-    // Duplex.call(this, undefined);
   }
 
-  init (flags) {
+  init (flags: omx.ILCLIENT_CREATE_FLAGS) {
     var self = this;
     Node_OMX.bcm_host_init();
     this.ILCLIENT = Node_OMX.ILCLIENT();
 
     this.component = Node_OMX.COMPONENT(this.ILCLIENT, this.name, flags);
-    this.component.changeState(OMX_STATETYPE.OMX_StateIdle);
+    this.component.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
 
     this.on('pipe', function (source) {
       source.on('portDefinitionChanged', function (portDefinition) {
-        var sinkPortDefinition = self.component.getParameter(self.component.in_port, OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+        var sinkPortDefinition = self.component.getParameter(self.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
 
         if (sinkPortDefinition.eDomain === omx.OMX_PORTDOMAINTYPE.OMX_PortDomainVideo && portDefinition.eDomain === omx.OMX_PORTDOMAINTYPE.OMX_PortDomainVideo) {
           sinkPortDefinition.video = portDefinition.video;
@@ -55,7 +49,7 @@ export class Component extends stream.Duplex {
         }
 
         sinkPortDefinition.nBufferSize = portDefinition.nBufferSize;
-        self.component.setParameter(self.component.in_port, OMX_INDEXTYPE.OMX_IndexParamPortDefinition, sinkPortDefinition);
+        self.component.setParameter(self.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, sinkPortDefinition);
       });
     });
 
@@ -69,7 +63,7 @@ export class Component extends stream.Duplex {
     });
   }
 
-  setPorts (in_port, out_port) {
+  setPorts (in_port: number, out_port: number) {
     this.component.setPorts(in_port, out_port);
   }
 
@@ -80,16 +74,16 @@ export class Component extends stream.Duplex {
     this.component.on("eventPortSettingsChanged", function () {
       console.log('eventPortSettingsChanged', self.name, self.component);
 
-      var sourceDef = self.component.getParameter(self.component.out_port, OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
-      var sinkDef = nextComponent.component.getParameter(nextComponent.component.in_port, OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      var sourceDef = self.component.getParameter(self.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      var sinkDef = nextComponent.component.getParameter(nextComponent.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
 
       sinkDef.video = sourceDef.video;
       sinkDef.nBufferSize = sourceDef.nBufferSize;
 
-      nextComponent.component.setParameter(nextComponent.component.in_port, OMX_INDEXTYPE.OMX_IndexParamPortDefinition, sinkDef);
+      nextComponent.component.setParameter(nextComponent.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, sinkDef);
 
       TUNNEL.enable();
-      nextComponent.component.changeState(OMX_STATETYPE.OMX_StateExecuting);
+      nextComponent.component.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
     });
 
 
@@ -119,12 +113,12 @@ export class Component extends stream.Duplex {
       if (self.firstReadPacket) {
         self.firstReadPacket = false;
         self.component.enableOutputPortBuffer();
-        if (self.component.getState() !== OMX_STATETYPE.OMX_StateExecuting) {
-          self.component.changeState(OMX_STATETYPE.OMX_StateExecuting);
+        if (self.component.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
+          self.component.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
         }
       }
 
-      var outputBuffer = self.component.getOutputBuffer(BLOCK_TYPE.DO_BLOCK);
+      var outputBuffer = self.component.getOutputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
       self.component.fillBuffer(outputBuffer, function () {
         if (self.hasFinished) {
           return; // Warning, this might prune the last image
@@ -146,18 +140,18 @@ export class Component extends stream.Duplex {
       this.component.on("eventPortSettingsChanged", function () {
         console.log('eventPortSettingsChanged');
         self.hasPortSettingsChanged = true;
-        var portDefinition = self.component.getParameter(self.component.out_port, OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+        var portDefinition = self.component.getParameter(self.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
         self.emit('portDefinitionChanged', portDefinition);
         read();
       });
     }
   }
 
-  writeRecursive (chunk, offset, next) {
+  writeRecursive (chunk: Buffer, offset: number, next: () => void) {
     "use strict";
     var self = this;
 
-    var inputBuffer = this.component.getInputBuffer(BLOCK_TYPE.DO_BLOCK);
+    var inputBuffer = this.component.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
     var inputBufferLength = inputBuffer.nAllocLen;
 
     var lastPacket = chunk.length <= offset + inputBufferLength;
@@ -178,13 +172,13 @@ export class Component extends stream.Duplex {
     });
   }
 
-  _write (chunk, enc, next) {
+  _write (chunk: Buffer, enc, next: () => void) {
     if (this.firstWritePacket) {
       this.firstWritePacket = false;
       this.component.enableInputPortBuffer();
 
-      if (this.component.getState() !== OMX_STATETYPE.OMX_StateExecuting) {
-        this.component.changeState(OMX_STATETYPE.OMX_StateExecuting);
+      if (this.component.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
+        this.component.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
       }
     }
 

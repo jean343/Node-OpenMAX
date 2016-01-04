@@ -74,12 +74,12 @@ function template(name, nameCamel, inPorts, outPorts) {
   var inPort = inPorts[0] || '0';
   var outPort = outPorts[0] || '0';
 
-  var flags = ['ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS'];
+  var flags = ['omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS'];
   if (inPort != 0) {
-    flags.push('ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS');
+    flags.push('omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS');
   }
   if (outPort != 0) {
-    flags.push('ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_OUTPUT_BUFFERS');
+    flags.push('omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_OUTPUT_BUFFERS');
   }
 
   var proto = prototypes(nameCamel);
@@ -95,10 +95,6 @@ function template(name, nameCamel, inPorts, outPorts) {
 \n\
 import util = require('util')\n\
 import omx = require('../../')\n\
-var Component = omx.Component;\n\
-var ILCLIENT_CREATE_FLAGS = omx.ILCLIENT_CREATE_FLAGS;\n\
-var OMX_STATETYPE = omx.OMX_STATETYPE;\n\
-var OMX_INDEXTYPE = omx.OMX_INDEXTYPE;\n\
 \n\
 export class " + nameCamel + " extends omx.Component {\n\
   constructor() {\n\
@@ -116,37 +112,37 @@ function prototypes(nameCamel) {
   switch (nameCamel) {
     case 'VideoDecode':
       return {
-        setVideoPortFormat: " (eCompressionFormat) {\n\
-  var format = this.component.getParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);\n\
-  format.eCompressionFormat = eCompressionFormat;\n\
-  this.component.setParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
-};"
+        setVideoPortFormat: " (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {\n\
+    var format = this.component.getParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);\n\
+    format.eCompressionFormat = eCompressionFormat;\n\
+    this.component.setParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+  };"
       };
       break;
     case 'VideoEncode':
       return {
-        setVideoPortFormat: " (eCompressionFormat) {\n\
-  var format = {\n\
-    eCompressionFormat: eCompressionFormat\n\
-  };\n\
-  this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
-};"
+        setVideoPortFormat: " (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {\n\
+    var format = {\n\
+      eCompressionFormat: eCompressionFormat\n\
+    };\n\
+    this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+  };"
       };
     case 'ImageDecode':
       return {
-        setInputFormat: " (eCompressionFormat) {\n\
-  var format = this.component.getParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
-  format.eCompressionFormat = eCompressionFormat;\n\
-  this.component.setParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
-};"
+        setInputFormat: " (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {\n\
+    var format = this.component.getParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
+    format.eCompressionFormat = eCompressionFormat;\n\
+    this.component.setParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+  };"
       };
     case 'ImageEncode':
       return {
-        setInputFormat: " (eCompressionFormat) {\n\
-  var format = this.component.getParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
-  format.eCompressionFormat = eCompressionFormat;\n\
-  this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
-};"
+        setInputFormat: " (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {\n\
+    var format = this.component.getParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
+    format.eCompressionFormat = eCompressionFormat;\n\
+    this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+  };"
       };
       break;
   }
