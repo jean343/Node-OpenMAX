@@ -125,7 +125,7 @@ function prototypes(nameCamel) {
     var format = {\n\
       eCompressionFormat: eCompressionFormat\n\
     };\n\
-    this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+    this.component.setParameter(this.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
   };"
       };
     case 'ImageDecode':
@@ -133,7 +133,7 @@ function prototypes(nameCamel) {
         setInputFormat: " (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {\n\
     var format = this.component.getParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
-    this.component.setParameter(this.component.in_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+    this.component.setParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
   };"
       };
     case 'ImageEncode':
@@ -141,7 +141,7 @@ function prototypes(nameCamel) {
         setInputFormat: " (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {\n\
     var format = this.component.getParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
-    this.component.setParameter(this.component.out_port, OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+    this.component.setParameter(this.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
   };"
       };
       break;

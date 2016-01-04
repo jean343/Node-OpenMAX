@@ -25,6 +25,10 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+*.d.ts
+*.js
+*.log
+*.tgz
 /nbproject
 /autogenerate/headers/*.suo
 bin
@@ -44,5 +48,8 @@ obj
 /autogenerate/headers/headers/OMX_Types.cs
 /autogenerate/headers/headers/OMX_Video.cs
 /autogenerate/headers/headers/OMX_VideoExt.cs
-/spec/SimpleJPEGToVideo.h264
-/spec/video-recode.h264
+/spec/data/SimpleJPEGToVideo.h264
+/spec/data/video-recode.h264
+/build
+/dist
+/typings

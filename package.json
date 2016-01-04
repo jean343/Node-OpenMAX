@@ -22,6 +22,7 @@
     "nan": "^2.1.0"
   },
   "scripts": {
+    "preinstall": "tsd install || exit 0",
     "install": "node-gyp rebuild || exit 0",
     "test": "jasmine"
   },
