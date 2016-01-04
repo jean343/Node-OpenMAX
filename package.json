@@ -11,7 +11,7 @@
     "typescript",
     "atom"
   ],
-  "typings": "dist/index",
+  "typings": ["dist/index", "typings"],
   "files": [
     "dist/"
   ],

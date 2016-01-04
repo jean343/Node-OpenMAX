@@ -111,7 +111,10 @@
         "./lib/flags/Other.ts",
         "./lib/flags/Types.ts",
         "./lib/flags/Video.ts",
-        "./lib/utils.ts"
+        "./lib/utils.ts",
+        "./typings/async/async.d.ts",
+        "./typings/node/node.d.ts",
+        "./typings/tsd.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
