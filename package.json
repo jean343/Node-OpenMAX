@@ -1,12 +1,19 @@
 {
   "name": "openmax",
-  "version": "0.0.4",
+  "version": "0.1.10",
   "author": "Jean-Philippe Bergeron",
   "description": "Node wrapper for the OpenMAX library",
+  "main": "dist/index.js",
   "keywords": [
     "OMX",
     "OpenMAX",
-    "Raspberry Pi"
+    "Raspberry Pi",
+    "typescript",
+    "atom"
+  ],
+  "typings": "dist/index",
+  "files": [
+    "dist/"
   ],
   "dependencies": {
     "async": "^1.5.0",
@@ -15,7 +22,7 @@
     "nan": "^2.1.0"
   },
   "scripts": {
-    "install": "node-gyp rebuild",
+    "install": "node-gyp rebuild || exit 0",
     "test": "jasmine"
   },
   "repository": {
@@ -24,6 +31,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "jasmine": "^2.4.1"
+    "jasmine": "^2.4.1",
+    "typescript": "^1.7.5"
   }
 }
