@@ -1,6 +1,6 @@
 {
   "name": "openmax",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "Jean-Philippe Bergeron",
   "description": "Node wrapper for the OpenMAX library",
   "main": "dist/index.js",
@@ -12,9 +12,6 @@
     "atom"
   ],
   "typings": ["dist/index", "typings"],
-  "files": [
-    "dist/"
-  ],
   "dependencies": {
     "async": "^1.5.0",
     "bindings": "~1.2.1",
