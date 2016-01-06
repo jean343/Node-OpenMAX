@@ -53,3 +53,4 @@ obj
 /build
 /dist
 /typings
+/.remote-sync.json
