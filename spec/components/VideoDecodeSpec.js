@@ -5,7 +5,7 @@ describe("VideoDecode", function () {
   var VideoDecode;
 
   beforeEach(function () {
-    VideoDecode = omx.VideoDecode();
+    VideoDecode = new omx.VideoDecode();
   });
 
   it("should have right ports", function () {
@@ -14,7 +14,7 @@ describe("VideoDecode", function () {
   });
 
   it("should have the right format", function () {
-    var f = VideoDecode.component.getParameter(VideoDecode.component.in_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+    var f = VideoDecode.component.getParameter(VideoDecode.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
     expect(f).toEqual({
       nIndex: 0,
       eCompressionFormat: 4,
@@ -24,7 +24,7 @@ describe("VideoDecode", function () {
   });
 
   it("should have the right port definition", function () {
-    var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
     expect(f).toEqual({
       eDir: 1,
       nBufferCountActual: 1,
@@ -50,16 +50,16 @@ describe("VideoDecode", function () {
   });
 
   it("should set video port format", function () {
-    VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+    VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
   });
 
   it("should trigger port definition changed and have right settings", function (done) {
-    VideoDecode.setVideoPortFormat(omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+    VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
     fs.createReadStream("spec/data/video-LQ.h264")
         .pipe(VideoDecode);
 
     VideoDecode.component.on("eventPortSettingsChanged", function () {
-      var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
       expect(f).toEqual({
         eDir: 1,
         nBufferCountActual: 1,
