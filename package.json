@@ -11,12 +11,15 @@
     "typescript",
     "atom"
   ],
-  "typings": ["dist/index", "typings"],
+  "typings": [
+    "dist/index",
+    "typings"
+  ],
   "dependencies": {
-    "async": "^1.5.0",
     "bindings": "~1.2.1",
     "fps": "0.0.3",
-    "nan": "^2.1.0"
+    "nan": "^2.1.0",
+    "promise": "^7.1.1"
   },
   "scripts": {
     "preinstall": "tsd install || exit 0",

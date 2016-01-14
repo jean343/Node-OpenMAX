@@ -7,8 +7,8 @@ export class VideoDecode extends omx.Component {
   constructor() {
     super('video_decode');
     var self = this;
-    this.init(omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS | omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS | omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_OUTPUT_BUFFERS);
-    this.component.setPorts(130, 131);
+    this.init();
+    this.setPorts(130, 131);
   }
   
   setVideoPortFormat (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {

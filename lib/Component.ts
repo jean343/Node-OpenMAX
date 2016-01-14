@@ -2,17 +2,27 @@ import omx = require('../');
 import stream = require('stream');
 import events = require('events');
 import utils = require('./utils');
+import printEvent = require('./printEvent');
+var Promise = require('promise');
 
 var Node_OMX = require('bindings')('Node_OMX');
 
+export class EventHandlers {
+  constructor(public eEvent: omx.OMX_EVENTTYPE, public nData1: number, public nData2: number, public callback: () => any) {
+  }
+}
+
 export class Component extends stream.Duplex {
-  ILCLIENT: any;
+  static isOMXInit: boolean = false;
+  in_port: number;
+  out_port: number;
+
   component: any;
   buf2: Buffer;
   firstReadPacket: boolean;
   firstWritePacket: boolean;
   hasPortSettingsChanged: boolean;
-  hasFinished : boolean;
+  hasFinished: boolean;
 
   constructor(public name: string) {
     super();
@@ -23,15 +33,46 @@ export class Component extends stream.Duplex {
     this.hasPortSettingsChanged = false;
   }
 
-  init (flags: omx.ILCLIENT_CREATE_FLAGS) {
+  init() {
     var self = this;
-    Node_OMX.bcm_host_init();
-    this.ILCLIENT = Node_OMX.ILCLIENT();
+    if (!Component.isOMXInit) {
+      Node_OMX.bcm_host_init();
+      Node_OMX.OMX_Init();
+      Component.isOMXInit = true;
+    }
+    this.component = Node_OMX.COMPONENTTYPE(this.name);
 
-    this.component = Node_OMX.COMPONENT(this.ILCLIENT, this.name, flags);
-    this.component.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
+    this.component.on('event_handler', function(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
+      printEvent.log(self.name, eEvent, nData1, nData2);
 
-    this.on('pipe', function (source) {
+      printEvent.logHandlers(self.registeredEventHandlers);
+      for (var i = self.registeredEventHandlers.length - 1; i >= 0; i--) {
+        var x = self.registeredEventHandlers[i];
+
+        var isRightEvent = x.eEvent == eEvent && x.nData1 == nData1 && x.nData2 == nData2;
+        var isError = eEvent == omx.OMX_EVENTTYPE.OMX_EventError;// && x.nData2 == nData2;
+
+        if (isRightEvent || isError) {
+          x.callback();
+          self.registeredEventHandlers.splice(i, 1);
+        }
+      }
+
+    });
+
+    return this.disableAllPorts()
+      .then(self.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
+        
+          
+    //            function(res) {
+    //        console.log('disableAllPorts done');
+    //        self.changeState(omx.OMX_STATETYPE.OMX_StateIdle, function() {
+    //
+    //        });
+    //      });
+
+
+    /*this.on('pipe', function (source) {
       source.on('portDefinitionChanged', function (portDefinition) {
         var sinkPortDefinition = self.component.getParameter(self.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
 
@@ -60,14 +101,72 @@ export class Component extends stream.Duplex {
     });
     this.on('end', function () {
       console.log(self.name, 'on end');
+    });*/
+  }
+
+  registeredEventHandlers: Array<EventHandlers> = [];
+  registerEventHandler(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number, callback: () => any) {
+    this.registeredEventHandlers.push(new EventHandlers(eEvent, nData1, nData2, callback));
+  }
+
+  setPorts(in_port: number, out_port: number) {
+    this.in_port = in_port;
+    this.out_port = out_port;
+  }
+  changeState(state: omx.OMX_STATETYPE) {
+    var self = this;
+    return new Promise(function(fulfill, reject) {
+      self.component.changeState(state);
+      self.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandStateSet, state, function() {
+        console.log('fulfill', state);
+        fulfill();
+      });
+//      self.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventError, omx.OMX_ERRORTYPE.OMX_ErrorIncorrectStateOperation, state, function() {
+//        console.log('reject', state);
+//        reject();
+//      });
+    });
+  }
+  getState(): omx.OMX_STATETYPE {
+    return this.component.getState();
+  }
+  getParameter(port: number, index: omx.OMX_INDEXTYPE) {
+    return this.component.getParameter(port, index);
+  }
+  setParameter(port: number, index: omx.OMX_INDEXTYPE, format: any) {
+    return this.component.setParameter(port, index, format);
+  }
+  disableAllPorts() {
+    var self = this;
+    var types = [
+      omx.OMX_INDEXTYPE.OMX_IndexParamAudioInit,
+      omx.OMX_INDEXTYPE.OMX_IndexParamVideoInit,
+      omx.OMX_INDEXTYPE.OMX_IndexParamImageInit,
+      omx.OMX_INDEXTYPE.OMX_IndexParamOtherInit
+    ];
+
+    var self = this;
+    for (var i = 0; i < types.length; i++) {
+      var ports = self.getParameter(0, types[i]);
+      if (ports.nPorts === 0) continue;
+      var portsArr = [];
+      for (var j = 0; j < ports.nPorts; j++) {
+        portsArr.push(self.disablePort(ports.nStartPortNumber + j));
+      }
+      return Promise.all(portsArr);
+    }
+  }
+  disablePort(port: number) {
+    var self = this;
+    return new Promise(function(fulfill, reject) {
+      self.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port, function() {
+        fulfill(port);
+      });
+      self.component.disablePort(port);
     });
   }
 
-  setPorts (in_port: number, out_port: number) {
-    this.component.setPorts(in_port, out_port);
-  }
-
-  tunnel (nextComponent) {
+  /*tunnel (nextComponent) {
     var self = this;
     var TUNNEL = Node_OMX.TUNNEL(this.component, nextComponent.component);
 
@@ -103,9 +202,9 @@ export class Component extends stream.Duplex {
     });
 
     return nextComponent;
-  }
+  }*/
 
-  _read () {
+  /*_read () {
     var self = this;
 
     function read() {
@@ -183,6 +282,6 @@ export class Component extends stream.Duplex {
     }
 
     this.writeRecursive(chunk, 0, next);
-  }
+  }*/
 }
-utils.inherits(Node_OMX.COMPONENT, events.EventEmitter);
+utils.inherits(Node_OMX.COMPONENTTYPE, events.EventEmitter);

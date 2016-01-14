@@ -1,7 +1,7 @@
-var fs = require('fs');
-var omx = require('../../');
+import fs = require('fs');
+import omx = require('../../');
 
-describe("VideoDecode", function () {
+xdescribe("VideoDecode", function () {
   var VideoDecode;
 
   beforeEach(function () {
