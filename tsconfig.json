@@ -71,6 +71,7 @@
         "examples/SimpleVideoDecoderRenderTunnel.ts",
         "index.ts",
         "lib/Component.ts",
+        "lib/Definitions.ts",
         "lib/components/AudioCapture.ts",
         "lib/components/AudioDecode.ts",
         "lib/components/AudioEncode.ts",

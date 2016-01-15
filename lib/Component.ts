@@ -3,9 +3,10 @@ import stream = require('stream');
 import events = require('events');
 import utils = require('./utils');
 import printEvent = require('./printEvent');
+import def = require('./Definitions');
 var Promise = require('promise');
 
-var Node_OMX = require('bindings')('Node_OMX');
+var Node_OMX: def.Node_OMX = require('bindings')('Node_OMX');
 
 export class EventHandlers {
   constructor(public eEvent: omx.OMX_EVENTTYPE, public nData1: number, public nData2: number, public fulfill, public reject) {
@@ -17,12 +18,15 @@ export class Component extends stream.Duplex {
   in_port: number;
   out_port: number;
 
-  component: any;
+  component: def.COMPONENTTYPE;
   buf2: Buffer;
   firstReadPacket: boolean;
   firstWritePacket: boolean;
   hasPortSettingsChanged: boolean;
   hasFinished: boolean;
+
+  in_list: Array<any>;
+  out_list: Array<any>;
 
   constructor(public name: string) {
     super();
@@ -41,9 +45,8 @@ export class Component extends stream.Duplex {
       Component.isOMXInit = true;
     }
     this.component = Node_OMX.COMPONENTTYPE(this.name);
-
+    
     this.component.on('event_handler', function(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
-      
       //      printEvent.log(self.name, eEvent, nData1, nData2);
       //      printEvent.logHandlers(self.registeredEventHandlers);
       
@@ -88,7 +91,7 @@ export class Component extends stream.Duplex {
         }
 
         sinkPortDefinition.nBufferSize = portDefinition.nBufferSize;
-        self.component.setParameter(self.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, sinkPortDefinition);
+        self.setParameter(self.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, sinkPortDefinition);
       });
     });
 
