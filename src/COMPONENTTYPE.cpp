@@ -54,9 +54,13 @@ COMPONENTTYPE::COMPONENTTYPE(char const *name) {
     return;
   }
 
-  uv_mutex_init(&lock);
+  uv_mutex_init(&uvEventHandlerLock);
   uv_async_init(uv_default_loop(), &uvEventHandler, eventHandlerDone);
   uvEventHandler.data = this;
+
+  uv_mutex_init(&uvBufferHandlerLock);
+  uv_async_init(uv_default_loop(), &uvBufferHandler, eventBufferDone);
+  uvBufferHandler.data = this;
 }
 
 COMPONENTTYPE::~COMPONENTTYPE() {
@@ -83,16 +87,6 @@ NAN_METHOD(COMPONENTTYPE::New) {
     v8::Local<v8::Function> cons = Nan::New(constructor);
     info.GetReturnValue().Set(cons->NewInstance(argc, argv));
   }
-}
-
-OMX_ERRORTYPE COMPONENTTYPE::empty_buffer_done(OMX_IN OMX_HANDLETYPE hComponent, OMX_IN OMX_PTR pAppData, OMX_IN OMX_BUFFERHEADERTYPE* pBuffer) {
-  plog("empty_buffer_done");
-  return OMX_ErrorNone;
-}
-
-OMX_ERRORTYPE COMPONENTTYPE::fill_buffer_done(OMX_OUT OMX_HANDLETYPE hComponent, OMX_OUT OMX_PTR pAppData, OMX_OUT OMX_BUFFERHEADERTYPE* pBuffer) {
-  plog("fill_buffer_done");
-  return OMX_ErrorNone;
 }
 
 NAN_METHOD(COMPONENTTYPE::changeState) {

@@ -68,6 +68,11 @@ export class Component extends stream.Duplex {
       }
 
     });
+    
+    this.component.on('buffer_done', function(direction, pBuffer) {
+      console.log('buffer_done', direction, pBuffer);
+
+    });
 
     return this.disableAllPorts()
       .then(self.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
