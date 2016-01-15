@@ -1,4 +1,5 @@
 #include "COMPONENTTYPE.h"
+#include "BUFFERHEADERTYPE.h"
 #include "OMX_consts.h"
 #include "Parameters.h"
 #include "log.h"
@@ -6,6 +7,10 @@
 #include <stdio.h>
 
 using v8::String;
+using v8::Local;
+using v8::Value;
+using v8::Function;
+using v8::Object;
 
 Nan::Persistent<v8::Function> COMPONENTTYPE::constructor;
 
@@ -18,7 +23,9 @@ NAN_MODULE_INIT(COMPONENTTYPE::Init) {
   Nan::SetPrototypeMethod(tpl, "getState", getState);
   Nan::SetPrototypeMethod(tpl, "getParameter", getParameter);
   Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
-  Nan::SetPrototypeMethod(tpl, "disablePort", disablePort);
+  Nan::SetPrototypeMethod(tpl, "sendCommand", sendCommand);
+  Nan::SetPrototypeMethod(tpl, "useBuffer", useBuffer);
+  Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENTTYPE").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -102,6 +109,7 @@ NAN_METHOD(COMPONENTTYPE::changeState) {
     return;
   }
 }
+
 NAN_METHOD(COMPONENTTYPE::getState) {
   COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
 
@@ -140,16 +148,63 @@ NAN_METHOD(COMPONENTTYPE::setParameter) {
   Parameters::SetParameter(&obj->comp, port, nParamIndex, param);
 }
 
-NAN_METHOD(COMPONENTTYPE::disablePort) {
+NAN_METHOD(COMPONENTTYPE::sendCommand) {
+  COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+
+  int commandType = (int) Nan::To<int>(info[0]).FromJust();
+  int portIndex = (int) Nan::To<int>(info[1]).FromJust();
+
+  OMX_ERRORTYPE rc;
+  rc = OMX_SendCommand(obj->comp, (OMX_COMMANDTYPE) commandType, portIndex, NULL);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "OMX_SendCommand() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
+}
+
+NAN_METHOD(COMPONENTTYPE::useBuffer) {
   COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
 
   int portIndex = (int) Nan::To<int>(info[0]).FromJust();
 
+  v8::Local<v8::Object> bufferObj = info[1]->ToObject();
+  char* bufferData = node::Buffer::Data(bufferObj);
+  size_t bufferLength = node::Buffer::Length(bufferObj);
+
+  OMX_BUFFERHEADERTYPE *buf;
+
   OMX_ERRORTYPE rc;
-  rc = OMX_SendCommand(obj->comp, OMX_CommandPortDisable, portIndex, NULL);
+  rc = OMX_UseBuffer(obj->comp, &buf, portIndex, NULL, bufferLength, (OMX_U8*) bufferData);
   if (rc != OMX_ErrorNone) {
     char buf[255];
-    sprintf(buf, "OMX_SendCommand() returned error: %s", OMX_consts::err2str(rc));
+    sprintf(buf, "OMX_UseBuffer() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
+
+  const unsigned argc = 1;
+  Local<Value> argv[argc] = {Nan::New<v8::External>((void*) buf)};
+  Local<Function> cons = Nan::New(BUFFERHEADERTYPE::constructor);
+  Local<Object> instance = cons->NewInstance(argc, argv);
+
+  info.GetReturnValue().Set(instance);
+}
+
+NAN_METHOD(COMPONENTTYPE::emptyBuffer) {
+  COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+
+  BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+
+  plog("emptyBuffer info.This() (0x%p)", info.This());
+
+  OMX_BUFFERHEADERTYPE* buf = _buf->buf;
+
+  OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->comp, buf);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "emptyBuffer() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
     return;
   }

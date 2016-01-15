@@ -32,7 +32,9 @@ private:
   static NAN_METHOD(getState);
   static NAN_METHOD(getParameter);
   static NAN_METHOD(setParameter);
-  static NAN_METHOD(disablePort);
+  static NAN_METHOD(sendCommand);
+  static NAN_METHOD(useBuffer);
+  static NAN_METHOD(emptyBuffer);
 
   static Nan::Persistent<v8::Function> constructor;
   OMX_HANDLETYPE comp;

@@ -12,8 +12,8 @@ export class VideoDecode extends omx.Component {
   }
   
   setVideoPortFormat (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {
-    var format = this.component.getParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+    var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
     format.eCompressionFormat = eCompressionFormat;
-    this.component.setParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
   };
 }

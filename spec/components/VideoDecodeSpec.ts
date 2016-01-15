@@ -1,20 +1,21 @@
 import fs = require('fs');
 import omx = require('../../');
 
-xdescribe("VideoDecode", function () {
-  var VideoDecode;
+describe("VideoDecode", function() {
+  var VideoDecode: omx.VideoDecode;
 
-  beforeEach(function () {
+  beforeEach(function(done) {
     VideoDecode = new omx.VideoDecode();
+    VideoDecode.init().then(done);
   });
 
-  it("should have right ports", function () {
-    expect(VideoDecode.component.in_port).toEqual(130);
-    expect(VideoDecode.component.out_port).toEqual(131);
+  it("should have right ports", function() {
+    expect(VideoDecode.in_port).toEqual(130);
+    expect(VideoDecode.out_port).toEqual(131);
   });
 
-  it("should have the right format", function () {
-    var f = VideoDecode.component.getParameter(VideoDecode.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+  it("should have the right format", function() {
+    var f = VideoDecode.getParameter(VideoDecode.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
     expect(f).toEqual({
       nIndex: 0,
       eCompressionFormat: 4,
@@ -23,8 +24,8 @@ xdescribe("VideoDecode", function () {
     });
   });
 
-  it("should have the right port definition", function () {
-    var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+  it("should have the right port definition", function() {
+    var f = VideoDecode.getParameter(VideoDecode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
     expect(f).toEqual({
       eDir: 1,
       nBufferCountActual: 1,
@@ -49,17 +50,17 @@ xdescribe("VideoDecode", function () {
     });
   });
 
-  it("should set video port format", function () {
+  it("should set video port format", function() {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
   });
 
-  it("should trigger port definition changed and have right settings", function (done) {
+  it("should trigger port definition changed and have right settings", function(done) {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
     fs.createReadStream("spec/data/video-LQ.h264")
-        .pipe(VideoDecode);
+      .pipe(VideoDecode);
 
-    VideoDecode.component.on("eventPortSettingsChanged", function () {
-      var f = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    VideoDecode.component.on("eventPortSettingsChanged", function() {
+      var f = VideoDecode.getParameter(VideoDecode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
       expect(f).toEqual({
         eDir: 1,
         nBufferCountActual: 1,
