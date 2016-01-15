@@ -21,7 +21,18 @@ private:
   static NAN_METHOD(New);
   static NAN_METHOD(set);
   static NAN_METHOD(get);
+  
   static NAN_GETTER(nAllocLenGet);
+  static NAN_SETTER(nAllocLenSet);
+  
+  static NAN_GETTER(nFilledLenGet);
+  static NAN_SETTER(nFilledLenSet);
+  
+  static NAN_GETTER(nOffsetGet);
+  static NAN_SETTER(nOffsetSet);
+  
+  static NAN_GETTER(nFlagsGet);
+  static NAN_SETTER(nFlagsSet);
   
   bool first_packet;
 };

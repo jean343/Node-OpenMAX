@@ -26,6 +26,7 @@ NAN_MODULE_INIT(COMPONENTTYPE::Init) {
   Nan::SetPrototypeMethod(tpl, "sendCommand", sendCommand);
   Nan::SetPrototypeMethod(tpl, "useBuffer", useBuffer);
   Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
+  Nan::SetPrototypeMethod(tpl, "fillBuffer", fillBuffer);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENTTYPE").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -178,6 +179,8 @@ NAN_METHOD(COMPONENTTYPE::useBuffer) {
     return;
   }
 
+  plog("useBuffer (0x%p) (0x%p) (0x%p)", buf, buf->pBuffer, bufferData);
+  
   const unsigned argc = 1;
   Local<Value> argv[argc] = {Nan::New<v8::External>((void*) buf)};
   Local<Function> cons = Nan::New(BUFFERHEADERTYPE::constructor);
@@ -191,14 +194,32 @@ NAN_METHOD(COMPONENTTYPE::emptyBuffer) {
 
   BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
-  plog("emptyBuffer info.This() (0x%p)", info.This());
-
   OMX_BUFFERHEADERTYPE* buf = _buf->buf;
+
+  plog("emptyBuffer info.This() (0x%p) (0x%p) (0x%p) %d %d %d %d", info.This(), buf, buf->pBuffer, buf->pBuffer[0], buf->pBuffer[1], buf->pBuffer[2], buf->pBuffer[3]);
 
   OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->comp, buf);
   if (rc != OMX_ErrorNone) {
     char buf[255];
     sprintf(buf, "emptyBuffer() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
+}
+
+NAN_METHOD(COMPONENTTYPE::fillBuffer) {
+  COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+
+  BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+
+  plog("fillBuffer info.This() (0x%p)", info.This());
+
+  OMX_BUFFERHEADERTYPE* buf = _buf->buf;
+
+  OMX_ERRORTYPE rc = OMX_FillThisBuffer(obj->comp, buf);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "OMX_FillThisBuffer() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
     return;
   }

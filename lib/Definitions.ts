@@ -18,4 +18,5 @@ export interface COMPONENTTYPE {
   sendCommand(commandType: omx.OMX_COMMANDTYPE, port: number);
   useBuffer(port: number, buf: Buffer);
   emptyBuffer(header);
+  fillBuffer(header);
 }

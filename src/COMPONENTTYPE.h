@@ -38,6 +38,7 @@ private:
   static NAN_METHOD(sendCommand);
   static NAN_METHOD(useBuffer);
   static NAN_METHOD(emptyBuffer);
+  static NAN_METHOD(fillBuffer);
 
   static Nan::Persistent<v8::Function> constructor;
   OMX_HANDLETYPE comp;

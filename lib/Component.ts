@@ -18,23 +18,19 @@ export class Component extends stream.Duplex {
   in_port: number;
   out_port: number;
 
-  component: def.COMPONENTTYPE;
+  component: def.COMPONENTTYPE = null;
   buf2: Buffer;
-  firstReadPacket: boolean;
-  firstWritePacket: boolean;
-  hasPortSettingsChanged: boolean;
+  firstReadPacket: boolean = true;
+  firstWritePacket: boolean = true;
+  hasPortSettingsChanged: boolean = false;
   hasFinished: boolean;
+  first_packet: boolean = true;
 
   in_list: Array<any>;
   out_list: Array<any>;
 
   constructor(public name: string) {
     super();
-    this.component = null;
-
-    this.firstReadPacket = true;
-    this.firstWritePacket = true;
-    this.hasPortSettingsChanged = false;
   }
 
   init() {
@@ -45,11 +41,11 @@ export class Component extends stream.Duplex {
       Component.isOMXInit = true;
     }
     this.component = Node_OMX.COMPONENTTYPE(this.name);
-    
+
     this.component.on('event_handler', function(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
-      //      printEvent.log(self.name, eEvent, nData1, nData2);
-      //      printEvent.logHandlers(self.registeredEventHandlers);
-      
+      printEvent.log(self.name, eEvent, nData1, nData2);
+      printEvent.logHandlers(self.registeredEventHandlers);
+
       for (var i = self.registeredEventHandlers.length - 1; i >= 0; i--) {
         var x = self.registeredEventHandlers[i];
 
@@ -68,10 +64,14 @@ export class Component extends stream.Duplex {
       }
 
     });
-    
+
     this.component.on('buffer_done', function(direction, pBuffer) {
       console.log('buffer_done', direction, pBuffer);
-
+      if (direction == 0) {
+        self.emptyBufferDone();
+      } else {
+        self.fillBufferDone();
+      }
     });
 
     return this.disableAllPorts()
@@ -209,9 +209,21 @@ export class Component extends stream.Duplex {
     return buf;
   }
 
+  emptyBufferDone;
   emptyBuffer(header) {
+    var self = this;
     this.component.emptyBuffer(header);
-    return Promise();
+    return new Promise(function(fulfill, reject) {
+      self.emptyBufferDone = fulfill;
+    });
+  }
+  fillBufferDone;
+  fillBuffer(header) {
+    var self = this;
+    this.component.fillBuffer(header);
+    return new Promise(function(fulfill, reject) {
+      self.fillBufferDone = fulfill;
+    });
   }
 
   /*tunnel (nextComponent) {
@@ -294,31 +306,42 @@ export class Component extends stream.Duplex {
     }
   }*/
 
-  writeRecursive(chunk: Buffer, offset: number, next: () => void) {
+  writeRecursive(chunk: Buffer, offset: number) {
     "use strict";
     var self = this;
 
     var inputBuffer = this.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
     var inputBufferLength = inputBuffer.header.nAllocLen;
 
-    var lastPacket = chunk.length <= offset + inputBufferLength;
-    
-    // In the case of the image_decode, we need the lastPacket flag (OMX_BUFFERFLAG_EOS) to be set after each chunk
-    //inputBuffer.set(chunk.slice(offset), this.name === "image_decode" ? lastPacket : false);
-    //var timeout = setTimeout(next, 100);//Timeout for empty buffer callback
-    
-    var slice = chunk.slice(offset);
-    slice.copy(inputBuffer.buf, 0, 0, slice.length);
+    console.log('writeRecursive', inputBuffer.header.nAllocLen, chunk.length);
 
-    this.emptyBuffer(inputBuffer.header)
+    var lastPacket = chunk.length <= offset + inputBufferLength;
+      
+    //var timeout = setTimeout(next, 100);//Timeout for empty buffer callback
+      
+    var slice = chunk.slice(offset, offset + inputBufferLength);
+    slice.copy(inputBuffer.buf, 0, 0, inputBufferLength);
+    inputBuffer.header.nFilledLen = chunk.length;
+    if (this.first_packet) {
+      inputBuffer.header.nFlags = 0x00000002; //OMX_BUFFERFLAG_STARTTIME;
+      this.first_packet = false;
+    } else {
+      inputBuffer.header.nFlags = 0x00000100; //OMX_BUFFERFLAG_TIME_UNKNOWN;
+    }
+
+    if (this.name === "image_decode" && lastPacket) {
+      inputBuffer.header.nFlags |= 0x00000001; //OMX_BUFFERFLAG_EOS;
+    }
+ 
+    return this.emptyBuffer(inputBuffer.header)
       .then(function() {
         //      clearTimeout(timeout);
-
+  
         if (!lastPacket) {
           // Buffer too small
-          self.writeRecursive(chunk, offset + inputBufferLength, next);
+          return self.writeRecursive(chunk, offset + inputBufferLength);
         } else {
-          next();
+          return Promise.resolve();
         }
       });
   }
@@ -342,8 +365,9 @@ export class Component extends stream.Duplex {
 
     this.initWrite()
       .then(function() {
-        self.writeRecursive(chunk, 0, next);
-      });
+        return self.writeRecursive(chunk, 0);
+      })
+      .then(next);
 
   }
 }

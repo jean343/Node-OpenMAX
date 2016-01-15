@@ -6,7 +6,10 @@ NAN_MODULE_INIT(BUFFERHEADERTYPE::Init) {
   tpl->SetClassName(Nan::New("BUFFERHEADERTYPE").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nAllocLen").ToLocalChecked(), nAllocLenGet);
+  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nAllocLen").ToLocalChecked(), nAllocLenGet, nAllocLenSet);
+  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nFilledLen").ToLocalChecked(), nFilledLenGet, nFilledLenSet);
+  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nOffset").ToLocalChecked(), nOffsetGet, nOffsetSet);
+  Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nFlags").ToLocalChecked(), nFlagsGet, nFlagsSet);
   Nan::SetPrototypeMethod(tpl, "set", set);
   Nan::SetPrototypeMethod(tpl, "get", get);
 
@@ -40,7 +43,47 @@ NAN_GETTER(BUFFERHEADERTYPE::nAllocLenGet) {
   info.GetReturnValue().Set(obj->buf->nAllocLen);
 }
 
+NAN_SETTER(BUFFERHEADERTYPE::nAllocLenSet) {
+  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
+  int nAllocLen = Nan::To<int>(value).FromJust();
+  obj->buf->nAllocLen = nAllocLen;
+}
+
+NAN_GETTER(BUFFERHEADERTYPE::nFilledLenGet) {
+  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
+  info.GetReturnValue().Set(obj->buf->nFilledLen);
+}
+
+NAN_SETTER(BUFFERHEADERTYPE::nFilledLenSet) {
+  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
+  int nFilledLen = Nan::To<int>(value).FromJust();
+  obj->buf->nFilledLen = nFilledLen;
+}
+
+NAN_GETTER(BUFFERHEADERTYPE::nOffsetGet) {
+  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
+  info.GetReturnValue().Set(obj->buf->nOffset);
+}
+
+NAN_SETTER(BUFFERHEADERTYPE::nOffsetSet) {
+  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
+  int nOffset = Nan::To<int>(value).FromJust();
+  obj->buf->nOffset = nOffset;
+}
+
+NAN_GETTER(BUFFERHEADERTYPE::nFlagsGet) {
+  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
+  info.GetReturnValue().Set(obj->buf->nFlags);
+}
+
+NAN_SETTER(BUFFERHEADERTYPE::nFlagsSet) {
+  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
+  int nFlags = Nan::To<int>(value).FromJust();
+  obj->buf->nFlags = nFlags;
+}
+
 // Paramerers: buffer, bool lastPacket
+
 NAN_METHOD(BUFFERHEADERTYPE::set) {
   BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
   OMX_BUFFERHEADERTYPE* buf = obj->buf;
@@ -76,13 +119,14 @@ NAN_METHOD(BUFFERHEADERTYPE::set) {
   info.GetReturnValue().Set(info.This());
 }
 
-static void freeCallback(char *data, void *hint){}
+static void freeCallback(char *data, void *hint) {
+}
 
 NAN_METHOD(BUFFERHEADERTYPE::get) {
   BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
 
   // Note that NewBuffer takes ownership of the pointer and will call free on it when garbage collection occurs.
-  Nan::MaybeLocal<v8::Object> buffer = Nan::NewBuffer((char*)obj->buf->pBuffer, obj->buf->nFilledLen, &freeCallback, NULL);
+  Nan::MaybeLocal<v8::Object> buffer = Nan::NewBuffer((char*) obj->buf->pBuffer, obj->buf->nFilledLen, &freeCallback, NULL);
 
   obj->buf->nFilledLen = 0;
 
