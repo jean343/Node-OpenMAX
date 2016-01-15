@@ -43,8 +43,8 @@ export class Component extends stream.Duplex {
     this.component = Node_OMX.COMPONENTTYPE(this.name);
 
     this.component.on('event_handler', function(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
-      printEvent.log(self.name, eEvent, nData1, nData2);
-      printEvent.logHandlers(self.registeredEventHandlers);
+      //      printEvent.log(self.name, eEvent, nData1, nData2);
+      //      printEvent.logHandlers(self.registeredEventHandlers);
 
       for (var i = self.registeredEventHandlers.length - 1; i >= 0; i--) {
         var x = self.registeredEventHandlers[i];
@@ -63,10 +63,16 @@ export class Component extends stream.Duplex {
         }
       }
 
+      switch (eEvent) {
+        case omx.OMX_EVENTTYPE.OMX_EventPortSettingsChanged:
+          this.emit('eventPortSettingsChanged');
+          break;
+      }
+
     });
 
     this.component.on('buffer_done', function(direction, pBuffer) {
-      console.log('buffer_done', direction, pBuffer);
+      //      console.log('buffer_done', direction, pBuffer);
       if (direction == 0) {
         self.emptyBufferDone();
       } else {
@@ -313,7 +319,7 @@ export class Component extends stream.Duplex {
     var inputBuffer = this.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
     var inputBufferLength = inputBuffer.header.nAllocLen;
 
-    console.log('writeRecursive', inputBuffer.header.nAllocLen, chunk.length);
+    //    console.log('writeRecursive', inputBuffer.header.nAllocLen, chunk.length);
 
     var lastPacket = chunk.length <= offset + inputBufferLength;
       
@@ -332,7 +338,7 @@ export class Component extends stream.Duplex {
     if (this.name === "image_decode" && lastPacket) {
       inputBuffer.header.nFlags |= 0x00000001; //OMX_BUFFERFLAG_EOS;
     }
- 
+
     return this.emptyBuffer(inputBuffer.header)
       .then(function() {
         //      clearTimeout(timeout);

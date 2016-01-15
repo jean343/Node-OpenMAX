@@ -11,6 +11,7 @@ export interface Node_OMX {
 
 export interface COMPONENTTYPE {
   on(event: string, callback: (eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) => void);
+  emit(event: string);
   setParameter(port: number, index: omx.OMX_INDEXTYPE, format: any);
   changeState(state: omx.OMX_STATETYPE);
   getState();
