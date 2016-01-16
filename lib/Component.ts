@@ -80,10 +80,6 @@ export class Component extends stream.Duplex {
       }
     });
 
-    return this.disableAllPorts()
-      .then(self.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
-
-
     this.on('pipe', function(source) {
       source.on('portDefinitionChanged', function(portDefinition) {
         var sinkPortDefinition = self.getParameter(self.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
@@ -114,6 +110,9 @@ export class Component extends stream.Duplex {
     this.on('end', function() {
       console.log(self.name, 'on end');
     });
+
+    return this.disableAllPorts()
+      .then(self.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
   }
 
   registeredEventHandlers: Array<EventHandlers> = [];
@@ -214,6 +213,11 @@ export class Component extends stream.Duplex {
     this.in_list.push(buf);
     return buf;
   }
+  getOutputBuffer(block: omx.BLOCK_TYPE) {
+    var buf = this.out_list.shift();
+    this.out_list.push(buf);
+    return buf;
+  }
 
   emptyBufferDone;
   emptyBuffer(header) {
@@ -270,47 +274,60 @@ export class Component extends stream.Duplex {
     return nextComponent;
   }*/
 
-  /*_read () {
+  initRead() {
+    var self = this;
+    if (this.firstReadPacket) {
+      this.firstReadPacket = false;
+      return this.enableOutputPortBuffer()
+        .then(function() {
+          if (self.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
+            return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+          }
+        });
+    } else {
+      return Promise.resolve();
+    }
+  }
+  _read() {
+    //    console.log('_read', this.name);
     var self = this;
 
     function read() {
-      //console.log('read', self.name);
-      if (self.firstReadPacket) {
-        self.firstReadPacket = false;
-        self.component.enableOutputPortBuffer();
-        if (self.component.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
-          self.component.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
-        }
-      }
+      //      console.log('read', self.name);
+      var outputBuffer;
+      self.initRead()
+        .then(function() {
+          outputBuffer = self.getOutputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
+          return self.fillBuffer(outputBuffer.header)
+        })
+        .then(function() {
+          //          if (self.hasFinished) {
+          //            return; // Warning, this might prune the last image
+          //          }
+          var buffer: Buffer = outputBuffer.buf;
 
-      var outputBuffer = self.component.getOutputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
-      self.component.fillBuffer(outputBuffer, function () {
-        if (self.hasFinished) {
-          return; // Warning, this might prune the last image
-        }
-        var buffer = outputBuffer.get();
+          if (self.buf2 === undefined || self.buf2.length < buffer.length) {
+            self.buf2 = new Buffer(buffer.length);
+          }
+          buffer.copy(self.buf2, 0, 0, buffer.length); // I am copying the buffer since outputBuffer.get shares the buffer with getOutputBuffer
 
-        if (self.buf2 === undefined || self.buf2.length < buffer.length) {
-          self.buf2 = new Buffer(buffer.length);
-        }
-        buffer.copy(self.buf2, 0, 0, buffer.length); // I am copying the buffer since outputBuffer.get shares the buffer with getOutputBuffer
-
-        self.push(self.buf2.slice(0, buffer.length));
-      });
+          self.push(self.buf2.slice(0, buffer.length));
+        })
+        .catch(console.log.bind(console));
     }
 
     if (this.hasPortSettingsChanged) {
       read();
     } else {
-      this.component.on("eventPortSettingsChanged", function () {
+      this.component.on("eventPortSettingsChanged", function() {
         console.log('eventPortSettingsChanged');
         self.hasPortSettingsChanged = true;
-        var portDefinition = self.component.getParameter(self.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+        var portDefinition = self.component.getParameter(self.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
         self.emit('portDefinitionChanged', portDefinition);
         read();
       });
     }
-  }*/
+  }
 
   writeRecursive(chunk: Buffer, offset: number) {
     "use strict";
@@ -319,12 +336,8 @@ export class Component extends stream.Duplex {
     var inputBuffer = this.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
     var inputBufferLength = inputBuffer.header.nAllocLen;
 
-    //    console.log('writeRecursive', inputBuffer.header.nAllocLen, chunk.length);
-
     var lastPacket = chunk.length <= offset + inputBufferLength;
-      
-    //var timeout = setTimeout(next, 100);//Timeout for empty buffer callback
-      
+
     var slice = chunk.slice(offset, offset + inputBufferLength);
     slice.copy(inputBuffer.buf, 0, 0, inputBufferLength);
     inputBuffer.header.nFilledLen = chunk.length;
@@ -341,15 +354,14 @@ export class Component extends stream.Duplex {
 
     return this.emptyBuffer(inputBuffer.header)
       .then(function() {
-        //      clearTimeout(timeout);
-  
         if (!lastPacket) {
           // Buffer too small
           return self.writeRecursive(chunk, offset + inputBufferLength);
         } else {
           return Promise.resolve();
         }
-      });
+      })
+      .catch(console.log.bind(console));
   }
 
   initWrite() {
@@ -360,8 +372,20 @@ export class Component extends stream.Duplex {
         .then(function() {
           if (self.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
             return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+          } else {
+            return Promise.resolve();
           }
-        });
+        })
+        .then(function() {
+          // Empty a dummy packet to fix the bug where the video_render doesn't call buffer done on the first packet
+          if (self.name === "video_render") {
+            var inputBuffer = self.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
+            inputBuffer.header.nFilledLen = 0;
+            self.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
+          }
+          return Promise.resolve();
+        })
+        .catch(console.log.bind(console));
     } else {
       return Promise.resolve();
     }
@@ -373,7 +397,8 @@ export class Component extends stream.Duplex {
       .then(function() {
         return self.writeRecursive(chunk, 0);
       })
-      .then(next);
+      .then(next)
+      .catch(console.log.bind(console));
 
   }
 }
