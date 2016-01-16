@@ -33,6 +33,7 @@ NAN_MODULE_INIT(COMPONENTTYPE::Init) {
 }
 
 COMPONENTTYPE::COMPONENTTYPE(char const *name) {
+  plog("COMPONENTTYPE(%s)", name);
   OMX_ERRORTYPE rc;
   OMX_CALLBACKTYPE callbacks;
 
@@ -65,6 +66,7 @@ COMPONENTTYPE::COMPONENTTYPE(char const *name) {
 }
 
 COMPONENTTYPE::~COMPONENTTYPE() {
+  plog("~COMPONENTTYPE(%s)", this->name);
   OMX_ERRORTYPE rc;
   rc = OMX_FreeHandle(comp);
   if (rc != OMX_ErrorNone) {

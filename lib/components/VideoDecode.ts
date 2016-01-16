@@ -1,12 +1,10 @@
 //This file is auto-generated from 'node headerGeneration/generateComponents.js' 
 
-import util = require('util')
 import omx = require('../../')
 
 export class VideoDecode extends omx.Component {
   constructor() {
     super('video_decode');
-    var self = this;
     this.init();
     this.setPorts(130, 131);
   }

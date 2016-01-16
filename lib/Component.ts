@@ -105,10 +105,16 @@ export class Component extends stream.Duplex {
 
     this.on('finish', function() {
       console.log(self.name, 'on finish');
-      self.hasFinished = true;
-    });
-    this.on('end', function() {
-      console.log(self.name, 'on end');
+      var inputBuffer = self.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
+      inputBuffer.header.nFilledLen = 0;
+      inputBuffer.header.nFlags = 0x00000100; //OMX_BUFFERFLAG_TIME_UNKNOWN;
+      inputBuffer.header.nFlags |= 0x00000001; //OMX_BUFFERFLAG_EOS;
+
+      self.emptyBuffer(inputBuffer.header)
+        .then(function() {
+          console.log(self.name, 'on finish emptyBuffer done');
+        })
+        .catch(console.log.bind(console));
     });
 
     return this.disableAllPorts()
