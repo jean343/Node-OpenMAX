@@ -28,8 +28,9 @@ export class Component extends stream.Duplex {
   in_list: Array<any>;
   out_list: Array<any>;
 
-  constructor(public name: string) {
+  constructor(public name: string, public cname?: string) {
     super();
+    if (this.cname === undefined) this.cname = this.name;
   }
 
   init() {
@@ -103,11 +104,10 @@ export class Component extends stream.Duplex {
 
 
     this.on('finish', function() {
-      console.log(self.name, 'on finish');
+      console.log(self.cname, 'on finish');
       var inputBuffer = self.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
       inputBuffer.header.nFilledLen = 0;
-      inputBuffer.header.nFlags = 0x00000100; //OMX_BUFFERFLAG_TIME_UNKNOWN;
-      inputBuffer.header.nFlags |= 0x00000001; //OMX_BUFFERFLAG_EOS;
+      inputBuffer.header.nFlags = 0x00000001 | 0x00000100; //OMX_BUFFERFLAG_EOS|OMX_BUFFERFLAG_TIME_UNKNOWN;
 
       self.emptyBuffer(inputBuffer.header)
         .catch(console.log.bind(console));
@@ -115,9 +115,9 @@ export class Component extends stream.Duplex {
 
     //    // Register stream end to push a null buffer down the stream
     //    this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventBufferFlag, this.out_port, 1).then(function() {
-    //      console.log(self.name, 'on registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventBufferFlag');
+    //      console.log(self.cname, 'on registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventBufferFlag');
     ////      self.push(null);
-    //      console.log(self.name, 'self.push(null)');
+    //      console.log(self.cname, 'self.push(null)');
     //    });
 
     return this.disableAllPorts()
@@ -250,7 +250,7 @@ export class Component extends stream.Duplex {
     var TUNNEL = Node_OMX.TUNNEL(this.component, nextComponent.component);
 
     this.component.on("eventPortSettingsChanged", function () {
-      console.log('eventPortSettingsChanged', self.name, self.component);
+      console.log('eventPortSettingsChanged', self.cname, self.component);
 
       var sourceDef = self.component.getParameter(self.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
       var sinkDef = nextComponent.component.getParameter(nextComponent.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
@@ -298,11 +298,11 @@ export class Component extends stream.Duplex {
     }
   }
   _read() {
-    //    console.log('_read', this.name);
+    //    console.log('_read', this.cname);
     var self = this;
 
     function read() {
-      //      console.log('read', self.name);
+      //      console.log('read', self.cname);
       var outputBuffer;
       self.initRead()
         .then(function() {
@@ -315,9 +315,9 @@ export class Component extends stream.Duplex {
           if (self.buf2 === undefined || self.buf2.length < buffer.length) {
             self.buf2 = new Buffer(buffer.length);
           }
-          buffer.copy(self.buf2, 0, 0, buffer.length); // I am copying the buffer since outputBuffer.get shares the buffer with getOutputBuffer
+          buffer.copy(self.buf2, 0, 0, outputBuffer.header.nFilledLen); // I am copying the buffer since outputBuffer.get shares the buffer with getOutputBuffer
 
-          self.push(self.buf2.slice(0, buffer.length));
+          self.push(self.buf2.slice(0, outputBuffer.header.nFilledLen));
           
           // Catch EOF
           if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
@@ -359,7 +359,7 @@ export class Component extends stream.Duplex {
       inputBuffer.header.nFlags = 0x00000100; //OMX_BUFFERFLAG_TIME_UNKNOWN;
     }
 
-    if (this.name === "image_decode" && lastPacket) {
+    if (this.cname === "image_decode" && lastPacket) {
       inputBuffer.header.nFlags |= 0x00000001; //OMX_BUFFERFLAG_EOS;
     }
 
@@ -389,7 +389,7 @@ export class Component extends stream.Duplex {
         })
         .then(function() {
           // Empty a dummy packet to fix the bug where the video_render doesn't call buffer done on the first packet
-          if (self.name === "video_render") {
+          if (self.cname === "video_render") {
             var inputBuffer = self.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
             inputBuffer.header.nFilledLen = 0;
             self.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
@@ -402,6 +402,7 @@ export class Component extends stream.Duplex {
     }
   }
   _write(chunk: Buffer, enc, next: () => void) {
+//    console.log('_write', chunk.length, this.cname);
     var self = this;
 
     this.initWrite()

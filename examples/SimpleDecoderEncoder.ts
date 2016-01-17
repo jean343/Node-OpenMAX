@@ -12,7 +12,7 @@ class WriteFileFilter extends stream.Duplex {
   stream: stream.Writable;
   constructor() {
     super();
-    this.stream = fs.createWriteStream("spec/video-LQ-recode.h264");
+    this.stream = fs.createWriteStream("spec/data/video-LQ-recode.h264");
     this.on('pipe', function(source) {
       var self = this;
       source.on('portDefinitionChanged', function(portDefinition) {
@@ -37,10 +37,10 @@ var VideoEncode: omx.VideoEncode;
 var VideoRender: omx.VideoRender;
 var writeFileFilter = new WriteFileFilter();
 
-VideoDecode1 = new omx.VideoDecode();
+VideoDecode1 = new omx.VideoDecode('VideoDecode1');
 VideoDecode1.init()
   .then(function() {
-    VideoDecode2 = new omx.VideoDecode();
+    VideoDecode2 = new omx.VideoDecode('VideoDecode2');
     return VideoDecode2.init();
   })
   .then(function() {
@@ -68,17 +68,17 @@ VideoDecode1.init()
     var useTunnel = false; // By using the tunnel, we send less data to node and can reduce the CPU load.
 
     if (useTunnel) {
-      fs.createReadStream("spec/video-LQ.h264")
+      fs.createReadStream("spec/data/video-LQ.h264")
         .pipe(VideoDecode1)
         .tunnel(VideoEncode)
         .pipe(WriteFileFilter)
         .pipe(VideoDecode2)
         .tunnel(VideoRender);
     } else {
-      fs.createReadStream("spec/video-LQ.h264")
+      fs.createReadStream("spec/data/video-LQ.h264")
         .pipe(VideoDecode1)
         .pipe(VideoEncode)
-//        .pipe(writeFileFilter)
+        .pipe(writeFileFilter)
         .pipe(VideoDecode2)
         .pipe(VideoRender)
         .on('finish', function() {

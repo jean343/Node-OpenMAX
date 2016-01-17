@@ -3,8 +3,8 @@
 import omx = require('../../')
 
 export class VideoDecode extends omx.Component {
-  constructor() {
-    super('video_decode');
+  constructor(name?: string) {
+    super('video_decode', name);
     this.setPorts(130, 131);
   }
   
