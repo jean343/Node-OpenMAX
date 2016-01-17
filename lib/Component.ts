@@ -23,7 +23,6 @@ export class Component extends stream.Duplex {
   firstReadPacket: boolean = true;
   firstWritePacket: boolean = true;
   hasPortSettingsChanged: boolean = false;
-  hasFinished: boolean;
   first_packet: boolean = true;
 
   in_list: Array<any>;
@@ -54,10 +53,10 @@ export class Component extends stream.Duplex {
 
         if (isRightEvent || isError) {
           if (isRightEvent) {
-            x.fulfill();
+            x.fulfill(self);
           }
           if (isError) {
-            x.reject(nData1);
+            x.reject(self, nData1);
           }
           self.registeredEventHandlers.splice(i, 1);
         }
@@ -111,11 +110,15 @@ export class Component extends stream.Duplex {
       inputBuffer.header.nFlags |= 0x00000001; //OMX_BUFFERFLAG_EOS;
 
       self.emptyBuffer(inputBuffer.header)
-        .then(function() {
-          console.log(self.name, 'on finish emptyBuffer done');
-        })
         .catch(console.log.bind(console));
     });
+
+    //    // Register stream end to push a null buffer down the stream
+    //    this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventBufferFlag, this.out_port, 1).then(function() {
+    //      console.log(self.name, 'on registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventBufferFlag');
+    ////      self.push(null);
+    //      console.log(self.name, 'self.push(null)');
+    //    });
 
     return this.disableAllPorts()
       .then(self.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
@@ -307,9 +310,6 @@ export class Component extends stream.Duplex {
           return self.fillBuffer(outputBuffer.header)
         })
         .then(function() {
-          //          if (self.hasFinished) {
-          //            return; // Warning, this might prune the last image
-          //          }
           var buffer: Buffer = outputBuffer.buf;
 
           if (self.buf2 === undefined || self.buf2.length < buffer.length) {
@@ -318,6 +318,11 @@ export class Component extends stream.Duplex {
           buffer.copy(self.buf2, 0, 0, buffer.length); // I am copying the buffer since outputBuffer.get shares the buffer with getOutputBuffer
 
           self.push(self.buf2.slice(0, buffer.length));
+          
+          // Catch EOF
+          if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
+            self.push(null);
+          }
         })
         .catch(console.log.bind(console));
     }

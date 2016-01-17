@@ -15,7 +15,7 @@ describe("SimpleVideoDecoderRenderSpec", function() {
       .then(done);
   });
 
-  it("should play simple video", function() {
+  it("should play simple video", function(done) {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 
     fs.createReadStream("spec/video-LQ.h264")
@@ -23,6 +23,7 @@ describe("SimpleVideoDecoderRenderSpec", function() {
       .pipe(VideoRender)
       .on('finish', function() {
         console.log("Done");
+        done();
       });
   });
 

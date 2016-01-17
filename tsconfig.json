@@ -66,6 +66,7 @@
         "dist/lib/printEvent.d.ts",
         "dist/lib/utils.d.ts",
         "dist/spec/components/VideoDecodeSpec.d.ts",
+        "examples/SimpleDecoderEncoder.ts",
         "examples/SimpleVideoDecoderBuffer.ts",
         "examples/SimpleVideoDecoderRender.ts",
         "examples/SimpleVideoDecoderRenderBuffer.ts",

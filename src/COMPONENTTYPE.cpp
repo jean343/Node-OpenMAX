@@ -198,8 +198,6 @@ NAN_METHOD(COMPONENTTYPE::emptyBuffer) {
 
   OMX_BUFFERHEADERTYPE* buf = _buf->buf;
 
-  plog("emptyBuffer info.This() (0x%p) (0x%p) (0x%p) %d %d %d %d", info.This(), buf, buf->pBuffer, buf->pBuffer[0], buf->pBuffer[1], buf->pBuffer[2], buf->pBuffer[3]);
-
   OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->comp, buf);
   if (rc != OMX_ErrorNone) {
     char buf[255];
@@ -213,8 +211,6 @@ NAN_METHOD(COMPONENTTYPE::fillBuffer) {
   COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
 
   BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
-
-  plog("fillBuffer info.This() (0x%p)", info.This());
 
   OMX_BUFFERHEADERTYPE* buf = _buf->buf;
 

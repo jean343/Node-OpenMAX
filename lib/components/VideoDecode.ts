@@ -5,7 +5,6 @@ import omx = require('../../')
 export class VideoDecode extends omx.Component {
   constructor() {
     super('video_decode');
-    this.init();
     this.setPorts(130, 131);
   }
   
