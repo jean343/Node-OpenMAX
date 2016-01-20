@@ -1,17 +1,29 @@
 import fs = require('fs');
-import stream = require('stream');
 import omx = require('../');
+import stream = require('stream');
 
-var ws = new stream.Writable();
-ws._write = function (chunk, enc, next) {
-  console.log('_write length', chunk.length, chunk);
-  next();
-};
+class WritableFilter extends stream.Writable {
+  constructor() {
+    super();
+  }
+  _write(chunk, enc, next) {
+    console.log('_write length', chunk.length, chunk);
+    next();
+  };
+}
 
-var VideoDecode = new omx.VideoDecode();
+var VideoDecode: omx.VideoDecode;
+var ws = new WritableFilter();
 
-VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+VideoDecode = new omx.VideoDecode();
+VideoDecode.init()
+  .then(function() {
+    VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 
-fs.createReadStream("spec/data/video-LQ.h264")
-    .pipe(VideoDecode)
-    .pipe(ws);
+    fs.createReadStream("spec/data/video-LQ.h264")
+      .pipe(VideoDecode)
+      .pipe(ws)
+      .on('finish', function() {
+        console.log("Done");
+      });
+  });
