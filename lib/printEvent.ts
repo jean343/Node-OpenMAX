@@ -1,7 +1,7 @@
 import omx = require('../');
 
 export function log(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
-  console.log('caught event', omx.OMX_EVENTTYPE[eEvent], nData1, nData2);
+//  console.log('on %s caught event', name, omx.OMX_EVENTTYPE[eEvent], nData1, nData2);
 
   switch (eEvent) {
     case omx.OMX_EVENTTYPE.OMX_EventCmdComplete:
@@ -26,6 +26,23 @@ export function log(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number, nDa
           break;
       }
       break;
+    case omx.OMX_EVENTTYPE.OMX_EventBufferFlag:
+      console.log("event_handler::OMX_EventBufferFlag");
+      break;
+    case omx.OMX_EVENTTYPE.OMX_EventPortSettingsChanged:
+      console.log("event_handler::OMX_EventPortSettingsChanged");
+      break;
+    case omx.OMX_EVENTTYPE.OMX_EventMark:
+      console.log("event_handler::OMX_EventMark");
+      break;
+    //        case omx.OMX_EVENTTYPE.OMX_EventParamOrConfigChanged:
+    //          console.log("event_handler::OMX_EventParamOrConfigChanged");
+    //          break;
+  }
+  logError(name, eEvent, nData1, nData2);
+}
+export function logError(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
+  switch (eEvent) {
     case omx.OMX_EVENTTYPE.OMX_EventError:
       var error = nData1;
       switch (error) {
@@ -82,22 +99,10 @@ export function log(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number, nDa
         //              console.log("drm library error %x (%d)", name, error, nData2);
         //              break;
         default:
-          console.log("unexpected error %x (%d)", name, error, nData2);
+          console.log("on %s unexpected error", name, omx.OMX_ERRORTYPE[error], nData2);
           break;
       }
       break;
-    case omx.OMX_EVENTTYPE.OMX_EventBufferFlag:
-      console.log("event_handler::OMX_EventBufferFlag");
-      break;
-    case omx.OMX_EVENTTYPE.OMX_EventPortSettingsChanged:
-      console.log("event_handler::OMX_EventPortSettingsChanged");
-      break;
-    case omx.OMX_EVENTTYPE.OMX_EventMark:
-      console.log("event_handler::OMX_EventMark");
-      break;
-    //        case omx.OMX_EVENTTYPE.OMX_EventParamOrConfigChanged:
-    //          console.log("event_handler::OMX_EventParamOrConfigChanged");
-    //          break;
   }
 }
 export function logHandlers(handlers: Array<omx.EventHandlers>) {
