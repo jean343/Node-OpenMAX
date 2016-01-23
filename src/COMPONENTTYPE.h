@@ -3,9 +3,7 @@
 #include <nan.h>
 
 #include "bcm_host.h"
-extern "C" {
-#include "ilclient.h"
-}
+#include "IL/OMX_Broadcom.h"
 #include <vector>
 
 struct EventHandlerData {

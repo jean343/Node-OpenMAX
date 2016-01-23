@@ -3,6 +3,7 @@
 #include <nan.h>
 
 #include "bcm_host.h"
+#include "IL/OMX_Broadcom.h"
 
 #include "OMX_consts.h"
 

@@ -1,10 +1,7 @@
 #pragma once
 
-extern "C" {
-#include "ilclient.h"
-}
-
 #include "bcm_host.h"
+#include "IL/OMX_Broadcom.h"
 #include <stdio.h>
 
 class OMX_consts {

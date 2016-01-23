@@ -5,9 +5,6 @@
       "sources": [
         "src/main.cpp",
         "src/init.cpp",
-        "src/ILCLIENT.cpp",
-        "src/COMPONENT.cpp",
-        "src/TUNNEL.cpp",
         "src/BUFFERHEADERTYPE.cpp",
         "src/ParametersGet.cpp",
         "src/ParametersSet.cpp",
@@ -21,8 +18,7 @@
         "<!(node -e \"require('nan')\")",
         "/opt/vc/include",
         "/opt/vc/include/interface/vcos/pthreads",
-        "/opt/vc/include/interface/vmcs_host/linux",
-        "/opt/vc/src/hello_pi/libs/ilclient/"
+        "/opt/vc/include/interface/vmcs_host/linux"
       ],
       "link_settings": {
         "library_dirs": [
@@ -32,8 +28,7 @@
           "-lopenmaxil",
           "-lbcm_host",
           "-lvcos",
-          "-lpthread",
-          "/opt/vc/src/hello_pi/libs/ilclient/libilclient.a"
+          "-lpthread"
         ]
       },
     }

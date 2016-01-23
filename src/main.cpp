@@ -12,16 +12,10 @@
 #include "main.h"
 
 #include "init.h"
-#include "ILCLIENT.h"
-#include "COMPONENT.h"
-#include "TUNNEL.h"
 #include "BUFFERHEADERTYPE.h"
 #include "COMPONENTTYPE.h"
 
 #include "bcm_host.h"
-extern "C" {
-#include "ilclient.h"
-}
 
 using v8::FunctionTemplate;
 
@@ -32,9 +26,6 @@ NAN_MODULE_INIT(Init) {
   Nan::Set(target, Nan::New("OMX_Init").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::OMX_Init)).ToLocalChecked());
   Nan::Set(target, Nan::New("OMX_Deinit").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::OMX_Deinit)).ToLocalChecked());
 
-  ILCLIENT::Init(target);
-  COMPONENT::Init(target);
-  TUNNEL::Init(target);
   BUFFERHEADERTYPE::Init(target);
   COMPONENTTYPE::Init(target);
 }
