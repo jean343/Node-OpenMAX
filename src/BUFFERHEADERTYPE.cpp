@@ -10,8 +10,6 @@ NAN_MODULE_INIT(BUFFERHEADERTYPE::Init) {
   Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nFilledLen").ToLocalChecked(), nFilledLenGet, nFilledLenSet);
   Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nOffset").ToLocalChecked(), nOffsetGet, nOffsetSet);
   Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("nFlags").ToLocalChecked(), nFlagsGet, nFlagsSet);
-  Nan::SetPrototypeMethod(tpl, "set", set);
-  Nan::SetPrototypeMethod(tpl, "get", get);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("BUFFERHEADERTYPE").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -80,55 +78,4 @@ NAN_SETTER(BUFFERHEADERTYPE::nFlagsSet) {
   BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
   int nFlags = Nan::To<int>(value).FromJust();
   obj->buf->nFlags = nFlags;
-}
-
-// Paramerers: buffer, bool lastPacket
-
-NAN_METHOD(BUFFERHEADERTYPE::set) {
-  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
-  OMX_BUFFERHEADERTYPE* buf = obj->buf;
-
-  v8::Local<v8::Object> bufferObj = info[0]->ToObject();
-  char* bufferData = node::Buffer::Data(bufferObj);
-  size_t bufferLength = node::Buffer::Length(bufferObj);
-
-  bool lastPacket = false;
-  if (!info[1]->IsUndefined()) {
-    lastPacket = Nan::To<bool>(info[1]).FromJust();
-  }
-
-  if (bufferLength > buf->nAllocLen) { // bound check
-    bufferLength = buf->nAllocLen;
-  }
-
-  memcpy(buf->pBuffer, bufferData, bufferLength);
-
-  buf->nFilledLen = bufferLength;
-
-  if (obj->first_packet) {
-    buf->nFlags = OMX_BUFFERFLAG_STARTTIME;
-    obj->first_packet = false;
-  } else {
-    buf->nFlags = OMX_BUFFERFLAG_TIME_UNKNOWN;
-  }
-
-  if (lastPacket) {
-    buf->nFlags |= OMX_BUFFERFLAG_EOS;
-  }
-
-  info.GetReturnValue().Set(info.This());
-}
-
-static void freeCallback(char *data, void *hint) {
-}
-
-NAN_METHOD(BUFFERHEADERTYPE::get) {
-  BUFFERHEADERTYPE* obj = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(info.This());
-
-  // Note that NewBuffer takes ownership of the pointer and will call free on it when garbage collection occurs.
-  Nan::MaybeLocal<v8::Object> buffer = Nan::NewBuffer((char*) obj->buf->pBuffer, obj->buf->nFilledLen, &freeCallback, NULL);
-
-  obj->buf->nFilledLen = 0;
-
-  info.GetReturnValue().Set(buffer.ToLocalChecked());
 }
