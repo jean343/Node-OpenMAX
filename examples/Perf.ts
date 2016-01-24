@@ -65,22 +65,24 @@ class WritableFilter extends stream.Writable {
     });
   }
   _write(chunk, enc, next) {
+    var self = this;
     //    console.log('_write length', chunk.length, chunk);
     if (this.portDefinition.video.eColorFormat === omx.OMX_COLOR_FORMATTYPE.OMX_COLOR_FormatYUV420PackedPlanar) {
       var w = Math.min(this.nStride, this.width);
       var h = Math.min(this.nSliceHeight, this.height);
 
-      function copyBlock(offsetIn, offsetOut, offsetX, offsetY, nStride, _w, _h, _width) {
-        for (var y = 0; y < _h; y++) {
-          var s = chunk.slice(offsetIn + y * nStride, offsetIn + y * nStride + _w);
+      function copyBlock(offsetIn, offsetOut, scale) {
+        for (var y = 0; y < h / scale; y++) {
+          var s = chunk.slice(offsetIn + y * self.nStride / scale, offsetIn + y * self.nStride / scale + w / scale);
 
-          var destOffset = offsetOut + offsetX + (offsetY + y) * _width;
+          var destOffset = offsetOut + self.offsetX / scale + (self.offsetY / scale + y) * bufferFormat.video.nStride / scale;
           s.copy(buf, destOffset);
         }
       }
 
-      copyBlock(0, 0, this.offsetX, this.offsetY, this.nStride, w, h, width);
-      copyBlock(this.nStride * this.nSliceHeight, bufferFormatSize, this.offsetX / 2, this.offsetY / 2, this.nStride / 2, w / 2, h / 2, width / 2);
+      copyBlock(0, 0, 1);
+      copyBlock(this.nStride * this.nSliceHeight, bufferFormatSize, 2);
+      copyBlock((5 / 4) * this.nStride * this.nSliceHeight, (5 / 4) * bufferFormatSize, 2);
     }
     this.fps.tick();
     next();
@@ -118,8 +120,8 @@ class ReadableFilter extends stream.Readable {
 // row |
 // row |
 
-var rows = 1; // y
-var cols = 1; // x
+var rows = 3; // y
+var cols = 3; // x
 var width = 1920;
 var height = 1080;
 
@@ -136,14 +138,13 @@ function loop() {
   var rx = coli * rw;
   var ry = rowi * rh;
 
-  //  var ws = new WritableFilter('count' + i, rx, ry, rw, rh);
-  var ws = new WritableFilter('count' + i, 0, 0, 640, 480);
+    var ws = new WritableFilter('count' + i, rx, ry, rw, rh);
   VideoDecode.init()
     .then(function() {
       VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
       VideoDecode.setBufferCount(1);
 
-      fs.createReadStream("spec/data/video-LQ-640.h264")
+      fs.createReadStream("spec/data/video-LQ.h264")
         .pipe(VideoDecode)
         .pipe(ws)
         .on('finish', function() {
@@ -152,7 +153,6 @@ function loop() {
 
       console.log('iter', i++);
       if (i <= rows * cols) {
-        //        setTimeout(loop, 1);
         loop();
       }
     });
