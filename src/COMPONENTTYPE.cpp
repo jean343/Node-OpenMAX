@@ -83,6 +83,12 @@ NAN_METHOD(COMPONENTTYPE::New) {
 
     COMPONENTTYPE *obj = new COMPONENTTYPE(*name);
     obj->Wrap(info.This());
+
+    // Ref() marks the object as being attached to an event loop.
+    // Refed objects will not be garbage collected, even if all references are lost.
+    // TODO call Unref when done
+    obj->Ref();
+
     info.GetReturnValue().Set(info.This());
   } else {
     const int argc = 1;
@@ -182,7 +188,7 @@ NAN_METHOD(COMPONENTTYPE::useBuffer) {
   }
 
   plog("useBuffer (0x%p) (0x%p) (0x%p)", buf, buf->pBuffer, bufferData);
-  
+
   const unsigned argc = 1;
   Local<Value> argv[argc] = {Nan::New<v8::External>((void*) buf)};
   Local<Function> cons = Nan::New(BUFFERHEADERTYPE::constructor);
