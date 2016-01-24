@@ -66,6 +66,7 @@
         "dist/lib/utils.d.ts",
         "dist/spec/components/VideoDecodeSpec.d.ts",
         "examples/Perf.ts",
+        "examples/PerfClient.ts",
         "examples/SimpleDecoderEncoder.ts",
         "examples/SimpleVideoDecoderBuffer.ts",
         "examples/SimpleVideoDecoderRender.ts",
