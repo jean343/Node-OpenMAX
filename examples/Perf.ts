@@ -64,34 +64,12 @@ class WritableFilter extends stream.Writable {
       });
     });
   }
-  copyBlock(chunk, offsetIn, offsetOut, scale, w, h) {
-    var nStrideS = this.nStride / scale;
-    var wS = w / scale;
-    var offsetYS = this.offsetY / scale;
-    var bufnStrideS = bufferFormat.video.nStride / scale;
-    offsetOut += this.offsetX / scale + offsetYS * bufnStrideS;
-
-    for (var y = 0; y < h / scale; y++) {
-      var sourceStart = offsetIn + y * nStrideS;
-      var sourceEnd = sourceStart + wS;
-
-      offsetOut += bufnStrideS;
-      chunk.copy(buf, offsetOut, sourceStart, sourceEnd);
-    }
-  }
-  _write(chunk, enc, next) {
-    if (this.portDefinition.image.eColorFormat === omx.OMX_COLOR_FORMATTYPE.OMX_COLOR_FormatYUV420PackedPlanar) {
-      var w = Math.min(this.nStride, this.width);
-      var h = Math.min(this.nSliceHeight, this.height);
-
-
-      this.copyBlock(chunk, 0, 0, 1, w, h);
-      this.copyBlock(chunk, this.nStride * this.nSliceHeight, bufferFormatSize, 2, w, h);
-      this.copyBlock(chunk, (5 / 4) * this.nStride * this.nSliceHeight, (5 / 4) * bufferFormatSize, 2, w, h);
-    }
-    this.fps.tick();
-    next();
-  };
+    _write(chunk, enc, next) {
+      this.fps.tick();
+      if (this.portDefinition.image.eColorFormat === omx.OMX_COLOR_FORMATTYPE.OMX_COLOR_FormatYUV420PackedPlanar) {
+        omx.Component.copyAsync(chunk, buf, bufferFormat.video.nStride, bufferFormat.video.nSliceHeight, this.offsetX, this.offsetY, this.nStride, this.width, this.nSliceHeight, this.height, next);
+      }
+    };
 }
 
 class ReadableFilter extends stream.Readable {

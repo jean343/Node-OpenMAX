@@ -14,6 +14,7 @@
 #include "init.h"
 #include "BUFFERHEADERTYPE.h"
 #include "COMPONENTTYPE.h"
+#include "CopyAsync.h"
 
 #include "bcm_host.h"
 
@@ -25,6 +26,8 @@ NAN_MODULE_INIT(Init) {
   Nan::Set(target, Nan::New("bcm_host_deinit").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::bcm_host_deinit)).ToLocalChecked());
   Nan::Set(target, Nan::New("OMX_Init").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::OMX_Init)).ToLocalChecked());
   Nan::Set(target, Nan::New("OMX_Deinit").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(NodeOMX::OMX_Deinit)).ToLocalChecked());
+
+  Nan::Set(target, Nan::New("copyAsync").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(CopyAsync)).ToLocalChecked());
 
   BUFFERHEADERTYPE::Init(target);
   COMPONENTTYPE::Init(target);

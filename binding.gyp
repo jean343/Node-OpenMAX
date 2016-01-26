@@ -8,7 +8,8 @@
         "src/BUFFERHEADERTYPE.cpp",
         "src/ParametersGet.cpp",
         "src/ParametersSet.cpp",
-        "src/COMPONENTTYPE.cpp"
+        "src/COMPONENTTYPE.cpp",
+        "src/CopyAsync.cpp"
       ],
       "defines": [
         "OMX",

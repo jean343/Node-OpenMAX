@@ -124,6 +124,10 @@ export class Component extends stream.Duplex {
       .then(self.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
   }
 
+  static copyAsync(chunk, buf, destnStride, destnSliceHeight, offsetX, offsetY, nStride, width, nSliceHeight, height, callback) {
+    return Node_OMX.copyAsync(chunk, buf, destnStride, destnSliceHeight, offsetX, offsetY, nStride, width, nSliceHeight, height, callback);
+  }
+
   registeredEventHandlers: Array<EventHandlers> = [];
   registerEventHandler(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
     var self = this;
