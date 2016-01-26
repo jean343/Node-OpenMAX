@@ -31,7 +31,7 @@ namespace headers
         {
             get
             {
-                return comment.Replace("reference: ", "").Replace("(read only)", "").Replace("(write only)", "").Trim();
+                return comment.Replace("reference: ", "").Replace("reference : ", "").Replace("(read only)", "").Replace("(write only)", "").Trim();
             }
         }
     }

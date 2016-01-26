@@ -3799,6 +3799,41 @@ v8::Local<v8::Object> Parameters::GetParameter(OMX_HANDLETYPE *handle, int port,
       return scope.Escape(GET_OMX_PARAM_PORTSUMMARYTYPE(format));
     }
       break;
+    case OMX_IndexParamTunnelStatus:
+    {
+      OMX_PARAM_TUNNELSTATUSTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_TUNNELSTATUSTYPE(format));
+    }
+      break;
+    case OMX_IndexParamBufferAddress:
+    {
+      OMX_PARAM_BUFFERADDRESSTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_BUFFERADDRESSTYPE(format));
+    }
+      break;
+    case OMX_IndexParamTunnelSetup:
+    {
+      OMX_PARAM_TUNNELSETUPTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_TUNNELSETUPTYPE(format));
+    }
+      break;
+    case OMX_IndexParamBrcmPortEGL:
+    {
+      OMX_PARAM_BRCMPORTEGLTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_BRCMPORTEGLTYPE(format));
+    }
+      break;
+    case OMX_IndexParamIdleResourceCount:
+    {
+      OMX_PARAM_U32TYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_U32TYPE(format));
+    }
+      break;
     case OMX_IndexParamBrcmDataUnit:
     {
       OMX_PARAM_DATAUNITTYPE format;
@@ -3813,11 +3848,81 @@ v8::Local<v8::Object> Parameters::GetParameter(OMX_HANDLETYPE *handle, int port,
       return scope.Escape(GET_OMX_PARAM_CODECCONFIGTYPE(format));
     }
       break;
+    case OMX_IndexParamTestInterface:
+    {
+      OMX_PARAM_TESTINTERFACETYPE format;
+      GetParameterTemplate(&format, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_TESTINTERFACETYPE(format));
+    }
+      break;
+    case OMX_IndexConfigDisplayRegion:
+    {
+      OMX_CONFIG_DISPLAYREGIONTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_DISPLAYREGIONTYPE(format));
+    }
+      break;
+    case OMX_IndexParamSource:
+    {
+      OMX_PARAM_SOURCETYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_SOURCETYPE(format));
+    }
+      break;
+    case OMX_IndexParamSourceSeed:
+    {
+      OMX_PARAM_SOURCESEEDTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_SOURCESEEDTYPE(format));
+    }
+      break;
+    case OMX_IndexParamResize:
+    {
+      OMX_PARAM_RESIZETYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_RESIZETYPE(format));
+    }
+      break;
+    case OMX_IndexConfigVisualisation:
+    {
+      OMX_CONFIG_VISUALISATIONTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_VISUALISATIONTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigSingleStep:
+    {
+      OMX_PARAM_U32TYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_U32TYPE(format));
+    }
+      break;
     case OMX_IndexConfigPlayMode:
     {
       OMX_CONFIG_PLAYMODETYPE format;
       GetParameterTemplate(&format, handle, nParamIndex);
       return scope.Escape(GET_OMX_CONFIG_PLAYMODETYPE(format));
+    }
+      break;
+    case OMX_IndexParamCameraCamplusId:
+    {
+      OMX_PARAM_U32TYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_U32TYPE(format));
+    }
+      break;
+    case OMX_IndexConfigCommonImageFilterParameters:
+    {
+      OMX_CONFIG_IMAGEFILTERPARAMSTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_IMAGEFILTERPARAMSTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigTransitionControl:
+    {
+      OMX_CONFIG_TRANSITIONCONTROLTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_TRANSITIONCONTROLTYPE(format));
     }
       break;
     case OMX_IndexConfigPresentationOffset:
@@ -3832,6 +3937,27 @@ v8::Local<v8::Object> Parameters::GetParameter(OMX_HANDLETYPE *handle, int port,
       OMX_PARAM_STILLSFUNCTIONTYPE format;
       GetParameterTemplate(&format, handle, nParamIndex);
       return scope.Escape(GET_OMX_PARAM_STILLSFUNCTIONTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigAudioMonoTrackControl:
+    {
+      OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE(format));
+    }
+      break;
+    case OMX_IndexParamCameraImagePool:
+    {
+      OMX_PARAM_CAMERAIMAGEPOOLTYPE format;
+      GetParameterTemplate(&format, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_CAMERAIMAGEPOOLTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigCameraISPOutputPoolHeight:
+    {
+      OMX_PARAM_U32TYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_PARAM_U32TYPE(format));
     }
       break;
     case OMX_IndexParamImagePoolSize:
@@ -3860,6 +3986,90 @@ v8::Local<v8::Object> Parameters::GetParameter(OMX_HANDLETYPE *handle, int port,
       OMX_PARAM_ILFIFOCONFIG format;
       GetParameterTemplate(&format, port, handle, nParamIndex);
       return scope.Escape(GET_OMX_PARAM_ILFIFOCONFIG(format));
+    }
+      break;
+    case OMX_IndexConfigCameraSensorModes:
+    {
+      OMX_CONFIG_CAMERASENSORMODETYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_CAMERASENSORMODETYPE(format));
+    }
+      break;
+    case OMX_IndexConfigBrcmPortStats:
+    {
+      OMX_CONFIG_BRCMPORTSTATSTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_BRCMPORTSTATSTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigBrcmPortBufferStats:
+    {
+      OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigBrcmCameraStats:
+    {
+      OMX_CONFIG_BRCMCAMERASTATSTYPE format;
+      GetParameterTemplate(&format, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_BRCMCAMERASTATSTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigBrcmIOPerfStats:
+    {
+      OMX_CONFIG_BRCMIOPERFSTATSTYPE format;
+      GetParameterTemplate(&format, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_BRCMIOPERFSTATSTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigCommonSharpness:
+    {
+      OMX_CONFIG_SHARPNESSTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_SHARPNESSTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigCommonFlickerCancellation:
+    {
+      OMX_CONFIG_FLICKERCANCELTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_FLICKERCANCELTYPE(format));
+    }
+      break;
+    case OMX_IndexParamCameraSwapImagePools:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      GetParameterTemplate(&format, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_BOOLEANTYPE(format));
+    }
+      break;
+    case OMX_IndexParamCameraSingleBufferCaptureInput:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      GetParameterTemplate(&format, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_BOOLEANTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigCommonRedEyeRemoval:
+    {
+      OMX_CONFIG_REDEYEREMOVALTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_REDEYEREMOVALTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigCommonFaceDetectionControl:
+    {
+      OMX_CONFIG_FACEDETECTIONCONTROLTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_FACEDETECTIONCONTROLTYPE(format));
+    }
+      break;
+    case OMX_IndexConfigCommonFaceDetectionRegion:
+    {
+      OMX_CONFIG_FACEDETECTIONREGIONTYPE format;
+      GetParameterTemplate(&format, port, handle, nParamIndex);
+      return scope.Escape(GET_OMX_CONFIG_FACEDETECTIONREGIONTYPE(format));
     }
       break;
     case OMX_IndexConfigCommonInterlace:

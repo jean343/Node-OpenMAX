@@ -3263,6 +3263,51 @@ void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nP
       SetParameterTemplate(&format, handle, nParamIndex);
     }
       break;
+    case OMX_IndexParamTunnelStatus:
+    {
+      OMX_PARAM_TUNNELSTATUSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_TUNNELSTATUSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBufferAddress:
+    {
+      OMX_PARAM_BUFFERADDRESSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BUFFERADDRESSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamTunnelSetup:
+    {
+      OMX_PARAM_TUNNELSETUPTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_TUNNELSETUPTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmPortEGL:
+    {
+      OMX_PARAM_BRCMPORTEGLTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMPORTEGLTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamIdleResourceCount:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
     case OMX_IndexParamBrcmDataUnit:
     {
       OMX_PARAM_DATAUNITTYPE format;
@@ -3281,11 +3326,101 @@ void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nP
       SetParameterTemplate(&format, handle, nParamIndex);
     }
       break;
+    case OMX_IndexParamTestInterface:
+    {
+      OMX_PARAM_TESTINTERFACETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_TESTINTERFACETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigDisplayRegion:
+    {
+      OMX_CONFIG_DISPLAYREGIONTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_DISPLAYREGIONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamSource:
+    {
+      OMX_PARAM_SOURCETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_SOURCETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamSourceSeed:
+    {
+      OMX_PARAM_SOURCESEEDTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_SOURCESEEDTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamResize:
+    {
+      OMX_PARAM_RESIZETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_RESIZETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigVisualisation:
+    {
+      OMX_CONFIG_VISUALISATIONTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_VISUALISATIONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigSingleStep:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
     case OMX_IndexConfigPlayMode:
     {
       OMX_CONFIG_PLAYMODETYPE format;
       OMX_consts::InitOMXParams(&format);
       SET_OMX_CONFIG_PLAYMODETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraCamplusId:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonImageFilterParameters:
+    {
+      OMX_CONFIG_IMAGEFILTERPARAMSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_IMAGEFILTERPARAMSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigTransitionControl:
+    {
+      OMX_CONFIG_TRANSITIONCONTROLTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_TRANSITIONCONTROLTYPE(format, param);
 
       SetParameterTemplate(&format, handle, nParamIndex);
     }
@@ -3304,6 +3439,33 @@ void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nP
       OMX_PARAM_STILLSFUNCTIONTYPE format;
       OMX_consts::InitOMXParams(&format);
       SET_OMX_PARAM_STILLSFUNCTIONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigAudioMonoTrackControl:
+    {
+      OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraImagePool:
+    {
+      OMX_PARAM_CAMERAIMAGEPOOLTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CAMERAIMAGEPOOLTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraISPOutputPoolHeight:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
 
       SetParameterTemplate(&format, handle, nParamIndex);
     }
@@ -3340,6 +3502,114 @@ void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nP
       OMX_PARAM_ILFIFOCONFIG format;
       OMX_consts::InitOMXParams(&format, port);
       SET_OMX_PARAM_ILFIFOCONFIG(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraSensorModes:
+    {
+      OMX_CONFIG_CAMERASENSORMODETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_CAMERASENSORMODETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmPortStats:
+    {
+      OMX_CONFIG_BRCMPORTSTATSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMPORTSTATSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmPortBufferStats:
+    {
+      OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmCameraStats:
+    {
+      OMX_CONFIG_BRCMCAMERASTATSTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMCAMERASTATSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmIOPerfStats:
+    {
+      OMX_CONFIG_BRCMIOPERFSTATSTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMIOPERFSTATSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonSharpness:
+    {
+      OMX_CONFIG_SHARPNESSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_SHARPNESSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonFlickerCancellation:
+    {
+      OMX_CONFIG_FLICKERCANCELTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_FLICKERCANCELTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraSwapImagePools:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraSingleBufferCaptureInput:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonRedEyeRemoval:
+    {
+      OMX_CONFIG_REDEYEREMOVALTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_REDEYEREMOVALTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonFaceDetectionControl:
+    {
+      OMX_CONFIG_FACEDETECTIONCONTROLTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_FACEDETECTIONCONTROLTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonFaceDetectionRegion:
+    {
+      OMX_CONFIG_FACEDETECTIONREGIONTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_FACEDETECTIONREGIONTYPE(format, param);
 
       SetParameterTemplate(&format, handle, nParamIndex);
     }
