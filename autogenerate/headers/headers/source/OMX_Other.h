@@ -39,7 +39,7 @@ extern "C" {
  *  for this header file to compile successfully 
  */
 
-#include <OMX_Core.h>
+#include "OMX_Core.h"
 
 
 /** 
@@ -60,6 +60,11 @@ typedef enum OMX_OTHER_FORMATTYPE {
 
     OMX_OTHER_FormatKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_OTHER_FormatVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+
+    OMX_OTHER_FormatText,
+    OMX_OTHER_FormatTextSKM2,
+    OMX_OTHER_FormatText3GP5,
+
     OMX_OTHER_FormatMax = 0x7FFFFFFF
 } OMX_OTHER_FORMATTYPE;
 
@@ -77,6 +82,11 @@ typedef enum OMX_TIME_SEEKMODETYPE {
                                 * if it results in a slower seek. */
     OMX_TIME_SeekModeKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_TIME_SeekModeVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+
+    OMX_TIME_SeekModeDirectional, /**< Similar to Fast, but if seeking backwards will
+                                   * try and seek to a previous sync position from the
+                                   * current media time. */
+
     OMX_TIME_SeekModeMax = 0x7FFFFFFF
 } OMX_TIME_SEEKMODETYPE;
 

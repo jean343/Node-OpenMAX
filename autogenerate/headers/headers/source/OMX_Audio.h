@@ -39,7 +39,7 @@ extern "C" {
  *  for this header file to compile successfully 
  */
 
-#include <OMX_Core.h>
+#include "OMX_Core.h"
 
 /** @defgroup midi MIDI
  * @ingroup audio
@@ -91,6 +91,22 @@ typedef enum OMX_AUDIO_CODINGTYPE {
     OMX_AUDIO_CodingMIDI,        /**< Any variant of MIDI encoded data */
     OMX_AUDIO_CodingKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_AUDIO_CodingVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+
+#define OMX_AUDIO_CodingFLAC_Supported 1
+    OMX_AUDIO_CodingFLAC,        /**< Any variant of FLAC */
+#define OMX_AUDIO_CodingDDP_Supported 1
+    OMX_AUDIO_CodingDDP,         /**< Any variant of Dolby Digital Plus */
+#define OMX_AUDIO_CodingDTS_Supported 1
+    OMX_AUDIO_CodingDTS,         /**< Any variant of DTS */
+#define OMX_AUDIO_CodingWMAPRO_Supported 1
+    OMX_AUDIO_CodingWMAPRO,      /**< Any variant of WMA Professional */
+#define OMX_AUDIO_CodingATRAC3_Supported 1
+    OMX_AUDIO_CodingATRAC3,      /**< Sony ATRAC-3 variants */
+#define OMX_AUDIO_CodingATRACX_Supported 1
+    OMX_AUDIO_CodingATRACX,      /**< Sony ATRAC-X variants */
+#define OMX_AUDIO_CodingATRACAAL_Supported 1
+    OMX_AUDIO_CodingATRACAAL,    /**< Sony ATRAC advanced-lossless variants  */
+
     OMX_AUDIO_CodingMax = 0x7FFFFFFF
 } OMX_AUDIO_CODINGTYPE;
 
@@ -216,6 +232,70 @@ typedef struct OMX_AUDIO_PARAM_MP3TYPE {
     OMX_AUDIO_MP3STREAMFORMATTYPE eFormat;  /**< MP3 stream format */
 } OMX_AUDIO_PARAM_MP3TYPE;
 
+typedef enum OMX_AUDIO_DDPBITSTREAMID {
+   OMX_AUDIO_DDPBitStreamIdAC3 = 8,
+   OMX_AUDIO_DDPBitStreamIdEAC3 = 16,
+   OMX_AUDIO_DDPBitStreamIdKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+   OMX_AUDIO_DDPBitStreamIdVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+   OMX_AUDIO_DDPBitStreamIdMax = 0x7FFFFFFF
+} OMX_AUDIO_DDPBITSTREAMID;
+
+typedef enum OMX_AUDIO_DDPBITSTREAMMODE {
+   OMX_AUDIO_DDPBitStreamModeCM = 0,   /**< DDP any main audio service: complete main (CM) */
+   OMX_AUDIO_DDPBitStreamModeME,       /**< DDP any main audio service: music and effects (ME) */
+   OMX_AUDIO_DDPBitStreamModeVI,       /**< DDP any associated service: visually impaired (VI) */
+   OMX_AUDIO_DDPBitStreamModeHI,       /**< DDP any associated service: hearing impaired (HI)  */
+   OMX_AUDIO_DDPBitStreamModeD,        /**< DDP any associated service: dialogue (D)           */
+   OMX_AUDIO_DDPBitStreamModeC,        /**< DDP any associated service: commentary (C)         */
+   OMX_AUDIO_DDPBitStreamModeE,        /**< DDP any associated service: emergency (E)          */
+   OMX_AUDIO_DDPBitStreamModeVO,       /**< DDP associated service: voice over (VO)            */
+   OMX_AUDIO_DDPBitStreamModeK,        /**< DDP main audio service: karaoke                    */
+   OMX_AUDIO_DDPBitStreamModeKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+   OMX_AUDIO_DDPBitStreamModeVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+   OMX_AUDIO_DDPBitStreamModeMax = 0x7FFFFFFF
+} OMX_AUDIO_DDPBITSTREAMMODE;
+
+typedef enum OMX_AUDIO_DDPDOLBYSURROUNDMODE {
+   OMX_AUDIO_DDPDolbySurroundModeNotIndicated = 0,               /**< Not indicated */
+   OMX_AUDIO_DDPDolbySurroundModeNotDolbySurround,               /**< Not Dolby Surround */
+   OMX_AUDIO_DDPDolbySurroundModeDolbySurroundEncoded,           /**< Dolby Surround encoded */
+   OMX_AUDIO_DDPDolbySurroundModeReserverd,                      /**< Reserved */
+   OMX_AUDIO_DDPDolbySurroundModeKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
+   OMX_AUDIO_DDPDolbySurroundModeVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+   OMX_AUDIO_DDPDolbySurroundModeMax = 0x7FFFFFFF
+} OMX_AUDIO_DDPDOLBYSURROUNDMODE;
+
+/** DDP params */
+typedef struct OMX_AUDIO_PARAM_DDPTYPE {
+    OMX_U32 nSize;                 /**< size of the structure in bytes */
+    OMX_VERSIONTYPE nVersion;      /**< OMX specification version information */
+    OMX_U32 nPortIndex;            /**< port that this structure applies to */
+    OMX_U32 nChannels;             /**< Number of channels */
+    OMX_U32 nBitRate;              /**< Bit rate of the input data.  Use 0 for variable
+                                        rate or unknown bit rates */
+    OMX_U32 nSampleRate;           /**< Sampling rate of the source data. Use 0 for
+                                        variable or unknown sampling rate. */
+    OMX_AUDIO_DDPBITSTREAMID eBitStreamId;
+    OMX_AUDIO_DDPBITSTREAMMODE eBitStreamMode;
+    OMX_AUDIO_DDPDOLBYSURROUNDMODE eDolbySurroundMode;
+    OMX_AUDIO_CHANNELTYPE eChannelMapping[OMX_AUDIO_MAXCHANNELS]; /**< Slot i contains channel defined by eChannelMapping[i] */    
+} OMX_AUDIO_PARAM_DDPTYPE;
+
+/** DTS params */
+typedef struct OMX_AUDIO_PARAM_DTSTYPE {
+    OMX_U32 nSize;                 /**< size of the structure in bytes */
+    OMX_VERSIONTYPE nVersion;      /**< OMX specification version information */
+    OMX_U32 nPortIndex;            /**< port that this structure applies to */
+    OMX_U32 nChannels;             /**< Number of channels */
+    OMX_U32 nBitRate;              /**< Bit rate of the input data.  Use 0 for variable
+                                        rate or unknown bit rates */
+    OMX_U32 nSampleRate;           /**< Sampling rate of the source data. Use 0 for
+                                        variable or unknown sampling rate. */
+    OMX_U32 nDtsType;              /** DTS type 1, 2, or 3. */
+    OMX_U32 nFormat;               /** DTS stream is either big/little endian and 16/14 bit packing */
+    OMX_U32 nDtsFrameSizeBytes;    /** DTS frame size in bytes */
+    OMX_AUDIO_CHANNELTYPE eChannelMapping[OMX_AUDIO_MAXCHANNELS]; /**< Slot i contains channel defined by eChannelMapping[i] */
+} OMX_AUDIO_PARAM_DTSTYPE;
 
 typedef enum OMX_AUDIO_AACSTREAMFORMATTYPE {
     OMX_AUDIO_AACStreamFormatMP2ADTS = 0, /**< AAC Audio Data Transport Stream 2 format */

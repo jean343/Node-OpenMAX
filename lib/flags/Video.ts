@@ -10,6 +10,13 @@ export enum OMX_VIDEO_CODINGTYPE {
   OMX_VIDEO_CodingMJPEG = 0x8,
   OMX_VIDEO_CodingKhronosExtensions = 0x6F000000,
   OMX_VIDEO_CodingVendorStartUnused = 0x7F000000,
+  OMX_VIDEO_CodingVP6 = 0x7F000001,
+  OMX_VIDEO_CodingVP7 = 0x7F000002,
+  OMX_VIDEO_CodingVP8 = 0x7F000003,
+  OMX_VIDEO_CodingYUV = 0x7F000004,
+  OMX_VIDEO_CodingSorenson = 0x7F000005,
+  OMX_VIDEO_CodingTheora = 0x7F000006,
+  OMX_VIDEO_CodingMVC = 0x7F000007,
   OMX_VIDEO_CodingMax = 0x7FFFFFFF
 }
 export enum OMX_VIDEO_CONTROLRATETYPE {
@@ -37,6 +44,8 @@ export enum OMX_VIDEO_INTRAREFRESHTYPE {
   OMX_VIDEO_IntraRefreshBoth = 0x2,
   OMX_VIDEO_IntraRefreshKhronosExtensions = 0x6F000000,
   OMX_VIDEO_IntraRefreshVendorStartUnused = 0x7F000000,
+  OMX_VIDEO_IntraRefreshCyclicMrows = 0x7F000001,
+  OMX_VIDEO_IntraRefreshPseudoRand = 0x7F000002,
   OMX_VIDEO_IntraRefreshMax = 0x7FFFFFFF
 }
 export enum OMX_VIDEO_H263PROFILETYPE {
@@ -129,6 +138,7 @@ export enum OMX_VIDEO_MPEG4LEVELTYPE {
   OMX_VIDEO_MPEG4Level4 = 0x20,
   OMX_VIDEO_MPEG4Level4a = 0x40,
   OMX_VIDEO_MPEG4Level5 = 0x80,
+  OMX_VIDEO_MPEG4Level6 = 0x100,
   OMX_VIDEO_MPEG4LevelKhronosExtensions = 0x6F000000,
   OMX_VIDEO_MPEG4LevelVendorStartUnused = 0x7F000000,
   OMX_VIDEO_MPEG4LevelMax = 0x7FFFFFFF
@@ -159,6 +169,7 @@ export enum OMX_VIDEO_AVCPROFILETYPE {
   OMX_VIDEO_AVCProfileHigh10 = 0x10,
   OMX_VIDEO_AVCProfileHigh422 = 0x20,
   OMX_VIDEO_AVCProfileHigh444 = 0x40,
+  OMX_VIDEO_AVCProfileConstrainedBaseline = 0x80,
   OMX_VIDEO_AVCProfileKhronosExtensions = 0x6F000000,
   OMX_VIDEO_AVCProfileVendorStartUnused = 0x7F000000,
   OMX_VIDEO_AVCProfileMax = 0x7FFFFFFF

@@ -39,7 +39,7 @@ extern "C" {
  * for this header file to compile successfully 
  */
 
-#include <OMX_IVCommon.h>
+#include "OMX_IVCommon.h"
 
 /** @defgroup imaging OpenMAX IL Imaging Domain
  * @ingroup iv
@@ -63,6 +63,10 @@ typedef enum OMX_IMAGE_CODINGTYPE {
     OMX_IMAGE_CodingBMP,         /**< Windows Bitmap format */
     OMX_IMAGE_CodingKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_IMAGE_CodingVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+
+    OMX_IMAGE_CodingTGA,
+    OMX_IMAGE_CodingPPM,
+
     OMX_IMAGE_CodingMax = 0x7FFFFFFF
 } OMX_IMAGE_CODINGTYPE;
 
@@ -193,6 +197,21 @@ typedef enum OMX_IMAGE_FOCUSCONTROLTYPE {
     OMX_IMAGE_FocusControlAutoLock,
     OMX_IMAGE_FocusControlKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_IMAGE_FocusControlVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_IMAGE_FocusControlHyperfocal,         /* Focus at the hyperfocal point of the lens. */
+    OMX_IMAGE_FocusControlAutoMacro,          /* CF over a macro range (eg 0-50cm) */
+    OMX_IMAGE_FocusControlAutoInfinity,       /* CF over distant range (eg 50cm to infinity) */
+    OMX_IMAGE_FocusControlAutoLockMacro,      /* AF over a macro range (eg 0-50cm) */
+    OMX_IMAGE_FocusControlAutoLockInfinity,   /* AF over distant range (eg 50cm to infinity) */
+    OMX_IMAGE_FocusControlNearFixed,          /* Focus at a fixed near focus point - (50cm-1m) */
+    OMX_IMAGE_FocusControlAutoNear,           /* CF over a near range (eg 0-200cm) */
+    OMX_IMAGE_FocusControlAutoLockNear,       /* AF over a near range (eg 0-200cm) */
+    OMX_IMAGE_FocusControlInfinityFixed,      /* Focus at infinity */
+    OMX_IMAGE_FocusControlMacroFixed,         /* Focus at a macro distance */
+    OMX_IMAGE_FocusControlAutoFast,           /* CF over a full range with fast response */
+    OMX_IMAGE_FocusControlAutoMacroFast,      /* CF over a macro range (eg 0-50cm) with fast response */
+    OMX_IMAGE_FocusControlAutoNearFast,       /* CF over a near range (eg 0-200cm) */
+    OMX_IMAGE_FocusControlAutoInfinityFast,   /* CF over distant range (eg 50cm to infinity) with fast response */
+    OMX_IMAGE_FocusControlCurrentFixed,       /* Stop the lens at the current position */
     OMX_IMAGE_FocusControlMax = 0x7FFFFFFF
 } OMX_IMAGE_FOCUSCONTROLTYPE;
 

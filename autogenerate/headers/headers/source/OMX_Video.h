@@ -46,7 +46,7 @@ extern "C" {
  * for this header file to compile successfully 
  */
 
-#include <OMX_IVCommon.h>
+#include "OMX_IVCommon.h"
 
 
 /**
@@ -70,6 +70,22 @@ typedef enum OMX_VIDEO_CODINGTYPE {
     OMX_VIDEO_CodingMJPEG,      /**< Motion JPEG */
     OMX_VIDEO_CodingKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_VIDEO_CodingVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+
+#define OMX_AUDIO_CodingVP6_Supported 1
+    OMX_VIDEO_CodingVP6,        /**< On2 VP6 */
+#define OMX_AUDIO_CodingVP7_Supported 1
+    OMX_VIDEO_CodingVP7,        /**< On2 VP7 */
+#define OMX_AUDIO_CodingVP8_Supported 1
+    OMX_VIDEO_CodingVP8,        /**< On2 VP8 */
+#define OMX_AUDIO_CodingYUV_Supported 1
+    OMX_VIDEO_CodingYUV,        /* raw YUV video */
+#define OMX_AUDIO_CodingSorenson_Supported 1
+    OMX_VIDEO_CodingSorenson,   /**< Sorenson */
+#define OMX_AUDIO_CodingTheora_Supported 1
+    OMX_VIDEO_CodingTheora,     /**< Theora */
+#define OMX_AUDIO_CodingMVC_Supported 1
+    OMX_VIDEO_CodingMVC,        /**< H.264/MVC */ 	
+    
     OMX_VIDEO_CodingMax = 0x7FFFFFFF
 } OMX_VIDEO_CODINGTYPE;
 
@@ -288,11 +304,13 @@ typedef struct OMX_VIDEO_PARAM_MOTIONVECTORTYPE {
  * Enumeration of possible methods to use for Intra Refresh 
  */
 typedef enum OMX_VIDEO_INTRAREFRESHTYPE {
-    OMX_VIDEO_IntraRefreshCyclic,
-    OMX_VIDEO_IntraRefreshAdaptive,
-    OMX_VIDEO_IntraRefreshBoth,
+    OMX_VIDEO_IntraRefreshCyclic,                         /**< Cyclic intra refresh, bit 0 is set*/
+    OMX_VIDEO_IntraRefreshAdaptive,                       /**< Adaptive intra refresh, bit 1 is set*/
+    OMX_VIDEO_IntraRefreshBoth,                           /**< Cyclic + Adaptive intra refresh (no mrows since bit 2 is off)*/
     OMX_VIDEO_IntraRefreshKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_VIDEO_IntraRefreshVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_VIDEO_IntraRefreshCyclicMrows,                    /**< Cyclic intra refresh, multiple rows at a time bits 0 and 2 are set*/
+    OMX_VIDEO_IntraRefreshPseudoRand,                     /**< Psuedo random intra refresh, uses bit 3*/
     OMX_VIDEO_IntraRefreshMax = 0x7FFFFFFF
 } OMX_VIDEO_INTRAREFRESHTYPE;
 
@@ -320,6 +338,7 @@ typedef struct OMX_VIDEO_PARAM_INTRAREFRESHTYPE {
     OMX_U32 nAirMBs;
     OMX_U32 nAirRef;
     OMX_U32 nCirMBs;
+    OMX_U32 nPirMBs;
 } OMX_VIDEO_PARAM_INTRAREFRESHTYPE;
 
 
@@ -618,6 +637,7 @@ typedef enum OMX_VIDEO_MPEG4LEVELTYPE {
     OMX_VIDEO_MPEG4Level4  = 0x20,   /**< Level 4 */  
     OMX_VIDEO_MPEG4Level4a = 0x40,   /**< Level 4a */  
     OMX_VIDEO_MPEG4Level5  = 0x80,   /**< Level 5 */  
+    OMX_VIDEO_MPEG4Level6  = 0x100,  /**< Level 5 */  
     OMX_VIDEO_MPEG4LevelKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_VIDEO_MPEG4LevelVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_MPEG4LevelMax = 0x7FFFFFFF  
@@ -771,6 +791,7 @@ typedef enum OMX_VIDEO_AVCPROFILETYPE {
     OMX_VIDEO_AVCProfileHigh10   = 0x10,   /**< High 10 profile */
     OMX_VIDEO_AVCProfileHigh422  = 0x20,   /**< High 4:2:2 profile */
     OMX_VIDEO_AVCProfileHigh444  = 0x40,   /**< High 4:4:4 profile */
+    OMX_VIDEO_AVCProfileConstrainedBaseline = 0x80, /**< Constrained Baseline Profile   */
     OMX_VIDEO_AVCProfileKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_VIDEO_AVCProfileVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
     OMX_VIDEO_AVCProfileMax      = 0x7FFFFFFF  
@@ -1048,6 +1069,7 @@ typedef struct OMX_VIDEO_CONFIG_NALSIZE {
     OMX_U32 nPortIndex;
     OMX_U32 nNaluBytes;
 } OMX_VIDEO_CONFIG_NALSIZE;
+
 
 /** @} */
 

@@ -39,7 +39,7 @@ extern "C" {
  * file to compile successfully 
  */
 
-#include <OMX_Core.h>
+#include "OMX_Core.h"
 
 /** @defgroup iv OpenMAX IL Imaging and Video Domain
  * Common structures for OpenMAX IL Imaging and Video domains
@@ -84,6 +84,8 @@ extern "C" {
  *  RawBayer8bit           : SMIA camera output format
  *  RawBayer10bit          : SMIA camera output format
  *  RawBayer8bitcompressed : SMIA camera output format
+ Vendor extensions
+ *  32bitABGR888           : Alpha 31:24, Blue 23:16, Green 15:8, Red 7:0
  */
 typedef enum OMX_COLOR_FORMATTYPE {
     OMX_COLOR_FormatUnused,
@@ -132,6 +134,15 @@ typedef enum OMX_COLOR_FORMATTYPE {
     OMX_COLOR_Format24BitABGR6666,
     OMX_COLOR_FormatKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_COLOR_FormatVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_COLOR_Format32bitABGR8888,
+    OMX_COLOR_Format8bitPalette,
+    OMX_COLOR_FormatYUVUV128,
+    OMX_COLOR_FormatRawBayer12bit,
+    OMX_COLOR_FormatBRCMEGL,
+    OMX_COLOR_FormatBRCMOpaque,
+    OMX_COLOR_FormatYVU420PackedPlanar,
+    OMX_COLOR_FormatYVU420PackedSemiPlanar,
+    OMX_COLOR_FormatRawBayer16bit,
     OMX_COLOR_FormatMax = 0x7FFFFFFF
 } OMX_COLOR_FORMATTYPE;
 
@@ -181,9 +192,41 @@ typedef enum OMX_IMAGEFILTERTYPE {
     OMX_ImageFilterSolarize,
     OMX_ImageFilterKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_ImageFilterVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+      
+    /* Broadcom specific image filters */
+    OMX_ImageFilterWatercolor,
+    OMX_ImageFilterPastel,
+    OMX_ImageFilterSharpen,
+    OMX_ImageFilterFilm,
+    OMX_ImageFilterBlur,
+    OMX_ImageFilterSaturation,
+
+    OMX_ImageFilterDeInterlaceLineDouble,
+    OMX_ImageFilterDeInterlaceAdvanced,
+    
+    OMX_ImageFilterColourSwap,
+    OMX_ImageFilterWashedOut,
+    OMX_ImageFilterColourPoint,
+    OMX_ImageFilterPosterise,
+    OMX_ImageFilterColourBalance,
+    OMX_ImageFilterCartoon,
+
+    OMX_ImageFilterAnaglyph,
+    OMX_ImageFilterDeInterlaceFast,
     OMX_ImageFilterMax = 0x7FFFFFFF
 } OMX_IMAGEFILTERTYPE;
 
+typedef enum OMX_IMAGEFILTERANAGLYPHTYPE {
+    OMX_ImageFilterAnaglyphNone,
+    OMX_ImageFilterAnaglyphSBStoRedCyan,
+    OMX_ImageFilterAnaglyphSBStoCyanRed,
+    OMX_ImageFilterAnaglyphSBStoGreenMagenta,
+    OMX_ImageFilterAnaglyphSBStoMagentaGreen,
+    OMX_ImageFilterAnaglyphTABtoRedCyan,
+    OMX_ImageFilterAnaglyphTABtoCyanRed,
+    OMX_ImageFilterAnaglyphTABtoGreenMagenta,
+    OMX_ImageFilterAnaglyphTABtoMagentaGreen,
+} OMX_IMAGEFILTERANAGLYPHTYPE;
 
 /** 
  * Image filter configuration 
@@ -493,9 +536,14 @@ typedef enum OMX_EXPOSURECONTROLTYPE {
     OMX_ExposureControlSnow,
     OMX_ExposureControlBeach,
     OMX_ExposureControlLargeAperture,
-    OMX_ExposureControlSmallApperture,
+    OMX_ExposureControlSmallAperture,
     OMX_ExposureControlKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_ExposureControlVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_ExposureControlVeryLong,
+    OMX_ExposureControlFixedFps,
+    OMX_ExposureControlNightWithPreview,
+    OMX_ExposureControlAntishake,
+    OMX_ExposureControlFireworks,
     OMX_ExposureControlMax = 0x7FFFFFFF
 } OMX_EXPOSURECONTROLTYPE;
 
@@ -702,6 +750,131 @@ typedef enum OMX_TRANSITIONEFFECTTYPE {
     OMX_EffectUnspecifiedMixOfTwoScenes,
     OMX_EffectKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_EffectVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+
+    OMX_EffectReverseUnspecifiedMixOfTwoScenes,
+    
+#ifndef __VIDEOCORE4__
+    OMX_EffectDiagonalWipe,
+    OMX_EffectDiagonalWipeRotate,
+    OMX_EffectEllipticalWipe,
+    OMX_EffectEllipticalWipeRotate,
+    OMX_EffectInverseEllipticalWipe,
+    OMX_EffectInverseEllipticalWipeRotate,
+    OMX_EffectGlassWipe,
+    OMX_EffectGlassWipeRotate,
+    OMX_EffectWavyWipe,
+    OMX_EffectWavyWipeRotate,
+    OMX_EffectMunchingSquares,
+    OMX_EffectStripeWipe,
+    OMX_EffectStripeWipeRotate,
+    
+    OMX_EffectRotozoomUnmatched,
+    OMX_EffectRotozoomMatched,
+    OMX_EffectRotozoomGentle,
+#endif
+
+    OMX_EffectMunchRandom,
+    OMX_EffectMunchVRandom,
+    OMX_EffectMunchHRandom,
+    OMX_EffectMunchWipe,
+    OMX_EffectMunchMunch,
+    OMX_EffectMunchStripe,
+    OMX_EffectFadeRandom,
+    OMX_EffectFadeVRandom,
+    OMX_EffectFadeHRandom,
+    OMX_EffectFadeWipe,
+    OMX_EffectFadeMunch,
+    OMX_EffectFadeStripe,
+    OMX_EffectColourBlockRandom,
+    OMX_EffectColourBlockVRandom,
+    OMX_EffectColourBlockHRandom,
+    OMX_EffectColourBlockWipe,
+    OMX_EffectColourBlockMunch,
+    OMX_EffectColourBlockStripe,
+    OMX_EffectColourBlock2Random,
+    OMX_EffectColourBlock2VRandom,
+    OMX_EffectColourBlock2HRandom,
+    OMX_EffectColourBlock2Wipe,
+    OMX_EffectColourBlock2Munch,
+    OMX_EffectColourBlock2Stripe,
+    OMX_EffectShadeRandom,
+    OMX_EffectShadeVRandom,
+    OMX_EffectShadeHRandom,
+    OMX_EffectShadeWipe,
+    OMX_EffectShadeMunch,
+    OMX_EffectShadeStripe,
+    OMX_EffectBitmaskRandom,
+    OMX_EffectBitmaskVRandom,
+    OMX_EffectBitmaskHRandom,
+    OMX_EffectBitmaskWipe,
+    OMX_EffectBitmaskMunch,
+    OMX_EffectBitmaskStripe,
+    OMX_EffectBitmask2Random,
+    OMX_EffectBitmask2VRandom,
+    OMX_EffectBitmask2HRandom,
+    OMX_EffectBitmask2Wipe,
+    OMX_EffectBitmask2Munch,
+    OMX_EffectBitmask2Stripe,
+    OMX_EffectBitmask2ColourRandom,
+    OMX_EffectBitmask2ColourVRandom,
+    OMX_EffectBitmask2ColourHRandom,
+    OMX_EffectBitmask2ColourWipe,
+    OMX_EffectBitmask2ColourMunch,
+    OMX_EffectBitmask2ColourStripe,
+
+    OMX_EffectPushRight,
+    OMX_EffectPushLeft,
+    OMX_EffectPushDown,
+    OMX_EffectPushUp,
+    OMX_EffectCoverRight,
+    OMX_EffectCoverLeft,
+    OMX_EffectCoverDown,
+    OMX_EffectCoverUp,
+    OMX_EffectRevealRight,
+    OMX_EffectRevealLeft,
+    OMX_EffectRevealDown,
+    OMX_EffectRevealUp,
+    OMX_EffectWipeRight,
+    OMX_EffectWipeLeft,
+    OMX_EffectWipeDown,
+    OMX_EffectWipeUp,
+    OMX_EffectSpeckle,
+    OMX_EffectCircle,
+    OMX_EffectSpiral,
+    OMX_EffectDiamond,
+    OMX_EffectVert,
+    OMX_EffectPlus,
+    OMX_EffectClock,
+    OMX_EffectPlasma,
+    OMX_EffectDisplace,
+    OMX_EffectGenie,
+    OMX_EffectSide,
+    OMX_EffectMaze,
+    OMX_EffectRipple,
+    OMX_EffectStar,
+    OMX_EffectAlpha,
+    OMX_EffectIntense,
+    OMX_EffectIntenseU,
+    OMX_EffectIntenseV,
+    OMX_EffectInverseIntense,
+    OMX_EffectInverseIntenseU,
+    OMX_EffectInverseIntenseV,
+
+    OMX_EffectPageTurn,
+
+    OMX_EffectFlipPlaneDown,
+    OMX_EffectFlipPlaneDownMid,
+    OMX_EffectFlipPlaneDownHigh,
+    OMX_EffectFlipPlaneLeft,
+    OMX_EffectFlipPlaneLeftMid,
+    OMX_EffectFlipPlaneLeftHigh,
+    OMX_EffectFlipCubeDown,
+    OMX_EffectFlipCubeDownMid,
+    OMX_EffectFlipCubeDownHigh,
+    OMX_EffectFlipCubeLeft,
+    OMX_EffectFlipCubeLeftMid,
+    OMX_EffectFlipCubeLeftHigh,
+
     OMX_EffectMax = 0x7FFFFFFF
 } OMX_TRANSITIONEFFECTTYPE;
 
@@ -813,6 +986,7 @@ typedef enum OMX_METERINGTYPE {
  
     OMX_MeteringKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_MeteringVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_MeteringModeBacklit,
     OMX_EVModeMax = 0x7fffffff
 } OMX_METERINGTYPE;
  
@@ -873,6 +1047,8 @@ typedef enum OMX_FOCUSSTATUSTYPE {
     OMX_FocusStatusLost,
     OMX_FocusStatusKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
     OMX_FocusStatusVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    OMX_FocusStatusCafWatching,
+    OMX_FocusStatusCafSceneChanged,
     OMX_FocusStatusMax = 0x7FFFFFFF
 } OMX_FOCUSSTATUSTYPE;
 

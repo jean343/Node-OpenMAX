@@ -44,6 +44,11 @@ namespace headers
                     items = items.Replace("(OMX_ErrorKhronosExtensions", "(0x8F000000");
                     items = items.Replace(" = OMX_VIDEO_CodingKhronosExtensions", " = 0x6F000000");
 
+                    items = Regex.Replace(items, "#define.*?\n", "");
+                    items = Regex.Replace(items, "#ifdef.*?\n", "");
+                    items = Regex.Replace(items, "#ifndef.*?\n", "");
+                    items = Regex.Replace(items, "#endif.*?\n", "");
+
                     sw.WriteLine();
                     sw.WriteLine("  enum " + name + " : long");
                     sw.WriteLine("  {");

@@ -42,20 +42,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OMX_Audio.cs" />
+    <Compile Include="OMX_Broadcom.cs" />
     <Compile Include="OMX_Component.cs" />
-    <Compile Include="OMX_ComponentExt.cs" />
-    <Compile Include="OMX_ContentPipe.cs" />
     <Compile Include="OMX_Core.cs" />
-    <Compile Include="OMX_CoreExt.cs" />
+    <Compile Include="OMX_ILCS.cs" />
     <Compile Include="OMX_Image.cs" />
-    <Compile Include="OMX_ImageExt.cs" />
     <Compile Include="OMX_Index.cs" />
-    <Compile Include="OMX_IndexExt.cs" />
     <Compile Include="OMX_IVCommon.cs" />
     <Compile Include="OMX_Other.cs" />
     <Compile Include="OMX_Types.cs" />
     <Compile Include="OMX_Video.cs" />
-    <Compile Include="OMX_VideoExt.cs" />
     <Compile Include="ProcessStruct.cs" />
     <Compile Include="ProcessEnum.cs" />
     <Compile Include="Program.cs" />

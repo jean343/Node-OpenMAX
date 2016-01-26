@@ -11,6 +11,8 @@ export enum OMX_IMAGE_CODINGTYPE {
   OMX_IMAGE_CodingBMP = 0x9,
   OMX_IMAGE_CodingKhronosExtensions = 0x6F000000,
   OMX_IMAGE_CodingVendorStartUnused = 0x7F000000,
+  OMX_IMAGE_CodingTGA = 0x7F000001,
+  OMX_IMAGE_CodingPPM = 0x7F000002,
   OMX_IMAGE_CodingMax = 0x7FFFFFFF
 }
 export enum OMX_IMAGE_FLASHCONTROLTYPE {
@@ -31,6 +33,21 @@ export enum OMX_IMAGE_FOCUSCONTROLTYPE {
   OMX_IMAGE_FocusControlAutoLock = 0x3,
   OMX_IMAGE_FocusControlKhronosExtensions = 0x6F000000,
   OMX_IMAGE_FocusControlVendorStartUnused = 0x7F000000,
+  OMX_IMAGE_FocusControlHyperfocal = 0x7F000001,
+  OMX_IMAGE_FocusControlAutoMacro = 0x7F000002,
+  OMX_IMAGE_FocusControlAutoInfinity = 0x7F000003,
+  OMX_IMAGE_FocusControlAutoLockMacro = 0x7F000004,
+  OMX_IMAGE_FocusControlAutoLockInfinity = 0x7F000005,
+  OMX_IMAGE_FocusControlNearFixed = 0x7F000006,
+  OMX_IMAGE_FocusControlAutoNear = 0x7F000007,
+  OMX_IMAGE_FocusControlAutoLockNear = 0x7F000008,
+  OMX_IMAGE_FocusControlInfinityFixed = 0x7F000009,
+  OMX_IMAGE_FocusControlMacroFixed = 0x7F00000A,
+  OMX_IMAGE_FocusControlAutoFast = 0x7F00000B,
+  OMX_IMAGE_FocusControlAutoMacroFast = 0x7F00000C,
+  OMX_IMAGE_FocusControlAutoNearFast = 0x7F00000D,
+  OMX_IMAGE_FocusControlAutoInfinityFast = 0x7F00000E,
+  OMX_IMAGE_FocusControlCurrentFixed = 0x7F00000F,
   OMX_IMAGE_FocusControlMax = 0x7FFFFFFF
 }
 export enum OMX_IMAGE_QUANTIZATIONTABLETYPE {

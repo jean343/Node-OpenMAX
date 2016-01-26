@@ -54,3 +54,6 @@ obj
 /dist
 /typings
 /.remote-sync.json
+/autogenerate/headers/headers/OMX_Broadcom.cs
+/autogenerate/headers/headers/OMX_ILCS.cs
+/autogenerate/headers/.vs/headers/v14/*.suo

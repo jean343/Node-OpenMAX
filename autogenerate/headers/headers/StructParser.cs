@@ -56,7 +56,7 @@ namespace headers
         {
             List<CStruct> cslist = new List<CStruct>();
 
-            Regex re = new Regex(@"(typedef\s" + type + @"\s(.*?)\{(.*?)\})", RegexOptions.Singleline);
+            Regex re = new Regex(@"(typedef\s" + type + @"\s([^;]*?)\{(.*?)\})", RegexOptions.Singleline);
             MatchCollection mc = re.Matches(sourcestring);
 
             foreach (Match m in mc)
@@ -99,6 +99,9 @@ namespace headers
         public static CField parseLine(string line)
         {
             line = line.Trim();
+
+            if (line.StartsWith("/*") && line.EndsWith("*/")) return null;
+
             {
                 Regex re = new Regex(@"^(\w*?)(\s=.*?)?,(\s*\/\*(.*?)\*\/)*", RegexOptions.Singleline);
                 MatchCollection mc = re.Matches(line);

@@ -60,13 +60,20 @@ export enum OMX_ERRORTYPE {
   OMX_ErrorTunnelingUnsupported = 0x80001023,
   OMX_ErrorKhronosExtensions = 0x80001024,
   OMX_ErrorVendorStartUnused = 0x8F000000,
-  OMX_ErrorMax = 0x90000000
+  OMX_ErrorDiskFull = 0x90000000,
+  OMX_ErrorMaxFileSize = 0x90000001,
+  OMX_ErrorDrmUnauthorised = 0x90000002,
+  OMX_ErrorDrmExpired = 0x90000003,
+  OMX_ErrorDrmGeneral = 0x90000004,
+  OMX_ErrorMax = 0x90000005
 }
 export enum OMX_EXTRADATATYPE {
   OMX_ExtraDataNone = 0x0,
   OMX_ExtraDataQuantization = 0x1,
   OMX_ExtraDataKhronosExtensions = 0x6F000000,
   OMX_ExtraDataVendorStartUnused = 0x7F000000,
+  OMX_ExtraDataSequenceGap = 0x7F000001,
+  OMX_ExtraDataDecodeOnlyUntil = 0x7F000002,
   OMX_ExtraDataMax = 0x7FFFFFFF
 }
 export enum OMX_EVENTTYPE {
@@ -81,6 +88,7 @@ export enum OMX_EVENTTYPE {
   OMX_EventPortFormatDetected = 0x8,
   OMX_EventKhronosExtensions = 0x6F000000,
   OMX_EventVendorStartUnused = 0x7F000000,
+  OMX_EventParamOrConfigChanged = 0x7F000001,
   OMX_EventMax = 0x7FFFFFFF
 }
 export enum OMX_BUFFERSUPPLIERTYPE {

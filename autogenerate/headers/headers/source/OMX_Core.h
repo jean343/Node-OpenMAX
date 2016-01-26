@@ -39,7 +39,7 @@ extern "C" {
  *  for this header file to compile successfully 
  */
 
-#include <OMX_Index.h>
+#include "OMX_Index.h"
 
 
 /** The OMX_COMMANDTYPE enumeration is used to specify the action in the
@@ -253,6 +253,22 @@ typedef enum OMX_ERRORTYPE
 
   OMX_ErrorKhronosExtensions = (OMX_S32)0x8F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
   OMX_ErrorVendorStartUnused = (OMX_S32)0x90000000, /**< Reserved region for introducing Vendor Extensions */
+
+  /** Disk Full error */
+  OMX_ErrorDiskFull = (OMX_S32) 0x90000001,
+ 
+  /** Max file size is reached */
+  OMX_ErrorMaxFileSize = (OMX_S32) 0x90000002,
+
+  /** Unauthorised to play a DRM protected file */
+  OMX_ErrorDrmUnauthorised = (OMX_S32) 0x90000003,
+
+  /** The DRM protected file has expired */
+  OMX_ErrorDrmExpired = (OMX_S32) 0x90000004,
+
+  /** Some other DRM library error */
+  OMX_ErrorDrmGeneral = (OMX_S32) 0x90000005,
+
   OMX_ErrorMax = 0x7FFFFFFF
 } OMX_ERRORTYPE;
 
@@ -454,6 +470,14 @@ typedef enum OMX_EXTRADATATYPE
    OMX_ExtraDataQuantization,                   /**< The data payload contains quantization data */
    OMX_ExtraDataKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
    OMX_ExtraDataVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+
+   OMX_ExtraDataSequenceGap,                    /**< Indicates a gap in sequence numbers, data is uint32_t 
+                                                     saying how many frames were lost */
+   OMX_ExtraDataDecodeOnlyUntil,                /**< Indicates a timestamp until which all data should be
+                                                     decoded only, and the first packets after should generate
+                                                     a client start time flag.  data is int32_t of seek time
+                                                     in milliseconds */
+
    OMX_ExtraDataMax = 0x7FFFFFFF
 } OMX_EXTRADATATYPE;
 
@@ -491,6 +515,7 @@ typedef enum OMX_EVENTTYPE
    OMX_EventPortFormatDetected,      /**< Component has detected a supported format. */
    OMX_EventKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */ 
    OMX_EventVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+   OMX_EventParamOrConfigChanged,   /* Should be added to the main spec as part of IL416c */
    OMX_EventMax = 0x7FFFFFFF
 } OMX_EVENTTYPE;
 

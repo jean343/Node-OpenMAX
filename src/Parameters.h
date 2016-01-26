@@ -4,6 +4,8 @@
 
 #include "bcm_host.h"
 #include "IL/OMX_Broadcom.h"
+#include "IL/OMX_ILCS.h"
+#include "IL/OMX_Types.h"
 
 #include "OMX_consts.h"
 

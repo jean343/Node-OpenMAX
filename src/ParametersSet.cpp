@@ -4,6 +4,8 @@ void SET_OMX_AUDIO_PORTDEFINITIONTYPE(OMX_AUDIO_PORTDEFINITIONTYPE &format, v8::
 void SET_OMX_AUDIO_PARAM_PORTFORMATTYPE(OMX_AUDIO_PARAM_PORTFORMATTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_AUDIO_PARAM_PCMMODETYPE(OMX_AUDIO_PARAM_PCMMODETYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_AUDIO_PARAM_MP3TYPE(OMX_AUDIO_PARAM_MP3TYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_AUDIO_PARAM_DDPTYPE(OMX_AUDIO_PARAM_DDPTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_AUDIO_PARAM_DTSTYPE(OMX_AUDIO_PARAM_DTSTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_AUDIO_PARAM_AACPROFILETYPE(OMX_AUDIO_PARAM_AACPROFILETYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_AUDIO_PARAM_VORBISTYPE(OMX_AUDIO_PARAM_VORBISTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_AUDIO_PARAM_WMATYPE(OMX_AUDIO_PARAM_WMATYPE &format, v8::Local<v8::Object> param);
@@ -48,6 +50,118 @@ void SET_OMX_AUDIO_CONFIG_CHORUSTYPE(OMX_AUDIO_CONFIG_CHORUSTYPE &format, v8::Lo
 void SET_OMX_AUDIO_CONFIG_REVERBERATIONTYPE(OMX_AUDIO_CONFIG_REVERBERATIONTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_AUDIO_CONFIG_ECHOCANCELATIONTYPE(OMX_AUDIO_CONFIG_ECHOCANCELATIONTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_AUDIO_CONFIG_NOISEREDUCTIONTYPE(OMX_AUDIO_CONFIG_NOISEREDUCTIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_BUFFERFRAGMENTTYPE(OMX_BUFFERFRAGMENTTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_IJGSCALINGTYPE(OMX_PARAM_IJGSCALINGTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_DISPLAYRECTTYPE(OMX_DISPLAYRECTTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_DISPLAYREGIONTYPE(OMX_CONFIG_DISPLAYREGIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_SOURCETYPE(OMX_PARAM_SOURCETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_RESIZETYPE(OMX_PARAM_RESIZETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_TESTINTERFACETYPE(OMX_PARAM_TESTINTERFACETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_VISUALISATIONTYPE(OMX_CONFIG_VISUALISATIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIODESTINATIONTYPE(OMX_CONFIG_BRCMAUDIODESTINATIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIOSOURCETYPE(OMX_CONFIG_BRCMAUDIOSOURCETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS(OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8(OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8 &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIOMAXSAMPLE(OMX_CONFIG_BRCMAUDIOMAXSAMPLE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_PLAYMODETYPE(OMX_CONFIG_PLAYMODETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_DELIVERYFORMATTYPE(OMX_PARAM_DELIVERYFORMATTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CODECCONFIGTYPE(OMX_PARAM_CODECCONFIGTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_STILLSFUNCTIONTYPE(OMX_PARAM_STILLSFUNCTIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BUFFERADDRESSTYPE(OMX_PARAM_BUFFERADDRESSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_TUNNELSETUPTYPE(OMX_PARAM_TUNNELSETUPTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMPORTEGLTYPE(OMX_PARAM_BRCMPORTEGLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_IMAGEFILTERPARAMSTYPE(OMX_CONFIG_IMAGEFILTERPARAMSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_TRANSITIONCONTROLTYPE(OMX_CONFIG_TRANSITIONCONTROLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE(OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERAIMAGEPOOLTYPE(OMX_PARAM_CAMERAIMAGEPOOLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_IMAGEPOOLSIZETYPE(OMX_PARAM_IMAGEPOOLSIZETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_IMAGEPOOLEXTERNALTYPE(OMX_PARAM_IMAGEPOOLEXTERNALTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_RUTILFIFOINFOTYPE(OMX_PARAM_RUTILFIFOINFOTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_ILFIFOCONFIG(OMX_PARAM_ILFIFOCONFIG &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_CAMERASENSORMODETYPE(OMX_CONFIG_CAMERASENSORMODETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE(OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMPORTSTATSTYPE(OMX_CONFIG_BRCMPORTSTATSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMCAMERASTATSTYPE(OMX_CONFIG_BRCMCAMERASTATSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMIOPERFSTATSTYPE(OMX_CONFIG_BRCMIOPERFSTATSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_SHARPNESSTYPE(OMX_CONFIG_SHARPNESSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_FLICKERCANCELTYPE(OMX_CONFIG_FLICKERCANCELTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_REDEYEREMOVALTYPE(OMX_CONFIG_REDEYEREMOVALTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_FACEDETECTIONCONTROLTYPE(OMX_CONFIG_FACEDETECTIONCONTROLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_FACEDETECTIONREGIONTYPE(OMX_CONFIG_FACEDETECTIONREGIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_INTERLACETYPE(OMX_CONFIG_INTERLACETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERAISPTUNERTYPE(OMX_PARAM_CAMERAISPTUNERTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_IMAGEPTRTYPE(OMX_CONFIG_IMAGEPTRTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_AFASSISTTYPE(OMX_CONFIG_AFASSISTTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_INPUTCROPTYPE(OMX_CONFIG_INPUTCROPTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CODECREQUIREMENTSTYPE(OMX_PARAM_CODECREQUIREMENTSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMEGLIMAGEMEMHANDLETYPE(OMX_CONFIG_BRCMEGLIMAGEMEMHANDLETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_PRIVACYINDICATORTYPE(OMX_CONFIG_PRIVACYINDICATORTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERAFLASHTYPE(OMX_PARAM_CAMERAFLASHTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_CAMERAFLASHCONFIGTYPE(OMX_CONFIG_CAMERAFLASHCONFIGTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE(OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE(OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMPIXELVALUERANGETYPE(OMX_PARAM_BRCMPIXELVALUERANGETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERADISABLEALGORITHMTYPE(OMX_PARAM_CAMERADISABLEALGORITHMTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE(OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY(OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE(OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMALLOWMEMCHANGETYPE(OMX_PARAM_BRCMALLOWMEMCHANGETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_CAMERAUSECASETYPE(OMX_CONFIG_CAMERAUSECASETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE(OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMRETAINMEMORYTYPE(OMX_PARAM_BRCMRETAINMEMORYTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE(OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_CAMERAINFOTYPE(OMX_CONFIG_CAMERAINFOTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_CAMERAFEATURESTYPE(OMX_CONFIG_CAMERAFEATURESTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_REQUESTCALLBACKTYPE(OMX_CONFIG_REQUESTCALLBACKTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_FOCUSREGIONXY(OMX_FOCUSREGIONXY &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_FOCUSREGIONXYTYPE(OMX_CONFIG_FOCUSREGIONXYTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_U8TYPE(OMX_CONFIG_U8TYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_CAMERASETTINGSTYPE(OMX_CONFIG_CAMERASETTINGSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_YUVCOLOUR(OMX_YUVCOLOUR &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_DRAWBOXLINEPARAMS(OMX_CONFIG_DRAWBOXLINEPARAMS &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERARMITYPE(OMX_PARAM_CAMERARMITYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMSYNCOUTPUTTYPE(OMX_CONFIG_BRCMSYNCOUTPUTTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_DRMVIEWTYPE(OMX_CONFIG_DRMVIEWTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMU64TYPE(OMX_PARAM_BRCMU64TYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMTHUMBNAILTYPE(OMX_PARAM_BRCMTHUMBNAILTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMASPECTRATIOTYPE(OMX_PARAM_BRCMASPECTRATIOTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE(OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_FLASHINFOTYPE(OMX_CONFIG_FLASHINFOTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_DYNAMICRANGEEXPANSIONTYPE(OMX_CONFIG_DYNAMICRANGEEXPANSIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMTHREADAFFINITYTYPE(OMX_PARAM_BRCMTHREADAFFINITYTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_SCENEDETECTTYPE(OMX_CONFIG_SCENEDETECTTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_NALSTREAMFORMATTYPE(OMX_NALSTREAMFORMATTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_STATICBOX(OMX_STATICBOX &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_STATICBOXTYPE(OMX_CONFIG_STATICBOXTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_PORTBOOLEANTYPE(OMX_CONFIG_PORTBOOLEANTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERACAPTUREMODETYPE(OMX_PARAM_CAMERACAPTUREMODETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMDRMENCRYPTIONTYPE(OMX_PARAM_BRCMDRMENCRYPTIONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BUFFERSTALLTYPE(OMX_CONFIG_BUFFERSTALLTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_LATENCYTARGETTYPE(OMX_CONFIG_LATENCYTARGETTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE(OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_TIMESTAMPMODETYPE(OMX_PARAM_TIMESTAMPMODETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_BRCMVEGLIMAGETYPE(OMX_BRCMVEGLIMAGETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMFOVTYPE(OMX_CONFIG_BRCMFOVTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_VIDEO_CONFIG_LEVEL_EXTEND(OMX_VIDEO_CONFIG_LEVEL_EXTEND &format, v8::Local<v8::Object> param);
+void SET_OMX_VIDEO_EEDE_ENABLE(OMX_VIDEO_EEDE_ENABLE &format, v8::Local<v8::Object> param);
+void SET_OMX_VIDEO_EEDE_LOSSRATE(OMX_VIDEO_EEDE_LOSSRATE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_COLORSPACETYPE(OMX_PARAM_COLORSPACETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAPTURESTATETYPE(OMX_PARAM_CAPTURESTATETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMCONFIGFILETYPE(OMX_PARAM_BRCMCONFIGFILETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMCONFIGFILECHUNKTYPE(OMX_PARAM_BRCMCONFIGFILECHUNKTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMFRAMERATERANGETYPE(OMX_PARAM_BRCMFRAMERATERANGETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_S32TYPE(OMX_PARAM_S32TYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE(OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_ZEROSHUTTERLAGTYPE(OMX_CONFIG_ZEROSHUTTERLAGTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE(OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_CUSTOMAWBGAINSTYPE(OMX_CONFIG_CUSTOMAWBGAINSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMRENDERSTATSTYPE(OMX_CONFIG_BRCMRENDERSTATSTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMANNOTATETYPE(OMX_CONFIG_BRCMANNOTATETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_CONFIG_BRCMSTEREOSCOPICMODETYPE(OMX_CONFIG_BRCMSTEREOSCOPICMODETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERAINTERFACETYPE(OMX_PARAM_CAMERAINTERFACETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERACLOCKINGMODETYPE(OMX_PARAM_CAMERACLOCKINGMODETYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERARXCONFIG_TYPE(OMX_PARAM_CAMERARXCONFIG_TYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_CAMERARXTIMING_TYPE(OMX_PARAM_CAMERARXTIMING_TYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_PORTDEFINITIONTYPE(OMX_PARAM_PORTDEFINITIONTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_U32TYPE(OMX_PARAM_U32TYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_SUSPENSIONPOLICYTYPE(OMX_PARAM_SUSPENSIONPOLICYTYPE &format, v8::Local<v8::Object> param);
@@ -68,6 +182,9 @@ void SET_OMX_OTHER_EXTRADATATYPE(OMX_OTHER_EXTRADATATYPE &format, v8::Local<v8::
 void SET_OMX_PORT_PARAM_TYPE(OMX_PORT_PARAM_TYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_BUFFERSUPPLIERTYPE(OMX_PARAM_BUFFERSUPPLIERTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_TUNNELSETUPTYPE(OMX_TUNNELSETUPTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_PORTSUMMARYTYPE(OMX_PARAM_PORTSUMMARYTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_MARKCOMPARISONTYPE(OMX_PARAM_MARKCOMPARISONTYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_TUNNELSTATUSTYPE(OMX_PARAM_TUNNELSTATUSTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_IMAGE_PORTDEFINITIONTYPE(OMX_IMAGE_PORTDEFINITIONTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_IMAGE_PARAM_PORTFORMATTYPE(OMX_IMAGE_PARAM_PORTFORMATTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_IMAGE_PARAM_FLASHCONTROLTYPE(OMX_IMAGE_PARAM_FLASHCONTROLTYPE &format, v8::Local<v8::Object> param);
@@ -175,6 +292,24 @@ void SET_OMX_AUDIO_PARAM_MP3TYPE(OMX_AUDIO_PARAM_MP3TYPE &format, v8::Local<v8::
   format.nAudioBandWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nAudioBandWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Audio band width (in Hz) to which an encoder should limit the audio signal. Use 0 to let encoder decide
   format.eChannelMode = (OMX_AUDIO_CHANNELMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eChannelMode").ToLocalChecked()).ToLocalChecked()).FromJust(); // Channel mode enumeration
   format.eFormat = (OMX_AUDIO_MP3STREAMFORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eFormat").ToLocalChecked()).ToLocalChecked()).FromJust(); // MP3 stream format
+}
+
+void SET_OMX_AUDIO_PARAM_DDPTYPE(OMX_AUDIO_PARAM_DDPTYPE &format, v8::Local<v8::Object> param) {
+  format.nChannels = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nChannels").ToLocalChecked()).ToLocalChecked()).FromJust(); // Number of channels
+  format.nBitRate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nBitRate").ToLocalChecked()).ToLocalChecked()).FromJust(); // Bit rate of the input data. Use 0 for variable rate or unknown bit rates
+  format.nSampleRate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nSampleRate").ToLocalChecked()).ToLocalChecked()).FromJust(); // Sampling rate of the source data. Use 0 for variable or unknown sampling rate.
+  format.eBitStreamId = (OMX_AUDIO_DDPBITSTREAMID) Nan::To<int>(Nan::Get(param, Nan::New("eBitStreamId").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eBitStreamMode = (OMX_AUDIO_DDPBITSTREAMMODE) Nan::To<int>(Nan::Get(param, Nan::New("eBitStreamMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eDolbySurroundMode = (OMX_AUDIO_DDPDOLBYSURROUNDMODE) Nan::To<int>(Nan::Get(param, Nan::New("eDolbySurroundMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_AUDIO_PARAM_DTSTYPE(OMX_AUDIO_PARAM_DTSTYPE &format, v8::Local<v8::Object> param) {
+  format.nChannels = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nChannels").ToLocalChecked()).ToLocalChecked()).FromJust(); // Number of channels
+  format.nBitRate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nBitRate").ToLocalChecked()).ToLocalChecked()).FromJust(); // Bit rate of the input data. Use 0 for variable rate or unknown bit rates
+  format.nSampleRate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nSampleRate").ToLocalChecked()).ToLocalChecked()).FromJust(); // Sampling rate of the source data. Use 0 for variable or unknown sampling rate.
+  format.nDtsType = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDtsType").ToLocalChecked()).ToLocalChecked()).FromJust(); // DTS type 1, 2, or 3.
+  format.nFormat = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFormat").ToLocalChecked()).ToLocalChecked()).FromJust(); // DTS stream is either big/little endian and 16/14 bit packing
+  format.nDtsFrameSizeBytes = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDtsFrameSizeBytes").ToLocalChecked()).ToLocalChecked()).FromJust(); // DTS frame size in bytes
 }
 
 void SET_OMX_AUDIO_PARAM_AACPROFILETYPE(OMX_AUDIO_PARAM_AACPROFILETYPE &format, v8::Local<v8::Object> param) {
@@ -360,7 +495,6 @@ void SET_OMX_AUDIO_PARAM_MIDITYPE(OMX_AUDIO_PARAM_MIDITYPE &format, v8::Local<v8
 void SET_OMX_AUDIO_PARAM_MIDILOADUSERSOUNDTYPE(OMX_AUDIO_PARAM_MIDILOADUSERSOUNDTYPE &format, v8::Local<v8::Object> param) {
   format.nDLSIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDLSIndex").ToLocalChecked()).ToLocalChecked()).FromJust(); // DLS file index to be loaded
   format.nDLSSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDLSSize").ToLocalChecked()).ToLocalChecked()).FromJust(); // Size in bytes
-  format.pDLSData = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pDLSData").ToLocalChecked()).ToLocalChecked()).FromJust(); // Pointer to DLS file data
   format.eMidiSoundBank = (OMX_AUDIO_MIDISOUNDBANKTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMidiSoundBank").ToLocalChecked()).ToLocalChecked()).FromJust(); // Midi sound bank type enumeration
   format.eMidiSoundBankLayout = (OMX_AUDIO_MIDISOUNDBANKLAYOUTTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMidiSoundBankLayout").ToLocalChecked()).ToLocalChecked()).FromJust(); // Midi sound bank layout enumeration
 }
@@ -478,6 +612,643 @@ void SET_OMX_AUDIO_CONFIG_NOISEREDUCTIONTYPE(OMX_AUDIO_CONFIG_NOISEREDUCTIONTYPE
   format.bNoiseReduction = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bNoiseReduction").ToLocalChecked()).ToLocalChecked()).FromJust(); // Enable/disable for noise reduction
 }
 
+void SET_OMX_BUFFERFRAGMENTTYPE(OMX_BUFFERFRAGMENTTYPE &format, v8::Local<v8::Object> param) {
+  format.nLen = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nLen").ToLocalChecked()).ToLocalChecked()).FromJust(); // number of bytes in the buffer
+}
+
+void SET_OMX_PARAM_IJGSCALINGTYPE(OMX_PARAM_IJGSCALINGTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnabled").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_DISPLAYRECTTYPE(OMX_DISPLAYRECTTYPE &format, v8::Local<v8::Object> param) {
+  format.x_offset = (OMX_S16) Nan::To<int>(Nan::Get(param, Nan::New("x_offset").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.y_offset = (OMX_S16) Nan::To<int>(Nan::Get(param, Nan::New("y_offset").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.width = (OMX_S16) Nan::To<int>(Nan::Get(param, Nan::New("width").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.height = (OMX_S16) Nan::To<int>(Nan::Get(param, Nan::New("height").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_DISPLAYREGIONTYPE(OMX_CONFIG_DISPLAYREGIONTYPE &format, v8::Local<v8::Object> param) {
+  format.set = (OMX_DISPLAYSETTYPE) Nan::To<int>(Nan::Get(param, Nan::New("set").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.num = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("num").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.fullscreen = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("fullscreen").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.transform = (OMX_DISPLAYTRANSFORMTYPE) Nan::To<int>(Nan::Get(param, Nan::New("transform").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.noaspect = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("noaspect").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.mode = (OMX_DISPLAYMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("mode").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.pixel_x = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("pixel_x").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.pixel_y = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("pixel_y").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.layer = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("layer").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.copyprotect_required = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("copyprotect_required").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.alpha = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("alpha").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.wfc_context_width = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("wfc_context_width").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.wfc_context_height = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("wfc_context_height").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_SOURCETYPE(OMX_PARAM_SOURCETYPE &format, v8::Local<v8::Object> param) {
+  format.eType = (OMX_SOURCETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nParam = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nParam").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFrameCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFrameCount").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xFrameRate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFrameRate").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_RESIZETYPE(OMX_PARAM_RESIZETYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_RESIZEMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nMaxWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nMaxHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nMaxBytes = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxBytes").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bPreserveAspectRatio = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bPreserveAspectRatio").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bAllowUpscaling = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bAllowUpscaling").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_TESTINTERFACETYPE(OMX_PARAM_TESTINTERFACETYPE &format, v8::Local<v8::Object> param) {
+  format.bTest = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bTest").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bSetExtra = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bSetExtra").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nExtra = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nExtra").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bSetError = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bSetError").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_VISUALISATIONTYPE(OMX_CONFIG_VISUALISATIONTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_BRCMAUDIODESTINATIONTYPE(OMX_CONFIG_BRCMAUDIODESTINATIONTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_BRCMAUDIOSOURCETYPE(OMX_CONFIG_BRCMAUDIOSOURCETYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS(OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8(OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8 &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_BRCMAUDIOMAXSAMPLE(OMX_CONFIG_BRCMAUDIOMAXSAMPLE &format, v8::Local<v8::Object> param) {
+  format.nMaxSample = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxSample").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_PLAYMODETYPE(OMX_CONFIG_PLAYMODETYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_PLAYMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_DELIVERYFORMATTYPE(OMX_PARAM_DELIVERYFORMATTYPE &format, v8::Local<v8::Object> param) {
+  format.eFormat = (OMX_DELIVERYFORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_CODECCONFIGTYPE(OMX_PARAM_CODECCONFIGTYPE &format, v8::Local<v8::Object> param) {
+  format.bCodecConfigIsComplete = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("bCodecConfigIsComplete").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_STILLSFUNCTIONTYPE(OMX_PARAM_STILLSFUNCTIONTYPE &format, v8::Local<v8::Object> param) {
+  format.bBuffer = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bBuffer").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BUFFERADDRESSTYPE(OMX_PARAM_BUFFERADDRESSTYPE &format, v8::Local<v8::Object> param) {
+  format.nAllocLen = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nAllocLen").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.handle = (OMX_BUFFERADDRESSHANDLETYPE) Nan::To<int>(Nan::Get(param, Nan::New("handle").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_TUNNELSETUPTYPE(OMX_PARAM_TUNNELSETUPTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_PARAM_BRCMPORTEGLTYPE(OMX_PARAM_BRCMPORTEGLTYPE &format, v8::Local<v8::Object> param) {
+  format.bPortIsEGL = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bPortIsEGL").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_IMAGEFILTERPARAMSTYPE(OMX_CONFIG_IMAGEFILTERPARAMSTYPE &format, v8::Local<v8::Object> param) {
+  format.eImageFilter = (OMX_IMAGEFILTERTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eImageFilter").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nNumParams = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumParams").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_TRANSITIONCONTROLTYPE(OMX_CONFIG_TRANSITIONCONTROLTYPE &format, v8::Local<v8::Object> param) {
+  format.nPosStart = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPosStart").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPosEnd = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPosEnd").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPosIncrement = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nPosIncrement").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bSwapInputs = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bSwapInputs").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE(OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_AUDIOMONOTRACKOPERATIONSTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_CAMERAIMAGEPOOLTYPE(OMX_PARAM_CAMERAIMAGEPOOLTYPE &format, v8::Local<v8::Object> param) {
+  format.nNumHiResVideoFrames = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumHiResVideoFrames").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHiResVideoWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHiResVideoWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHiResVideoHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHiResVideoHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eHiResVideoType = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eHiResVideoType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nNumHiResStillsFrames = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumHiResStillsFrames").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHiResStillsWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHiResStillsWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHiResStillsHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHiResStillsHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eHiResStillsType = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eHiResStillsType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nNumLoResFrames = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumLoResFrames").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nLoResWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nLoResWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nLoResHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nLoResHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eLoResType = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eLoResType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nNumSnapshotFrames = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumSnapshotFrames").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eSnapshotType = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eSnapshotType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eInputPoolMode = (OMX_CAMERAIMAGEPOOLINPUTMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eInputPoolMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nNumInputVideoFrames = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumInputVideoFrames").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nInputVideoWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nInputVideoWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nInputVideoHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nInputVideoHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eInputVideoType = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eInputVideoType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nNumInputStillsFrames = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumInputStillsFrames").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nInputStillsWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nInputStillsWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nInputStillsHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nInputStillsHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eInputStillsType = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eInputStillsType").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_IMAGEPOOLSIZETYPE(OMX_PARAM_IMAGEPOOLSIZETYPE &format, v8::Local<v8::Object> param) {
+  format.width = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("width").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.height = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("height").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.num_pages = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("num_pages").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_IMAGEPOOLEXTERNALTYPE(OMX_PARAM_IMAGEPOOLEXTERNALTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_PARAM_RUTILFIFOINFOTYPE(OMX_PARAM_RUTILFIFOINFOTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_PARAM_ILFIFOCONFIG(OMX_PARAM_ILFIFOCONFIG &format, v8::Local<v8::Object> param) {
+  format.nDataSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDataSize").ToLocalChecked()).ToLocalChecked()).FromJust(); // The size of the FIFO's data area
+  format.nHeaderCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHeaderCount").ToLocalChecked()).ToLocalChecked()).FromJust(); // The number of headers allocated
+}
+
+void SET_OMX_CONFIG_CAMERASENSORMODETYPE(OMX_CONFIG_CAMERASENSORMODETYPE &format, v8::Local<v8::Object> param) {
+  format.nModeIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nModeIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nNumModes = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumModes").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPaddingRight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPaddingRight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPaddingDown = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPaddingDown").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eColorFormat = (OMX_COLOR_FORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eColorFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFrameRateMax = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFrameRateMax").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFrameRateMin = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFrameRateMin").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE(OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE &format, v8::Local<v8::Object> param) {
+  format.nCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCount").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMPORTSTATSTYPE(OMX_CONFIG_BRCMPORTSTATSTYPE &format, v8::Local<v8::Object> param) {
+  format.nImageCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nImageCount").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nBufferCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nBufferCount").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFrameCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFrameCount").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFrameSkips = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFrameSkips").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nDiscards = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDiscards").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nEOS = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nEOS").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nMaxFrameSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxFrameSize").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nCorruptMBs = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCorruptMBs").ToLocalChecked()).ToLocalChecked()).FromJust(); // Number of corrupt macroblocks in the stream
+}
+
+void SET_OMX_CONFIG_BRCMCAMERASTATSTYPE(OMX_CONFIG_BRCMCAMERASTATSTYPE &format, v8::Local<v8::Object> param) {
+  format.nOutFrameCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nOutFrameCount").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nDroppedFrameCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDroppedFrameCount").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+
+void SET_OMX_CONFIG_BRCMIOPERFSTATSTYPE(OMX_CONFIG_BRCMIOPERFSTATSTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnabled").ToLocalChecked()).ToLocalChecked()).FromJust(); // Enable/disable I/O performance statistics
+}
+
+void SET_OMX_CONFIG_SHARPNESSTYPE(OMX_CONFIG_SHARPNESSTYPE &format, v8::Local<v8::Object> param) {
+  format.nSharpness = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nSharpness").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_FLICKERCANCELTYPE(OMX_CONFIG_FLICKERCANCELTYPE &format, v8::Local<v8::Object> param) {
+  format.eFlickerCancel = (OMX_COMMONFLICKERCANCELTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eFlickerCancel").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_REDEYEREMOVALTYPE(OMX_CONFIG_REDEYEREMOVALTYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_REDEYEREMOVALTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_FACEDETECTIONCONTROLTYPE(OMX_CONFIG_FACEDETECTIONCONTROLTYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_FACEDETECTIONCONTROLTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFrames = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFrames").ToLocalChecked()).ToLocalChecked()).FromJust(); // number of frames to apply this setting for, 0 for unlimited
+  format.nMaxRegions = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxRegions").ToLocalChecked()).ToLocalChecked()).FromJust(); // maximum number of regions to detect, 0 for unlimited
+  format.nQuality = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nQuality").ToLocalChecked()).ToLocalChecked()).FromJust(); // hint for algorithmic complexity, range is 0-100. 0 for simplest algorithm, 100 for best quality
+}
+
+void SET_OMX_CONFIG_FACEDETECTIONREGIONTYPE(OMX_CONFIG_FACEDETECTIONREGIONTYPE &format, v8::Local<v8::Object> param) {
+  format.nIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust(); // first requested region number, allowing retrieval of many regions over several requests
+  format.nDetectedRegions = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDetectedRegions").ToLocalChecked()).ToLocalChecked()).FromJust(); // total number of detected regions
+  format.nValidRegions = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nValidRegions").ToLocalChecked()).ToLocalChecked()).FromJust(); // number of valid regions in sRegion array When getting, the client sets this to the number of regions available. The component writes region data and updates this field with how many regions have been written to.
+  format.nImageWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nImageWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Width of the image, hence reference for the face coordinates
+  format.nImageHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nImageHeight").ToLocalChecked()).ToLocalChecked()).FromJust(); // Height of the image, hence reference for the face coordinates
+}
+
+void SET_OMX_CONFIG_INTERLACETYPE(OMX_CONFIG_INTERLACETYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_INTERLACETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust(); // The interlace type of the content
+  format.bRepeatFirstField = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bRepeatFirstField").ToLocalChecked()).ToLocalChecked()).FromJust(); // Whether to repeat the first field
+}
+
+void SET_OMX_PARAM_CAMERAISPTUNERTYPE(OMX_PARAM_CAMERAISPTUNERTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_IMAGEPTRTYPE(OMX_CONFIG_IMAGEPTRTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_AFASSISTTYPE(OMX_CONFIG_AFASSISTTYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_AFASSISTTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_INPUTCROPTYPE(OMX_CONFIG_INPUTCROPTYPE &format, v8::Local<v8::Object> param) {
+  format.xLeft = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xLeft").ToLocalChecked()).ToLocalChecked()).FromJust(); // Fraction of the width for the top left corner of the rectangle
+  format.xTop = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xTop").ToLocalChecked()).ToLocalChecked()).FromJust(); // Fraction of the height for the top left corner of the rectangle
+  format.xWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Fraction of the image width desired
+  format.xHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xHeight").ToLocalChecked()).ToLocalChecked()).FromJust(); // Fraction of the image height desired
+}
+
+void SET_OMX_PARAM_CODECREQUIREMENTSTYPE(OMX_PARAM_CODECREQUIREMENTSTYPE &format, v8::Local<v8::Object> param) {
+  format.nCallbackID = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCallbackID").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bTryHWCodec = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bTryHWCodec").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMEGLIMAGEMEMHANDLETYPE(OMX_CONFIG_BRCMEGLIMAGEMEMHANDLETYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_PRIVACYINDICATORTYPE(OMX_CONFIG_PRIVACYINDICATORTYPE &format, v8::Local<v8::Object> param) {
+  format.ePrivacyIndicatorMode = (OMX_PRIVACYINDICATORTYPE) Nan::To<int>(Nan::Get(param, Nan::New("ePrivacyIndicatorMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_CAMERAFLASHTYPE(OMX_PARAM_CAMERAFLASHTYPE &format, v8::Local<v8::Object> param) {
+  format.eFlashType = (OMX_CAMERAFLASHTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eFlashType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bRedEyeUsesTorchMode = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bRedEyeUsesTorchMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_CAMERAFLASHCONFIGTYPE(OMX_CONFIG_CAMERAFLASHCONFIGTYPE &format, v8::Local<v8::Object> param) {
+  format.bUsePreFlash = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bUsePreFlash").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bUseFocusDistanceInfo = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bUseFocusDistanceInfo").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eFlashSync = (OMX_CAMERAFLASHCONFIGSYNCTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eFlashSync").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bIgnoreChargeState = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bIgnoreChargeState").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE(OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE &format, v8::Local<v8::Object> param) {
+  format.nDelay = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDelay").ToLocalChecked()).ToLocalChecked()).FromJust(); // number of samples delay added by the codec
+  format.nPadding = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPadding").ToLocalChecked()).ToLocalChecked()).FromJust(); // number of silent samples added to the end
+}
+
+void SET_OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE(OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE &format, v8::Local<v8::Object> param) {
+  format.nSrcPortIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nSrcPortIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nDstPortIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDstPortIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nXFade = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nXFade").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMPIXELVALUERANGETYPE(OMX_PARAM_BRCMPIXELVALUERANGETYPE &format, v8::Local<v8::Object> param) {
+  format.ePixelValueRange = (OMX_BRCMPIXELVALUERANGETYPE) Nan::To<int>(Nan::Get(param, Nan::New("ePixelValueRange").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_CAMERADISABLEALGORITHMTYPE(OMX_PARAM_CAMERADISABLEALGORITHMTYPE &format, v8::Local<v8::Object> param) {
+  format.eAlgorithm = (OMX_CAMERADISABLEALGORITHMTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eAlgorithm").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bDisabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bDisabled").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE(OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY(OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE(OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE &format, v8::Local<v8::Object> param) {
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMALLOWMEMCHANGETYPE(OMX_PARAM_BRCMALLOWMEMCHANGETYPE &format, v8::Local<v8::Object> param) {
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_CAMERAUSECASETYPE(OMX_CONFIG_CAMERAUSECASETYPE &format, v8::Local<v8::Object> param) {
+  format.eUseCase = (OMX_CONFIG_CAMERAUSECASE) Nan::To<int>(Nan::Get(param, Nan::New("eUseCase").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE(OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE &format, v8::Local<v8::Object> param) {
+  format.bUseBuffers = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bUseBuffers").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMRETAINMEMORYTYPE(OMX_PARAM_BRCMRETAINMEMORYTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE(OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE &format, v8::Local<v8::Object> param) {
+  format.nBufferSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nBufferSize").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_CAMERAINFOTYPE(OMX_CONFIG_CAMERAINFOTYPE &format, v8::Local<v8::Object> param) {
+  format.nModelId = (OMX_U16) Nan::To<int>(Nan::Get(param, Nan::New("nModelId").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nManufacturerId = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nManufacturerId").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nRevNum = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nRevNum").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xFNumber = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFNumber").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xFocalLength = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFocalLength").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_CAMERAFEATURESTYPE(OMX_CONFIG_CAMERAFEATURESTYPE &format, v8::Local<v8::Object> param) {
+  format.eHasMechanicalShutter = (OMX_CONFIG_CAMERAFEATURESSHUTTER) Nan::To<int>(Nan::Get(param, Nan::New("eHasMechanicalShutter").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bHasLens = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bHasLens").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_REQUESTCALLBACKTYPE(OMX_CONFIG_REQUESTCALLBACKTYPE &format, v8::Local<v8::Object> param) {
+  format.nIndex = (OMX_INDEXTYPE) Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_FOCUSREGIONXY(OMX_FOCUSREGIONXY &format, v8::Local<v8::Object> param) {
+  format.xLeft = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xLeft").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xTop = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xTop").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nWeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nWeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nMask = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMask").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eType = (OMX_FOCUSREGIONTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eType").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_FOCUSREGIONXYTYPE(OMX_CONFIG_FOCUSREGIONXYTYPE &format, v8::Local<v8::Object> param) {
+  format.nIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTotalRegions = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTotalRegions").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nValidRegions = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nValidRegions").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bLockToFaces = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bLockToFaces").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xFaceTolerance = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFaceTolerance").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_U8TYPE(OMX_CONFIG_U8TYPE &format, v8::Local<v8::Object> param) {
+  format.nU8 = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nU8").ToLocalChecked()).ToLocalChecked()).FromJust(); // U8 value
+}
+
+void SET_OMX_CONFIG_CAMERASETTINGSTYPE(OMX_CONFIG_CAMERASETTINGSTYPE &format, v8::Local<v8::Object> param) {
+  format.nExposure = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nExposure").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nAnalogGain = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nAnalogGain").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nDigitalGain = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDigitalGain").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nLux = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nLux").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nRedGain = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nRedGain").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nBlueGain = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nBlueGain").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFocusPosition = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFocusPosition").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_YUVCOLOUR(OMX_YUVCOLOUR &format, v8::Local<v8::Object> param) {
+  format.nY = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nY").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nU = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nU").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nV = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nV").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_DRAWBOXLINEPARAMS(OMX_CONFIG_DRAWBOXLINEPARAMS &format, v8::Local<v8::Object> param) {
+  format.xCornerSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xCornerSize").ToLocalChecked()).ToLocalChecked()).FromJust(); // Size of the corners as a fraction of the complete side
+  format.nPrimaryFaceLineWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPrimaryFaceLineWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Width of the box line for the primary face in pixels
+  format.nOtherFaceLineWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nOtherFaceLineWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Width of the box line for other faces in pixels
+  format.nFocusRegionLineWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFocusRegionLineWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Width of the box line for focus regions in pixels
+  format.bShowFocusRegionsWhenIdle = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowFocusRegionsWhenIdle").ToLocalChecked()).ToLocalChecked()).FromJust(); // Are focus regions displayed when just in viewfinder/AF idle
+  format.bShowAfState = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowAfState").ToLocalChecked()).ToLocalChecked()).FromJust(); // Change to the colours specified below if AF cycle has run
+  format.bShowOnlyPrimaryAfState = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowOnlyPrimaryAfState").ToLocalChecked()).ToLocalChecked()).FromJust(); // Only show the primary face when displaying the AF status
+  format.bCombineNonFaceRegions = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bCombineNonFaceRegions").ToLocalChecked()).ToLocalChecked()).FromJust(); // Combine all regions not defined as faces into one single box covering them all
+}
+
+void SET_OMX_PARAM_CAMERARMITYPE(OMX_PARAM_CAMERARMITYPE &format, v8::Local<v8::Object> param) {
+  format.bEnabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnabled").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nInputBufferHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nInputBufferHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nRmiBufferSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nRmiBufferSize").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMSYNCOUTPUTTYPE(OMX_CONFIG_BRCMSYNCOUTPUTTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_DRMVIEWTYPE(OMX_CONFIG_DRMVIEWTYPE &format, v8::Local<v8::Object> param) {
+  format.nCurrentView = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCurrentView").ToLocalChecked()).ToLocalChecked()).FromJust(); // Current view count
+  format.nMaxView = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxView").ToLocalChecked()).ToLocalChecked()).FromJust(); // Max. no. of view allowed
+}
+
+void SET_OMX_PARAM_BRCMU64TYPE(OMX_PARAM_BRCMU64TYPE &format, v8::Local<v8::Object> param) {
+  format.nLowPart = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nLowPart").ToLocalChecked()).ToLocalChecked()).FromJust(); // low bits of the unsigned 64 bit value
+  format.nHighPart = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHighPart").ToLocalChecked()).ToLocalChecked()).FromJust(); // high bits of the unsigned 64 bit value
+}
+
+void SET_OMX_PARAM_BRCMTHUMBNAILTYPE(OMX_PARAM_BRCMTHUMBNAILTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust(); // Enable generation of thumbnails during still capture
+  format.bUsePreview = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bUsePreview").ToLocalChecked()).ToLocalChecked()).FromJust(); // Use the preview image (as is) as thumbnail
+  format.nWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Desired width of the thumbnail
+  format.nHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHeight").ToLocalChecked()).ToLocalChecked()).FromJust(); // Desired height of the thumbnail
+}
+
+void SET_OMX_PARAM_BRCMASPECTRATIOTYPE(OMX_PARAM_BRCMASPECTRATIOTYPE &format, v8::Local<v8::Object> param) {
+  format.nWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE(OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE &format, v8::Local<v8::Object> param) {
+  format.bStartWithValidFrame = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bStartWithValidFrame").ToLocalChecked()).ToLocalChecked()).FromJust(); // Decoder will only start emitting frames from a non-corrupted frame
+}
+
+void SET_OMX_CONFIG_FLASHINFOTYPE(OMX_CONFIG_FLASHINFOTYPE &format, v8::Local<v8::Object> param) {
+  format.eFlashType = (OMX_CAMERAFLASHTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eFlashType").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nDeviceId = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nDeviceId").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nDeviceVersion = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nDeviceVersion").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_DYNAMICRANGEEXPANSIONTYPE(OMX_CONFIG_DYNAMICRANGEEXPANSIONTYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_DYNAMICRANGEEXPANSIONMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMTHREADAFFINITYTYPE(OMX_PARAM_BRCMTHREADAFFINITYTYPE &format, v8::Local<v8::Object> param) {
+  format.eAffinity = (OMX_BRCMTHREADAFFINITYTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eAffinity").ToLocalChecked()).ToLocalChecked()).FromJust(); // Thread CPU affinity
+}
+
+void SET_OMX_CONFIG_SCENEDETECTTYPE(OMX_CONFIG_SCENEDETECTTYPE &format, v8::Local<v8::Object> param) {
+  format.eScene = (OMX_SCENEDETECTTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eScene").ToLocalChecked()).ToLocalChecked()).FromJust(); // Scene type detected
+}
+
+void SET_OMX_NALSTREAMFORMATTYPE(OMX_NALSTREAMFORMATTYPE &format, v8::Local<v8::Object> param) {
+  format.eNaluFormat = (OMX_NALUFORMATSTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eNaluFormat").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_STATICBOX(OMX_STATICBOX &format, v8::Local<v8::Object> param) {
+  format.xLeft = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xLeft").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xTop = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xTop").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.xHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eType = (OMX_STATICBOXTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eType").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_STATICBOXTYPE(OMX_CONFIG_STATICBOXTYPE &format, v8::Local<v8::Object> param) {
+  format.nIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTotalBoxes = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTotalBoxes").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nValidBoxes = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nValidBoxes").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bDrawOtherBoxes = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bDrawOtherBoxes").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_PORTBOOLEANTYPE(OMX_CONFIG_PORTBOOLEANTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnabled").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_CAMERACAPTUREMODETYPE(OMX_PARAM_CAMERACAPTUREMODETYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_CAMERACAPTUREMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMDRMENCRYPTIONTYPE(OMX_PARAM_BRCMDRMENCRYPTIONTYPE &format, v8::Local<v8::Object> param) {
+  format.eEncryption = (OMX_BRCMDRMENCRYPTIONTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eEncryption").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nConfigDataLen = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nConfigDataLen").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BUFFERSTALLTYPE(OMX_CONFIG_BUFFERSTALLTYPE &format, v8::Local<v8::Object> param) {
+  format.bStalled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bStalled").ToLocalChecked()).ToLocalChecked()).FromJust(); // Whether we are stalled
+  format.nDelay = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDelay").ToLocalChecked()).ToLocalChecked()).FromJust(); // Delay in real time (us) from last buffer to current time
+}
+
+void SET_OMX_CONFIG_LATENCYTARGETTYPE(OMX_CONFIG_LATENCYTARGETTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnabled").ToLocalChecked()).ToLocalChecked()).FromJust(); // whether this mode is enabled
+  format.nFilter = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFilter").ToLocalChecked()).ToLocalChecked()).FromJust(); // number of latency samples to filter on, good value: 1
+  format.nTarget = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTarget").ToLocalChecked()).ToLocalChecked()).FromJust(); // target latency, us
+  format.nShift = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nShift").ToLocalChecked()).ToLocalChecked()).FromJust(); // shift for storing latency values, good value: 7
+  format.nSpeedFactor = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nSpeedFactor").ToLocalChecked()).ToLocalChecked()).FromJust(); // multiplier for speed changes, in 24.8 format, good value: 256-512
+  format.nInterFactor = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nInterFactor").ToLocalChecked()).ToLocalChecked()).FromJust(); // divider for comparing latency versus gradiant, good value: 300
+  format.nAdjCap = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nAdjCap").ToLocalChecked()).ToLocalChecked()).FromJust(); // limit for speed change before nSpeedFactor is applied, good value: 100
+}
+
+void SET_OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE(OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE &format, v8::Local<v8::Object> param) {
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_TIMESTAMPMODETYPE(OMX_PARAM_TIMESTAMPMODETYPE &format, v8::Local<v8::Object> param) {
+  format.eTimestampMode = (OMX_TIMESTAMPMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eTimestampMode").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_BRCMVEGLIMAGETYPE(OMX_BRCMVEGLIMAGETYPE &format, v8::Local<v8::Object> param) {
+  format.nWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nWidth").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHeight = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHeight").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nStride = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nStride").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nUmemHandle = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nUmemHandle").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nUmemOffset = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nUmemOffset").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nFlipped = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFlipped").ToLocalChecked()).ToLocalChecked()).FromJust(); // Non-zero -> vertically flipped image
+}
+
+void SET_OMX_CONFIG_BRCMFOVTYPE(OMX_CONFIG_BRCMFOVTYPE &format, v8::Local<v8::Object> param) {
+  format.xFieldOfViewHorizontal = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFieldOfViewHorizontal").ToLocalChecked()).ToLocalChecked()).FromJust(); // Horizontal field of view in degrees. 16p16 value
+  format.xFieldOfViewVertical = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFieldOfViewVertical").ToLocalChecked()).ToLocalChecked()).FromJust(); // Vertical field of view in degrees. 16p16 value
+}
+
+void SET_OMX_VIDEO_CONFIG_LEVEL_EXTEND(OMX_VIDEO_CONFIG_LEVEL_EXTEND &format, v8::Local<v8::Object> param) {
+  format.nCustomMaxMBPS = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCustomMaxMBPS").ToLocalChecked()).ToLocalChecked()).FromJust(); // Specifies maximum macro-blocks per second
+  format.nCustomMaxFS = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCustomMaxFS").ToLocalChecked()).ToLocalChecked()).FromJust(); // Specifies maximum frame size (macro-blocks per frame)
+  format.nCustomMaxBRandCPB = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCustomMaxBRandCPB").ToLocalChecked()).ToLocalChecked()).FromJust(); // Specifies maximum bitrate in units of 1000 bits/s and Codec Picture Buffer (CPB derived from bitrate)
+}
+
+void SET_OMX_VIDEO_EEDE_ENABLE(OMX_VIDEO_EEDE_ENABLE &format, v8::Local<v8::Object> param) {
+  format.enable = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("enable").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_VIDEO_EEDE_LOSSRATE(OMX_VIDEO_EEDE_LOSSRATE &format, v8::Local<v8::Object> param) {
+  format.loss_rate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("loss_rate").ToLocalChecked()).ToLocalChecked()).FromJust(); // loss rate, 5 means 5%
+}
+
+void SET_OMX_PARAM_COLORSPACETYPE(OMX_PARAM_COLORSPACETYPE &format, v8::Local<v8::Object> param) {
+  format.eColorSpace = (OMX_COLORSPACETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eColorSpace").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_CAPTURESTATETYPE(OMX_PARAM_CAPTURESTATETYPE &format, v8::Local<v8::Object> param) {
+  format.eCaptureState = (OMX_CAPTURESTATETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eCaptureState").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_BRCMCONFIGFILETYPE(OMX_PARAM_BRCMCONFIGFILETYPE &format, v8::Local<v8::Object> param) {
+  format.fileSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("fileSize").ToLocalChecked()).ToLocalChecked()).FromJust(); // Size of complete file data
+}
+
+void SET_OMX_PARAM_BRCMCONFIGFILECHUNKTYPE(OMX_PARAM_BRCMCONFIGFILECHUNKTYPE &format, v8::Local<v8::Object> param) {
+  format.size = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("size").ToLocalChecked()).ToLocalChecked()).FromJust(); // Number of bytes being transferred in this chunk
+  format.offset = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("offset").ToLocalChecked()).ToLocalChecked()).FromJust(); // Offset of this chunk in the file
+}
+
+void SET_OMX_PARAM_BRCMFRAMERATERANGETYPE(OMX_PARAM_BRCMFRAMERATERANGETYPE &format, v8::Local<v8::Object> param) {
+  format.xFramerateLow = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFramerateLow").ToLocalChecked()).ToLocalChecked()).FromJust(); // Low end of framerate range. Q16 format
+  format.xFramerateHigh = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xFramerateHigh").ToLocalChecked()).ToLocalChecked()).FromJust(); // High end of framerate range. Q16 format
+}
+
+void SET_OMX_PARAM_S32TYPE(OMX_PARAM_S32TYPE &format, v8::Local<v8::Object> param) {
+  format.nS32 = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nS32").ToLocalChecked()).ToLocalChecked()).FromJust(); // S32 value
+}
+
+void SET_OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE(OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE &format, v8::Local<v8::Object> param) {
+  format.size_wanted = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("size_wanted").ToLocalChecked()).ToLocalChecked()).FromJust(); // Input. Zero size means internal video decoder buffer, mem_handle and phys_addr not returned in this case
+  format.protect = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("protect").ToLocalChecked()).ToLocalChecked()).FromJust(); // Input. 1 = protect, 0 = unprotect
+  format.mem_handle = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("mem_handle").ToLocalChecked()).ToLocalChecked()).FromJust(); // Output. Handle for protected buffer
+}
+
+void SET_OMX_CONFIG_ZEROSHUTTERLAGTYPE(OMX_CONFIG_ZEROSHUTTERLAGTYPE &format, v8::Local<v8::Object> param) {
+  format.bZeroShutterMode = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("bZeroShutterMode").ToLocalChecked()).ToLocalChecked()).FromJust(); // Select ZSL mode from the camera.
+  format.bConcurrentCapture = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("bConcurrentCapture").ToLocalChecked()).ToLocalChecked()).FromJust(); // Perform concurrent captures for full ZSL.
+}
+
+void SET_OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE(OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_CONFIG_CUSTOMAWBGAINSTYPE(OMX_CONFIG_CUSTOMAWBGAINSTYPE &format, v8::Local<v8::Object> param) {
+  format.xGainR = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xGainR").ToLocalChecked()).ToLocalChecked()).FromJust(); // Red gain - 16p16
+  format.xGainB = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("xGainB").ToLocalChecked()).ToLocalChecked()).FromJust(); // Blue gain - 16p16
+}
+
+void SET_OMX_CONFIG_BRCMRENDERSTATSTYPE(OMX_CONFIG_BRCMRENDERSTATSTYPE &format, v8::Local<v8::Object> param) {
+  format.nValid = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("nValid").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nMatch = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMatch").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPeriod = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPeriod").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPhase = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPhase").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPixelClockNominal = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPixelClockNominal").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPixelClock = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPixelClock").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nHvsStatus = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nHvsStatus").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_CONFIG_BRCMANNOTATETYPE(OMX_CONFIG_BRCMANNOTATETYPE &format, v8::Local<v8::Object> param) {
+  format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bShowShutter = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowShutter").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bShowAnalogGain = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowAnalogGain").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bShowLens = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowLens").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bShowCaf = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowCaf").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bShowMotion = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowMotion").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bShowFrameNum = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowFrameNum").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bEnableBackground = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnableBackground").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bCustomBackgroundColour = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bCustomBackgroundColour").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nBackgroundY = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nBackgroundY").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nBackgroundU = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nBackgroundU").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nBackgroundV = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nBackgroundV").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.dummy1 = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("dummy1").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.bCustomTextColour = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bCustomTextColour").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTextY = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nTextY").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTextU = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nTextU").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTextV = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nTextV").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTextSize = (OMX_U8) Nan::To<int>(Nan::Get(param, Nan::New("nTextSize").ToLocalChecked()).ToLocalChecked()).FromJust(); // Text size: 6-150 pixels
+}
+
+void SET_OMX_CONFIG_BRCMSTEREOSCOPICMODETYPE(OMX_CONFIG_BRCMSTEREOSCOPICMODETYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_BRCMSTEREOSCOPICMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust(); // Packing mode
+  format.bDecimate = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bDecimate").ToLocalChecked()).ToLocalChecked()).FromJust(); // Half/half mode (pixel aspect ratio = 1:2 or 2:1 if set. 1:1 if not set)
+  format.bSwapEyes = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bSwapEyes").ToLocalChecked()).ToLocalChecked()).FromJust(); // False = left eye first. True = right eye first.
+}
+
+void SET_OMX_PARAM_CAMERAINTERFACETYPE(OMX_PARAM_CAMERAINTERFACETYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_CAMERAINTERFACETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust(); // Interface mode
+}
+
+void SET_OMX_PARAM_CAMERACLOCKINGMODETYPE(OMX_PARAM_CAMERACLOCKINGMODETYPE &format, v8::Local<v8::Object> param) {
+  format.eMode = (OMX_CAMERACLOCKINGMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMode").ToLocalChecked()).ToLocalChecked()).FromJust(); // Clocking mode
+}
+
+void SET_OMX_PARAM_CAMERARXCONFIG_TYPE(OMX_PARAM_CAMERARXCONFIG_TYPE &format, v8::Local<v8::Object> param) {
+  format.eDecode = (OMX_CAMERARXDECODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eDecode").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eEncode = (OMX_CAMERARXENCODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eEncode").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.eUnpack = (OMX_CAMERARXUNPACKYPE) Nan::To<int>(Nan::Get(param, Nan::New("eUnpack").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.ePack = (OMX_CAMERARXPACKTYPE) Nan::To<int>(Nan::Get(param, Nan::New("ePack").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nDataLanes = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDataLanes").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nEncodeBlockLength = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nEncodeBlockLength").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nEmbeddedDataLines = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nEmbeddedDataLines").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nImageId = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nImageId").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
+void SET_OMX_PARAM_CAMERARXTIMING_TYPE(OMX_PARAM_CAMERARXTIMING_TYPE &format, v8::Local<v8::Object> param) {
+  format.nTiming1 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTiming1").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTiming2 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTiming2").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTiming3 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTiming3").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTiming4 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTiming4").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTiming5 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTiming5").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTerm1 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTerm1").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nTerm2 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTerm2").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nCpiTiming1 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCpiTiming1").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nCpiTiming2 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCpiTiming2").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
 void SET_OMX_PARAM_PORTDEFINITIONTYPE(OMX_PARAM_PORTDEFINITIONTYPE &format, v8::Local<v8::Object> param) {
   format.eDir = (OMX_DIRTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eDir").ToLocalChecked()).ToLocalChecked()).FromJust(); // Direction (input or output) of this port
   format.nBufferCountActual = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nBufferCountActual").ToLocalChecked()).ToLocalChecked()).FromJust(); // The actual number of buffers allocated on this port
@@ -584,12 +1355,7 @@ void SET_OMX_BUFFERHEADERTYPE(OMX_BUFFERHEADERTYPE &format, v8::Local<v8::Object
   format.nAllocLen = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nAllocLen").ToLocalChecked()).ToLocalChecked()).FromJust(); // size of the buffer allocated, in bytes
   format.nFilledLen = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFilledLen").ToLocalChecked()).ToLocalChecked()).FromJust(); // number of bytes currently in the buffer
   format.nOffset = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nOffset").ToLocalChecked()).ToLocalChecked()).FromJust(); // start offset of valid data in bytes from the start of the buffer
-  format.pAppPrivate = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pAppPrivate").ToLocalChecked()).ToLocalChecked()).FromJust(); // pointer to any data the application wants to associate with this buffer
-  format.pPlatformPrivate = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pPlatformPrivate").ToLocalChecked()).ToLocalChecked()).FromJust(); // pointer to any data the platform wants to associate with this buffer
-  format.pInputPortPrivate = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pInputPortPrivate").ToLocalChecked()).ToLocalChecked()).FromJust(); // pointer to any data the input port wants to associate with this buffer
-  format.pOutputPortPrivate = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pOutputPortPrivate").ToLocalChecked()).ToLocalChecked()).FromJust(); // pointer to any data the output port wants to associate with this buffer
   format.hMarkTargetComponent = (OMX_HANDLETYPE) Nan::To<int>(Nan::Get(param, Nan::New("hMarkTargetComponent").ToLocalChecked()).ToLocalChecked()).FromJust(); // The component that will generate a mark event upon processing this buffer.
-  format.pMarkData = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pMarkData").ToLocalChecked()).ToLocalChecked()).FromJust(); // Application specific data associated with the mark sent on a mark event to disambiguate this mark from others.
   format.nTickCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTickCount").ToLocalChecked()).ToLocalChecked()).FromJust(); // Optional entry that the component and application can update with a tick count when they access the component. This value should be in microseconds. Since this is a value relative to an arbitrary starting point, this value cannot be used to determine absolute time. This is an optional entry and not all components will update it.
   format.nFlags = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFlags").ToLocalChecked()).ToLocalChecked()).FromJust(); // buffer specific flags
   format.nOutputPortIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nOutputPortIndex").ToLocalChecked()).ToLocalChecked()).FromJust(); // The index of the output port (if any) using this buffer
@@ -613,6 +1379,21 @@ void SET_OMX_PARAM_BUFFERSUPPLIERTYPE(OMX_PARAM_BUFFERSUPPLIERTYPE &format, v8::
 void SET_OMX_TUNNELSETUPTYPE(OMX_TUNNELSETUPTYPE &format, v8::Local<v8::Object> param) {
   format.nTunnelFlags = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTunnelFlags").ToLocalChecked()).ToLocalChecked()).FromJust(); // bit flags for tunneling
   format.eSupplier = (OMX_BUFFERSUPPLIERTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eSupplier").ToLocalChecked()).ToLocalChecked()).FromJust(); // supplier preference
+}
+
+void SET_OMX_PARAM_PORTSUMMARYTYPE(OMX_PARAM_PORTSUMMARYTYPE &format, v8::Local<v8::Object> param) {
+  format.nNumPorts = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumPorts").ToLocalChecked()).ToLocalChecked()).FromJust(); // Total number of ports
+  format.reqSet = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("reqSet").ToLocalChecked()).ToLocalChecked()).FromJust(); // Which set of ports is details below, portIndex[0] is port reqSet 32
+  format.portDir = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("portDir").ToLocalChecked()).ToLocalChecked()).FromJust(); // Bitfield, 1 if output port, 0 if input port, max 256 ports
+}
+
+void SET_OMX_PARAM_MARKCOMPARISONTYPE(OMX_PARAM_MARKCOMPARISONTYPE &format, v8::Local<v8::Object> param) {
+}
+
+void SET_OMX_PARAM_TUNNELSTATUSTYPE(OMX_PARAM_TUNNELSTATUSTYPE &format, v8::Local<v8::Object> param) {
+  format.nIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nIndex").ToLocalChecked()).ToLocalChecked()).FromJust(); // Query the nIndex'th port and fill in nPortIndex
+  format.bUseIndex = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bUseIndex").ToLocalChecked()).ToLocalChecked()).FromJust(); // If OMX_TRUE read nIndex, otherwise read nPortIndex
+  format.nTunneledPort = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTunneledPort").ToLocalChecked()).ToLocalChecked()).FromJust(); // Port on tunnelled component
 }
 
 void SET_OMX_IMAGE_PORTDEFINITIONTYPE(OMX_IMAGE_PORTDEFINITIONTYPE &format, v8::Local<v8::Object> param) {
@@ -827,7 +1608,6 @@ void SET_OMX_TIME_CONFIG_TIMESTAMPTYPE(OMX_TIME_CONFIG_TIMESTAMPTYPE &format, v8
 }
 
 void SET_OMX_TIME_CONFIG_MEDIATIMEREQUESTTYPE(OMX_TIME_CONFIG_MEDIATIMEREQUESTTYPE &format, v8::Local<v8::Object> param) {
-  format.pClientPrivate = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pClientPrivate").ToLocalChecked()).ToLocalChecked()).FromJust(); // Client private data to disabiguate this media time from others (e.g. the number of the frame to deliver). Duplicated in the media time structure that fulfills this request. A value of zero is reserved for time scale updates.
 }
 
 void SET_OMX_TIME_MEDIATIMETYPE(OMX_TIME_MEDIATIMETYPE &format, v8::Local<v8::Object> param) {
@@ -885,7 +1665,6 @@ void SET_OMX_TICKS(OMX_TICKS &format, v8::Local<v8::Object> param) {
 
 void SET_OMX_MARKTYPE(OMX_MARKTYPE &format, v8::Local<v8::Object> param) {
   format.hMarkTargetComponent = (OMX_HANDLETYPE) Nan::To<int>(Nan::Get(param, Nan::New("hMarkTargetComponent").ToLocalChecked()).ToLocalChecked()).FromJust(); // The component that will generate a mark event upon processing the mark.
-  format.pMarkData = (OMX_PTR) Nan::To<int>(Nan::Get(param, Nan::New("pMarkData").ToLocalChecked()).ToLocalChecked()).FromJust(); // Application specific data associated with the mark sent on a mark event to disambiguate this mark from others.
 }
 
 void SET_OMX_VIDEO_PORTDEFINITIONTYPE(OMX_VIDEO_PORTDEFINITIONTYPE &format, v8::Local<v8::Object> param) {
@@ -940,6 +1719,7 @@ void SET_OMX_VIDEO_PARAM_INTRAREFRESHTYPE(OMX_VIDEO_PARAM_INTRAREFRESHTYPE &form
   format.nAirMBs = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nAirMBs").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.nAirRef = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nAirRef").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.nCirMBs = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCirMBs").ToLocalChecked()).ToLocalChecked()).FromJust();
+  format.nPirMBs = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPirMBs").ToLocalChecked()).ToLocalChecked()).FromJust();
 }
 
 void SET_OMX_VIDEO_PARAM_ERRORCORRECTIONTYPE(OMX_VIDEO_PARAM_ERRORCORRECTIONTYPE &format, v8::Local<v8::Object> param) {
@@ -2461,6 +3241,1806 @@ void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nP
       OMX_TIME_CONFIG_SEEKMODETYPE format;
       OMX_consts::InitOMXParams(&format);
       SET_OMX_TIME_CONFIG_SEEKMODETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamMarkComparison:
+    {
+      OMX_PARAM_MARKCOMPARISONTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_MARKCOMPARISONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamPortSummary:
+    {
+      OMX_PARAM_PORTSUMMARYTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_PORTSUMMARYTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmDataUnit:
+    {
+      OMX_PARAM_DATAUNITTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_DATAUNITTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCodecConfig:
+    {
+      OMX_PARAM_CODECCONFIGTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CODECCONFIGTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigPlayMode:
+    {
+      OMX_CONFIG_PLAYMODETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_PLAYMODETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigPresentationOffset:
+    {
+      OMX_TIME_CONFIG_TIMESTAMPTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_TIME_CONFIG_TIMESTAMPTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamSourceFunctions:
+    {
+      OMX_PARAM_STILLSFUNCTIONTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_STILLSFUNCTIONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamImagePoolSize:
+    {
+      OMX_PARAM_IMAGEPOOLSIZETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_IMAGEPOOLSIZETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamImagePoolExternal:
+    {
+      OMX_PARAM_IMAGEPOOLEXTERNALTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_IMAGEPOOLEXTERNALTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamRUTILFifoInfo:
+    {
+      OMX_PARAM_RUTILFIFOINFOTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_RUTILFIFOINFOTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamILFifoConfig:
+    {
+      OMX_PARAM_ILFIFOCONFIG format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_ILFIFOCONFIG(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonInterlace:
+    {
+      OMX_CONFIG_INTERLACETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_INTERLACETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamISPTunerName:
+    {
+      OMX_PARAM_CAMERAISPTUNERTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CAMERAISPTUNERTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraDeviceNumber:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraDevicesPresent:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraInputFrame:
+    {
+      OMX_CONFIG_IMAGEPTRTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_IMAGEPTRTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigStillColourDenoiseEnable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigVideoColourDenoiseEnable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigAFAssistLight:
+    {
+      OMX_CONFIG_AFASSISTTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_AFASSISTTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigSmartShakeReductionEnable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigInputCropPercentages:
+    {
+      OMX_CONFIG_INPUTCROPTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_INPUTCROPTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigStillsAntiShakeEnable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigWaitForFocusBeforeCapture:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigAudioRenderingLatency:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigDrawBoxAroundFaces:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCodecRequirements:
+    {
+      OMX_PARAM_CODECREQUIREMENTSTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CODECREQUIREMENTSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmEGLImageMemHandle:
+    {
+      OMX_CONFIG_BRCMEGLIMAGEMEMHANDLETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMEGLIMAGEMEMHANDLETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigPrivacyIndicator:
+    {
+      OMX_CONFIG_PRIVACYINDICATORTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_PRIVACYINDICATORTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraFlashType:
+    {
+      OMX_PARAM_CAMERAFLASHTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CAMERAFLASHTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraEnableStatsPass:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraFlashConfig:
+    {
+      OMX_CONFIG_CAMERAFLASHCONFIGTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_CAMERAFLASHCONFIGTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCaptureRawImageURI:
+    {
+      OMX_PARAM_CONTENTURITYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CONTENTURITYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraStripeFuncMinLines:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraAlgorithmVersionDeprecated:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraIsoReferenceValue:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraCaptureAbortsAutoFocus:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmClockMissCount:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigFlashChargeLevel:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoEncodedSliceSize:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioTrackGaplessPlayback:
+    {
+      OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioTrackChangeControl:
+    {
+      OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmPixelAspectRatio:
+    {
+      OMX_CONFIG_POINTTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_POINTTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmPixelValueRange:
+    {
+      OMX_PARAM_BRCMPIXELVALUERANGETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMPIXELVALUERANGETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraDisableAlgorithm:
+    {
+      OMX_PARAM_CAMERADISABLEALGORITHMTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CAMERADISABLEALGORITHMTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoIntraPeriodTime:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoIntraPeriod:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioEffectControl:
+    {
+      OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmMinimumProcessingLatency:
+    {
+      OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoAVCSEIEnable:
+    {
+      OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmAllowMemChange:
+    {
+      OMX_PARAM_BRCMALLOWMEMCHANGETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMALLOWMEMCHANGETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoEncoderMBRowsPerSlice:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraAFAssistDeviceNumber_Deprecated:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraPrivacyIndicatorDeviceNumber_Deprecated:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraUseCase:
+    {
+      OMX_CONFIG_CAMERAUSECASETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_CAMERAUSECASETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmDisableProprietaryTunnels:
+    {
+      OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmOutputBufferSize:
+    {
+      OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmRetainMemory:
+    {
+      OMX_PARAM_BRCMRETAINMEMORYTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMRETAINMEMORYTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCanFocus_Deprecated:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmImmutableInput:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamDynamicParameterFile:
+    {
+      OMX_PARAM_CONTENTURITYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CONTENTURITYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamUseDynamicParameterFile:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraInfo:
+    {
+      OMX_CONFIG_CAMERAINFOTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_CAMERAINFOTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraFeatures:
+    {
+      OMX_CONFIG_CAMERAFEATURESTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_CAMERAFEATURESTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigRequestCallback:
+    {
+      OMX_CONFIG_REQUESTCALLBACKTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_REQUESTCALLBACKTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmOutputBufferFullCount:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonFocusRegionXY:
+    {
+      OMX_CONFIG_FOCUSREGIONXYTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_FOCUSREGIONXYTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmDisableEXIF:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigUserSettingsId:
+    {
+      OMX_CONFIG_U8TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_U8TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraSettings:
+    {
+      OMX_CONFIG_CAMERASETTINGSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_CAMERASETTINGSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigDrawBoxLineParams:
+    {
+      OMX_CONFIG_DRAWBOXLINEPARAMS format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_DRAWBOXLINEPARAMS(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraRmiControl_Deprecated:
+    {
+      OMX_PARAM_CAMERARMITYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CAMERARMITYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBurstCapture:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmEnableIJGTableScaling:
+    {
+      OMX_PARAM_IJGSCALINGTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_IJGSCALINGTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigPowerDown:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmSyncOutput:
+    {
+      OMX_CONFIG_BRCMSYNCOUTPUTTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMSYNCOUTPUTTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoRequestIFrame:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmNALSSeparate:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigConfirmView:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigDrmView:
+    {
+      OMX_CONFIG_DRMVIEWTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_DRMVIEWTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoIntraRefresh:
+    {
+      OMX_VIDEO_PARAM_INTRAREFRESHTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_VIDEO_PARAM_INTRAREFRESHTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmMaxFileSize:
+    {
+      OMX_PARAM_BRCMU64TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMU64TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmCRCEnable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmCRC:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCameraRmiInUse_Deprecated:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioSource:
+    {
+      OMX_CONFIG_BRCMAUDIOSOURCETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMAUDIOSOURCETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioDestination:
+    {
+      OMX_CONFIG_BRCMAUDIODESTINATIONTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMAUDIODESTINATIONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamAudioDdp:
+    {
+      OMX_AUDIO_PARAM_DDPTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_AUDIO_PARAM_DDPTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmThumbnail:
+    {
+      OMX_PARAM_BRCMTHUMBNAILTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMTHUMBNAILTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmDisableLegacyBlocks_Deprecated:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmCameraInputAspectRatio:
+    {
+      OMX_PARAM_BRCMASPECTRATIOTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMASPECTRATIOTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamDynamicParameterFileFailFatal:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoDecodeErrorConcealment:
+    {
+      OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmInterpolateMissingTimestamps:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmSetCodecPerformanceMonitoring:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigFlashInfo:
+    {
+      OMX_CONFIG_FLASHINFOTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_FLASHINFOTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmMaxFrameSkips:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigDynamicRangeExpansion:
+    {
+      OMX_CONFIG_DYNAMICRANGEEXPANSIONTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_DYNAMICRANGEEXPANSIONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmFlushCallbackId:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmTransposeBufferCount:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigFaceRecognitionControl:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigFaceRecognitionSaveFace:
+    {
+      OMX_PARAM_BRCMU64TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMU64TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigFaceRecognitionDatabaseUri:
+    {
+      OMX_PARAM_CONTENTURITYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CONTENTURITYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigClockAdjustment:
+    {
+      OMX_TIME_CONFIG_TIMESTAMPTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_TIME_CONFIG_TIMESTAMPTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmThreadAffinity:
+    {
+      OMX_PARAM_BRCMTHREADAFFINITYTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMTHREADAFFINITYTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamAsynchronousOutput:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigAsynchronousFailureURI:
+    {
+      OMX_PARAM_CONTENTURITYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_CONTENTURITYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonFaceBeautification:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonSceneDetectionControl:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCommonSceneDetected:
+    {
+      OMX_CONFIG_SCENEDETECTTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_SCENEDETECTTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamDisableVllPool:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmDrawStaticBox:
+    {
+      OMX_CONFIG_STATICBOXTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_STATICBOXTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmClockReferenceSource:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamPassBufferMarks:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigPortCapturing:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmDecoderPassThrough:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmMaxCorruptMBs:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmGlobalAudioMute:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraCaptureMode:
+    {
+      OMX_PARAM_CAMERACAPTUREMODETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CAMERACAPTUREMODETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmDrmEncryption:
+    {
+      OMX_PARAM_BRCMDRMENCRYPTIONTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMDRMENCRYPTIONTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmCameraRnDPreprocess:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmCameraRnDPostprocess:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioTrackChangeCount:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCommonUseStcTimestamps:
+    {
+      OMX_PARAM_TIMESTAMPMODETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_TIMESTAMPMODETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBufferStall:
+    {
+      OMX_CONFIG_BUFFERSTALLTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BUFFERSTALLTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigRefreshCodec:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCaptureStatus:
+    {
+      OMX_PARAM_CAPTURESTATETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CAPTURESTATETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigTimeInvalidStartTime:
+    {
+      OMX_TIME_CONFIG_TIMESTAMPTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_TIME_CONFIG_TIMESTAMPTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigLatencyTarget:
+    {
+      OMX_CONFIG_LATENCYTARGETTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_LATENCYTARGETTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigMinimiseFragmentation:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamPortMaxFrameSize:
+    {
+      OMX_FRAMESIZETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_FRAMESIZETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamComponentName:
+    {
+      OMX_PARAM_COMPONENTROLETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_COMPONENTROLETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigEncLevelExtension:
+    {
+      OMX_VIDEO_CONFIG_LEVEL_EXTEND format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_VIDEO_CONFIG_LEVEL_EXTEND(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigTemporalDenoiseEnable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmLazyImagePoolDestroy:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmEEDEEnable:
+    {
+      OMX_VIDEO_EEDE_ENABLE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_VIDEO_EEDE_ENABLE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmEEDELossRate:
+    {
+      OMX_VIDEO_EEDE_LOSSRATE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_VIDEO_EEDE_LOSSRATE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamAudioDts:
+    {
+      OMX_AUDIO_PARAM_DTSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_AUDIO_PARAM_DTSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamNumOutputChannels:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmHighDynamicRange:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmPoolMemAllocSize:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmBufferFlagFilter:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoEncodeMinQuant:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoEncodeMaxQuant:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamRateControlModel:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmExtraBuffers:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigFieldOfView:
+    {
+      OMX_CONFIG_BRCMFOVTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMFOVTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmAlignHoriz:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmAlignVert:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamColorSpace:
+    {
+      OMX_PARAM_COLORSPACETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_COLORSPACETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmDroppablePFrames:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoInitialQuant:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoEncodeQpP:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoRCSliceDQuant:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoFrameLimitBits:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoPeakRate:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoH264DisableCABAC:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoH264LowLatency:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoH264AUDelimiters:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoH264DeblockIDC:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmVideoH264IntraMBMode:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigContrastEnhance:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraCustomSensorConfig:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmHeaderOnOpen:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmUseRegisterFile:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmRegisterFileFailFatal:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmConfigFileRegisters:
+    {
+      OMX_PARAM_BRCMCONFIGFILETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMCONFIGFILETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmConfigFileChunkRegisters:
+    {
+      OMX_PARAM_BRCMCONFIGFILECHUNKTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMCONFIGFILECHUNKTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmAttachLog:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraZeroShutterLag:
+    {
+      OMX_CONFIG_ZEROSHUTTERLAGTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_ZEROSHUTTERLAGTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmFpsRange:
+    {
+      OMX_PARAM_BRCMFRAMERATERANGETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BRCMFRAMERATERANGETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCaptureExposureCompensation:
+    {
+      OMX_PARAM_S32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_S32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoPrecodeForQP:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoTimestampFifo:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamSWSharpenDisable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmFlashRequired:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoDrmProtectBuffer:
+    {
+      OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamSWSaturationDisable:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoDecodeConfigVD3:
+    {
+      OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmPowerMonitor:
+    {
+      OMX_CONFIG_BOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmZeroCopy:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoEGLRenderDiscardMode:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoAVC_VCLHRDEnable:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoAVC_LowDelayHRDEnable:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoCroppingDisable:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoAVCInlineHeaderEnable:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioDownmixCoefficients:
+    {
+      OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioDownmixCoefficients8x8:
+    {
+      OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8 format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmAudioMaxSample:
+    {
+      OMX_CONFIG_BRCMAUDIOMAXSAMPLE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMAUDIOMAXSAMPLE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigCustomAwbGains:
+    {
+      OMX_CONFIG_CUSTOMAWBGAINSTYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_CUSTOMAWBGAINSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamRemoveImagePadding:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoAVCInlineVectorsEnable:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmRenderStats:
+    {
+      OMX_CONFIG_BRCMRENDERSTATSTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_BRCMRENDERSTATSTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexConfigBrcmCameraAnnotate:
+    {
+      OMX_CONFIG_BRCMANNOTATETYPE format;
+      OMX_consts::InitOMXParams(&format);
+      SET_OMX_CONFIG_BRCMANNOTATETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmLockStepEnable:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmTimeScale:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraInterface:
+    {
+      OMX_PARAM_CAMERAINTERFACETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CAMERAINTERFACETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraClockingMode:
+    {
+      OMX_PARAM_CAMERACLOCKINGMODETYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CAMERACLOCKINGMODETYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraRxConfig:
+    {
+      OMX_PARAM_CAMERARXCONFIG_TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CAMERARXCONFIG_TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamCameraRxTiming:
+    {
+      OMX_PARAM_CAMERARXTIMING_TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_CAMERARXTIMING_TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamDynamicParameterConfig:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
 
       SetParameterTemplate(&format, handle, nParamIndex);
     }

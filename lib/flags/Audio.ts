@@ -29,6 +29,13 @@ export enum OMX_AUDIO_CODINGTYPE {
   OMX_AUDIO_CodingMIDI = 0x1B,
   OMX_AUDIO_CodingKhronosExtensions = 0x6F000000,
   OMX_AUDIO_CodingVendorStartUnused = 0x7F000000,
+  OMX_AUDIO_CodingFLAC = 0x7F000001,
+  OMX_AUDIO_CodingDDP = 0x7F000002,
+  OMX_AUDIO_CodingDTS = 0x7F000003,
+  OMX_AUDIO_CodingWMAPRO = 0x7F000004,
+  OMX_AUDIO_CodingATRAC3 = 0x7F000005,
+  OMX_AUDIO_CodingATRACX = 0x7F000006,
+  OMX_AUDIO_CodingATRACAAL = 0x7F000007,
   OMX_AUDIO_CodingMax = 0x7FFFFFFF
 }
 export enum OMX_AUDIO_PCMMODETYPE {
@@ -70,6 +77,36 @@ export enum OMX_AUDIO_MP3STREAMFORMATTYPE {
   OMX_AUDIO_MP3StreamFormatKhronosExtensions = 0x6F000000,
   OMX_AUDIO_MP3StreamFormatVendorStartUnused = 0x7F000000,
   OMX_AUDIO_MP3StreamFormatMax = 0x7FFFFFFF
+}
+export enum OMX_AUDIO_DDPBITSTREAMID {
+  OMX_AUDIO_DDPBitStreamIdAC3 = 0x8,
+  OMX_AUDIO_DDPBitStreamIdEAC3 = 0x10,
+  OMX_AUDIO_DDPBitStreamIdKhronosExtensions = 0x6F000000,
+  OMX_AUDIO_DDPBitStreamIdVendorStartUnused = 0x7F000000,
+  OMX_AUDIO_DDPBitStreamIdMax = 0x7FFFFFFF
+}
+export enum OMX_AUDIO_DDPBITSTREAMMODE {
+  OMX_AUDIO_DDPBitStreamModeCM = 0x0,
+  OMX_AUDIO_DDPBitStreamModeME = 0x1,
+  OMX_AUDIO_DDPBitStreamModeVI = 0x2,
+  OMX_AUDIO_DDPBitStreamModeHI = 0x3,
+  OMX_AUDIO_DDPBitStreamModeD = 0x4,
+  OMX_AUDIO_DDPBitStreamModeC = 0x5,
+  OMX_AUDIO_DDPBitStreamModeE = 0x6,
+  OMX_AUDIO_DDPBitStreamModeVO = 0x7,
+  OMX_AUDIO_DDPBitStreamModeK = 0x8,
+  OMX_AUDIO_DDPBitStreamModeKhronosExtensions = 0x6F000000,
+  OMX_AUDIO_DDPBitStreamModeVendorStartUnused = 0x7F000000,
+  OMX_AUDIO_DDPBitStreamModeMax = 0x7FFFFFFF
+}
+export enum OMX_AUDIO_DDPDOLBYSURROUNDMODE {
+  OMX_AUDIO_DDPDolbySurroundModeNotIndicated = 0x0,
+  OMX_AUDIO_DDPDolbySurroundModeNotDolbySurround = 0x1,
+  OMX_AUDIO_DDPDolbySurroundModeDolbySurroundEncoded = 0x2,
+  OMX_AUDIO_DDPDolbySurroundModeReserverd = 0x3,
+  OMX_AUDIO_DDPDolbySurroundModeKhronosExtensions = 0x6F000000,
+  OMX_AUDIO_DDPDolbySurroundModeVendorStartUnused = 0x7F000000,
+  OMX_AUDIO_DDPDolbySurroundModeMax = 0x7FFFFFFF
 }
 export enum OMX_AUDIO_AACSTREAMFORMATTYPE {
   OMX_AUDIO_AACStreamFormatMP2ADTS = 0x0,

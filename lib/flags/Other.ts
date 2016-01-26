@@ -6,6 +6,9 @@ export enum OMX_OTHER_FORMATTYPE {
   OMX_OTHER_FormatVendorReserved = 0x3E8,
   OMX_OTHER_FormatKhronosExtensions = 0x6F000000,
   OMX_OTHER_FormatVendorStartUnused = 0x7F000000,
+  OMX_OTHER_FormatText = 0x7F000001,
+  OMX_OTHER_FormatTextSKM2 = 0x7F000002,
+  OMX_OTHER_FormatText3GP5 = 0x7F000003,
   OMX_OTHER_FormatMax = 0x7FFFFFFF
 }
 export enum OMX_TIME_SEEKMODETYPE {
@@ -13,6 +16,7 @@ export enum OMX_TIME_SEEKMODETYPE {
   OMX_TIME_SeekModeAccurate = 0x1,
   OMX_TIME_SeekModeKhronosExtensions = 0x6F000000,
   OMX_TIME_SeekModeVendorStartUnused = 0x7F000000,
+  OMX_TIME_SeekModeDirectional = 0x7F000001,
   OMX_TIME_SeekModeMax = 0x7FFFFFFF
 }
 export enum OMX_TIME_UPDATETYPE {
