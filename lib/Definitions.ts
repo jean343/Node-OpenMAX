@@ -5,6 +5,7 @@ export interface Node_OMX {
   bcm_host_deinit();
   OMX_Init();
   OMX_Deinit();
+  copyAsync(chunk, buf, destnStride, destnSliceHeight, offsetX, offsetY, nStride, width, nSliceHeight, height, callback);
 
   COMPONENTTYPE(name: string): COMPONENTTYPE;
 }

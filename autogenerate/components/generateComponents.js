@@ -87,21 +87,18 @@ function template(name, nameCamel, inPorts, outPorts) {
 
   for (var p in proto) {
     if (proto.hasOwnProperty(p)) {
-      protoText += p + proto[p];
+      protoText += p + proto[p] + "\n";
     }
   }
 
   return "//This file is auto-generated from 'node headerGeneration/generateComponents.js' \n\
 \n\
-import util = require('util')\n\
 import omx = require('../../')\n\
 \n\
 export class " + nameCamel + " extends omx.Component {\n\
-  constructor() {\n\
-    super('" + name + "');\n\
-    var self = this;\n\
-    this.init(" + flags.join(' | ') + ");\n\
-    this.component.setPorts(" + inPort + ", " + outPort + ");\n\
+  constructor(name?: string) {\n\
+    super('" + name + "', name);\n\
+    this.setPorts(" + inPort + ", " + outPort + ");\n\
   }\n\
   \n\
   " + protoText + "\n\
@@ -113,9 +110,19 @@ function prototypes(nameCamel) {
     case 'VideoDecode':
       return {
         setVideoPortFormat: " (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {\n\
-    var format = this.component.getParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);\n\
+    var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
-    this.component.setParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+  };",
+        setBufferCount: "() {\n\
+    var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
+    portdef.nBufferCountActual = portdef.nBufferCountMin;\n\
+    portdef.nBufferSize = 65536;\n\
+    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
+\n\
+    portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
+    portdef.nBufferCountActual = portdef.nBufferCountMin;\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
   };"
       };
       break;
@@ -125,23 +132,23 @@ function prototypes(nameCamel) {
     var format = {\n\
       eCompressionFormat: eCompressionFormat\n\
     };\n\
-    this.component.setParameter(this.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
   };"
       };
     case 'ImageDecode':
       return {
         setInputFormat: " (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {\n\
-    var format = this.component.getParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
+    var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
-    this.component.setParameter(this.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
   };"
       };
     case 'ImageEncode':
       return {
         setInputFormat: " (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {\n\
-    var format = this.component.getParameter(this.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
+    var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
-    this.component.setParameter(this.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
   };"
       };
       break;

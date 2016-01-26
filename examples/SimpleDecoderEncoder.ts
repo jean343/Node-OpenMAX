@@ -68,12 +68,12 @@ VideoDecode1.init()
     var useTunnel = false; // By using the tunnel, we send less data to node and can reduce the CPU load.
 
     if (useTunnel) {
-      fs.createReadStream("spec/data/video-LQ.h264")
+      /*fs.createReadStream("spec/data/video-LQ.h264")
         .pipe(VideoDecode1)
         .tunnel(VideoEncode)
         .pipe(WriteFileFilter)
         .pipe(VideoDecode2)
-        .tunnel(VideoRender);
+        .tunnel(VideoRender);*/
     } else {
       fs.createReadStream("spec/data/video-LQ.h264")
         .pipe(VideoDecode1)
@@ -86,4 +86,3 @@ VideoDecode1.init()
         });
     }
   });
-

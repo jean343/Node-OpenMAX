@@ -3,8 +3,8 @@
 import omx = require('../../')
 
 export class VideoEncode extends omx.Component {
-  constructor() {
-    super('video_encode');
+  constructor(name?: string) {
+    super('video_encode', name);
     this.setPorts(200, 201);
   }
   
@@ -14,4 +14,5 @@ export class VideoEncode extends omx.Component {
     };
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
   };
+
 }

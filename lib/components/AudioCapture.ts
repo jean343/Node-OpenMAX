@@ -1,14 +1,11 @@
 //This file is auto-generated from 'node headerGeneration/generateComponents.js' 
 
-import util = require('util')
 import omx = require('../../')
 
 export class AudioCapture extends omx.Component {
-  constructor() {
-    super('audio_capture');
-    var self = this;
-    this.init(omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS | omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS | omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_OUTPUT_BUFFERS);
-    this.component.setPorts(181, 180);
+  constructor(name?: string) {
+    super('audio_capture', name);
+    this.setPorts(181, 180);
   }
   
   

@@ -22,4 +22,4 @@ import omx = require('../');
         });
     });
 })();
-setTimeout(gc, 100);
+//setTimeout(gc, 100);
