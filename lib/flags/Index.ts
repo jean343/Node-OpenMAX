@@ -403,5 +403,8 @@ export enum OMX_INDEXTYPE {
   OMX_IndexParamCameraRxConfig = 0x7F0000FD,
   OMX_IndexParamCameraRxTiming = 0x7F0000FE,
   OMX_IndexParamDynamicParameterConfig = 0x7F0000FF,
+  OMX_IndexParamBrcmVideoAVCSPSTimingEnable = 0x7F000100,
+  OMX_IndexParamBrcmBayerOrder = 0x7F000101,
+  OMX_IndexParamBrcmMaxNumCallbacks = 0x7F000102,
   OMX_IndexMax = 0x7FFFFFFF
 }

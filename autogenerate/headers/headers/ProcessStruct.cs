@@ -12,6 +12,17 @@ namespace headers
     enum WriteType { get, set }
     class ProcessStruct
     {
+        string[] blackList = new string[] {
+                "OMX_COMPONENTTYPE",
+                "OMX_COMPONENTREGISTERTYPE",
+                "OMX_CALLBACKTYPE",
+                "OMX_BRCMBUFFERSTATSTYPE",
+                "OMX_PARAM_SOURCESEEDTYPE",
+                "OMX_FACEREGIONTYPE",
+                "OMX_PARAM_BRCMRECURSIONUNSAFETYPE",
+                "OMX_CONFIG_LENSCALIBRATIONVALUETYPE"
+            };
+
         public void convertStruct(string path, List<string> files)
         {
             // Parse the enum OMX_INDEXTYPE to get the references
@@ -59,16 +70,6 @@ namespace headers
                 "OMX_OTHER_PORTDEFINITIONTYPE",
                 "OMX_VIDEO_PARAM_PORTFORMATTYPE"
             };*/
-            string[] blackList = new string[] {
-                "OMX_COMPONENTTYPE",
-                "OMX_COMPONENTREGISTERTYPE",
-                "OMX_CALLBACKTYPE",
-                "OMX_BRCMBUFFERSTATSTYPE",
-                "OMX_PARAM_SOURCESEEDTYPE",
-                "OMX_FACEREGIONTYPE",
-                "OMX_PARAM_BRCMRECURSIONUNSAFETYPE",
-                "OMX_CONFIG_LENSCALIBRATIONVALUETYPE"
-            };
             foreach (CStruct cstruct in cstructs)
             {
                 //if (!whiteList.Contains(cstruct.name)) continue;
@@ -76,11 +77,11 @@ namespace headers
 
                 if (t == WriteType.get)
                 {
-                    writeFunctionGetter(sw, cstruct, false);
+                    writeFunctionGetter(sw, cstruct, false, cstructs);
                 }
                 else
                 {
-                    writeFunctionSetter(sw, cstruct, false);
+                    writeFunctionSetter(sw, cstruct, false, cstructs);
                 }
             }
 
@@ -93,12 +94,12 @@ namespace headers
 
                 if (t == WriteType.get)
                 {
-                    writeFunctionGetter(sw, cstruct, true);
+                    writeFunctionGetter(sw, cstruct, true, cstructs);
                     sw.WriteLine();
                 }
                 else
                 {
-                    writeFunctionSetter(sw, cstruct, true);
+                    writeFunctionSetter(sw, cstruct, true, cstructs);
                     sw.WriteLine();
                 }
             }
@@ -110,9 +111,6 @@ namespace headers
             foreach (CField field in OMX_INDEXTYPE.fields)
             {
                 if (field.reference.Length == 0) continue;
-
-                /*tmp*/
-                //if (field.name != "OMX_IndexParamPortDefinition" && field.name != "OMX_IndexParamVideoPortFormat") continue;
 
                 CStruct cstruct = cstructs.Where(a => a.name == field.reference).FirstOrDefault();
                 if (cstruct != null)
@@ -146,7 +144,7 @@ namespace headers
             sw.WriteLine(@"  }");
         }
         
-        private void writeFunctionGetter(StreamWriter sw, CStruct cstruct, bool writeBody)
+        private void writeFunctionGetter(StreamWriter sw, CStruct cstruct, bool writeBody, List<CStruct> cstructs)
         {
             if (cstruct.name.Length == 0)
             {
@@ -168,19 +166,13 @@ namespace headers
                 string fname = nameNoArray;
 
                 if (
-                    f.type == "OMX_TICKS" ||
-                    f.type == "OMX_BU32" ||
-                    f.type == "OMX_BS32" ||
-                    f.type == "OMX_FRAMESIZETYPE" ||
-                    f.type == "OMX_DISPLAYRECTTYPE" ||
                     f.type == "OMX_PTR" ||
-                    f.type == "OMX_PTR" ||
-                    f.type == "OMX_TUNNELSETUPTYPE" ||
+                    f.type == "OMX_STATICBOX" ||
                     f.type == "OMX_BRCM_POOL_T" ||
                     f.type == "struct" ||
                     f.type == "OMX_BRCM_PERFSTATS" ||
                     f.type == "OMX_CONFIG_LENSCALIBRATIONVALUETYPE" ||
-                    f.type == "OMX_YUVCOLOUR"
+                    f.type == "OMX_FOCUSREGIONXY"
                     ) continue;
 
                 // Special code for OMX_IndexParamPortDefinition
@@ -205,13 +197,22 @@ namespace headers
                     sw.WriteLine(@"  if (format.{0} != NULL)", nameNoArray);
                     sw.Write("  ");
                 }
-                sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", nameNoArray, castTo != null ? "(" + castTo + ")" : "", fname, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
+
+                bool isObject = cstructs.Where(a => a.name == f.type).Count() > 0 && !blackList.Contains(f.type);
+
+                if (isObject)
+                {
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}(format.{0}));", nameNoArray, f.type);
+                }
+                else {
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", nameNoArray, castTo != null ? "(" + castTo + ")" : "", fname, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
+                }
             }
 
             sw.WriteLine(@"  return scope.Escape(ret);");
             sw.WriteLine(@"}");
         }
-        private void writeFunctionSetter(StreamWriter sw, CStruct cstruct, bool writeBody)
+        private void writeFunctionSetter(StreamWriter sw, CStruct cstruct, bool writeBody, List<CStruct> cstructs)
         {
             if (cstruct.name.Length == 0)
             {
@@ -234,19 +235,12 @@ namespace headers
                 string nameNoArray = Regex.Replace(f.name, @"\[\w*?\]", "");
 
                 if (
-                    f.type == "OMX_TICKS" ||
-                    f.type == "OMX_BU32" ||
-                    f.type == "OMX_BS32" ||
                     f.type == "OMX_STRING" ||
-                    f.type == "OMX_FRAMESIZETYPE" ||
-                    f.type == "OMX_DISPLAYRECTTYPE" ||
                     f.type == "OMX_PTR" ||
-                    f.type == "OMX_TUNNELSETUPTYPE" ||
                     f.type == "OMX_BRCM_POOL_T" ||
                     f.type == "struct" ||
                     f.type == "OMX_BRCM_PERFSTATS" ||
-                    f.type == "OMX_CONFIG_LENSCALIBRATIONVALUETYPE" ||
-                    f.type == "OMX_YUVCOLOUR"
+                    f.type == "OMX_CONFIG_LENSCALIBRATIONVALUETYPE"
                     ) continue;
 
                 // Special code for OMX_IndexParamPortDefinition
@@ -259,7 +253,19 @@ namespace headers
                     continue;
                 }
 
-                sw.WriteLine(@"  format.{1} = ({0}) Nan::To<int>(Nan::Get(param, Nan::New(""{1}"").ToLocalChecked()).ToLocalChecked()).FromJust();{2}", f.type, nameNoArray, f.comment.Length == 0 ? "" : " // " + f.comment);
+                bool isObject = cstructs.Where(a => a.name == f.type).Count() > 0;
+
+                if (isObject)
+                {
+                    sw.WriteLine(@"  if (Nan::Has(param, Nan::New(""{0}"").ToLocalChecked()).FromJust())", nameNoArray);
+                    sw.WriteLine(@"  {");
+                    sw.WriteLine(@"    SET_{1}(format.{0}, Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{0}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());", nameNoArray, f.type);
+                    sw.WriteLine(@"  }");
+                }
+                else
+                {
+                    sw.WriteLine(@"  format.{1} = ({0}) Nan::To<int>(Nan::Get(param, Nan::New(""{1}"").ToLocalChecked()).ToLocalChecked()).FromJust();{2}", f.type, nameNoArray, f.comment.Length == 0 ? "" : " // " + f.comment);
+                }
             }
             sw.WriteLine(@"}");
         }
@@ -267,7 +273,7 @@ namespace headers
 
         private void writeCaseGet(StreamWriter sw, string indexName, CStruct cstruct)
         {
-            if (indexName == "OMX_IndexParamBrcmRecursionUnsafe") return;
+            if (indexName == "OMX_IndexParamBrcmRecursionUnsafe" || indexName == "OMX_IndexParamSourceSeed") return;
 
             sw.WriteLine("    case {0}:", indexName);
             sw.WriteLine("    {");
@@ -287,7 +293,7 @@ namespace headers
 
         private void writeCaseSet(StreamWriter sw, string indexName, CStruct cstruct)
         {
-            if (indexName == "OMX_IndexParamBrcmRecursionUnsafe") return;
+            if (indexName == "OMX_IndexParamBrcmRecursionUnsafe" || indexName == "OMX_IndexParamSourceSeed") return;
 
             sw.WriteLine("    case {0}:", indexName);
             sw.WriteLine("    {");

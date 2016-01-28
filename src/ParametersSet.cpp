@@ -162,6 +162,7 @@ void SET_OMX_PARAM_CAMERAINTERFACETYPE(OMX_PARAM_CAMERAINTERFACETYPE &format, v8
 void SET_OMX_PARAM_CAMERACLOCKINGMODETYPE(OMX_PARAM_CAMERACLOCKINGMODETYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_CAMERARXCONFIG_TYPE(OMX_PARAM_CAMERARXCONFIG_TYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_CAMERARXTIMING_TYPE(OMX_PARAM_CAMERARXTIMING_TYPE &format, v8::Local<v8::Object> param);
+void SET_OMX_PARAM_BAYERORDERTYPE(OMX_PARAM_BAYERORDERTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_PORTDEFINITIONTYPE(OMX_PARAM_PORTDEFINITIONTYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_U32TYPE(OMX_PARAM_U32TYPE &format, v8::Local<v8::Object> param);
 void SET_OMX_PARAM_SUSPENSIONPOLICYTYPE(OMX_PARAM_SUSPENSIONPOLICYTYPE &format, v8::Local<v8::Object> param);
@@ -488,6 +489,10 @@ void SET_OMX_AUDIO_PARAM_SMVTYPE(OMX_AUDIO_PARAM_SMVTYPE &format, v8::Local<v8::
 
 void SET_OMX_AUDIO_PARAM_MIDITYPE(OMX_AUDIO_PARAM_MIDITYPE &format, v8::Local<v8::Object> param) {
   format.nFileSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFileSize").ToLocalChecked()).ToLocalChecked()).FromJust(); // size of the MIDI file in bytes, where the entire MIDI file passed in, otherwise if 0x0, the MIDI data is merged and streamed (instead of passed as an entire MIDI file)
+  if (Nan::Has(param, Nan::New("sMaxPolyphony").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sMaxPolyphony, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sMaxPolyphony").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.bLoadDefaultSound = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bLoadDefaultSound").ToLocalChecked()).ToLocalChecked()).FromJust(); // Whether to load default sound bank at initialization
   format.eMidiFormat = (OMX_AUDIO_MIDIFORMATTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eMidiFormat").ToLocalChecked()).ToLocalChecked()).FromJust(); // Version of the MIDI file
 }
@@ -511,6 +516,18 @@ void SET_OMX_AUDIO_CONFIG_MIDISOUNDBANKPROGRAMTYPE(OMX_AUDIO_CONFIG_MIDISOUNDBAN
 }
 
 void SET_OMX_AUDIO_CONFIG_MIDICONTROLTYPE(OMX_AUDIO_CONFIG_MIDICONTROLTYPE &format, v8::Local<v8::Object> param) {
+  if (Nan::Has(param, Nan::New("sPitchTransposition").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sPitchTransposition, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sPitchTransposition").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sPlayBackRate").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sPlayBackRate, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sPlayBackRate").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sTempo").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sTempo, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sTempo").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.nMaxPolyphony = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxPolyphony").ToLocalChecked()).ToLocalChecked()).FromJust(); // Specifies the maximum simultaneous polyphonic voices. A value of zero indicates that the default polyphony of the device is used
   format.nNumRepeat = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nNumRepeat").ToLocalChecked()).ToLocalChecked()).FromJust(); // Number of times to repeat playback
   format.nStopTime = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nStopTime").ToLocalChecked()).ToLocalChecked()).FromJust(); // Time in milliseconds to indicate when playback will stop automatically. Set to zero if not used
@@ -547,11 +564,19 @@ void SET_OMX_AUDIO_CONFIG_MIDIMETAEVENTDATATYPE(OMX_AUDIO_CONFIG_MIDIMETAEVENTDA
 
 void SET_OMX_AUDIO_CONFIG_VOLUMETYPE(OMX_AUDIO_CONFIG_VOLUMETYPE &format, v8::Local<v8::Object> param) {
   format.bLinear = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bLinear").ToLocalChecked()).ToLocalChecked()).FromJust(); // Is the volume to be set in linear (0.100) or logarithmic scale (mB)
+  if (Nan::Has(param, Nan::New("sVolume").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sVolume, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sVolume").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_AUDIO_CONFIG_CHANNELVOLUMETYPE(OMX_AUDIO_CONFIG_CHANNELVOLUMETYPE &format, v8::Local<v8::Object> param) {
   format.nChannel = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nChannel").ToLocalChecked()).ToLocalChecked()).FromJust(); // channel to select from 0 to N-1, using OMX_ALL to apply volume settings to all channels
   format.bLinear = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bLinear").ToLocalChecked()).ToLocalChecked()).FromJust(); // Is the volume to be set in linear (0.100) or logarithmic scale (mB)
+  if (Nan::Has(param, Nan::New("sVolume").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sVolume, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sVolume").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.bIsMIDI = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bIsMIDI").ToLocalChecked()).ToLocalChecked()).FromJust(); // TRUE if nChannel refers to a MIDI channel, FALSE otherwise
 }
 
@@ -585,6 +610,18 @@ void SET_OMX_AUDIO_CONFIG_TREBLETYPE(OMX_AUDIO_CONFIG_TREBLETYPE &format, v8::Lo
 
 void SET_OMX_AUDIO_CONFIG_EQUALIZERTYPE(OMX_AUDIO_CONFIG_EQUALIZERTYPE &format, v8::Local<v8::Object> param) {
   format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust(); // Enable/disable for equalizer
+  if (Nan::Has(param, Nan::New("sBandIndex").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sBandIndex, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sBandIndex").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sCenterFreq").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sCenterFreq, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sCenterFreq").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sBandLevel").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sBandLevel, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sBandLevel").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE(OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE &format, v8::Local<v8::Object> param) {
@@ -595,13 +632,61 @@ void SET_OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE(OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE
 
 void SET_OMX_AUDIO_CONFIG_CHORUSTYPE(OMX_AUDIO_CONFIG_CHORUSTYPE &format, v8::Local<v8::Object> param) {
   format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust(); // Enable/disable for chorus
+  if (Nan::Has(param, Nan::New("sDelay").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sDelay, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sDelay").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sModulationRate").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sModulationRate, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sModulationRate").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.nModulationDepth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nModulationDepth").ToLocalChecked()).ToLocalChecked()).FromJust(); // depth of modulation as a percentage of delay (i.e. 0 to 100)
+  if (Nan::Has(param, Nan::New("nFeedback").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.nFeedback, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nFeedback").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_AUDIO_CONFIG_REVERBERATIONTYPE(OMX_AUDIO_CONFIG_REVERBERATIONTYPE &format, v8::Local<v8::Object> param) {
   format.bEnable = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnable").ToLocalChecked()).ToLocalChecked()).FromJust(); // Enable/disable for reverberation control
+  if (Nan::Has(param, Nan::New("sRoomLevel").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sRoomLevel, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sRoomLevel").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sRoomHighFreqLevel").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sRoomHighFreqLevel, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sRoomHighFreqLevel").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sReflectionsLevel").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sReflectionsLevel, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sReflectionsLevel").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sReflectionsDelay").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sReflectionsDelay, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sReflectionsDelay").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sReverbLevel").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BS32(format.sReverbLevel, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sReverbLevel").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sReverbDelay").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sReverbDelay, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sReverbDelay").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sDecayTime").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sDecayTime, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sDecayTime").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("nDecayHighFreqRatio").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.nDecayHighFreqRatio, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nDecayHighFreqRatio").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.nDensity = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDensity").ToLocalChecked()).ToLocalChecked()).FromJust(); // Modal density in the late reverberation decay, in percent (i.e. 0 - 100)
   format.nDiffusion = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDiffusion").ToLocalChecked()).ToLocalChecked()).FromJust(); // Echo density in the late reverberation decay, in percent (i.e. 0 - 100)
+  if (Nan::Has(param, Nan::New("sReferenceHighFreq").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_BU32(format.sReferenceHighFreq, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sReferenceHighFreq").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_AUDIO_CONFIG_ECHOCANCELATIONTYPE(OMX_AUDIO_CONFIG_ECHOCANCELATIONTYPE &format, v8::Local<v8::Object> param) {
@@ -632,6 +717,14 @@ void SET_OMX_CONFIG_DISPLAYREGIONTYPE(OMX_CONFIG_DISPLAYREGIONTYPE &format, v8::
   format.num = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("num").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.fullscreen = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("fullscreen").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.transform = (OMX_DISPLAYTRANSFORMTYPE) Nan::To<int>(Nan::Get(param, Nan::New("transform").ToLocalChecked()).ToLocalChecked()).FromJust();
+  if (Nan::Has(param, Nan::New("dest_rect").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_DISPLAYRECTTYPE(format.dest_rect, Nan::To<v8::Object>(Nan::Get(param, Nan::New("dest_rect").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("src_rect").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_DISPLAYRECTTYPE(format.src_rect, Nan::To<v8::Object>(Nan::Get(param, Nan::New("src_rect").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.noaspect = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("noaspect").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.mode = (OMX_DISPLAYMODETYPE) Nan::To<int>(Nan::Get(param, Nan::New("mode").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.pixel_x = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("pixel_x").ToLocalChecked()).ToLocalChecked()).FromJust();
@@ -683,6 +776,10 @@ void SET_OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8(OMX_CONFIG_BRCMAUDIODOWNMIXC
 
 void SET_OMX_CONFIG_BRCMAUDIOMAXSAMPLE(OMX_CONFIG_BRCMAUDIOMAXSAMPLE &format, v8::Local<v8::Object> param) {
   format.nMaxSample = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxSample").ToLocalChecked()).ToLocalChecked()).FromJust();
+  if (Nan::Has(param, Nan::New("nTimeStamp").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nTimeStamp, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nTimeStamp").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_CONFIG_PLAYMODETYPE(OMX_CONFIG_PLAYMODETYPE &format, v8::Local<v8::Object> param) {
@@ -707,6 +804,10 @@ void SET_OMX_PARAM_BUFFERADDRESSTYPE(OMX_PARAM_BUFFERADDRESSTYPE &format, v8::Lo
 }
 
 void SET_OMX_PARAM_TUNNELSETUPTYPE(OMX_PARAM_TUNNELSETUPTYPE &format, v8::Local<v8::Object> param) {
+  if (Nan::Has(param, Nan::New("sSetup").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TUNNELSETUPTYPE(format.sSetup, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sSetup").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_PARAM_BRCMPORTEGLTYPE(OMX_PARAM_BRCMPORTEGLTYPE &format, v8::Local<v8::Object> param) {
@@ -722,6 +823,10 @@ void SET_OMX_CONFIG_TRANSITIONCONTROLTYPE(OMX_CONFIG_TRANSITIONCONTROLTYPE &form
   format.nPosStart = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPosStart").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.nPosEnd = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPosEnd").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.nPosIncrement = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("nPosIncrement").ToLocalChecked()).ToLocalChecked()).FromJust();
+  if (Nan::Has(param, Nan::New("nFrameIncrement").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nFrameIncrement, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nFrameIncrement").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.bSwapInputs = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bSwapInputs").ToLocalChecked()).ToLocalChecked()).FromJust();
 }
 
@@ -796,6 +901,14 @@ void SET_OMX_CONFIG_BRCMPORTSTATSTYPE(OMX_CONFIG_BRCMPORTSTATSTYPE &format, v8::
   format.nDiscards = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDiscards").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.nEOS = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nEOS").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.nMaxFrameSize = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nMaxFrameSize").ToLocalChecked()).ToLocalChecked()).FromJust();
+  if (Nan::Has(param, Nan::New("nByteCount").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nByteCount, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nByteCount").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("nMaxTimeDelta").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nMaxTimeDelta, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nMaxTimeDelta").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.nCorruptMBs = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCorruptMBs").ToLocalChecked()).ToLocalChecked()).FromJust(); // Number of corrupt macroblocks in the stream
 }
 
@@ -907,6 +1020,10 @@ void SET_OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE(OMX_CONFIG_BRCMAUDIOEFFECTCONTROL
 }
 
 void SET_OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY(OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY &format, v8::Local<v8::Object> param) {
+  if (Nan::Has(param, Nan::New("nOffset").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nOffset, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nOffset").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE(OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE &format, v8::Local<v8::Object> param) {
@@ -994,10 +1111,62 @@ void SET_OMX_CONFIG_DRAWBOXLINEPARAMS(OMX_CONFIG_DRAWBOXLINEPARAMS &format, v8::
   format.nPrimaryFaceLineWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nPrimaryFaceLineWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Width of the box line for the primary face in pixels
   format.nOtherFaceLineWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nOtherFaceLineWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Width of the box line for other faces in pixels
   format.nFocusRegionLineWidth = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFocusRegionLineWidth").ToLocalChecked()).ToLocalChecked()).FromJust(); // Width of the box line for focus regions in pixels
+  if (Nan::Has(param, Nan::New("sPrimaryFaceColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sPrimaryFaceColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sPrimaryFaceColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sPrimaryFaceSmileColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sPrimaryFaceSmileColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sPrimaryFaceSmileColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sPrimaryFaceBlinkColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sPrimaryFaceBlinkColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sPrimaryFaceBlinkColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sOtherFaceColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sOtherFaceColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sOtherFaceColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sOtherFaceSmileColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sOtherFaceSmileColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sOtherFaceSmileColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sOtherFaceBlinkColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sOtherFaceBlinkColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sOtherFaceBlinkColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.bShowFocusRegionsWhenIdle = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowFocusRegionsWhenIdle").ToLocalChecked()).ToLocalChecked()).FromJust(); // Are focus regions displayed when just in viewfinder/AF idle
+  if (Nan::Has(param, Nan::New("sFocusRegionColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sFocusRegionColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sFocusRegionColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.bShowAfState = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowAfState").ToLocalChecked()).ToLocalChecked()).FromJust(); // Change to the colours specified below if AF cycle has run
   format.bShowOnlyPrimaryAfState = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bShowOnlyPrimaryAfState").ToLocalChecked()).ToLocalChecked()).FromJust(); // Only show the primary face when displaying the AF status
   format.bCombineNonFaceRegions = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bCombineNonFaceRegions").ToLocalChecked()).ToLocalChecked()).FromJust(); // Combine all regions not defined as faces into one single box covering them all
+  if (Nan::Has(param, Nan::New("sAfLockPrimaryFaceColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sAfLockPrimaryFaceColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sAfLockPrimaryFaceColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sAfLockOtherFaceColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sAfLockOtherFaceColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sAfLockOtherFaceColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sAfLockFocusRegionColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sAfLockFocusRegionColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sAfLockFocusRegionColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sAfFailPrimaryFaceColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sAfFailPrimaryFaceColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sAfFailPrimaryFaceColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sAfFailOtherFaceColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sAfFailOtherFaceColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sAfFailOtherFaceColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("sAfFailFocusRegionColour").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_YUVCOLOUR(format.sAfFailFocusRegionColour, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sAfFailFocusRegionColour").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_PARAM_CAMERARMITYPE(OMX_PARAM_CAMERARMITYPE &format, v8::Local<v8::Object> param) {
@@ -1249,6 +1418,10 @@ void SET_OMX_PARAM_CAMERARXTIMING_TYPE(OMX_PARAM_CAMERARXTIMING_TYPE &format, v8
   format.nCpiTiming2 = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nCpiTiming2").ToLocalChecked()).ToLocalChecked()).FromJust();
 }
 
+void SET_OMX_PARAM_BAYERORDERTYPE(OMX_PARAM_BAYERORDERTYPE &format, v8::Local<v8::Object> param) {
+  format.eBayerOrder = (OMX_BAYERORDERTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eBayerOrder").ToLocalChecked()).ToLocalChecked()).FromJust();
+}
+
 void SET_OMX_PARAM_PORTDEFINITIONTYPE(OMX_PARAM_PORTDEFINITIONTYPE &format, v8::Local<v8::Object> param) {
   format.eDir = (OMX_DIRTYPE) Nan::To<int>(Nan::Get(param, Nan::New("eDir").ToLocalChecked()).ToLocalChecked()).FromJust(); // Direction (input or output) of this port
   format.nBufferCountActual = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nBufferCountActual").ToLocalChecked()).ToLocalChecked()).FromJust(); // The actual number of buffers allocated on this port
@@ -1357,6 +1530,10 @@ void SET_OMX_BUFFERHEADERTYPE(OMX_BUFFERHEADERTYPE &format, v8::Local<v8::Object
   format.nOffset = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nOffset").ToLocalChecked()).ToLocalChecked()).FromJust(); // start offset of valid data in bytes from the start of the buffer
   format.hMarkTargetComponent = (OMX_HANDLETYPE) Nan::To<int>(Nan::Get(param, Nan::New("hMarkTargetComponent").ToLocalChecked()).ToLocalChecked()).FromJust(); // The component that will generate a mark event upon processing this buffer.
   format.nTickCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nTickCount").ToLocalChecked()).ToLocalChecked()).FromJust(); // Optional entry that the component and application can update with a tick count when they access the component. This value should be in microseconds. Since this is a value relative to an arbitrary starting point, this value cannot be used to determine absolute time. This is an optional entry and not all components will update it.
+  if (Nan::Has(param, Nan::New("nTimeStamp").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nTimeStamp, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nTimeStamp").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.nFlags = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFlags").ToLocalChecked()).ToLocalChecked()).FromJust(); // buffer specific flags
   format.nOutputPortIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nOutputPortIndex").ToLocalChecked()).ToLocalChecked()).FromJust(); // The index of the output port (if any) using this buffer
   format.nInputPortIndex = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nInputPortIndex").ToLocalChecked()).ToLocalChecked()).FromJust(); // The index of the input port (if any) using this buffer
@@ -1508,6 +1685,10 @@ void SET_OMX_CONFIG_EXPOSURECONTROLTYPE(OMX_CONFIG_EXPOSURECONTROLTYPE &format, 
 void SET_OMX_PARAM_SENSORMODETYPE(OMX_PARAM_SENSORMODETYPE &format, v8::Local<v8::Object> param) {
   format.nFrameRate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nFrameRate").ToLocalChecked()).ToLocalChecked()).FromJust();
   format.bOneShot = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bOneShot").ToLocalChecked()).ToLocalChecked()).FromJust();
+  if (Nan::Has(param, Nan::New("sFrameSize").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_FRAMESIZETYPE(format.sFrameSize, Nan::To<v8::Object>(Nan::Get(param, Nan::New("sFrameSize").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_CONFIG_CONTRASTTYPE(OMX_CONFIG_CONTRASTTYPE &format, v8::Local<v8::Object> param) {
@@ -1605,14 +1786,38 @@ void SET_OMX_TIME_CONFIG_SEEKMODETYPE(OMX_TIME_CONFIG_SEEKMODETYPE &format, v8::
 }
 
 void SET_OMX_TIME_CONFIG_TIMESTAMPTYPE(OMX_TIME_CONFIG_TIMESTAMPTYPE &format, v8::Local<v8::Object> param) {
+  if (Nan::Has(param, Nan::New("nTimestamp").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nTimestamp, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nTimestamp").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_TIME_CONFIG_MEDIATIMEREQUESTTYPE(OMX_TIME_CONFIG_MEDIATIMEREQUESTTYPE &format, v8::Local<v8::Object> param) {
+  if (Nan::Has(param, Nan::New("nMediaTimestamp").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nMediaTimestamp, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nMediaTimestamp").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("nOffset").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nOffset, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nOffset").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
 }
 
 void SET_OMX_TIME_MEDIATIMETYPE(OMX_TIME_MEDIATIMETYPE &format, v8::Local<v8::Object> param) {
   format.nClientPrivate = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nClientPrivate").ToLocalChecked()).ToLocalChecked()).FromJust(); // Client private data to disabiguate this media time from others. Copied from the media time request. A value of zero is reserved for time scale updates.
   format.eUpdateType = (OMX_TIME_UPDATETYPE) Nan::To<int>(Nan::Get(param, Nan::New("eUpdateType").ToLocalChecked()).ToLocalChecked()).FromJust(); // Reason for the update
+  if (Nan::Has(param, Nan::New("nMediaTimestamp").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nMediaTimestamp, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nMediaTimestamp").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("nOffset").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nOffset, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nOffset").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("nWallTimeAtMediaTime").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nWallTimeAtMediaTime, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nWallTimeAtMediaTime").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.xScale = (OMX_S32) Nan::To<int>(Nan::Get(param, Nan::New("xScale").ToLocalChecked()).ToLocalChecked()).FromJust(); // Current media time scale in Q16 format.
   format.eState = (OMX_TIME_CLOCKSTATE) Nan::To<int>(Nan::Get(param, Nan::New("eState").ToLocalChecked()).ToLocalChecked()).FromJust(); // Seeking Change. Added 7/12.
 }
@@ -1623,6 +1828,14 @@ void SET_OMX_TIME_CONFIG_SCALETYPE(OMX_TIME_CONFIG_SCALETYPE &format, v8::Local<
 
 void SET_OMX_TIME_CONFIG_CLOCKSTATETYPE(OMX_TIME_CONFIG_CLOCKSTATETYPE &format, v8::Local<v8::Object> param) {
   format.eState = (OMX_TIME_CLOCKSTATE) Nan::To<int>(Nan::Get(param, Nan::New("eState").ToLocalChecked()).ToLocalChecked()).FromJust(); // State of the media time.
+  if (Nan::Has(param, Nan::New("nStartTime").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nStartTime, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nStartTime").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
+  if (Nan::Has(param, Nan::New("nOffset").ToLocalChecked()).FromJust())
+  {
+    SET_OMX_TICKS(format.nOffset, Nan::To<v8::Object>(Nan::Get(param, Nan::New("nOffset").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());
+  }
   format.nWaitMask = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nWaitMask").ToLocalChecked()).ToLocalChecked()).FromJust(); // Mask of OMX_CLOCKPORT values.
 }
 
@@ -3349,15 +3562,6 @@ void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nP
       OMX_PARAM_SOURCETYPE format;
       OMX_consts::InitOMXParams(&format, port);
       SET_OMX_PARAM_SOURCETYPE(format, param);
-
-      SetParameterTemplate(&format, handle, nParamIndex);
-    }
-      break;
-    case OMX_IndexParamSourceSeed:
-    {
-      OMX_PARAM_SOURCESEEDTYPE format;
-      OMX_consts::InitOMXParams(&format, port);
-      SET_OMX_PARAM_SOURCESEEDTYPE(format, param);
 
       SetParameterTemplate(&format, handle, nParamIndex);
     }
@@ -5307,6 +5511,33 @@ void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nP
     }
       break;
     case OMX_IndexParamDynamicParameterConfig:
+    {
+      OMX_PARAM_U32TYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_U32TYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmVideoAVCSPSTimingEnable:
+    {
+      OMX_CONFIG_PORTBOOLEANTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_CONFIG_PORTBOOLEANTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmBayerOrder:
+    {
+      OMX_PARAM_BAYERORDERTYPE format;
+      OMX_consts::InitOMXParams(&format, port);
+      SET_OMX_PARAM_BAYERORDERTYPE(format, param);
+
+      SetParameterTemplate(&format, handle, nParamIndex);
+    }
+      break;
+    case OMX_IndexParamBrcmMaxNumCallbacks:
     {
       OMX_PARAM_U32TYPE format;
       OMX_consts::InitOMXParams(&format, port);

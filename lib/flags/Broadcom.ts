@@ -353,3 +353,10 @@ export enum OMX_CAMERARXPACKTYPE {
   OMX_CAMERARXPACK_RAW12 = 0x7,
   OMX_CAMERARXPACK_MAX = 0x7FFFFFFF
 }
+export enum OMX_BAYERORDERTYPE {
+  OMX_BayerOrderRGGB = 0x0,
+  OMX_BayerOrderGBRG = 0x1,
+  OMX_BayerOrderBGGR = 0x3,
+  OMX_BayerOrderGRBG = 0x3,
+  OMX_BayerOrderMax = 0x7FFFFFFF
+}
