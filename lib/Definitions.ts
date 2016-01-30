@@ -16,6 +16,7 @@ export interface COMPONENTTYPE {
   setParameter(port: number, index: omx.OMX_INDEXTYPE, format: any);
   changeState(state: omx.OMX_STATETYPE);
   getState();
+  tunnelTo(out_port: number, sink: any, in_port: number);
   getParameter(port: number, index: omx.OMX_INDEXTYPE);
   sendCommand(commandType: omx.OMX_COMMANDTYPE, port: number);
   useBuffer(port: number, buf: Buffer);

@@ -27,6 +27,7 @@ NAN_MODULE_INIT(COMPONENTTYPE::Init) {
   Nan::SetPrototypeMethod(tpl, "useBuffer", useBuffer);
   Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
   Nan::SetPrototypeMethod(tpl, "fillBuffer", fillBuffer);
+  Nan::SetPrototypeMethod(tpl, "tunnelTo", tunnelTo);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
   Nan::Set(target, Nan::New("COMPONENTTYPE").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -196,7 +197,7 @@ NAN_METHOD(COMPONENTTYPE::useBuffer) {
 
   // Keep reference of buffer
   obj->bufferMap[buf].Reset(instance);
-  
+
   info.GetReturnValue().Set(instance);
 }
 
@@ -227,6 +228,23 @@ NAN_METHOD(COMPONENTTYPE::fillBuffer) {
   if (rc != OMX_ErrorNone) {
     char buf[255];
     sprintf(buf, "OMX_FillThisBuffer() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
+}
+
+NAN_METHOD(COMPONENTTYPE::tunnelTo) {
+  COMPONENTTYPE* source = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+
+  int sourcePort = (int) Nan::To<int>(info[0]).FromJust();
+  COMPONENTTYPE* sink = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
+  
+  int sinkPort = (int) Nan::To<int>(info[2]).FromJust();
+
+  OMX_ERRORTYPE rc = OMX_SetupTunnel(source->comp, sourcePort, sink->comp, sinkPort);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "OMX_SetupTunnel() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
     return;
   }

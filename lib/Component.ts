@@ -147,6 +147,9 @@ export class Component extends stream.Duplex {
   getState(): omx.OMX_STATETYPE {
     return this.component.getState();
   }
+  tunnelTo(out_port: number, sink: any, in_port: number) {
+    return this.component.tunnelTo(out_port, sink.component, in_port);
+  }
   getParameter(port: number, index: omx.OMX_INDEXTYPE) {
     return this.component.getParameter(port, index);
   }
@@ -181,44 +184,54 @@ export class Component extends stream.Duplex {
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
   }
 
-  enablePortBuffer(port: number) {
-    var portdef = this.getParameter(port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
-    if (portdef.bEnabled != 0 || portdef.nBufferCountActual == 0 || portdef.nBufferSize == 0) {
-      throw "Cannot enable buffer, wrong buffer";
-    }
+  enablePort(port: number, createBuffer: boolean) {
+    if (createBuffer) {
+      var portdef = this.getParameter(port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      if (portdef.bEnabled != 0 || portdef.nBufferCountActual == 0 || portdef.nBufferSize == 0) {
+        throw "Cannot enable buffer, wrong buffer";
+      }
 
-    var state = this.getState();
-    if (!(state == omx.OMX_STATETYPE.OMX_StateIdle || state == omx.OMX_STATETYPE.OMX_StateExecuting || state == omx.OMX_STATETYPE.OMX_StatePause)) {
-      throw "Cannot enable buffer, wrong state";
+      var state = this.getState();
+      if (!(state == omx.OMX_STATETYPE.OMX_StateIdle || state == omx.OMX_STATETYPE.OMX_StateExecuting || state == omx.OMX_STATETYPE.OMX_StatePause)) {
+        throw "Cannot enable buffer, wrong state";
+      }
     }
 
     this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandPortEnable, port);
 
-    var bufferList = [];
-    for (var i = 0; i != portdef.nBufferCountActual; i++) {
-      var buf = new Buffer(portdef.nBufferSize);
+    if (createBuffer) {
+      var bufferList = [];
+      for (var i = 0; i != portdef.nBufferCountActual; i++) {
+        var buf = new Buffer(portdef.nBufferSize);
 
-      var outputBuffer = this.component.useBuffer(port, buf);
-      bufferList.push({
-        buf: buf,
-        header: outputBuffer
-      });
-    }
+        var outputBuffer = this.component.useBuffer(port, buf);
+        bufferList.push({
+          buf: buf,
+          header: outputBuffer
+        });
+      }
 
-    if (portdef.eDir == omx.OMX_DIRTYPE.OMX_DirInput) {
-      this.in_list = bufferList;
-    }
-    else {
-      this.out_list = bufferList;
+      if (portdef.eDir == omx.OMX_DIRTYPE.OMX_DirInput) {
+        this.in_list = bufferList;
+      }
+      else {
+        this.out_list = bufferList;
+      }
     }
 
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortEnable, port);
   }
   enableInputPortBuffer() {
-    return this.enablePortBuffer(this.in_port);
+    return this.enablePort(this.in_port, true);
   }
   enableOutputPortBuffer() {
-    return this.enablePortBuffer(this.out_port);
+    return this.enablePort(this.out_port, true);
+  }
+  enableInputPort() {
+    return this.enablePort(this.in_port, false);
+  }
+  enableOutputPort() {
+    return this.enablePort(this.out_port, false);
   }
 
   getInputBuffer(block: omx.BLOCK_TYPE) {
@@ -249,43 +262,50 @@ export class Component extends stream.Duplex {
     });
   }
 
-  /*tunnel (nextComponent) {
+  tunnel(nextComponent) {
     var self = this;
-    var TUNNEL = Node_OMX.TUNNEL(this.component, nextComponent.component);
 
-    this.component.on("eventPortSettingsChanged", function () {
+    this.component.on("eventPortSettingsChanged", function() {
       console.log('eventPortSettingsChanged', self.cname, self.component);
 
-      var sourceDef = self.component.getParameter(self.component.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
-      var sinkDef = nextComponent.component.getParameter(nextComponent.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      if (self.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
+        self.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
+      }
 
-      sinkDef.video = sourceDef.video;
-      sinkDef.nBufferSize = sourceDef.nBufferSize;
+      self.tunnelTo(self.out_port, nextComponent, nextComponent.in_port);
 
-      nextComponent.component.setParameter(nextComponent.component.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, sinkDef);
+      var sourcePortPromise = self.enableOutputPort();
+      var sinkPortPromise = nextComponent.enableInputPort();
 
-      TUNNEL.enable();
-      nextComponent.component.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+      if (nextComponent.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
+        console.log('Error: nextComponent OMX_StateLoaded');
+      }
+
+      sinkPortPromise.then(function() {
+        return sourcePortPromise;
+      }).then(function() {
+        nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+      });
     });
 
 
-    this.on('finish', function () {
-      console.log('Component on finish');
-      console.log('TUNNEL.flush');
-      TUNNEL.flush();
-      console.log('disableInputPortBuffer');
-  //    self.component.disableInputPortBuffer();
-      console.log('disable');
-      TUNNEL.disable();
-      console.log('teardown');
-      TUNNEL.teardown();
-      console.log('teardown complete');
+    this.on('finish', function() {
+//      console.log('Component on finish');
+//      console.log('TUNNEL.flush');
+//      TUNNEL.flush();
+//      console.log('disableInputPortBuffer');
+//      //    self.component.disableInputPortBuffer();
+//      console.log('disable');
+//      TUNNEL.disable();
+//      console.log('teardown');
+//      TUNNEL.teardown();
+//      console.log('teardown complete');
 
       nextComponent.emit('finish');
     });
 
     return nextComponent;
-  }*/
+  }
 
   initRead() {
     var self = this;
@@ -406,7 +426,7 @@ export class Component extends stream.Duplex {
     }
   }
   _write(chunk: Buffer, enc, next: () => void) {
-//    console.log('_write', chunk.length, this.cname);
+    //    console.log('_write', chunk.length, this.cname);
     var self = this;
 
     this.initWrite()
