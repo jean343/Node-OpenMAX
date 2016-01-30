@@ -5,6 +5,7 @@
 #include "bcm_host.h"
 #include "IL/OMX_Broadcom.h"
 #include <vector>
+#include <map>
 
 struct EventHandlerData {
   OMX_EVENTTYPE eEvent;
@@ -81,6 +82,7 @@ private:
     }
   }
 
+  std::map<OMX_BUFFERHEADERTYPE*, Nan::Persistent<v8::Object>> bufferMap;
 
   uv_mutex_t uvBufferHandlerLock;
   uv_async_t uvBufferHandler;
@@ -124,7 +126,10 @@ private:
     for (std::vector<BufferDoneData>::iterator it = local.begin(); it < local.end(); it++) {
       BufferDoneData data = *it;
       int argc = 3;
-      v8::Local<v8::Value> argv[argc] = {Nan::New("buffer_done").ToLocalChecked(), Nan::New(data.direction), Nan::New(data.pBuffer)};
+      
+      v8::Local<v8::Object> pBufferObj = Nan::New<v8::Object>(obj->bufferMap[data.pBuffer]);
+      
+      v8::Local<v8::Value> argv[argc] = {Nan::New("buffer_done").ToLocalChecked(), Nan::New(data.direction), pBufferObj};
       Nan::MakeCallback(obj->handle(), "emit", argc, argv);
     }
   }

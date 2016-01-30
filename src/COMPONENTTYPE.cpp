@@ -194,6 +194,9 @@ NAN_METHOD(COMPONENTTYPE::useBuffer) {
   Local<Function> cons = Nan::New(BUFFERHEADERTYPE::constructor);
   Local<Object> instance = cons->NewInstance(argc, argv);
 
+  // Keep reference of buffer
+  obj->bufferMap[buf].Reset(instance);
+  
   info.GetReturnValue().Set(instance);
 }
 

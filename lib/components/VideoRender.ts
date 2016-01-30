@@ -8,5 +8,10 @@ export class VideoRender extends omx.Component {
     this.setPorts(90, 0);
   }
   
+  setBufferCount(countIN: number) {
+    var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);
+    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);
+  };
   
 }
