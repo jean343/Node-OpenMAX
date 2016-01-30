@@ -106,11 +106,13 @@ export class Component extends stream.Duplex {
     this.on('finish', function() {
       console.log(self.cname, 'on finish');
       var inputBuffer = self.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
-      inputBuffer.header.nFilledLen = 0;
-      inputBuffer.header.nFlags = 0x00000001 | 0x00000100; //OMX_BUFFERFLAG_EOS|OMX_BUFFERFLAG_TIME_UNKNOWN;
+      if (inputBuffer !== undefined) {
+        inputBuffer.header.nFilledLen = 0;
+        inputBuffer.header.nFlags = 0x00000001 | 0x00000100; //OMX_BUFFERFLAG_EOS|OMX_BUFFERFLAG_TIME_UNKNOWN;
 
-      self.emptyBuffer(inputBuffer.header)
-        .catch(console.log.bind(console));
+        self.emptyBuffer(inputBuffer.header)
+          .catch(console.log.bind(console));
+      }
     });
 
     //    // Register stream end to push a null buffer down the stream
@@ -235,14 +237,18 @@ export class Component extends stream.Duplex {
   }
 
   getInputBuffer(block: omx.BLOCK_TYPE) {
-    var buf = this.in_list.shift();
-    this.in_list.push(buf);
-    return buf;
+    if (this.in_list !== undefined) {
+      var buf = this.in_list.shift();
+      this.in_list.push(buf);
+      return buf;
+    }
   }
   getOutputBuffer(block: omx.BLOCK_TYPE) {
-    var buf = this.out_list.shift();
-    this.out_list.push(buf);
-    return buf;
+    if (this.out_list !== undefined) {
+      var buf = this.out_list.shift();
+      this.out_list.push(buf);
+      return buf;
+    }
   }
 
   emptyBufferDone;
@@ -290,16 +296,16 @@ export class Component extends stream.Duplex {
 
 
     this.on('finish', function() {
-//      console.log('Component on finish');
-//      console.log('TUNNEL.flush');
-//      TUNNEL.flush();
-//      console.log('disableInputPortBuffer');
-//      //    self.component.disableInputPortBuffer();
-//      console.log('disable');
-//      TUNNEL.disable();
-//      console.log('teardown');
-//      TUNNEL.teardown();
-//      console.log('teardown complete');
+      //      console.log('Component on finish');
+      //      console.log('TUNNEL.flush');
+      //      TUNNEL.flush();
+      //      console.log('disableInputPortBuffer');
+      //      //    self.component.disableInputPortBuffer();
+      //      console.log('disable');
+      //      TUNNEL.disable();
+      //      console.log('teardown');
+      //      TUNNEL.teardown();
+      //      console.log('teardown complete');
 
       nextComponent.emit('finish');
     });
