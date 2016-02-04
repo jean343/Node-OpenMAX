@@ -55,7 +55,7 @@ class WritableFilter extends stream.Writable {
 
     this.on('pipe', function(source) {
       source.on('portDefinitionChanged', function(portDefinition) {
-        console.log('portDefinitionChanged', portDefinition);
+//        console.log('portDefinitionChanged', portDefinition);
         self.portDefinition = portDefinition.image ? portDefinition.image : portDefinition.video;
         console.log(self.portDefinition);
         self.nStride = self.portDefinition.nStride;
@@ -68,6 +68,7 @@ class WritableFilter extends stream.Writable {
     if (this.portDefinition.eColorFormat === omx.OMX_COLOR_FORMATTYPE.OMX_COLOR_FormatYUV420PackedPlanar) {
       omx.Component.copyAsync(chunk, buf, bufferFormat.video.nStride, bufferFormat.video.nSliceHeight, this.offsetX, this.offsetY, this.nStride, this.width, this.nSliceHeight, this.height, next);
     }
+    if (chunk.onBufferDone) { chunk.onBufferDone(); }
   };
 }
 
@@ -168,7 +169,7 @@ class WriteHTTP extends stream.Duplex {
       })
       .then(function() {
         VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-        VideoDecode.setBufferCount(1,1);
+        VideoDecode.setBufferCount(1, 4);
 
         var format = {
           eDir: 1,
@@ -235,16 +236,16 @@ class WriteHTTP extends stream.Duplex {
       return VideoRender.init();
     })
     .then(function() {
-            VideoEncode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-      
-            VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoBitrate, {
-              eControlRate: omx.OMX_VIDEO_CONTROLRATETYPE.OMX_Video_ControlRateDisable
-            });
-      
-            var quantizationType = VideoEncode.component.getParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization);
-            quantizationType.nQpI = 25;
-            quantizationType.nQpP = quantizationType.nQpI;
-            VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization, quantizationType);
+      VideoEncode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+
+      VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoBitrate, {
+        eControlRate: omx.OMX_VIDEO_CONTROLRATETYPE.OMX_Video_ControlRateDisable
+      });
+
+      var quantizationType = VideoEncode.component.getParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization);
+      quantizationType.nQpI = 25;
+      quantizationType.nQpP = quantizationType.nQpI;
+      VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization, quantizationType);
 
       //      var http = require('http');
       //      http.createServer(function(req, res) {
@@ -256,9 +257,9 @@ class WriteHTTP extends stream.Duplex {
       //      }).listen(3000);
 
       readableFilter
-//                .pipe(VideoEncode)
-        .pipe(VideoRender);
-//        .pipe(writeFileFilter);
+                        .pipe(VideoEncode)
+//        .pipe(VideoRender);
+              .pipe(writeFileFilter);
       loop();
 
     })

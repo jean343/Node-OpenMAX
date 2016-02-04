@@ -2,7 +2,7 @@ import stream = require('stream');
 
 export class FPS extends stream.Duplex {
   fps;
-  constructor() {
+  constructor(every?: number) {
     super();
     var self = this;
     // Needed to forward the portDefinitionChanged from the VideoDecode to the VideoRender
@@ -12,7 +12,11 @@ export class FPS extends stream.Duplex {
       });
     });
 
-    this.fps = require('fps')({ every: 30 });
+    if (every === undefined) {
+      every = 30;
+    }
+
+    this.fps = require('fps')({ every: every });
     this.fps.on('data', function(framerate) {
       console.log("Fps: ", framerate);
     });

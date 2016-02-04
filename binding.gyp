@@ -9,7 +9,12 @@
         "src/ParametersGet.cpp",
         "src/ParametersSet.cpp",
         "src/COMPONENTTYPE.cpp",
-        "src/CopyAsync.cpp"
+        "src/CopyAsync.cpp",
+        "src/Graphics.cpp",
+        "src/GfxTexture.cpp",
+        "src/EglImage.cpp",
+        "src/GfxProgram.cpp",
+        "src/GfxShader.cpp"
       ],
       "defines": [
         "OMX",

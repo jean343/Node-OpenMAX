@@ -36,6 +36,7 @@ private:
   static NAN_METHOD(setParameter);
   static NAN_METHOD(sendCommand);
   static NAN_METHOD(useBuffer);
+  static NAN_METHOD(useEGLImage);
   static NAN_METHOD(emptyBuffer);
   static NAN_METHOD(fillBuffer);
   static NAN_METHOD(tunnelTo);

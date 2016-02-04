@@ -25,11 +25,17 @@ export class Component extends stream.Duplex {
   hasPortSettingsChanged: boolean = false;
   first_packet: boolean = true;
 
+  useOpenGL = false;
+  graphics: omx.Graphics = null;
+
   in_list: Array<any>;
   out_list: Array<any>;
 
   constructor(public name: string, public cname?: string) {
-    super();
+    super({
+      readableObjectMode: name === 'egl_render'
+    });
+    this.useOpenGL = name === 'egl_render';
     if (this.cname === undefined) this.cname = this.name;
   }
 
@@ -76,7 +82,15 @@ export class Component extends stream.Duplex {
       if (direction == 0) {
         self.emptyBufferDone();
       } else {
-        self.fillBufferDone();
+        self.out_list.forEach(function(item, i) {
+          if (item !== undefined) {
+            if (pBuffer === item.header) {
+              item.busy = false;
+              self.readDone(item);
+              return;
+            }
+          }
+        });
       }
     });
 
@@ -105,7 +119,7 @@ export class Component extends stream.Duplex {
 
     this.on('finish', function() {
       console.log(self.cname, 'on finish');
-      var inputBuffer = self.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
+      var inputBuffer = self.getInputBuffer();
       if (inputBuffer !== undefined) {
         inputBuffer.header.nFilledLen = 0;
         inputBuffer.header.nFlags = 0x00000001 | 0x00000100; //OMX_BUFFERFLAG_EOS|OMX_BUFFERFLAG_TIME_UNKNOWN;
@@ -186,10 +200,11 @@ export class Component extends stream.Duplex {
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
   }
 
-  enablePort(port: number, createBuffer: boolean) {
+  static _id = 0;
+  enablePort(port: number, createBuffer: boolean, useOpenGL: boolean) {
     if (createBuffer) {
       var portdef = this.getParameter(port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
-      if (portdef.bEnabled != 0 || portdef.nBufferCountActual == 0 || portdef.nBufferSize == 0) {
+      if (portdef.bEnabled != 0 || portdef.nBufferCountActual == 0 || (portdef.nBufferSize == 0 && !useOpenGL)) {
         throw "Cannot enable buffer, wrong buffer";
       }
 
@@ -204,12 +219,21 @@ export class Component extends stream.Duplex {
     if (createBuffer) {
       var bufferList = [];
       for (var i = 0; i != portdef.nBufferCountActual; i++) {
-        var buf = new Buffer(portdef.nBufferSize);
+        var buf, outputBuffer;
+        if (useOpenGL) {
+          var texture = new omx.GfxTexture(portdef.video.nFrameWidth, portdef.video.nFrameHeight);
+          buf = new omx.EglImage(this.graphics.graphics, texture.texture);
+          outputBuffer = this.component.useEGLImage(port, buf.eglImage);
+        } else {
+          buf = new Buffer(portdef.nBufferSize);
 
-        var outputBuffer = this.component.useBuffer(port, buf);
+          outputBuffer = this.component.useBuffer(port, buf);
+        }
         bufferList.push({
           buf: buf,
-          header: outputBuffer
+          header: outputBuffer,
+          busy: false,
+          id: Component._id++
         });
       }
 
@@ -224,31 +248,47 @@ export class Component extends stream.Duplex {
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortEnable, port);
   }
   enableInputPortBuffer() {
-    return this.enablePort(this.in_port, true);
+    return this.enablePort(this.in_port, true, false);
   }
   enableOutputPortBuffer() {
-    return this.enablePort(this.out_port, true);
+    return this.enablePort(this.out_port, true, this.useOpenGL);
   }
   enableInputPort() {
-    return this.enablePort(this.in_port, false);
+    return this.enablePort(this.in_port, false, false);
   }
   enableOutputPort() {
-    return this.enablePort(this.out_port, false);
+    return this.enablePort(this.out_port, false, false);
   }
 
-  getInputBuffer(block: omx.BLOCK_TYPE) {
+  getInputBuffer() {
     if (this.in_list !== undefined) {
       var buf = this.in_list.shift();
       this.in_list.push(buf);
       return buf;
     }
   }
-  getOutputBuffer(block: omx.BLOCK_TYPE) {
-    if (this.out_list !== undefined) {
-      var buf = this.out_list.shift();
-      this.out_list.push(buf);
-      return buf;
-    }
+  getOutputBuffer() {
+    var self = this;
+    return new Promise(function(fulfill, reject) {
+      function retry() {
+        var buf = undefined;
+        for (var i = 0; i < self.out_list.length; i++) {
+          if (self.out_list[i].busy === false) {
+            buf = self.out_list[i];
+            break;
+          }
+        }
+        if (buf === undefined) {
+          console.log('retry');
+          setTimeout(retry, 1);
+        } else {
+          console.log('fulfill', buf.id);
+          buf.busy = true;
+          fulfill(buf);
+        }
+      }
+      retry();
+    });
   }
 
   emptyBufferDone;
@@ -327,41 +367,41 @@ export class Component extends stream.Duplex {
       return Promise.resolve();
     }
   }
+  readDone(outputBuffer) {
+    var self = this;
+    var buffer: Buffer = outputBuffer.buf;
+
+    // Catch EOF
+    if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
+      this.push(null);
+      return;
+    } else {
+      buffer.onBufferDone = function() {
+        self.fillBuffer(outputBuffer.header);
+      };
+    }
+    this.push(buffer);
+  }
   _read() {
     //    console.log('_read', this.cname);
     var self = this;
 
     function read() {
       //      console.log('read', self.cname);
-      var outputBuffer;
       self.initRead()
         .then(function() {
-          outputBuffer = self.getOutputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
-          return self.fillBuffer(outputBuffer.header)
-        })
-        .then(function() {
-          var buffer: Buffer = outputBuffer.buf;
-
-          if (self.buf2 === undefined || self.buf2.length < buffer.length) {
-            self.buf2 = new Buffer(buffer.length);
-          }
-          buffer.copy(self.buf2, 0, 0, outputBuffer.header.nFilledLen); // I am copying the buffer since outputBuffer.get shares the buffer with getOutputBuffer
-
-          self.push(self.buf2.slice(0, outputBuffer.header.nFilledLen));
-          
-          // Catch EOF
-          if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
-            self.push(null);
+          for (var i = 0; i < self.out_list.length; i++) {
+            self.fillBuffer(self.out_list[i].header);
           }
         })
         .catch(console.log.bind(console));
     }
 
     if (this.hasPortSettingsChanged) {
-      read();
+
     } else {
       this.component.on("eventPortSettingsChanged", function() {
-        console.log('eventPortSettingsChanged');
+        console.log(self.name, 'eventPortSettingsChanged');
         self.hasPortSettingsChanged = true;
         var portDefinition = self.component.getParameter(self.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
         self.emit('portDefinitionChanged', portDefinition);
@@ -374,7 +414,7 @@ export class Component extends stream.Duplex {
     "use strict";
     var self = this;
 
-    var inputBuffer = this.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
+    var inputBuffer = this.getInputBuffer();
     var inputBufferLength = inputBuffer.header.nAllocLen;
 
     var lastPacket = chunk.length <= offset + inputBufferLength;
@@ -399,6 +439,7 @@ export class Component extends stream.Duplex {
           // Buffer too small
           return self.writeRecursive(chunk, offset + inputBufferLength);
         } else {
+          if (chunk.onBufferDone) { chunk.onBufferDone(); }
           return Promise.resolve();
         }
       })
@@ -420,7 +461,7 @@ export class Component extends stream.Duplex {
         .then(function() {
           // Empty a dummy packet to fix the bug where the video_render doesn't call buffer done on the first packet
           if (self.cname === "video_render") {
-            var inputBuffer = self.getInputBuffer(omx.BLOCK_TYPE.DO_BLOCK);
+            var inputBuffer = self.getInputBuffer();
             inputBuffer.header.nFilledLen = 0;
             self.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
           }

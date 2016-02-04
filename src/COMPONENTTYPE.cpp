@@ -2,6 +2,7 @@
 #include "BUFFERHEADERTYPE.h"
 #include "OMX_consts.h"
 #include "Parameters.h"
+#include "EglImage.h"
 #include "log.h"
 
 #include <stdio.h>
@@ -25,6 +26,7 @@ NAN_MODULE_INIT(COMPONENTTYPE::Init) {
   Nan::SetPrototypeMethod(tpl, "setParameter", setParameter);
   Nan::SetPrototypeMethod(tpl, "sendCommand", sendCommand);
   Nan::SetPrototypeMethod(tpl, "useBuffer", useBuffer);
+  Nan::SetPrototypeMethod(tpl, "useEGLImage", useEGLImage);
   Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
   Nan::SetPrototypeMethod(tpl, "fillBuffer", fillBuffer);
   Nan::SetPrototypeMethod(tpl, "tunnelTo", tunnelTo);
@@ -188,7 +190,35 @@ NAN_METHOD(COMPONENTTYPE::useBuffer) {
     return;
   }
 
-  plog("useBuffer (0x%p) (0x%p) (0x%p)", buf, buf->pBuffer, bufferData);
+  const unsigned argc = 1;
+  Local<Value> argv[argc] = {Nan::New<v8::External>((void*) buf)};
+  Local<Function> cons = Nan::New(BUFFERHEADERTYPE::constructor);
+  Local<Object> instance = cons->NewInstance(argc, argv);
+
+  // Keep reference of buffer
+  obj->bufferMap[buf].Reset(instance);
+
+  info.GetReturnValue().Set(instance);
+}
+
+NAN_METHOD(COMPONENTTYPE::useEGLImage) {
+  COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+
+  int portIndex = (int) Nan::To<int>(info[0]).FromJust();
+
+  EglImage* _egl = Nan::ObjectWrap::Unwrap<EglImage>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
+  
+  OMX_BUFFERHEADERTYPE *buf;
+
+  OMX_ERRORTYPE rc;
+//  rc = OMX_UseBuffer(obj->comp, &buf, portIndex, NULL, bufferLength, (OMX_U8*) bufferData);
+  rc = OMX_UseEGLImage(obj->comp, &buf, portIndex, NULL, _egl->eglImage);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "OMX_UseBuffer() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
 
   const unsigned argc = 1;
   Local<Value> argv[argc] = {Nan::New<v8::External>((void*) buf)};

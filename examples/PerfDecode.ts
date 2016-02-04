@@ -2,7 +2,7 @@ import fs = require('fs');
 import omx = require('../');
 
 var VideoDecode: omx.VideoDecode;
-var EglRender: omx.EglRender;
+var VideoRender: omx.VideoRender;
 var fps = new omx.FPS();
 VideoDecode = new omx.VideoDecode('VideoDecode');
 
@@ -10,22 +10,22 @@ VideoDecode = new omx.VideoDecode('VideoDecode');
 
 VideoDecode.init()
   .then(function() {
-    EglRender = new omx.VideoRender();
-    return EglRender.init();
+    VideoRender = new omx.VideoRender();
+    return VideoRender.init();
   })
   .then(function() {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-    VideoDecode.setBufferCount(1, 1);
+    VideoDecode.setBufferCount(1, 4);
     
-//    VideoRender.setBufferCount(1);
+    VideoRender.setBufferCount(1);
 
     console.time("start");
 //    fs.createReadStream("spec/data/myth-160.h264")
-//    fs.createReadStream("spec/data/test.h264")
-    fs.createReadStream("spec/data/video-LQ-640.h264")
+    fs.createReadStream("spec/data/test.h264")
+//    fs.createReadStream("spec/data/video-LQ-640.h264")
       .pipe(VideoDecode)
-//      .pipe(fps)
-      .tunnel(EglRender)
+      .pipe(fps)
+      .pipe(VideoRender)
       .on('finish', function() {
         console.timeEnd("start");
         console.log("Done");

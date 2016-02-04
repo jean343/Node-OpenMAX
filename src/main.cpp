@@ -9,12 +9,15 @@
 #include <unistd.h>
 
 #include "log.h"
-#include "main.h"
 
 #include "init.h"
 #include "BUFFERHEADERTYPE.h"
 #include "COMPONENTTYPE.h"
 #include "CopyAsync.h"
+
+#include "EglImage.h"
+#include "GfxTexture.h"
+#include "Graphics.h"
 
 #include "bcm_host.h"
 
@@ -31,6 +34,10 @@ NAN_MODULE_INIT(Init) {
 
   BUFFERHEADERTYPE::Init(target);
   COMPONENTTYPE::Init(target);
+  
+  EglImage::Init(target);
+  GfxTexture::Init(target);
+  Graphics::Init(target);
 }
 
 NODE_MODULE(Node_OMX, Init)
