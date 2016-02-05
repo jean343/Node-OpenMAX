@@ -20,6 +20,9 @@ export interface COMPONENTTYPE {
   getParameter(port: number, index: omx.OMX_INDEXTYPE);
   sendCommand(commandType: omx.OMX_COMMANDTYPE, port: number);
   useBuffer(port: number, buf: Buffer);
+  useEGLImage(port: number, buf: omx.EglImage);
   emptyBuffer(header);
+  emptyBufferAsync(header, any);
   fillBuffer(header);
+  fillBufferAsync(header, any);
 }

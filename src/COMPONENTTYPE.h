@@ -20,6 +20,9 @@ struct BufferDoneData {
 };
 
 class COMPONENTTYPE : public Nan::ObjectWrap {
+  friend class FillBufferAsyncWorker;
+  friend class EmptyBufferAsyncWorker;
+  
 public:
   static NAN_MODULE_INIT(Init);
 
@@ -37,8 +40,12 @@ private:
   static NAN_METHOD(sendCommand);
   static NAN_METHOD(useBuffer);
   static NAN_METHOD(useEGLImage);
+  
   static NAN_METHOD(emptyBuffer);
   static NAN_METHOD(fillBuffer);
+  static NAN_METHOD(emptyBufferAsync);
+  static NAN_METHOD(fillBufferAsync);
+  
   static NAN_METHOD(tunnelTo);
 
   static Nan::Persistent<v8::Function> constructor;

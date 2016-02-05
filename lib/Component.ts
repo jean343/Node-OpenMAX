@@ -8,6 +8,12 @@ var Promise = require('promise');
 
 var Node_OMX: def.Node_OMX = require('bindings')('Node_OMX');
 
+export enum VERBOSE_LEVEL {
+  None,
+  Info,
+  Debug
+}
+
 export class EventHandlers {
   constructor(public eEvent: omx.OMX_EVENTTYPE, public nData1: number, public nData2: number, public fulfill, public reject) {
   }
@@ -15,6 +21,7 @@ export class EventHandlers {
 
 export class Component extends stream.Duplex {
   static isOMXInit: boolean = false;
+  static verbose: VERBOSE_LEVEL = VERBOSE_LEVEL.None;
   in_port: number;
   out_port: number;
 
@@ -37,6 +44,18 @@ export class Component extends stream.Duplex {
     });
     this.useOpenGL = name === 'egl_render';
     if (this.cname === undefined) this.cname = this.name;
+  }
+
+  log(level: VERBOSE_LEVEL, args) {
+    if (level <= Component.verbose) {
+      console.log.apply(console, args);
+    }
+  }
+  info(...optionalParams: any[]) {
+    this.log(VERBOSE_LEVEL.Info, arguments);
+  }
+  debug(...optionalParams: any[]) {
+    this.log(VERBOSE_LEVEL.Debug, arguments);
   }
 
   init() {
@@ -78,14 +97,14 @@ export class Component extends stream.Duplex {
     });
 
     this.component.on('buffer_done', function(direction, pBuffer) {
-      //      console.log('buffer_done', direction, pBuffer);
       if (direction == 0) {
+        self.debug('buffer_done', self.name, direction, pBuffer);
         self.emptyBufferDone();
       } else {
         self.out_list.forEach(function(item, i) {
           if (item !== undefined) {
             if (pBuffer === item.header) {
-              item.busy = false;
+              self.debug('buffer_done', self.name, direction, item);
               self.readDone(item);
               return;
             }
@@ -118,7 +137,7 @@ export class Component extends stream.Duplex {
 
 
     this.on('finish', function() {
-      console.log(self.cname, 'on finish');
+      self.info(self.cname, 'on finish');
       var inputBuffer = self.getInputBuffer();
       if (inputBuffer !== undefined) {
         inputBuffer.header.nFilledLen = 0;
@@ -224,15 +243,16 @@ export class Component extends stream.Duplex {
           var texture = new omx.GfxTexture(portdef.video.nFrameWidth, portdef.video.nFrameHeight);
           buf = new omx.EglImage(this.graphics.graphics, texture.texture);
           outputBuffer = this.component.useEGLImage(port, buf.eglImage);
+          this.debug('useEGLImage', this.name, port, buf.eglImage);
         } else {
           buf = new Buffer(portdef.nBufferSize);
 
           outputBuffer = this.component.useBuffer(port, buf);
+          this.debug('useBuffer', this.name, port, buf);
         }
         bufferList.push({
           buf: buf,
           header: outputBuffer,
-          busy: false,
           id: Component._id++
         });
       }
@@ -248,15 +268,19 @@ export class Component extends stream.Duplex {
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortEnable, port);
   }
   enableInputPortBuffer() {
+    this.debug('enableInputPortBuffer', this.cname, this.in_port);
     return this.enablePort(this.in_port, true, false);
   }
   enableOutputPortBuffer() {
+    this.debug('enableOutputPortBuffer', this.cname, this.out_port, this.useOpenGL);
     return this.enablePort(this.out_port, true, this.useOpenGL);
   }
   enableInputPort() {
+    this.debug('enableInputPort', this.cname, this.in_port);
     return this.enablePort(this.in_port, false, false);
   }
   enableOutputPort() {
+    this.debug('enableOutputPort', this.cname, this.out_port);
     return this.enablePort(this.out_port, false, false);
   }
 
@@ -267,29 +291,6 @@ export class Component extends stream.Duplex {
       return buf;
     }
   }
-  getOutputBuffer() {
-    var self = this;
-    return new Promise(function(fulfill, reject) {
-      function retry() {
-        var buf = undefined;
-        for (var i = 0; i < self.out_list.length; i++) {
-          if (self.out_list[i].busy === false) {
-            buf = self.out_list[i];
-            break;
-          }
-        }
-        if (buf === undefined) {
-          console.log('retry');
-          setTimeout(retry, 1);
-        } else {
-          console.log('fulfill', buf.id);
-          buf.busy = true;
-          fulfill(buf);
-        }
-      }
-      retry();
-    });
-  }
 
   emptyBufferDone;
   emptyBuffer(header) {
@@ -299,12 +300,12 @@ export class Component extends stream.Duplex {
       self.emptyBufferDone = fulfill;
     });
   }
-  fillBufferDone;
   fillBuffer(header) {
     var self = this;
-    this.component.fillBuffer(header);
     return new Promise(function(fulfill, reject) {
-      self.fillBufferDone = fulfill;
+      self.component.fillBufferAsync(header, function() {
+        fulfill();
+      });
     });
   }
 
@@ -312,24 +313,27 @@ export class Component extends stream.Duplex {
     var self = this;
 
     this.component.on("eventPortSettingsChanged", function() {
-      console.log('eventPortSettingsChanged', self.cname, self.component);
+      self.info('tunnel eventPortSettingsChanged', self.cname, self.component);
 
       if (self.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
+        self.debug('tunnel changeState OMX_StateIdle', self.cname);
         self.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
       }
 
+      self.debug('tunnel from', self.cname, self.out_port, 'to', nextComponent.cname, nextComponent.in_port);
       self.tunnelTo(self.out_port, nextComponent, nextComponent.in_port);
 
       var sourcePortPromise = self.enableOutputPort();
       var sinkPortPromise = nextComponent.enableInputPort();
 
       if (nextComponent.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
-        console.log('Error: nextComponent OMX_StateLoaded');
+        self.info('Error: nextComponent OMX_StateLoaded');
       }
 
       sinkPortPromise.then(function() {
         return sourcePortPromise;
       }).then(function() {
+        self.debug('tunnel changeState OMX_StateExecuting', nextComponent.cname);
         nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
       });
     });
@@ -356,10 +360,13 @@ export class Component extends stream.Duplex {
   initRead() {
     var self = this;
     if (this.firstReadPacket) {
+      this.debug('initRead firstReadPacket', this.cname);
       this.firstReadPacket = false;
       return this.enableOutputPortBuffer()
         .then(function() {
+          //          this.debug('initRead enableOutputPortBuffer done', self.cname); // TODO error makes it work :S
           if (self.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
+            self.debug('initRead changeState OMX_StateExecuting', self.cname);
             return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
           }
         });
@@ -383,13 +390,14 @@ export class Component extends stream.Duplex {
     this.push(buffer);
   }
   _read() {
-    //    console.log('_read', this.cname);
+    this.debug('_read', this.cname);
     var self = this;
 
     function read() {
-      //      console.log('read', self.cname);
+      self.debug('read', self.cname);
       self.initRead()
         .then(function() {
+          self.debug('initRead done', self.cname);
           for (var i = 0; i < self.out_list.length; i++) {
             self.fillBuffer(self.out_list[i].header);
           }
@@ -401,9 +409,10 @@ export class Component extends stream.Duplex {
 
     } else {
       this.component.on("eventPortSettingsChanged", function() {
-        console.log(self.name, 'eventPortSettingsChanged');
+        self.info('_read eventPortSettingsChanged', self.cname);
         self.hasPortSettingsChanged = true;
         var portDefinition = self.component.getParameter(self.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+        self.debug('_read portDefinition', self.cname, portDefinition);
         self.emit('portDefinitionChanged', portDefinition);
         read();
       });
@@ -473,7 +482,7 @@ export class Component extends stream.Duplex {
     }
   }
   _write(chunk: Buffer, enc, next: () => void) {
-    //    console.log('_write', chunk.length, this.cname);
+    this.debug('_write', chunk.length, this.cname);
     var self = this;
 
     this.initWrite()

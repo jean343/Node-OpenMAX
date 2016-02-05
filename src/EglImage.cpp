@@ -68,7 +68,6 @@ NAN_METHOD(EglImage::New) {
 
     Graphics* graphics = Nan::ObjectWrap::Unwrap<Graphics>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
     Local<v8::Object> texture = Nan::To<v8::Object>(info[1]).ToLocalChecked();
-    //    GfxTexture* texture = Nan::ObjectWrap::Unwrap<GfxTexture>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
 
     EglImage *obj = new EglImage(graphics, texture);
     obj->Wrap(info.This());

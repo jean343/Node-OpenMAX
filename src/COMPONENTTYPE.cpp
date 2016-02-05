@@ -12,6 +12,14 @@ using v8::Local;
 using v8::Value;
 using v8::Function;
 using v8::Object;
+using v8::Number;
+using Nan::AsyncQueueWorker;
+using Nan::AsyncWorker;
+using Nan::Callback;
+using Nan::HandleScope;
+using Nan::New;
+using Nan::Null;
+using Nan::To;
 
 Nan::Persistent<v8::Function> COMPONENTTYPE::constructor;
 
@@ -27,8 +35,13 @@ NAN_MODULE_INIT(COMPONENTTYPE::Init) {
   Nan::SetPrototypeMethod(tpl, "sendCommand", sendCommand);
   Nan::SetPrototypeMethod(tpl, "useBuffer", useBuffer);
   Nan::SetPrototypeMethod(tpl, "useEGLImage", useEGLImage);
+
   Nan::SetPrototypeMethod(tpl, "emptyBuffer", emptyBuffer);
   Nan::SetPrototypeMethod(tpl, "fillBuffer", fillBuffer);
+
+  Nan::SetPrototypeMethod(tpl, "emptyBufferAsync", emptyBufferAsync);
+  Nan::SetPrototypeMethod(tpl, "fillBufferAsync", fillBufferAsync);
+
   Nan::SetPrototypeMethod(tpl, "tunnelTo", tunnelTo);
 
   constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
@@ -207,11 +220,11 @@ NAN_METHOD(COMPONENTTYPE::useEGLImage) {
   int portIndex = (int) Nan::To<int>(info[0]).FromJust();
 
   EglImage* _egl = Nan::ObjectWrap::Unwrap<EglImage>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
-  
+
   OMX_BUFFERHEADERTYPE *buf;
 
   OMX_ERRORTYPE rc;
-//  rc = OMX_UseBuffer(obj->comp, &buf, portIndex, NULL, bufferLength, (OMX_U8*) bufferData);
+  //  rc = OMX_UseBuffer(obj->comp, &buf, portIndex, NULL, bufferLength, (OMX_U8*) bufferData);
   rc = OMX_UseEGLImage(obj->comp, &buf, portIndex, NULL, _egl->eglImage);
   if (rc != OMX_ErrorNone) {
     char buf[255];
@@ -263,12 +276,110 @@ NAN_METHOD(COMPONENTTYPE::fillBuffer) {
   }
 }
 
+class EmptyBufferAsyncWorker : public AsyncWorker {
+public:
+
+  EmptyBufferAsyncWorker(Callback *callback, COMPONENTTYPE* obj, OMX_BUFFERHEADERTYPE* buf)
+  : AsyncWorker(callback), obj(obj), buf(buf) {
+  }
+
+  ~EmptyBufferAsyncWorker() {
+  }
+
+  void Execute() {
+    rc = OMX_EmptyThisBuffer(obj->comp, buf);
+  }
+
+  void HandleOKCallback() {
+    HandleScope scope;
+
+
+    if (rc != OMX_ErrorNone) {
+      char buf[255];
+      sprintf(buf, "OMX_FillThisBuffer() returned error: %s", OMX_consts::err2str(rc));
+      Nan::ThrowError(buf);
+      return;
+    }
+
+    Local<Value> argv[] = {
+      Null()
+    };
+
+    callback->Call(1, argv);
+  }
+
+private:
+  COMPONENTTYPE* obj;
+  OMX_BUFFERHEADERTYPE* buf;
+  OMX_ERRORTYPE rc;
+};
+
+NAN_METHOD(COMPONENTTYPE::emptyBufferAsync) {
+  COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+
+  BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+  OMX_BUFFERHEADERTYPE* buf = _buf->buf;
+
+  Callback *callback = new Callback(info[1].As<Function>());
+
+  AsyncQueueWorker(new EmptyBufferAsyncWorker(callback, obj, buf));
+}
+
+class FillBufferAsyncWorker : public AsyncWorker {
+public:
+
+  FillBufferAsyncWorker(Callback *callback, COMPONENTTYPE* obj, OMX_BUFFERHEADERTYPE* buf)
+  : AsyncWorker(callback), obj(obj), buf(buf) {
+  }
+
+  ~FillBufferAsyncWorker() {
+  }
+
+  void Execute() {
+    rc = OMX_FillThisBuffer(obj->comp, buf);
+  }
+
+  void HandleOKCallback() {
+    HandleScope scope;
+
+
+    if (rc != OMX_ErrorNone) {
+      char buf[255];
+      sprintf(buf, "OMX_FillThisBuffer() returned error: %s", OMX_consts::err2str(rc));
+      Nan::ThrowError(buf);
+      return;
+    }
+
+    Local<Value> argv[] = {
+      Null()
+    };
+
+    callback->Call(1, argv);
+  }
+
+private:
+  COMPONENTTYPE* obj;
+  OMX_BUFFERHEADERTYPE* buf;
+  OMX_ERRORTYPE rc;
+};
+
+NAN_METHOD(COMPONENTTYPE::fillBufferAsync) {
+  COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+
+  BUFFERHEADERTYPE* _buf = Nan::ObjectWrap::Unwrap<BUFFERHEADERTYPE>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+  OMX_BUFFERHEADERTYPE* buf = _buf->buf;
+
+  Callback *callback = new Callback(info[1].As<Function>());
+
+  AsyncQueueWorker(new FillBufferAsyncWorker(callback, obj, buf));
+}
+
 NAN_METHOD(COMPONENTTYPE::tunnelTo) {
   COMPONENTTYPE* source = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
 
   int sourcePort = (int) Nan::To<int>(info[0]).FromJust();
   COMPONENTTYPE* sink = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
-  
+
   int sinkPort = (int) Nan::To<int>(info[2]).FromJust();
 
   OMX_ERRORTYPE rc = OMX_SetupTunnel(source->comp, sourcePort, sink->comp, sinkPort);
