@@ -22,6 +22,7 @@ export class EventHandlers {
 export class Component extends stream.Duplex {
   static isOMXInit: boolean = false;
   static verbose: VERBOSE_LEVEL = VERBOSE_LEVEL.None;
+  static logComponent: string = null;
   in_port: number;
   out_port: number;
 
@@ -46,9 +47,12 @@ export class Component extends stream.Duplex {
     if (this.cname === undefined) this.cname = this.name;
   }
 
-  log(level: VERBOSE_LEVEL, args) {
+  log(level: VERBOSE_LEVEL, args: any[]) {
     if (level <= Component.verbose) {
-      console.log.apply(console, args);
+      if (Component.logComponent === null || Component.logComponent === this.cname) {
+        Array.prototype.unshift.call(args, this.cname);
+        console.log.apply(console, args);
+      }
     }
   }
   info(...optionalParams: any[]) {
@@ -98,13 +102,20 @@ export class Component extends stream.Duplex {
 
     this.component.on('buffer_done', function(direction, pBuffer) {
       if (direction == 0) {
-        self.debug('buffer_done', self.name, direction, pBuffer);
-        self.emptyBufferDone();
+        self.in_list.forEach(function(item, i) {
+          if (item !== undefined) {
+            if (pBuffer === item.header) {
+              self.debug('buffer_done', direction === 0 ? 'empty' : 'fill', item.id);
+              self.writeDone(item);
+              return;
+            }
+          }
+        });
       } else {
         self.out_list.forEach(function(item, i) {
           if (item !== undefined) {
             if (pBuffer === item.header) {
-              self.debug('buffer_done', self.name, direction, item);
+              self.debug('buffer_done', direction === 0 ? 'empty' : 'fill', item.id);
               self.readDone(item);
               return;
             }
@@ -137,7 +148,7 @@ export class Component extends stream.Duplex {
 
 
     this.on('finish', function() {
-      self.info(self.cname, 'on finish');
+      self.info('on finish');
       var inputBuffer = self.getInputBuffer();
       if (inputBuffer !== undefined) {
         inputBuffer.header.nFilledLen = 0;
@@ -268,19 +279,19 @@ export class Component extends stream.Duplex {
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortEnable, port);
   }
   enableInputPortBuffer() {
-    this.debug('enableInputPortBuffer', this.cname, this.in_port);
+    this.debug('enableInputPortBuffer', this.in_port);
     return this.enablePort(this.in_port, true, false);
   }
   enableOutputPortBuffer() {
-    this.debug('enableOutputPortBuffer', this.cname, this.out_port, this.useOpenGL);
+    this.debug('enableOutputPortBuffer', this.out_port, this.useOpenGL);
     return this.enablePort(this.out_port, true, this.useOpenGL);
   }
   enableInputPort() {
-    this.debug('enableInputPort', this.cname, this.in_port);
+    this.debug('enableInputPort', this.in_port);
     return this.enablePort(this.in_port, false, false);
   }
   enableOutputPort() {
-    this.debug('enableOutputPort', this.cname, this.out_port);
+    this.debug('enableOutputPort', this.out_port);
     return this.enablePort(this.out_port, false, false);
   }
 
@@ -292,12 +303,32 @@ export class Component extends stream.Duplex {
     }
   }
 
-  emptyBufferDone;
+  //  emptyBuffer(header) {
+  //    var self = this;
+  //    return new Promise(function(fulfill, reject) {
+  //      header.onBufferDone2 = function() {
+  //        fulfill();
+  //      };
+  //      self.component.emptyBuffer(header);
+  //    });
+  //  }
   emptyBuffer(header) {
     var self = this;
-    this.component.emptyBuffer(header);
+    //    return new Promise(function(fulfill, reject) {
+    //      self.component.emptyBuffer(header);
+    //      fulfill();
+    //    });
     return new Promise(function(fulfill, reject) {
-      self.emptyBufferDone = fulfill;
+      //      if (self.cname !== "video_render") {
+      header.onBufferDone2 = function() {
+        fulfill();
+      };
+      //      }
+      self.component.emptyBufferAsync(header, function() {
+        //        if (self.cname === "video_render") {
+        //          fulfill();
+        //        }
+      });
     });
   }
   fillBuffer(header) {
@@ -313,10 +344,10 @@ export class Component extends stream.Duplex {
     var self = this;
 
     this.component.on("eventPortSettingsChanged", function() {
-      self.info('tunnel eventPortSettingsChanged', self.cname, self.component);
+      self.info('tunnel eventPortSettingsChanged', self.component);
 
       if (self.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
-        self.debug('tunnel changeState OMX_StateIdle', self.cname);
+        self.debug('tunnel changeState OMX_StateIdle');
         self.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
       }
 
@@ -360,13 +391,13 @@ export class Component extends stream.Duplex {
   initRead() {
     var self = this;
     if (this.firstReadPacket) {
-      this.debug('initRead firstReadPacket', this.cname);
+      this.debug('initRead firstReadPacket');
       this.firstReadPacket = false;
       return this.enableOutputPortBuffer()
         .then(function() {
           //          this.debug('initRead enableOutputPortBuffer done', self.cname); // TODO error makes it work :S
           if (self.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
-            self.debug('initRead changeState OMX_StateExecuting', self.cname);
+            self.debug('initRead changeState OMX_StateExecuting');
             return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
           }
         });
@@ -390,14 +421,14 @@ export class Component extends stream.Duplex {
     this.push(buffer);
   }
   _read() {
-    this.debug('_read', this.cname);
+    this.debug('_read');
     var self = this;
 
     function read() {
-      self.debug('read', self.cname);
+      self.debug('read');
       self.initRead()
         .then(function() {
-          self.debug('initRead done', self.cname);
+          self.debug('initRead done');
           for (var i = 0; i < self.out_list.length; i++) {
             self.fillBuffer(self.out_list[i].header);
           }
@@ -409,10 +440,10 @@ export class Component extends stream.Duplex {
 
     } else {
       this.component.on("eventPortSettingsChanged", function() {
-        self.info('_read eventPortSettingsChanged', self.cname);
+        self.info('_read eventPortSettingsChanged');
         self.hasPortSettingsChanged = true;
         var portDefinition = self.component.getParameter(self.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
-        self.debug('_read portDefinition', self.cname, portDefinition);
+        self.debug('_read portDefinition', portDefinition);
         self.emit('portDefinitionChanged', portDefinition);
         read();
       });
@@ -422,6 +453,8 @@ export class Component extends stream.Duplex {
   writeRecursive(chunk: Buffer, offset: number) {
     "use strict";
     var self = this;
+
+    this.debug('writeRecursive', chunk.length, offset);
 
     var inputBuffer = this.getInputBuffer();
     var inputBufferLength = inputBuffer.header.nAllocLen;
@@ -438,13 +471,16 @@ export class Component extends stream.Duplex {
       inputBuffer.header.nFlags = 0x00000100; //OMX_BUFFERFLAG_TIME_UNKNOWN;
     }
 
-    if (this.cname === "image_decode" && lastPacket) {
+    if (this.name === "image_decode" && lastPacket) {
       inputBuffer.header.nFlags |= 0x00000001; //OMX_BUFFERFLAG_EOS;
     }
 
+    this.debug('emptyBuffer');
     return this.emptyBuffer(inputBuffer.header)
       .then(function() {
+        self.debug('emptyBuffer then');
         if (!lastPacket) {
+          self.info('Buffer too small');
           // Buffer too small
           return self.writeRecursive(chunk, offset + inputBufferLength);
         } else {
@@ -467,22 +503,18 @@ export class Component extends stream.Duplex {
             return Promise.resolve();
           }
         })
-        .then(function() {
-          // Empty a dummy packet to fix the bug where the video_render doesn't call buffer done on the first packet
-          if (self.cname === "video_render") {
-            var inputBuffer = self.getInputBuffer();
-            inputBuffer.header.nFilledLen = 0;
-            self.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
-          }
-          return Promise.resolve();
-        })
         .catch(console.log.bind(console));
     } else {
       return Promise.resolve();
     }
   }
+  writeDone(inputBuffer) {
+    if (inputBuffer.header.onBufferDone2) {
+      inputBuffer.header.onBufferDone2();
+    }
+  }
   _write(chunk: Buffer, enc, next: () => void) {
-    this.debug('_write', chunk.length, this.cname);
+    this.debug('_write', chunk.length);
     var self = this;
 
     this.initWrite()

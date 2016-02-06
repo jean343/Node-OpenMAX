@@ -293,10 +293,9 @@ public:
   void HandleOKCallback() {
     HandleScope scope;
 
-
     if (rc != OMX_ErrorNone) {
       char buf[255];
-      sprintf(buf, "OMX_FillThisBuffer() returned error: %s", OMX_consts::err2str(rc));
+      sprintf(buf, "OMX_EmptyThisBuffer() returned error: %s", OMX_consts::err2str(rc));
       Nan::ThrowError(buf);
       return;
     }
@@ -341,7 +340,6 @@ public:
 
   void HandleOKCallback() {
     HandleScope scope;
-
 
     if (rc != OMX_ErrorNone) {
       char buf[255];
