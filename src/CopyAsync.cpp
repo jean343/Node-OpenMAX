@@ -57,25 +57,47 @@ public:
     }
   }
 
-  // Executed inside the worker-thread.
-  // It is not safe to access V8, or V8 data structures
-  // here, so everything we need for input and output
-  // should go on `this`.
+  void copyBlockRescale(char* source, char* dest, int offsetX, int offsetY, int offsetIn, int offsetOut, int nStride, int scale, int w, int h, float resizeScale) {
+    int nStrideS = nStride / scale;
+    int wS = w / scale;
+    int offsetYS = offsetY / scale;
+    int bufnStrideS = destnStride / scale;
+    offsetOut += (offsetX / scale) + (offsetYS * bufnStrideS);
+
+    int * xOffsets = new int [wS];
+    for (int x = 0; x < wS; x++) {
+      xOffsets[x] = x * resizeScale;
+    }
+
+    for (int y = 0; y < h / scale; y++) {
+      int ySource = y * resizeScale;
+      int sourceStart = offsetIn + (ySource * nStrideS);
+
+      offsetOut += bufnStrideS;
+
+      char* destOut = dest + offsetOut;
+      char* sourceStart2 = source + sourceStart;
+      for (int x = 0; x < wS; x++) {
+        destOut[x] = sourceStart2[xOffsets[x]];
+      }
+    }
+
+    delete[] xOffsets;
+  }
 
   void Execute() {
-    int w = std::min(nStride, width);
-    int h = std::min(nSliceHeight, height);
 
     int bufferFormatSize = destnStride * destnSliceHeight;
 
-    copyBlock(source, dest, offsetX, offsetY, 0, 0, nStride, 1, w, h);
-    copyBlock(source, dest, offsetX, offsetY, nStride * nSliceHeight, bufferFormatSize, nStride, 2, w, h);
-    copyBlock(source, dest, offsetX, offsetY, ((5 * nStride * nSliceHeight) / 4), ((5 * bufferFormatSize) / 4), nStride, 2, w, h);
-  }
+    float resizeScale = std::max((float) nStride / width, (float) nSliceHeight / height);
 
-  // Executed when the async work is complete
-  // this function will be run inside the main event loop
-  // so it is safe to use V8 again
+    int w = (int) (nStride / resizeScale);
+    int h = (int) (nSliceHeight / resizeScale);
+
+    copyBlockRescale(source, dest, offsetX, offsetY, 0, 0, nStride, 1, w, h, resizeScale);
+    copyBlockRescale(source, dest, offsetX, offsetY, nStride * nSliceHeight, bufferFormatSize, nStride, 2, w, h, resizeScale);
+    copyBlockRescale(source, dest, offsetX, offsetY, ((5 * nStride * nSliceHeight) / 4), ((5 * bufferFormatSize) / 4), nStride, 2, w, h, resizeScale);
+  }
 
   void HandleOKCallback() {
     HandleScope scope;
