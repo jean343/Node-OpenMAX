@@ -102,15 +102,8 @@ export class Component extends stream.Duplex {
 
     this.component.on('buffer_done', function(direction, pBuffer) {
       if (direction == 0) {
-        self.in_list.forEach(function(item, i) {
-          if (item !== undefined) {
-            if (pBuffer === item.header) {
-              self.debug('buffer_done', direction === 0 ? 'empty' : 'fill', item.id);
-              self.writeDone(item);
-              return;
-            }
-          }
-        });
+        self.debug('buffer_done', direction === 0 ? 'empty' : 'fill');
+        self.emptyBufferDone();
       } else {
         self.out_list.forEach(function(item, i) {
           if (item !== undefined) {
@@ -303,31 +296,12 @@ export class Component extends stream.Duplex {
     }
   }
 
-  //  emptyBuffer(header) {
-  //    var self = this;
-  //    return new Promise(function(fulfill, reject) {
-  //      header.onBufferDone2 = function() {
-  //        fulfill();
-  //      };
-  //      self.component.emptyBuffer(header);
-  //    });
-  //  }
+  emptyBufferDone;
   emptyBuffer(header) {
     var self = this;
-    //    return new Promise(function(fulfill, reject) {
-    //      self.component.emptyBuffer(header);
-    //      fulfill();
-    //    });
     return new Promise(function(fulfill, reject) {
-      //      if (self.cname !== "video_render") {
-      header.onBufferDone2 = function() {
-        fulfill();
-      };
-      //      }
+      self.emptyBufferDone = fulfill;
       self.component.emptyBufferAsync(header, function() {
-        //        if (self.cname === "video_render") {
-        //          fulfill();
-        //        }
       });
     });
   }
@@ -503,14 +477,18 @@ export class Component extends stream.Duplex {
             return Promise.resolve();
           }
         })
+        .then(function() {
+          // Empty a dummy packet to fix the bug where the video_render doesn't call buffer done on the first packet
+          if (self.cname === "video_render") {
+            var inputBuffer = self.getInputBuffer();
+            inputBuffer.header.nFilledLen = 0;
+            self.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
+          }
+          return Promise.resolve();
+        })
         .catch(console.log.bind(console));
     } else {
       return Promise.resolve();
-    }
-  }
-  writeDone(inputBuffer) {
-    if (inputBuffer.header.onBufferDone2) {
-      inputBuffer.header.onBufferDone2();
     }
   }
   _write(chunk: Buffer, enc, next: () => void) {
