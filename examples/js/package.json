@@ -5,6 +5,6 @@
   "author": "jean343",
   "license": "MIT",
   "dependencies": {
-    "openmax": "file:../../"
+    "openmax": "latest"
   }
 }

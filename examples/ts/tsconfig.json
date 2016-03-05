@@ -15,13 +15,19 @@
   "filesGlob": [
     "**/*.ts",
     "!node_modules/**/*.ts",
-    "!dist/**/*.ts",
-    "!typings/**/*.ts"
+    "!dist/**/*.ts"
   ],
   "atom": {
     "rewriteTsconfig": true
   },
   "files": [
-    "a.ts"
+    "SimpleDecoderEncoder.ts",
+    "SimpleVideoDecoderBuffer.ts",
+    "SimpleVideoDecoderRender.ts",
+    "SimpleVideoDecoderRenderBuffer.ts",
+    "SimpleVideoDecoderRenderTunnel.ts",
+    "typings/async/async.d.ts",
+    "typings/node/node.d.ts",
+    "typings/tsd.d.ts"
   ]
 }

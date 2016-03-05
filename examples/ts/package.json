@@ -1,0 +1,16 @@
+{
+  "name": "node-openmax-samples",
+  "version": "1.0.0",
+  "description": "Samples",
+  "author": "jean343",
+  "license": "MIT",
+  "dependencies": {
+    "openmax": "latest"
+  },
+  "scripts": {
+    "preinstall": "tsd install || exit 0"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.7"
+  }
+}

@@ -1,0 +1,16 @@
+npm install
+
+#echo Running SimpleDecoderEncoder
+#node dist/SimpleDecoderEncoder
+
+echo Running SimpleVideoDecoderBuffer
+node dist/SimpleVideoDecoderBuffer
+
+echo Running SimpleVideoDecoderRender
+node dist/SimpleVideoDecoderRender
+
+#echo Running SimpleVideoDecoderRenderBuffer
+#node dist/SimpleVideoDecoderRenderBuffer
+
+echo Running SimpleVideoDecoderRenderTunnel
+node dist/SimpleVideoDecoderRenderTunnel
