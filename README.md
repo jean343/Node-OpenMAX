@@ -32,26 +32,37 @@ fs.createReadStream("video-LQ.h264")
 
 ### Run samples ###
 
+There are JavaScript and TypeScript samples
+To run the JavaScript samples:
+```sh
+git clone https://github.com/jean343/Node-OpenMAX.git
+cd Node-OpenMAX/examples/js/
+npm install
+node SimpleVideoDecoderRender
+```
+
+To run the TypeScript samples:
+```sh
+git clone https://github.com/jean343/Node-OpenMAX.git
+cd Node-OpenMAX/examples/ts/
+npm install
+./node_modules/typescript/bin/tsc
+node dist/SimpleVideoDecoderRender
+```
+
+SimpleVideoDecoderRenderTunnel
 Example to read an H.264 file, decode it using video_decode and tunnel it to the video_render.
-```
-node examples/SimpleVideoDecoderRenderTunnel
-```
 
+SimpleVideoDecoderBuffer
 Example to pipe the RAW YUV to a custom Node.js Stream.
-```
-node examples/SimpleVideoDecoderBuffer
-```
 
+SimpleVideoDecoderRenderBuffer
 Example to pipe the RAW YUV to a custom Node.js Duplex Stream, do in-memory YUV manipulation the pipe the result to the monitor.
-```
-node examples/SimpleVideoDecoderRenderBuffer
-```
 
+SimpleDecoderEncoder
 This example can be run with pipe or tunnel, the tunnel is faster as the intermediate RAW data doesn't touch Node.
 Decodes an H.264 stream, encode it using custom settings of constant QP, write the result to a file then decode this result and display on the screen.
-```
-node examples/SimpleDecoderEncoder
-```
+
 
 ### Test with jasmine ###
 ```
