@@ -9,8 +9,8 @@ node dist/SimpleVideoDecoderBuffer
 echo Running SimpleVideoDecoderRender
 node dist/SimpleVideoDecoderRender
 
-#echo Running SimpleVideoDecoderRenderBuffer
-#node dist/SimpleVideoDecoderRenderBuffer
+echo Running SimpleVideoDecoderRenderBuffer
+node dist/SimpleVideoDecoderRenderBuffer
 
 echo Running SimpleVideoDecoderRenderTunnel
 node dist/SimpleVideoDecoderRenderTunnel

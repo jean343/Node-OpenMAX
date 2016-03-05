@@ -9,8 +9,8 @@ node SimpleVideoDecoderBuffer
 echo Running SimpleVideoDecoderRender
 node SimpleVideoDecoderRender
 
-#echo Running SimpleVideoDecoderRenderBuffer
-#node SimpleVideoDecoderRenderBuffer
+echo Running SimpleVideoDecoderRenderBuffer
+node SimpleVideoDecoderRenderBuffer
 
 echo Running SimpleVideoDecoderRenderTunnel
 node SimpleVideoDecoderRenderTunnel

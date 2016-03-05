@@ -12,6 +12,9 @@ class TransformFilter extends stream.Duplex {
         self.emit('portDefinitionChanged', portDefinition);
       });
     });
+    this.on('finish', function() {
+      this.push(null);
+    });
   }
   _read() {
   };
@@ -43,7 +46,7 @@ VideoDecode.init()
   .then(function() {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
 
-    fs.createReadStream("spec/data/video-LQ.h264")
+    fs.createReadStream("../../spec/data/video-LQ.h264")
       .pipe(VideoDecode)
       .pipe(transformFilter)
       .pipe(VideoRender)
