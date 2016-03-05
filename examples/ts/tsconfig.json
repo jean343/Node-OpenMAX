@@ -1,0 +1,27 @@
+{
+  "version": "1.8.5",
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "declaration": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "dist"
+  },
+  "filesGlob": [
+    "**/*.ts",
+    "!node_modules/**/*.ts",
+    "!dist/**/*.ts",
+    "!typings/**/*.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  },
+  "files": [
+    "a.ts"
+  ]
+}

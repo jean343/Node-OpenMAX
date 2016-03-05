@@ -10,9 +10,6 @@
     },
     "node/node.d.ts": {
       "commit": "fe563dff3428bac1260d1794e2c2ecf8f097535a"
-    },
-    "promise/promise.d.ts": {
-      "commit": "9f0f926a12026287b5a4a229e5672c01e7549313"
     }
   }
 }

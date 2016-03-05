@@ -10,7 +10,6 @@ var allWS: Array<WritableFilter> = [];
 
 class WritableFilter extends stream.Writable {
   texture: omx.EglImage;
-  dirty: boolean;
   data: Buffer;
   x0; y0; x1; y1;
   fps;
@@ -28,46 +27,20 @@ class WritableFilter extends stream.Writable {
     this.x1 = this.x0 + this.width * 2;
     this.y1 = this.y0 - this.height * 2;
 
-    //    console.log(this.offsetX, this.offsetY, this.width, this.height);
-    //    console.log(this.x0, this.y0, this.x1, this.y1);
-
-    var self = this;
-
-    //    this.on('pipe', function(source) {
-    //      source.on('portDefinitionChanged', function(portDefinition) {
-    //        //        console.log('portDefinitionChanged', portDefinition);
-    //        var width = portDefinition.video.nFrameWidth;
-    //        var height = portDefinition.video.nFrameHeight;
-    //        self.texture = new gl.GfxTexture(width, height);
-    //        self.data = new Buffer(width * height);
-    //      });
-    //    });
-
     this.fps = require('fps')({ every: 30 });
     this.fps.on('data', function(framerate) {
       console.log("Fps : ", framerate);
     });
   }
   _write(chunk, enc, next) {
-    console.time("_write");
+//    console.time("_write");
     this.fps.tick();
-    var self = this;
     this.texture = chunk;
     if (chunk.onBufferDone) { chunk.onBufferDone(); }
-    this.dirty = true;
     next();
-    console.time("_write");
+//    console.timeEnd("_write");
   };
 }
-
-//var each_async = function(ary, fn) {
-//  var i = 0;
-//  -function() {
-//    fn(ary[i]);
-//    if (++i < ary.length)
-//      setTimeout(arguments.callee, 0)
-//  } ()
-//}
 
 var drawfps = require('fps')({ every: 30 });
 drawfps.on('data', function(framerate) {
@@ -76,37 +49,31 @@ drawfps.on('data', function(framerate) {
 function draw() {
   graphics.beginFrame();
 
-    async.each(allWS, function(ws, callback) {
-      if (ws.texture !== undefined) {
-        setTimeout(function() {
-          graphics.drawTextureRect(ws.texture, ws.x0, ws.y0, ws.x1, ws.y1);
-          callback();
-        }, 0);
-      } else {
-        callback();
-      }
-    }, function(err) {
-      graphics.endFrame();
-//      console.timeEnd("draw");
-    });
+  //  async.each(allWS, function(ws: WritableFilter, callback) {
+  //    if (ws.texture !== undefined) {
+  //      setTimeout(function() {
+  //        graphics.drawTextureRect(ws.texture, ws.x0, ws.y0, ws.x1, ws.y1);
+  //        callback();
+  //      }, 0);
+  //    } else {
+  //      callback();
+  //    }
+  //  }, function(err) {
+  //    graphics.endFrame();
+  //    //      console.timeEnd("draw");
+  //  });
   
-//  //  console.time("forEach");
-//  allWS.forEach(function(ws) {
-//    if (ws.texture === undefined) return;
-//      
-//    //    if (ws.dirty) {
-//    graphics.drawTextureRect(ws.texture, ws.x0, ws.y0, ws.x1, ws.y1);
-//    //      ws.dirty = false;
-//    //    }
-//  });
-  
+  //  //  console.time("forEach");
+  allWS.forEach(function(ws) {
+    if (ws.texture === undefined) return;
+    graphics.drawTextureRect(ws.texture, ws.x0, ws.y0, ws.x1, ws.y1);
+  });
+
   graphics.endFrame();
   drawfps.tick();
 
-  setTimeout(draw, 1);
 }
-draw();
-//setInterval(draw, 1000 / 30);
+setInterval(draw, 1000 / 30);
 
 function range(start, end) {
   var foo = [];
@@ -143,13 +110,14 @@ function range(start, end) {
       })
       .then(function() {
         VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-        //        VideoDecode.setBufferCount(1, 1);
+        VideoDecode.setBufferCount(1, 1);
 
+        EglRender.setBufferCount(1, 1);
         EglRender.graphics = graphics;
 
         console.time("start");
-//        fs.createReadStream("spec/data/myth-160.h264")
-                  fs.createReadStream("spec/data/video-LQ-640.h264")
+        //        fs.createReadStream("spec/data/myth-160.h264")
+        fs.createReadStream("spec/data/video-LQ-640.h264")
           //        fs.createReadStream("spec/data/video-LQ-1280.h264")
           .pipe(VideoDecode)
           .tunnel(EglRender)

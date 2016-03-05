@@ -2,6 +2,8 @@ import fs = require('fs');
 import omx = require('../');
 import stream = require('stream');
 
+omx.Component.verbose = omx.VERBOSE_LEVEL.None;
+
 var VideoDecode: omx.VideoDecode;
 VideoDecode = new omx.VideoDecode('VideoDecode');
 var EglRender: omx.EglRender;
@@ -28,14 +30,14 @@ class WritableFilter extends stream.Writable {
       this.fps.tick();
       var self = this;
 
-      if (chunk.onBufferDone) { chunk.onBufferDone(); }
-      next();
-      
       //      console.time("draw");
       self.graphics.beginFrame();
       self.graphics.drawTextureRect(chunk, -1, 1, 1, -1);
       self.graphics.endFrame();
       //      console.timeEnd("draw");
+      
+      if (chunk.onBufferDone) { chunk.onBufferDone(); }
+      next();
     } catch (err) {
       console.log(err);
     }
@@ -50,15 +52,15 @@ VideoDecode.init()
   })
   .then(function() {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-//    VideoDecode.setBufferCount(1, 4);
+    VideoDecode.setBufferCount(1, 1);
 
-//    EglRender.setBufferCount(3, 1);
+    EglRender.setBufferCount(1, 4);
     EglRender.graphics = ws.graphics;
 
     console.time("start");
     //        fs.createReadStream("spec/data/myth-160.h264")
-//        fs.createReadStream("spec/data/test.h264")
-    fs.createReadStream("spec/data/video-LQ-640.h264")
+    fs.createReadStream("spec/data/test.h264")
+      //    fs.createReadStream("spec/data/video-LQ-640.h264")
       .pipe(VideoDecode)
       .tunnel(EglRender)
       .pipe(ws)

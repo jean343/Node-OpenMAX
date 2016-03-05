@@ -1,0 +1,10 @@
+{
+  "name": "node-openmax-samples",
+  "version": "1.0.1",
+  "description": "",
+  "author": "jean343",
+  "license": "MIT",
+  "dependencies": {
+    "openmax": "file:../../"
+  }
+}

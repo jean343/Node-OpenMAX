@@ -30,8 +30,7 @@ var bufferFormatSize = bufferFormat.video.nStride * bufferFormat.video.nSliceHei
 var buf: Buffer = new Buffer(bufferFormat.nBufferSize);
 
 buf.fill(0, 0, bufferFormatSize);
-buf.fill(128, bufferFormatSize,
-  bufferFormatSize + 2 * bufferFormatSize / 4);
+buf.fill(128, bufferFormatSize, bufferFormatSize + 2 * bufferFormatSize / 4);
 
 class WritableFilter extends stream.Writable {
   fps;
@@ -55,7 +54,7 @@ class WritableFilter extends stream.Writable {
 
     this.on('pipe', function(source) {
       source.on('portDefinitionChanged', function(portDefinition) {
-//        console.log('portDefinitionChanged', portDefinition);
+        //        console.log('portDefinitionChanged', portDefinition);
         self.portDefinition = portDefinition.image ? portDefinition.image : portDefinition.video;
         console.log(self.portDefinition);
         self.nStride = self.portDefinition.nStride;
@@ -66,7 +65,8 @@ class WritableFilter extends stream.Writable {
   _write(chunk, enc, next) {
     this.fps.tick();
     if (this.portDefinition.eColorFormat === omx.OMX_COLOR_FORMATTYPE.OMX_COLOR_FormatYUV420PackedPlanar) {
-      omx.Component.copyAsync(chunk, buf, bufferFormat.video.nStride, bufferFormat.video.nSliceHeight, this.offsetX, this.offsetY, this.nStride, this.width, this.nSliceHeight, this.height, next);
+      omx.Component.copyAsync(chunk, buf, bufferFormat.video.nStride, bufferFormat.video.nSliceHeight,
+        this.offsetX, this.offsetY, this.nStride, this.width, this.nSliceHeight, this.height, next);
     }
     if (chunk.onBufferDone) { chunk.onBufferDone(); }
   };
@@ -163,37 +163,37 @@ class WriteHTTP extends stream.Duplex {
 
     var ws = new WritableFilter('count' + i, rx, ry, rw, rh);
     VideoDecode.init()
-      .then(function() {
-        Resize = new omx.Resize();
-        return Resize.init();
-      })
+      //      .then(function() {
+      //        Resize = new omx.Resize();
+      //        return Resize.init();
+      //      })
       .then(function() {
         VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-        VideoDecode.setBufferCount(1, 4);
+        VideoDecode.setBufferCount(4, 4);
 
-        var format = {
-          eDir: 1,
-          nBufferCountActual: 1,
-          nBufferCountMin: 1,
-          nBufferSize: 460800,
-          bEnabled: 0,
-          bPopulated: 0,
-          eDomain: 2,
-          image:
-          {
-            pNativeRender: false,
-            nFrameWidth: rw,
-            nFrameHeight: rh,
-            nStride: Math.ceil(rw / 16) * 16,
-            nSliceHeight: Math.ceil(rh / 16) * 16,
-            bFlagErrorConcealment: 0,
-            eCompressionFormat: 0,
-            eColorFormat: 20,
-            pNativeWindow: false
-          }
-        };
-        console.log(format);
-        Resize.setParameter(Resize.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, format);
+        //        var format = {
+        //          eDir: 1,
+        //          nBufferCountActual: 1,
+        //          nBufferCountMin: 1,
+        //          nBufferSize: 460800,
+        //          bEnabled: 0,
+        //          bPopulated: 0,
+        //          eDomain: 2,
+        //          image:
+        //          {
+        //            pNativeRender: false,
+        //            nFrameWidth: rw,
+        //            nFrameHeight: rh,
+        //            nStride: Math.ceil(rw / 16) * 16,
+        //            nSliceHeight: Math.ceil(rh / 16) * 16,
+        //            bFlagErrorConcealment: 0,
+        //            eCompressionFormat: 0,
+        //            eColorFormat: 20,
+        //            pNativeWindow: false
+        //          }
+        //        };
+        //        console.log(format);
+        //        Resize.setParameter(Resize.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, format);
 
         //        var format2 = {
         //          eMode: omx.OMX_RESIZEMODETYPE.OMX_RESIZE_CROP,
@@ -205,10 +205,10 @@ class WriteHTTP extends stream.Duplex {
         //        console.log('Resize2', format2);
         //        Resize.setParameter(Resize.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamResize, format2);
 
-//                fs.createReadStream("spec/data/myth-160.h264")
-        fs.createReadStream("spec/data/video-LQ-640.h264")
+                        fs.createReadStream("spec/data/myth-160.h264")
+//        fs.createReadStream("spec/data/video-LQ-640.h264")
           .pipe(VideoDecode)
-//                    .pipe(Resize)
+          //                    .pipe(Resize)
           .pipe(ws)
           .on('finish', function() {
             console.log("Done");
@@ -257,9 +257,9 @@ class WriteHTTP extends stream.Duplex {
       //      }).listen(3000);
 
       readableFilter
-                        .pipe(VideoEncode)
-//        .pipe(VideoRender);
-              .pipe(writeFileFilter);
+//                                .pipe(VideoEncode)
+        .pipe(VideoRender);
+//                    .pipe(writeFileFilter);
       loop();
 
     })
