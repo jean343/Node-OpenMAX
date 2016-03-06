@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#define VERBOSE
+//#define VERBOSE
 
 static void plog(const char * format, ...) {
 #ifdef VERBOSE
