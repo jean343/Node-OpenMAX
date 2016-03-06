@@ -86,7 +86,7 @@ export class Component extends stream.Duplex {
             x.fulfill(self);
           }
           if (isError) {
-            x.reject(self, nData1);
+            x.reject(nData1);
           }
           self.registeredEventHandlers.splice(i, 1);
         }

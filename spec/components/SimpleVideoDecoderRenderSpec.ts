@@ -22,7 +22,6 @@ describe("SimpleVideoDecoderRenderSpec", function() {
       .pipe(VideoDecode)
       .pipe(VideoRender)
       .on('finish', function() {
-        console.log("Done");
         done();
       });
   });

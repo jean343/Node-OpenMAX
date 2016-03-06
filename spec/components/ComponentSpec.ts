@@ -43,7 +43,7 @@ describe("Component", function() {
       .then(function() {
         return vd.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
       })
-      .then(done)
+      .then(null, done) // expect failure
       .catch(console.log.bind(console));
   });
 
