@@ -47,7 +47,7 @@ npm install typings
 git clone https://github.com/jean343/Node-OpenMAX.git
 cd Node-OpenMAX/examples/ts/
 npm install
-./node_modules/typescript/bin/tsc
+node ./node_modules/typescript/bin/tsc
 node dist/SimpleVideoDecoderRender
 ```
 
