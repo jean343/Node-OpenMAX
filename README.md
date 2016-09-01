@@ -43,6 +43,7 @@ node SimpleVideoDecoderRender
 
 To run the TypeScript samples:
 ```sh
+npm install tsd -g
 git clone https://github.com/jean343/Node-OpenMAX.git
 cd Node-OpenMAX/examples/ts/
 npm install
