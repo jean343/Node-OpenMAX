@@ -59,3 +59,4 @@ obj
 /autogenerate/headers/headers/OMX_ILCS.cs
 /autogenerate/headers/.vs/headers/v14/*.suo
 /examples/ts/nbproject/private/
+/examples/ts/typings

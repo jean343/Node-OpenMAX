@@ -1,0 +1,8 @@
+{
+  "name": "openmax",
+  "globalDependencies": {
+    "async": "github:DefinitelyTyped/DefinitelyTyped/async/async.d.ts#fe563dff3428bac1260d1794e2c2ecf8f097535a",
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#fe563dff3428bac1260d1794e2c2ecf8f097535a",
+    "promise": "github:DefinitelyTyped/DefinitelyTyped/promise/promise.d.ts#9f0f926a12026287b5a4a229e5672c01e7549313"
+  }
+}
