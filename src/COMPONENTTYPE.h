@@ -32,6 +32,7 @@ private:
   ~COMPONENTTYPE();
 
   static NAN_METHOD(New);
+  static NAN_METHOD(close);
 
   static NAN_METHOD(changeState);
   static NAN_METHOD(getState);

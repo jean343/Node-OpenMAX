@@ -1,6 +1,6 @@
 {
   "name": "openmax",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Jean-Philippe Bergeron",
   "description": "Node wrapper for the OpenMAX library",
   "main": "dist/index.js",
@@ -15,9 +15,9 @@
   "dependencies": {
     "bindings": "~1.2.1",
     "fps": "0.0.3",
-    "nan": "^2.1.0",
+    "nan": "^2.4.0",
     "promise": "^7.1.1",
-    "async": "1.5.2"
+    "async": "2.0.1"
   },
   "scripts": {
     "preinstall": "typings install || exit 0",

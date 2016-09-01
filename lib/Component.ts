@@ -35,6 +35,8 @@ export class Component extends stream.Duplex {
 
   useOpenGL = false;
   graphics: omx.Graphics = null;
+  
+  autoClose = true;
 
   in_list: Array<any>;
   out_list: Array<any>;
@@ -140,8 +142,8 @@ export class Component extends stream.Duplex {
     });
 
 
-    this.on('finish', function() {
-      self.info('on finish');
+    this.on('finish', () => {
+      this.info('on finish');
       var inputBuffer = self.getInputBuffer();
       if (inputBuffer !== undefined) {
         inputBuffer.header.nFilledLen = 0;
@@ -149,6 +151,11 @@ export class Component extends stream.Duplex {
 
         self.emptyBuffer(inputBuffer.header)
           .catch(console.log.bind(console));
+      }
+      
+      // dispose on finish.
+      if (this.autoClose) {
+        this.component.close();
       }
     });
 

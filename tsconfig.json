@@ -76,6 +76,7 @@
     "perf/PerfGL.ts",
     "perf/PerfGLGrid.ts",
     "perf/PerfRender.ts",
+    "perf/Memory.ts",
     "spec/components/ComponentSpec.ts",
     "spec/components/SimpleVideoDecoderRenderSpec.ts",
     "spec/components/VideoDecodeSpec.ts",

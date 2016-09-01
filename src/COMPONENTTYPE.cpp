@@ -28,6 +28,7 @@ NAN_MODULE_INIT(COMPONENTTYPE::Init) {
   tpl->SetClassName(Nan::New("COMPONENTTYPE").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
+  Nan::SetPrototypeMethod(tpl, "close", close);
   Nan::SetPrototypeMethod(tpl, "changeState", changeState);
   Nan::SetPrototypeMethod(tpl, "getState", getState);
   Nan::SetPrototypeMethod(tpl, "getParameter", getParameter);
@@ -102,7 +103,6 @@ NAN_METHOD(COMPONENTTYPE::New) {
 
     // Ref() marks the object as being attached to an event loop.
     // Refed objects will not be garbage collected, even if all references are lost.
-    // TODO call Unref when done
     obj->Ref();
 
     info.GetReturnValue().Set(info.This());
@@ -112,6 +112,12 @@ NAN_METHOD(COMPONENTTYPE::New) {
     v8::Local<v8::Function> cons = Nan::New(constructor);
     info.GetReturnValue().Set(cons->NewInstance(argc, argv));
   }
+}
+
+NAN_METHOD(COMPONENTTYPE::close) {
+  COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
+  plog("close(%s)", obj->name);
+  obj->Unref();
 }
 
 NAN_METHOD(COMPONENTTYPE::changeState) {
