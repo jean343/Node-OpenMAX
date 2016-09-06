@@ -1,4 +1,3 @@
-import fs = require('fs');
 import stream = require('stream');
 import omx = require('../');
 
@@ -33,14 +32,12 @@ class TransformFilter extends stream.Duplex {
   };
 }
 
-var Camera: omx.Camera;
+var Camera = new omx.Camera();
+var VideoRender = new omx.VideoRender();
 var tf = new TransformFilter();
-var VideoRender: omx.VideoRender;
 
-Camera = new omx.Camera();
 Camera.init()
   .then(function() {
-    VideoRender = new omx.VideoRender();
     return VideoRender.init();
   })
   .then(function() {
