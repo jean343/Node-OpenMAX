@@ -119,9 +119,9 @@ export class Component extends stream.Duplex {
       }
     });
 
-    this.on('pipe', function(source) {
-      source.on('portDefinitionChanged', function(portDefinition) {
-        var sinkPortDefinition = self.getParameter(self.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    this.on('pipe', (source) => {
+      source.on('portDefinitionChanged', (portDefinition) => {
+        var sinkPortDefinition = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
 
         if (sinkPortDefinition.eDomain === omx.OMX_PORTDOMAINTYPE.OMX_PortDomainVideo && portDefinition.eDomain === omx.OMX_PORTDOMAINTYPE.OMX_PortDomainVideo) {
           sinkPortDefinition.video = portDefinition.video;
@@ -144,15 +144,15 @@ export class Component extends stream.Duplex {
 
     this.on('finish', () => {
       this.info('on finish');
-      var inputBuffer = self.getInputBuffer();
+      var inputBuffer = this.getInputBuffer();
       if (inputBuffer !== undefined) {
         inputBuffer.header.nFilledLen = 0;
         inputBuffer.header.nFlags = 0x00000001 | 0x00000100; //OMX_BUFFERFLAG_EOS|OMX_BUFFERFLAG_TIME_UNKNOWN;
 
-        self.emptyBuffer(inputBuffer.header)
+        this.emptyBuffer(inputBuffer.header)
           .catch(console.log.bind(console));
       }
-      
+
       // dispose on finish.
       if (this.autoClose) {
         this.close();
@@ -167,7 +167,7 @@ export class Component extends stream.Duplex {
     //    });
 
     return this.disableAllPorts()
-      .then(self.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
+      .then(this.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
   }
 
   static copyAsync(chunk, buf, destnStride, destnSliceHeight, offsetX, offsetY, nStride, width, nSliceHeight, height, callback) {
@@ -218,18 +218,19 @@ export class Component extends stream.Duplex {
       omx.OMX_INDEXTYPE.OMX_IndexParamOtherInit
     ];
 
+    var portsArr = [];
     var self = this;
     for (var i = 0; i < types.length; i++) {
       var ports = self.getParameter(0, types[i]);
       if (ports.nPorts === 0) continue;
-      var portsArr = [];
       for (var j = 0; j < ports.nPorts; j++) {
         portsArr.push(self.disablePort(ports.nStartPortNumber + j));
       }
-      return Promise.all(portsArr);
     }
+    return Promise.all(portsArr);
   }
   disablePort(port: number) {
+    this.debug('disablePort', port);
     this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
   }
@@ -328,7 +329,7 @@ export class Component extends stream.Duplex {
   tunnel(nextComponent) {
     var self = this;
 
-    this.component.on("eventPortSettingsChanged", function() {
+    function doTunnel() {
       self.info('tunnel eventPortSettingsChanged', self.component);
 
       if (self.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
@@ -350,10 +351,16 @@ export class Component extends stream.Duplex {
         return sourcePortPromise;
       }).then(function() {
         self.debug('tunnel changeState OMX_StateExecuting', nextComponent.cname);
+        self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
         nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
       });
-    });
+    }
 
+    if (self.cname === "video_decode") {
+      this.component.on("eventPortSettingsChanged", doTunnel);
+    } else {
+      doTunnel();
+    }
 
     this.on('finish', function() {
       //      console.log('Component on finish');
@@ -420,21 +427,25 @@ export class Component extends stream.Duplex {
         })
         .catch(console.log.bind(console));
     }
+    function portDefinitionChanged() {
+      self.info('_read eventPortSettingsChanged');
+      self.hasPortSettingsChanged = true;
+      var portDefinition = self.component.getParameter(self.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      self.debug('_read portDefinition', portDefinition);
+      self.emit('portDefinitionChanged', portDefinition);
+      read();
+    }
 
     if (this.hasPortSettingsChanged) {
 
     } else {
-      this.component.on("eventPortSettingsChanged", function() {
-        self.info('_read eventPortSettingsChanged');
-        self.hasPortSettingsChanged = true;
-        var portDefinition = self.component.getParameter(self.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
-        self.debug('_read portDefinition', portDefinition);
-        self.emit('portDefinitionChanged', portDefinition);
-        read();
-      });
+      if (self.cname === "video_decode") {
+        this.component.on("eventPortSettingsChanged", portDefinitionChanged);
+      } else {
+        portDefinitionChanged();
+      }
     }
   }
-
   writeRecursive(chunk: Buffer, offset: number) {
     "use strict";
     var self = this;
