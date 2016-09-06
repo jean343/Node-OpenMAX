@@ -8,5 +8,17 @@ export class Camera extends omx.Component {
     this.setPorts(73, 71);
   }
   
-  
+  setFormat() {
+    var vf = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    vf.video.nSliceHeight = vf.video.nFrameHeight;
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, vf);
+    return this;
+  };
+enable() {
+    var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
+    format.bEnabled = 1;
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
+    return this;
+  };
+
 }

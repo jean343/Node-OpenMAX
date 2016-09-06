@@ -12,6 +12,7 @@ export class VideoDecode extends omx.Component {
     var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
     format.eCompressionFormat = eCompressionFormat;
     this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+    return this;
   };
 setBufferCount(countIN: number, countOUT: number) {
     var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
@@ -22,6 +23,7 @@ setBufferCount(countIN: number, countOUT: number) {
     portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
     portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);
+    return this;
   };
 
 }

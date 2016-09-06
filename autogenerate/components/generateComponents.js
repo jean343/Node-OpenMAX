@@ -117,6 +117,7 @@ function prototypes(nameCamel) {
     var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
     this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+    return this;\n\
   };",
         setBufferCount: "(countIN: number, countOUT: number) {\n\
     var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
@@ -127,6 +128,7 @@ function prototypes(nameCamel) {
     portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
     portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
+    return this;\n\
   };"
       };
       break;
@@ -137,6 +139,7 @@ function prototypes(nameCamel) {
       eCompressionFormat: eCompressionFormat\n\
     };\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+    return this;\n\
   };"
       };
     case 'VideoRender':
@@ -145,6 +148,7 @@ function prototypes(nameCamel) {
     var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
     portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);\n\
     this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
+    return this;\n\
   };"
       };
     case 'ImageDecode':
@@ -153,6 +157,7 @@ function prototypes(nameCamel) {
     var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
     this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+    return this;\n\
   };"
       };
     case 'ImageEncode':
@@ -161,6 +166,7 @@ function prototypes(nameCamel) {
     var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+    return this;\n\
   };"
       };
     case 'EglRender':
@@ -173,6 +179,22 @@ function prototypes(nameCamel) {
     portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
     portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
+    return this;\n\
+  };"
+      };
+    case 'Camera':
+      return {
+        setFormat: "() {\n\
+    var vf = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
+    vf.video.nSliceHeight = vf.video.nFrameHeight;\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, vf);\n\
+    return this;\n\
+  };",
+        enable: "() {\n\
+    var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);\n\
+    format.bEnabled = 1;\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);\n\
+    return this;\n\
   };"
       };
       break;

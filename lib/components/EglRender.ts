@@ -16,6 +16,7 @@ export class EglRender extends omx.Component {
     portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
     portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);
+    return this;
   };
 
 }

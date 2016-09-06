@@ -1,6 +1,6 @@
 import fs = require('fs');
+import stream = require('stream');
 import omx = require('../');
-
 
 var Camera: omx.Camera;
 var VideoRender: omx.VideoRender;
@@ -12,9 +12,9 @@ Camera.init()
     return VideoRender.init();
   })
   .then(function() {
-    Camera.enable();
-
-    Camera.tunnel(VideoRender)
+    Camera.setFormat().enable();
+    Camera
+      .pipe(VideoRender)
       .on('finish', function() {
         console.log("Done");
       });
