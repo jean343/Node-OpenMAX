@@ -155,7 +155,7 @@ export class Component extends stream.Duplex {
       
       // dispose on finish.
       if (this.autoClose) {
-        this.component.close();
+        this.close();
       }
     });
 
@@ -172,6 +172,10 @@ export class Component extends stream.Duplex {
 
   static copyAsync(chunk, buf, destnStride, destnSliceHeight, offsetX, offsetY, nStride, width, nSliceHeight, height, callback) {
     return Node_OMX.copyAsync(chunk, buf, destnStride, destnSliceHeight, offsetX, offsetY, nStride, width, nSliceHeight, height, callback);
+  }
+
+  close() {
+    this.component.close();
   }
 
   registeredEventHandlers: Array<EventHandlers> = [];

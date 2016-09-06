@@ -1,4 +1,5 @@
 #include "init.h"
+#include "log.h"
 
 #include "bcm_host.h"
 #include "OMX_consts.h"
@@ -8,14 +9,17 @@ using v8::Value;
 namespace NodeOMX {
 
   void bcm_host_init(const Nan::FunctionCallbackInfo<Value>& info) {
+    plog("bcm_host_init");
     ::bcm_host_init();
   }
 
   void bcm_host_deinit(const Nan::FunctionCallbackInfo<Value>& info) {
+    plog("bcm_host_deinit");
     ::bcm_host_deinit();
   }
 
   void OMX_Init(const Nan::FunctionCallbackInfo<Value>& info) {
+    plog("OMX_Init");
     OMX_ERRORTYPE rc = ::OMX_Init();
     if (rc != OMX_ErrorNone) {
       char buf[255];
@@ -25,6 +29,7 @@ namespace NodeOMX {
     }
   }
   void OMX_Deinit(const Nan::FunctionCallbackInfo<Value>& info) {
+    plog("OMX_Deinit");
     OMX_ERRORTYPE rc = ::OMX_Deinit();
     if (rc != OMX_ErrorNone) {
       char buf[255];
