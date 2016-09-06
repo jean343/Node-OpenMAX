@@ -1,6 +1,6 @@
 import fs = require('fs');
 import stream = require('stream');
-import omx = require('../');
+import omx = require('openmax');
 
 var Camera: omx.Camera;
 var VideoRender: omx.VideoRender;
