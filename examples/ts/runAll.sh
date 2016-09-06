@@ -1,5 +1,8 @@
 npm install
 
+echo Running CameraEffects
+node dist/CameraEffects
+
 echo Running CameraPipe
 node dist/CameraPipe
 

@@ -76,6 +76,7 @@
     "perf/PerfGL.ts",
     "perf/PerfGLGrid.ts",
     "perf/PerfRender.ts",
+    "perf/CameraEffects.ts",
     "perf/CameraPipe.ts",
     "perf/CameraTunnel.ts",
     "perf/Memory.ts",

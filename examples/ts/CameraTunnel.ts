@@ -20,4 +20,4 @@ Camera.init()
       });
   });
   
-setTimeout(process.exit, 10 * 1000);
+setTimeout(process.exit, 5 * 1000);

@@ -21,6 +21,7 @@
     "rewriteTsconfig": true
   },
   "files": [
+    "CameraEffects.ts",
     "CameraPipe.ts",
     "CameraTunnel.ts",
     "SimpleDecoderEncoder.ts",
