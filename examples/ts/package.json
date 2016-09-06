@@ -8,7 +8,8 @@
     "openmax": "latest"
   },
   "scripts": {
-    "preinstall": "typings install || exit 0"
+    "preinstall": "typings install || exit 0",
+    "postinstall": "tsc"
   },
   "devDependencies": {
     "typescript": "^1.8.7"

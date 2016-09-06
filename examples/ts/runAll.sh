@@ -1,7 +1,10 @@
 npm install
 
-#echo Running SimpleDecoderEncoder
-#node dist/SimpleDecoderEncoder
+echo Running CameraPipe
+node dist/CameraPipe
+
+echo Running CameraTunnel
+node dist/CameraTunnel
 
 echo Running SimpleVideoDecoderBuffer
 node dist/SimpleVideoDecoderBuffer
