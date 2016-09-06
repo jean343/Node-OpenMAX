@@ -1,4 +1,4 @@
-//This file is auto-generated from 'node headerGeneration/generateComponents.js' 
+//This file is auto-generated from 'node generateComponents.js' 
 
 import omx = require('../../')
 

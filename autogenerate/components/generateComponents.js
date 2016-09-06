@@ -74,6 +74,10 @@ function template(name, nameCamel, inPorts, outPorts) {
   var inPort = inPorts[0] || '0';
   var outPort = outPorts[0] || '0';
 
+  if (name === 'camera') {
+    outPort = outPorts[1] || '0';
+  }
+
   var flags = ['omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_DISABLE_ALL_PORTS'];
   if (inPort != 0) {
     flags.push('omx.ILCLIENT_CREATE_FLAGS.ILCLIENT_ENABLE_INPUT_BUFFERS');
@@ -91,7 +95,7 @@ function template(name, nameCamel, inPorts, outPorts) {
     }
   }
 
-  return "//This file is auto-generated from 'node headerGeneration/generateComponents.js' \n\
+  return "//This file is auto-generated from 'node generateComponents.js' \n\
 \n\
 import omx = require('../../')\n\
 \n\
@@ -114,14 +118,14 @@ function prototypes(nameCamel) {
     format.eCompressionFormat = eCompressionFormat;\n\
     this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
   };",
-        setBufferCount: "() {\n\
+        setBufferCount: "(countIN: number, countOUT: number) {\n\
     var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
-    portdef.nBufferCountActual = portdef.nBufferCountMin;\n\
+    portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);\n\
     portdef.nBufferSize = 65536;\n\
     this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
 \n\
     portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
-    portdef.nBufferCountActual = portdef.nBufferCountMin;\n\
+    portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
   };"
       };
@@ -133,6 +137,14 @@ function prototypes(nameCamel) {
       eCompressionFormat: eCompressionFormat\n\
     };\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);\n\
+  };"
+      };
+    case 'VideoRender':
+      return {
+        setBufferCount: " (countIN: number) {\n\
+    var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
+    portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);\n\
+    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
   };"
       };
     case 'ImageDecode':
@@ -149,6 +161,18 @@ function prototypes(nameCamel) {
     var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);\n\
     format.eCompressionFormat = eCompressionFormat;\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);\n\
+  };"
+      };
+    case 'EglRender':
+      return {
+        setBufferCount: " (countIN: number, countOUT: number) {\n\
+    var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
+    portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);\n\
+    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
+\n\
+    portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);\n\
+    portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);\n\
   };"
       };
       break;
