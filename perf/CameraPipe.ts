@@ -1,10 +1,11 @@
 import omx = require('../');
 
 var Camera = new omx.Camera();
-var VideoRender = new omx.VideoRender();
+var VideoRender: omx.VideoRender;
 
 Camera.init()
   .then(function() {
+    VideoRender = new omx.VideoRender();
     return VideoRender.init();
   })
   .then(function() {

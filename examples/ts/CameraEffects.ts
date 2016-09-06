@@ -33,11 +33,12 @@ class TransformFilter extends stream.Duplex {
 }
 
 var Camera = new omx.Camera();
-var VideoRender = new omx.VideoRender();
+var VideoRender: omx.VideoRender;
 var tf = new TransformFilter();
 
 Camera.init()
   .then(function() {
+    VideoRender = new omx.VideoRender();
     return VideoRender.init();
   })
   .then(function() {
