@@ -16,3 +16,5 @@ Camera.init()
         console.log("Done");
       });
   });
+  
+setTimeout(process.exit, 5 * 1000);
