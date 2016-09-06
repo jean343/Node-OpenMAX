@@ -60,3 +60,4 @@ obj
 /autogenerate/headers/.vs/headers/v14/*.suo
 /examples/ts/nbproject/private/
 /examples/ts/typings
+/examples/ts/dist
