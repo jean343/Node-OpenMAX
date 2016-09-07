@@ -356,7 +356,7 @@ export class Component extends stream.Duplex {
       });
     }
 
-    if (self.cname === "video_decode") {
+    if (self.name === "video_decode") {
       this.component.on("eventPortSettingsChanged", doTunnel);
     } else {
       doTunnel();
@@ -387,7 +387,6 @@ export class Component extends stream.Duplex {
       this.firstReadPacket = false;
       return this.enableOutputPortBuffer()
         .then(function() {
-          //          this.debug('initRead enableOutputPortBuffer done', self.cname); // TODO error makes it work :S
           if (self.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
             self.debug('initRead changeState OMX_StateExecuting');
             return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
@@ -439,7 +438,7 @@ export class Component extends stream.Duplex {
     if (this.hasPortSettingsChanged) {
 
     } else {
-      if (self.cname === "video_decode") {
+      if (self.name === "video_decode") {
         this.component.on("eventPortSettingsChanged", portDefinitionChanged);
       } else {
         portDefinitionChanged();
@@ -501,7 +500,7 @@ export class Component extends stream.Duplex {
         })
         .then(function() {
           // Empty a dummy packet to fix the bug where the video_render doesn't call buffer done on the first packet
-          if (self.cname === "video_render") {
+          if (self.name === "video_render") {
             var inputBuffer = self.getInputBuffer();
             inputBuffer.header.nFilledLen = 0;
             self.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
