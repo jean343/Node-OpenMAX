@@ -108,7 +108,7 @@ export class Component extends stream.Duplex {
 
       switch (eEvent) {
         case omx.OMX_EVENTTYPE.OMX_EventPortSettingsChanged:
-          this.emit('eventPortSettingsChanged');
+          this.component.emit('eventPortSettingsChanged');
           break;
       }
 
