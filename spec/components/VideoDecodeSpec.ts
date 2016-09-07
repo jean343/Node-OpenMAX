@@ -6,7 +6,9 @@ describe("VideoDecode", function() {
 
   beforeEach(function(done) {
     VideoDecode = new omx.VideoDecode();
-    VideoDecode.init().then(done);
+    VideoDecode.init().then(function() {
+      done();
+    });
   });
 
   it("should have right ports", function() {

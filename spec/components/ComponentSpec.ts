@@ -8,7 +8,9 @@ describe("Component", function() {
 
   it("should fully init", function(done) {
     var vd = new omx.VideoDecode();
-    vd.init().then(done);
+    vd.init().then(function() {
+      done();
+    });
   });
 
   it("should load and be in idle state", function(done) {
@@ -43,7 +45,9 @@ describe("Component", function() {
       .then(function() {
         return vd.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
       })
-      .then(null, done) // expect failure
+      .then(null, function() {
+        done();
+      }) // expect failure
       .catch(console.log.bind(console));
   });
 
@@ -56,7 +60,9 @@ describe("Component", function() {
       .then(function() {
         return vd.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
       })
-      .catch(done);
+      .catch(function() {
+        done();
+      });
   });
 
 });

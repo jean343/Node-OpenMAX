@@ -12,7 +12,9 @@ describe("SimpleVideoDecoderRenderSpec", function() {
         VideoRender = new omx.VideoRender();
         return VideoRender.init();
       })
-      .then(done);
+      .then(function() {
+        done();
+      });
   });
 
   it("should play simple video", function(done) {
