@@ -75,10 +75,12 @@ COMPONENTTYPE::COMPONENTTYPE(char const *name) {
 
   uv_mutex_init(&uvEventHandlerLock);
   uv_async_init(uv_default_loop(), &uvEventHandler, eventHandlerDone);
+  uv_unref(reinterpret_cast<uv_handle_t*>(&uvEventHandler));
   uvEventHandler.data = this;
 
   uv_mutex_init(&uvBufferHandlerLock);
   uv_async_init(uv_default_loop(), &uvBufferHandler, eventBufferDone);
+  uv_unref(reinterpret_cast<uv_handle_t*>(&uvBufferHandler));
   uvBufferHandler.data = this;
 }
 
@@ -126,8 +128,10 @@ NAN_METHOD(COMPONENTTYPE::changeState) {
   OMX_STATETYPE state = (OMX_STATETYPE) Nan::To<int>(info[0]).FromJust();
 
   OMX_ERRORTYPE rc;
+  uv_ref((uv_handle_t *)&obj->uvEventHandler);
   rc = OMX_SendCommand(obj->comp, OMX_CommandStateSet, state, NULL);
   if (rc != OMX_ErrorNone) {
+    uv_unref((uv_handle_t *)&obj->uvEventHandler);
     char buf[255];
     sprintf(buf, "OMX_SendCommand() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
@@ -180,8 +184,10 @@ NAN_METHOD(COMPONENTTYPE::sendCommand) {
   int portIndex = (int) Nan::To<int>(info[1]).FromJust();
 
   OMX_ERRORTYPE rc;
+  uv_ref((uv_handle_t *)&obj->uvEventHandler);
   rc = OMX_SendCommand(obj->comp, (OMX_COMMANDTYPE) commandType, portIndex, NULL);
   if (rc != OMX_ErrorNone) {
+    uv_unref((uv_handle_t *)&obj->uvEventHandler);
     char buf[255];
     sprintf(buf, "OMX_SendCommand() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
@@ -257,8 +263,10 @@ NAN_METHOD(COMPONENTTYPE::emptyBuffer) {
 
   OMX_BUFFERHEADERTYPE* buf = _buf->buf;
 
+  uv_ref((uv_handle_t *)&obj->uvBufferHandler);
   OMX_ERRORTYPE rc = OMX_EmptyThisBuffer(obj->comp, buf);
   if (rc != OMX_ErrorNone) {
+    uv_unref((uv_handle_t *)&obj->uvBufferHandler);
     char buf[255];
     sprintf(buf, "emptyBuffer() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
@@ -273,8 +281,10 @@ NAN_METHOD(COMPONENTTYPE::fillBuffer) {
 
   OMX_BUFFERHEADERTYPE* buf = _buf->buf;
 
+  uv_ref((uv_handle_t *)&obj->uvBufferHandler);
   OMX_ERRORTYPE rc = OMX_FillThisBuffer(obj->comp, buf);
   if (rc != OMX_ErrorNone) {
+    uv_unref((uv_handle_t *)&obj->uvBufferHandler);
     char buf[255];
     sprintf(buf, "OMX_FillThisBuffer() returned error: %s", OMX_consts::err2str(rc));
     Nan::ThrowError(buf);
@@ -287,6 +297,7 @@ public:
 
   EmptyBufferAsyncWorker(Callback *callback, COMPONENTTYPE* obj, OMX_BUFFERHEADERTYPE* buf)
   : AsyncWorker(callback), obj(obj), buf(buf) {
+    uv_ref((uv_handle_t *)&obj->uvBufferHandler);
   }
 
   ~EmptyBufferAsyncWorker() {
@@ -335,6 +346,7 @@ public:
 
   FillBufferAsyncWorker(Callback *callback, COMPONENTTYPE* obj, OMX_BUFFERHEADERTYPE* buf)
   : AsyncWorker(callback), obj(obj), buf(buf) {
+    uv_ref((uv_handle_t *)&obj->uvBufferHandler);
   }
 
   ~FillBufferAsyncWorker() {

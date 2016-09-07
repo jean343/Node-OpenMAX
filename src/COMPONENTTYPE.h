@@ -82,6 +82,7 @@ private:
     uv_mutex_lock(&obj->uvEventHandlerLock);
     std::vector<EventHandlerData> local(obj->eventHandlerQueue);
     obj->eventHandlerQueue.clear();
+    uv_unref((uv_handle_t *)&obj->uvEventHandler);
     uv_mutex_unlock(&obj->uvEventHandlerLock);
 
     for (std::vector<EventHandlerData>::iterator it = local.begin(); it < local.end(); it++) {
@@ -131,6 +132,7 @@ private:
     uv_mutex_lock(&obj->uvBufferHandlerLock);
     std::vector<BufferDoneData> local(obj->eventBufferQueue);
     obj->eventBufferQueue.clear();
+    uv_unref((uv_handle_t *)&obj->uvBufferHandler);
     uv_mutex_unlock(&obj->uvBufferHandlerLock);
 
     for (std::vector<BufferDoneData>::iterator it = local.begin(); it < local.end(); it++) {

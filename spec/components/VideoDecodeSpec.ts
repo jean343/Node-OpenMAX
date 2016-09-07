@@ -1,14 +1,29 @@
 import fs = require('fs');
 import omx = require('../../');
+import stream = require('stream');
+
+class WritableFilter extends stream.Writable {
+  constructor() {
+    super();
+  }
+  _write(chunk, enc, next) {
+    next();
+    if (chunk.onBufferDone) {
+      chunk.onBufferDone();
+    }
+  };
+}
 
 describe("VideoDecode", function() {
   var VideoDecode: omx.VideoDecode;
+  var ws: WritableFilter;
 
   beforeEach(function(done) {
     VideoDecode = new omx.VideoDecode();
     VideoDecode.init().then(function() {
       done();
     });
+    ws = new WritableFilter();
   });
 
   it("should have right ports", function() {
@@ -58,8 +73,9 @@ describe("VideoDecode", function() {
 
   it("should trigger port definition changed and have right settings", function(done) {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-    fs.createReadStream("spec/data/video-LQ.h264")
-      .pipe(VideoDecode);
+    fs.createReadStream("spec/data/video-LQ-30frames.h264")
+      .pipe(VideoDecode)
+      .pipe(ws);
 
     VideoDecode.component.on("eventPortSettingsChanged", function() {
       var f = VideoDecode.getParameter(VideoDecode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
