@@ -167,13 +167,18 @@ export class Component extends stream.Duplex {
         inputBuffer.header.nFlags = 0x00000001 | 0x00000100; //OMX_BUFFERFLAG_EOS|OMX_BUFFERFLAG_TIME_UNKNOWN;
 
         this.emptyBuffer(inputBuffer.header)
+          .then(() => {
+            if (this.name === "video_render") {
+              if (this.autoClose) {
+                this.info('close');
+                this.close();
+              }
+            }
+          })
           .catch(console.log.bind(console));
       }
 
-      // dispose on finish.
-      if (this.autoClose) {
-        this.close();
-      }
+      setTimeout(() => { }, 1000);
     });
   }
 
@@ -406,7 +411,14 @@ export class Component extends stream.Duplex {
 
     // Catch EOF
     if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
+      this.info("Received OMX_BUFFERFLAG_EOS");
       this.push(null);
+
+      //dispose on EOS.
+      if (this.autoClose) {
+        this.info('close');
+        this.close();
+      }
       return;
     } else {
       buffer.onBufferDone = function() {
@@ -476,12 +488,12 @@ export class Component extends stream.Duplex {
 
     this.debug('emptyBuffer');
     return this.emptyBuffer(inputBuffer.header)
-      .then(function() {
-        self.debug('emptyBuffer then');
+      .then(() => {
+        this.debug('emptyBuffer then');
         if (!lastPacket) {
-          self.info('Buffer too small');
+          this.info('Buffer too small');
           // Buffer too small
-          return self.writeRecursive(chunk, offset + inputBufferLength);
+          return this.writeRecursive(chunk, offset + inputBufferLength);
         } else {
           if (chunk.onBufferDone) { chunk.onBufferDone(); }
           return Promise.resolve();
@@ -491,23 +503,22 @@ export class Component extends stream.Duplex {
   }
 
   initWrite() {
-    var self = this;
     if (this.firstWritePacket) {
       this.firstWritePacket = false;
       return this.enableInputPortBuffer()
-        .then(function() {
-          if (self.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
-            return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+        .then(() => {
+          if (this.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
+            return this.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
           } else {
             return Promise.resolve();
           }
         })
-        .then(function() {
+        .then(() => {
           // Empty a dummy packet to fix the bug where the video_render doesn't call buffer done on the first packet
-          if (self.name === "video_render") {
-            var inputBuffer = self.getInputBuffer();
+          if (this.name === "video_render") {
+            var inputBuffer = this.getInputBuffer();
             inputBuffer.header.nFilledLen = 0;
-            self.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
+            this.emptyBuffer(inputBuffer.header)//Does not wait for it as the ack will never come
           }
           return Promise.resolve();
         })
@@ -518,11 +529,10 @@ export class Component extends stream.Duplex {
   }
   _write(chunk: Buffer, enc, next: () => void) {
     this.debug('_write', chunk.length);
-    var self = this;
 
     this.initWrite()
-      .then(function() {
-        return self.writeRecursive(chunk, 0);
+      .then(() => {
+        return this.writeRecursive(chunk, 0);
       })
       .then(next)
       .catch(console.log.bind(console));
