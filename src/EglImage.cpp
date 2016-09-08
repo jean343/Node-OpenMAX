@@ -20,7 +20,6 @@ using v8::Value;
 using Nan::AsyncQueueWorker;
 using Nan::AsyncWorker;
 using Nan::Callback;
-using Nan::HandleScope;
 using Nan::New;
 using Nan::Null;
 using Nan::To;
