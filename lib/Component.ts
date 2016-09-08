@@ -204,25 +204,27 @@ export class Component extends stream.Duplex {
   }
 
   close() {
-    this.info('close()');
+    this.info('close');
     this.flush()
       .then(() => {
-        this.info('close flush done', this.getState());
-        //        return this.disablePortBuffers(this.in_port)
+        this.debug('flush done');
         return this.disablePortBuffers([this.in_port, this.out_port])
       })
       .then(() => {
-        this.info('close disablePortBuffers done', this.getState());
-        return this.changeState(omx.OMX_STATETYPE.OMX_StateIdle)
+        this.debug('disablePortBuffers done');
+        if (this.getState() !== omx.OMX_STATETYPE.OMX_StateIdle && this.getState() !== omx.OMX_STATETYPE.OMX_StateLoaded) {
+          return this.changeState(omx.OMX_STATETYPE.OMX_StateIdle)
+        } else {
+          return Promise.resolve()
+        }
       })
       .then(() => {
-        this.info('close changeState OMX_StateIdle done', this.getState());
-        this.changeState(omx.OMX_STATETYPE.OMX_StateLoaded)
-          .then(() => {
-            this.info('close changeState OMX_StateLoaded done');
-            this.component.close();
-          })
-          .catch(console.log.bind(console));
+        this.debug('changeState OMX_StateIdle done', this.getState());
+        return this.changeState(omx.OMX_STATETYPE.OMX_StateLoaded)
+      })
+      .then(() => {
+        this.debug('changeState OMX_StateLoaded done');
+        this.component.close();
       })
       .catch(console.log.bind(console));
   }
@@ -278,7 +280,7 @@ export class Component extends stream.Duplex {
     return Promise.all(portsArr);
   }
 
-  flush(ports: Array<number>) {
+  flush(ports?: Array<number>) {
     this.debug('flush');
 
     if (!ports) ports = [this.in_port, this.out_port];
@@ -305,7 +307,7 @@ export class Component extends stream.Duplex {
       if (port) {
         var portdef = this.getParameter(port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
         if (portdef.bEnabled == 0 || portdef.nBufferCountActual == 0 || portdef.nBufferSize == 0) {
-          throw "Cannot disable buffers";
+          return Promise.resolve();
         }
         this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
 

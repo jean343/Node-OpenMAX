@@ -324,7 +324,7 @@ public:
     };
 
     if (!obj->persistent().IsWeak()) {
-      plog("EmptyBufferAsyncWorker Call");
+      plog("EmptyBufferAsyncWorker Call %p", obj);
       callback->Call(1, argv);
     }
   }
@@ -375,7 +375,7 @@ public:
       Null()
     };
     if (!obj->persistent().IsWeak()) {
-      plog("FillBufferAsyncWorker Call");
+      plog("FillBufferAsyncWorker Call %p", obj);
       callback->Call(1, argv);
     }
   }
