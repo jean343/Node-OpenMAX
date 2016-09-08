@@ -205,7 +205,7 @@ export class Component extends stream.Duplex {
 
   close() {
     this.info('close');
-    this.flush()
+    return this.flush()
       .then(() => {
         this.debug('flush done');
         return this.disablePortBuffers([this.in_port, this.out_port])
@@ -220,13 +220,15 @@ export class Component extends stream.Duplex {
       })
       .then(() => {
         this.debug('changeState OMX_StateIdle done', this.getState());
-        return this.changeState(omx.OMX_STATETYPE.OMX_StateLoaded)
+        return new Promise((fulfill, reject) => {
+          return this.changeState(omx.OMX_STATETYPE.OMX_StateLoaded).then(fulfill, fulfill);
+        });
       })
       .then(() => {
         this.debug('changeState OMX_StateLoaded done');
         this.component.close();
       })
-      .catch(console.log.bind(console));
+      .catch(console.log.bind(console, "Error:"));
   }
 
   registeredEventHandlers: Array<EventHandlers> = [];
@@ -287,6 +289,10 @@ export class Component extends stream.Duplex {
 
     var promises = ports.map((port) => {
       if (port) {
+        var portdef = this.getParameter(port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+        if (portdef.bEnabled == 0 || portdef.nBufferCountActual == 0 || portdef.nBufferSize == 0) {
+          return Promise.resolve();
+        }
         this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandFlush, port);
         return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandFlush, port);
       }
@@ -313,9 +319,11 @@ export class Component extends stream.Duplex {
 
         var list;
         list = portdef.eDir == omx.OMX_DIRTYPE.OMX_DirInput ? this.in_list : this.out_list;
-        list.forEach((item, i) => {
-          this.component.freeBuffer(port, item.header);
-        });
+        if (list !== undefined) {
+          list.forEach((item, i) => {
+            this.component.freeBuffer(port, item.header);
+          });
+        }
 
         return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
       }

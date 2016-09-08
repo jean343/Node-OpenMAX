@@ -99,7 +99,7 @@ export function logError(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number
         //              console.log("drm library error %x (%d)", name, error, nData2);
         //              break;
         default:
-          console.log("on %s unexpected error", name, omx.OMX_ERRORTYPE[error], nData2);
+          console.log("Error on %s unexpected error", name, omx.OMX_ERRORTYPE[error], nData2);
           break;
       }
       break;
