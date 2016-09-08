@@ -81,6 +81,24 @@ export class Component extends stream.Duplex {
       Node_OMX.bcm_host_init();
       Node_OMX.OMX_Init();
       Component.isOMXInit = true;
+      //do something when app is closing
+      process.on('exit', this.exitHandler.bind(null, true, false, 'exit')); // This must be null to prevent memory leak
+
+      //catches ctrl+c event
+      process.on('SIGINT', this.exitHandler.bind(null, false, true, 'SIGINT'));
+
+      //catches uncaught exceptions
+      process.on('uncaughtException', this.exitHandler.bind(null, false, true, 'uncaughtException'));
+    }
+  }
+  exitHandler(cleanup, exit, type_str, err) {
+    if (cleanup) {
+      console.log('Quit on', type_str, err);
+      Node_OMX.OMX_Deinit();
+      Node_OMX.bcm_host_deinit();
+    }
+    if (exit) {
+      process.exit();
     }
   }
 
@@ -170,7 +188,6 @@ export class Component extends stream.Duplex {
           .then(() => {
             if (this.name === "video_render") {
               if (this.autoClose) {
-                this.info('close');
                 this.close();
               }
             }
@@ -187,7 +204,27 @@ export class Component extends stream.Duplex {
   }
 
   close() {
-    this.component.close();
+    this.info('close()');
+    this.flush()
+      .then(() => {
+        this.info('close flush done', this.getState());
+        //        return this.disablePortBuffers(this.in_port)
+        return this.disablePortBuffers([this.in_port, this.out_port])
+      })
+      .then(() => {
+        this.info('close disablePortBuffers done', this.getState());
+        return this.changeState(omx.OMX_STATETYPE.OMX_StateIdle)
+      })
+      .then(() => {
+        this.info('close changeState OMX_StateIdle done', this.getState());
+        this.changeState(omx.OMX_STATETYPE.OMX_StateLoaded)
+          .then(() => {
+            this.info('close changeState OMX_StateLoaded done');
+            this.component.close();
+          })
+          .catch(console.log.bind(console));
+      })
+      .catch(console.log.bind(console));
   }
 
   registeredEventHandlers: Array<EventHandlers> = [];
@@ -202,7 +239,7 @@ export class Component extends stream.Duplex {
     this.out_port = out_port;
   }
   changeState(state: omx.OMX_STATETYPE) {
-    this.component.changeState(state);
+    this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandStateSet, state);
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandStateSet, state);
   }
   getState(): omx.OMX_STATETYPE {
@@ -240,10 +277,49 @@ export class Component extends stream.Duplex {
     }
     return Promise.all(portsArr);
   }
+
+  flush(ports: Array<number>) {
+    this.debug('flush');
+
+    if (!ports) ports = [this.in_port, this.out_port];
+
+    var promises = ports.map((port) => {
+      if (port) {
+        this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandFlush, port);
+        return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandFlush, port);
+      }
+    });
+
+    return Promise.all(promises);
+  }
+
   disablePort(port: number) {
     this.debug('disablePort', port);
     this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
+  }
+  disablePortBuffers(ports: Array<number>) {
+    this.debug('disablePortBuffers', ports);
+
+    var promises = ports.map((port) => {
+      if (port) {
+        var portdef = this.getParameter(port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+        if (portdef.bEnabled == 0 || portdef.nBufferCountActual == 0 || portdef.nBufferSize == 0) {
+          throw "Cannot disable buffers";
+        }
+        this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
+
+        var list;
+        list = portdef.eDir == omx.OMX_DIRTYPE.OMX_DirInput ? this.in_list : this.out_list;
+        list.forEach((item, i) => {
+          this.component.freeBuffer(port, item.header);
+        });
+
+        return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandPortDisable, port);
+      }
+    });
+
+    return Promise.all(promises);
   }
 
   static _id = 0;
@@ -416,7 +492,6 @@ export class Component extends stream.Duplex {
 
       //dispose on EOS.
       if (this.autoClose) {
-        this.info('close');
         this.close();
       }
       return;

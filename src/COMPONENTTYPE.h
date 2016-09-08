@@ -34,19 +34,19 @@ private:
   static NAN_METHOD(New);
   static NAN_METHOD(close);
 
-  static NAN_METHOD(changeState);
   static NAN_METHOD(getState);
   static NAN_METHOD(getParameter);
   static NAN_METHOD(setParameter);
   static NAN_METHOD(sendCommand);
   static NAN_METHOD(useBuffer);
+  static NAN_METHOD(freeBuffer);
   static NAN_METHOD(useEGLImage);
-  
+
   static NAN_METHOD(emptyBuffer);
   static NAN_METHOD(fillBuffer);
   static NAN_METHOD(emptyBufferAsync);
   static NAN_METHOD(fillBufferAsync);
-  
+
   static NAN_METHOD(tunnelTo);
 
   static Nan::Persistent<v8::Function> constructor;
@@ -54,6 +54,8 @@ private:
 
   char name[32];
   char component_name[128];
+  bool uvPortSettingsChangedHandlerRef;
+  uv_async_t uvPortSettingsChangedHandler;
 
   uv_mutex_t uvEventHandlerLock;
   uv_async_t uvEventHandler;
@@ -82,14 +84,22 @@ private:
     uv_mutex_lock(&obj->uvEventHandlerLock);
     std::vector<EventHandlerData> local(obj->eventHandlerQueue);
     obj->eventHandlerQueue.clear();
-    uv_unref((uv_handle_t *)&obj->uvEventHandler);
+    uv_unref((uv_handle_t *) & obj->uvEventHandler);
     uv_mutex_unlock(&obj->uvEventHandlerLock);
+
 
     for (std::vector<EventHandlerData>::iterator it = local.begin(); it < local.end(); it++) {
       EventHandlerData data = *it;
       int argc = 5;
-      v8::Local<v8::Value> argv[argc] = {Nan::New("event_handler").ToLocalChecked(), Nan::New(data.eEvent), Nan::New(data.nData1), Nan::New(data.nData2), Nan::New(data.pEventData)};
-      Nan::MakeCallback(obj->handle(), "emit", argc, argv);
+
+      if (!obj->persistent().IsWeak()) {
+        v8::Local<v8::Value> argv[argc] = {Nan::New("event_handler").ToLocalChecked(), Nan::New(data.eEvent), Nan::New(data.nData1), Nan::New(data.nData2), Nan::New(data.pEventData)};
+        Nan::MakeCallback(obj->handle(), "emit", argc, argv);
+
+        if (data.eEvent == OMX_EventPortSettingsChanged) {
+          uv_unref((uv_handle_t *) & obj->uvPortSettingsChangedHandler);
+        }
+      }
     }
   }
 
@@ -132,17 +142,19 @@ private:
     uv_mutex_lock(&obj->uvBufferHandlerLock);
     std::vector<BufferDoneData> local(obj->eventBufferQueue);
     obj->eventBufferQueue.clear();
-    uv_unref((uv_handle_t *)&obj->uvBufferHandler);
+    uv_unref((uv_handle_t *) & obj->uvBufferHandler);
     uv_mutex_unlock(&obj->uvBufferHandlerLock);
 
-    for (std::vector<BufferDoneData>::iterator it = local.begin(); it < local.end(); it++) {
-      BufferDoneData data = *it;
-      int argc = 3;
-      
-      v8::Local<v8::Object> pBufferObj = Nan::New<v8::Object>(obj->bufferMap[data.pBuffer]);
-      
-      v8::Local<v8::Value> argv[argc] = {Nan::New("buffer_done").ToLocalChecked(), Nan::New(data.direction), pBufferObj};
-      Nan::MakeCallback(obj->handle(), "emit", argc, argv);
+    if (!obj->persistent().IsWeak()) {
+      for (std::vector<BufferDoneData>::iterator it = local.begin(); it < local.end(); it++) {
+        BufferDoneData data = *it;
+        int argc = 3;
+
+        v8::Local<v8::Object> pBufferObj = Nan::New<v8::Object>(obj->bufferMap[data.pBuffer]);
+
+        v8::Local<v8::Value> argv[argc] = {Nan::New("buffer_done").ToLocalChecked(), Nan::New(data.direction), pBufferObj};
+        Nan::MakeCallback(obj->handle(), "emit", argc, argv);
+      }
     }
   }
 
