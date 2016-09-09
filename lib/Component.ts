@@ -107,7 +107,7 @@ export class Component extends stream.Duplex {
   }
 
   componentEventHandler(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
-    printEvent.log(this.name, eEvent, nData1, nData2);
+    //    printEvent.log(this.name, eEvent, nData1, nData2);
     //      printEvent.logHandlers(this.registeredEventHandlers);
 
     for (var i = this.registeredEventHandlers.length - 1; i >= 0; i--) {
@@ -135,7 +135,6 @@ export class Component extends stream.Duplex {
   }
 
   bufferDone(direction, pBuffer) {
-    console.log("AHHHHHHHHHHH bufferDone");
     if (direction == 0) {
       this.debug('buffer_done', direction === 0 ? 'empty' : 'fill');
       this.emptyBufferDone();
