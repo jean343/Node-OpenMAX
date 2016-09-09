@@ -90,6 +90,11 @@ COMPONENTTYPE::COMPONENTTYPE(char const *name) {
 
 COMPONENTTYPE::~COMPONENTTYPE() {
   plog("~COMPONENTTYPE(%s, %p)", name, this);
+
+  uv_close(reinterpret_cast<uv_handle_t*> (&uvEventHandler), NULL);
+  uv_close(reinterpret_cast<uv_handle_t*> (&uvBufferHandler), NULL);
+  uv_close(reinterpret_cast<uv_handle_t*> (&uvPortSettingsChangedHandler), NULL);
+
   OMX_ERRORTYPE rc;
   rc = OMX_FreeHandle(comp);
   if (rc != OMX_ErrorNone) {
@@ -102,19 +107,30 @@ COMPONENTTYPE::~COMPONENTTYPE() {
 
 NAN_METHOD(COMPONENTTYPE::New) {
   if (info.IsConstructCall()) {
+    char buf[255];
     String::Utf8Value name(info[0]);
 
     COMPONENTTYPE *obj = new COMPONENTTYPE(*name);
     obj->Wrap(info.This());
 
-    // Ref() marks the object as being attached to an event loop.
-    // Refed objects will not be garbage collected, even if all references are lost.
-    obj->Ref();
+    if (info[1]->IsUndefined()) {
+      sprintf(buf, "EventHandlerCallback must be defined");
+      Nan::ThrowError(buf);
+    } else {
+      obj->eventHandlerCallback = new Nan::Callback(info[1].As<v8::Function>());
+    }
+
+    if (info[2]->IsUndefined()) {
+      sprintf(buf, "EventBufferCallback must be defined");
+      Nan::ThrowError(buf);
+    } else {
+      obj->eventBufferCallback = new Nan::Callback(info[2].As<v8::Function>());
+    }
 
     info.GetReturnValue().Set(info.This());
   } else {
-    const int argc = 1;
-    v8::Local<v8::Value> argv[argc] = {info[0]};
+    const int argc = 3;
+    v8::Local<v8::Value> argv[argc] = {info[0], info[1], info[2]};
     v8::Local<v8::Function> cons = Nan::New(constructor);
     info.GetReturnValue().Set(cons->NewInstance(argc, argv));
   }
@@ -123,7 +139,8 @@ NAN_METHOD(COMPONENTTYPE::New) {
 NAN_METHOD(COMPONENTTYPE::close) {
   COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
   plog("close(%s)", obj->name);
-  obj->Unref();
+  delete obj->eventHandlerCallback;
+  delete obj->eventBufferCallback;
 }
 
 NAN_METHOD(COMPONENTTYPE::getState) {

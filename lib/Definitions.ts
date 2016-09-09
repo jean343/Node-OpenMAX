@@ -7,7 +7,7 @@ export interface Node_OMX {
   OMX_Deinit();
   copyAsync(chunk, buf, destnStride, destnSliceHeight, offsetX, offsetY, nStride, width, nSliceHeight, height, callback);
 
-  COMPONENTTYPE(name: string): COMPONENTTYPE;
+  COMPONENTTYPE(name: string, eventHandlerCallback, eventBufferCallback): COMPONENTTYPE;
 }
 
 export interface COMPONENTTYPE {

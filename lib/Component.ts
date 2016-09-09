@@ -53,6 +53,7 @@ export class Component extends stream.Duplex {
     if (level <= Component.verbose) {
       if (Component.logComponent === null || Component.logComponent === this.cname) {
         Array.prototype.unshift.call(args, this.cname);
+        Array.prototype.unshift.call(args, '  '.repeat(level - 1));
         console.log.apply(console, args);
       }
     }
@@ -65,14 +66,17 @@ export class Component extends stream.Duplex {
   }
 
   init() {
-    this.initHost();
-    this.component = Node_OMX.COMPONENTTYPE(this.name);
-    this.registerComponentEventHandler();
-    this.registerComponentBufferDone();
-    this.registerComponentPipe();
-    this.registerOnFinish();
+    return new Promise((fulfill, reject) => {
+      this.initHost();
+      this.component = Node_OMX.COMPONENTTYPE(this.name, this.componentEventHandler.bind(this), this.bufferDone.bind(this));
+      this.registerComponentPipe();
+      this.registerOnFinish();
 
-    return this.disableAllPorts()
+      fulfill();
+    })
+      .then(() => {
+        return this.disableAllPorts();
+      })
       .then(this.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
   }
 
@@ -102,54 +106,50 @@ export class Component extends stream.Duplex {
     }
   }
 
-  registerComponentEventHandler() {
-    this.component.on('event_handler', (eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) => {
-      //      printEvent.log(this.name, eEvent, nData1, nData2);
-      //      printEvent.logHandlers(this.registeredEventHandlers);
+  componentEventHandler(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
+    printEvent.log(this.name, eEvent, nData1, nData2);
+    //      printEvent.logHandlers(this.registeredEventHandlers);
 
-      for (var i = this.registeredEventHandlers.length - 1; i >= 0; i--) {
-        var x = this.registeredEventHandlers[i];
+    for (var i = this.registeredEventHandlers.length - 1; i >= 0; i--) {
+      var x = this.registeredEventHandlers[i];
 
-        var isRightEvent = x.eEvent == eEvent && x.nData1 == nData1 && x.nData2 == nData2;
-        var isError = eEvent == omx.OMX_EVENTTYPE.OMX_EventError;// && x.nData2 == nData2;
+      var isRightEvent = x.eEvent == eEvent && x.nData1 == nData1 && x.nData2 == nData2;
+      var isError = eEvent == omx.OMX_EVENTTYPE.OMX_EventError;// && x.nData2 == nData2;
 
-        if (isRightEvent || isError) {
-          if (isRightEvent) {
-            x.fulfill(this);
-          }
-          if (isError) {
-            x.reject(nData1);
-          }
-          this.registeredEventHandlers.splice(i, 1);
+      if (isRightEvent || isError) {
+        if (isRightEvent) {
+          x.fulfill(this);
         }
+        if (isError) {
+          x.reject(nData1);
+        }
+        this.registeredEventHandlers.splice(i, 1);
       }
+    }
 
-      switch (eEvent) {
-        case omx.OMX_EVENTTYPE.OMX_EventPortSettingsChanged:
-          this.component.emit('eventPortSettingsChanged');
-          break;
-      }
-
-    });
+    switch (eEvent) {
+      case omx.OMX_EVENTTYPE.OMX_EventPortSettingsChanged:
+        this.component.emit('eventPortSettingsChanged');
+        break;
+    }
   }
 
-  registerComponentBufferDone() {
-    this.component.on('buffer_done', (direction, pBuffer) => {
-      if (direction == 0) {
-        this.debug('buffer_done', direction === 0 ? 'empty' : 'fill');
-        this.emptyBufferDone();
-      } else {
-        this.out_list.forEach((item, i) => {
-          if (item !== undefined) {
-            if (pBuffer === item.header) {
-              this.debug('buffer_done', direction === 0 ? 'empty' : 'fill', item.id);
-              this.readDone(item);
-              return;
-            }
+  bufferDone(direction, pBuffer) {
+    console.log("AHHHHHHHHHHH bufferDone");
+    if (direction == 0) {
+      this.debug('buffer_done', direction === 0 ? 'empty' : 'fill');
+      this.emptyBufferDone();
+    } else {
+      this.out_list.forEach((item, i) => {
+        if (item !== undefined) {
+          if (pBuffer === item.header) {
+            this.debug('buffer_done', direction === 0 ? 'empty' : 'fill', item.id);
+            this.readDone(item);
+            return;
           }
-        });
-      }
-    });
+        }
+      });
+    }
   }
 
   registerComponentPipe() {
@@ -262,7 +262,6 @@ export class Component extends stream.Duplex {
     return this.component.sendCommand(commandType, port);
   }
   disableAllPorts() {
-    var self = this;
     var types = [
       omx.OMX_INDEXTYPE.OMX_IndexParamAudioInit,
       omx.OMX_INDEXTYPE.OMX_IndexParamVideoInit,
@@ -271,12 +270,11 @@ export class Component extends stream.Duplex {
     ];
 
     var portsArr = [];
-    var self = this;
     for (var i = 0; i < types.length; i++) {
-      var ports = self.getParameter(0, types[i]);
+      var ports = this.getParameter(0, types[i]);
       if (ports.nPorts === 0) continue;
       for (var j = 0; j < ports.nPorts; j++) {
-        portsArr.push(self.disablePort(ports.nStartPortNumber + j));
+        portsArr.push(this.disablePort(ports.nStartPortNumber + j));
       }
     }
     return Promise.all(portsArr);
@@ -442,13 +440,16 @@ export class Component extends stream.Duplex {
         self.info('Error: nextComponent OMX_StateLoaded');
       }
 
-      sinkPortPromise.then(function() {
-        return sourcePortPromise;
-      }).then(function() {
-        self.debug('tunnel changeState OMX_StateExecuting', nextComponent.cname);
-        self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
-        nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
-      });
+      sinkPortPromise
+        .then(function() {
+          return sourcePortPromise;
+        })
+        .then(function() {
+          self.debug('tunnel changeState OMX_StateExecuting', nextComponent.cname);
+          self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+          nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+        })
+        .catch(console.log.bind(console));
     }
 
     if (self.name === "video_decode") {
@@ -486,7 +487,8 @@ export class Component extends stream.Duplex {
             self.debug('initRead changeState OMX_StateExecuting');
             return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
           }
-        });
+        })
+        .catch(console.log.bind(console));
     } else {
       return Promise.resolve();
     }

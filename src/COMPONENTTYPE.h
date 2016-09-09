@@ -25,6 +25,8 @@ class COMPONENTTYPE : public Nan::ObjectWrap {
   
 public:
   static NAN_MODULE_INIT(Init);
+  Nan::Callback* eventHandlerCallback;
+  Nan::Callback* eventBufferCallback;
 
 
 private:
@@ -90,15 +92,13 @@ private:
 
     for (std::vector<EventHandlerData>::iterator it = local.begin(); it < local.end(); it++) {
       EventHandlerData data = *it;
-      int argc = 5;
+      int argc = 4;
 
-      if (!obj->persistent().IsWeak()) {
-        v8::Local<v8::Value> argv[argc] = {Nan::New("event_handler").ToLocalChecked(), Nan::New(data.eEvent), Nan::New(data.nData1), Nan::New(data.nData2), Nan::New(data.pEventData)};
-        Nan::MakeCallback(obj->handle(), "emit", argc, argv);
+      v8::Local<v8::Value> argv[argc] = {Nan::New(data.eEvent), Nan::New(data.nData1), Nan::New(data.nData2), Nan::New(data.pEventData)};
+      obj->eventHandlerCallback->Call(argc, argv);
 
-        if (data.eEvent == OMX_EventPortSettingsChanged) {
-          uv_unref((uv_handle_t *) & obj->uvPortSettingsChangedHandler);
-        }
+      if (data.eEvent == OMX_EventPortSettingsChanged) {
+        uv_unref((uv_handle_t *) & obj->uvPortSettingsChangedHandler);
       }
     }
   }
@@ -145,16 +145,14 @@ private:
     uv_unref((uv_handle_t *) & obj->uvBufferHandler);
     uv_mutex_unlock(&obj->uvBufferHandlerLock);
 
-    if (!obj->persistent().IsWeak()) {
-      for (std::vector<BufferDoneData>::iterator it = local.begin(); it < local.end(); it++) {
-        BufferDoneData data = *it;
-        int argc = 3;
+    for (std::vector<BufferDoneData>::iterator it = local.begin(); it < local.end(); it++) {
+      BufferDoneData data = *it;
+      int argc = 2;
 
-        v8::Local<v8::Object> pBufferObj = Nan::New<v8::Object>(obj->bufferMap[data.pBuffer]);
+      v8::Local<v8::Object> pBufferObj = Nan::New<v8::Object>(obj->bufferMap[data.pBuffer]);
 
-        v8::Local<v8::Value> argv[argc] = {Nan::New("buffer_done").ToLocalChecked(), Nan::New(data.direction), pBufferObj};
-        Nan::MakeCallback(obj->handle(), "emit", argc, argv);
-      }
+      v8::Local<v8::Value> argv[argc] = {Nan::New(data.direction), pBufferObj};
+      obj->eventBufferCallback->Call(argc, argv);
     }
   }
 
