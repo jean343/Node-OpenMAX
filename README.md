@@ -68,6 +68,7 @@ Decodes an H.264 stream, encode it using custom settings of constant QP, write t
 ### Test with jasmine ###
 ```
 npm test
+npm run test-watch
 ```
 
 ### Code samples ###
