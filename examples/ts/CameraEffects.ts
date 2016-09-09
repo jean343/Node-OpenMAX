@@ -49,6 +49,7 @@ Camera.init()
       .on('finish', function() {
         console.log("Done");
       });
-  });
-  
+  })
+  .catch(console.log.bind(console, "Error:"));
+
 setTimeout(process.exit, 5 * 1000);

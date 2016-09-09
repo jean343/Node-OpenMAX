@@ -422,7 +422,7 @@ export class Component extends stream.Duplex {
     var self = this;
 
     function doTunnel() {
-      self.info('tunnel eventPortSettingsChanged', self.component);
+      self.info('tunnel eventPortSettingsChanged');
 
       if (self.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
         self.debug('tunnel changeState OMX_StateIdle');

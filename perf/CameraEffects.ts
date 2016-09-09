@@ -49,4 +49,5 @@ Camera.init()
       .on('finish', function() {
         console.log("Done");
       });
-  });
+  })
+  .catch(console.log.bind(console, "Error:"));
