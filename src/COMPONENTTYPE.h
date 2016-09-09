@@ -22,12 +22,9 @@ struct BufferDoneData {
 class COMPONENTTYPE : public Nan::ObjectWrap {
   friend class FillBufferAsyncWorker;
   friend class EmptyBufferAsyncWorker;
-  
+
 public:
   static NAN_MODULE_INIT(Init);
-  Nan::Callback* eventHandlerCallback;
-  Nan::Callback* eventBufferCallback;
-
 
 private:
   explicit COMPONENTTYPE(char const *name);
@@ -56,11 +53,25 @@ private:
 
   char name[32];
   char component_name[128];
+  Nan::Callback* eventHandlerCallback;
+  Nan::Callback* eventBufferCallback;
   bool uvPortSettingsChangedHandlerRef;
   uv_async_t uvPortSettingsChangedHandler;
 
   uv_mutex_t uvEventHandlerLock;
   uv_async_t uvEventHandler;
+
+  static void uvEventHandlerDestroy(uv_handle_t *async) {
+    COMPONENTTYPE *obj = static_cast<COMPONENTTYPE*> (async->data);
+    uv_mutex_destroy(&obj->uvEventHandlerLock);
+    delete obj->eventHandlerCallback;
+  }
+
+  static void uvBufferHandlerDestroy(uv_handle_t *async) {
+    COMPONENTTYPE *obj = static_cast<COMPONENTTYPE*> (async->data);
+    uv_mutex_destroy(&obj->uvBufferHandlerLock);
+    delete obj->eventBufferCallback;
+  }
 
   static OMX_ERRORTYPE event_handler(OMX_IN OMX_HANDLETYPE hComponent, OMX_IN OMX_PTR pAppData, OMX_IN OMX_EVENTTYPE eEvent, OMX_IN OMX_U32 nData1, OMX_IN OMX_U32 nData2, OMX_IN OMX_PTR pEventData) {
     COMPONENTTYPE *obj = (COMPONENTTYPE *) pAppData;

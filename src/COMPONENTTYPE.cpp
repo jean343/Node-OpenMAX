@@ -91,10 +91,6 @@ COMPONENTTYPE::COMPONENTTYPE(char const *name) {
 COMPONENTTYPE::~COMPONENTTYPE() {
   plog("~COMPONENTTYPE(%s, %p)", name, this);
 
-  uv_close(reinterpret_cast<uv_handle_t*> (&uvEventHandler), NULL);
-  uv_close(reinterpret_cast<uv_handle_t*> (&uvBufferHandler), NULL);
-  uv_close(reinterpret_cast<uv_handle_t*> (&uvPortSettingsChangedHandler), NULL);
-
   OMX_ERRORTYPE rc;
   rc = OMX_FreeHandle(comp);
   if (rc != OMX_ErrorNone) {
@@ -139,8 +135,11 @@ NAN_METHOD(COMPONENTTYPE::New) {
 NAN_METHOD(COMPONENTTYPE::close) {
   COMPONENTTYPE* obj = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
   plog("close(%s)", obj->name);
-  delete obj->eventHandlerCallback;
-  delete obj->eventBufferCallback;
+
+  // See: https://github.com/andrewrk/node-groove/commit/ea80b579956c799877a47d65e389b643d6a16e6d
+  uv_close(reinterpret_cast<uv_handle_t*> (&obj->uvEventHandler), uvEventHandlerDestroy);
+  uv_close(reinterpret_cast<uv_handle_t*> (&obj->uvBufferHandler), uvBufferHandlerDestroy);
+  uv_close(reinterpret_cast<uv_handle_t*> (&obj->uvPortSettingsChangedHandler), NULL);
 }
 
 NAN_METHOD(COMPONENTTYPE::getState) {
