@@ -26,5 +26,3 @@ import fs = require('fs');
     })
     .catch(console.log.bind(console, "Error:"));
 })();
-
-setInterval(gc, 10);
