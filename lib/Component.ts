@@ -244,6 +244,7 @@ export class Component extends stream.Duplex {
     this.out_port = out_port;
   }
   changeState(state: omx.OMX_STATETYPE) {
+    this.debug("Change state from", this.getState(), 'to', state)
     this.sendCommand(omx.OMX_COMMANDTYPE.OMX_CommandStateSet, state);
     return this.registerEventHandler(omx.OMX_EVENTTYPE.OMX_EventCmdComplete, omx.OMX_COMMANDTYPE.OMX_CommandStateSet, state);
   }
@@ -420,43 +421,42 @@ export class Component extends stream.Duplex {
     });
   }
 
-  tunnel(nextComponent) {
-    var self = this;
+  doTunnel(nextComponent: Component) {
+    this.info('tunnel eventPortSettingsChanged');
 
-    function doTunnel() {
-      self.info('tunnel eventPortSettingsChanged');
-
-      if (self.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
-        self.debug('tunnel changeState OMX_StateIdle');
-        self.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
-      }
-
-      self.debug('tunnel from', self.cname, self.out_port, 'to', nextComponent.cname, nextComponent.in_port);
-      self.tunnelTo(self.out_port, nextComponent, nextComponent.in_port);
-
-      var sourcePortPromise = self.enableOutputPort();
-      var sinkPortPromise = nextComponent.enableInputPort();
-
-      if (nextComponent.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
-        self.info('Error: nextComponent OMX_StateLoaded');
-      }
-
-      sinkPortPromise
-        .then(function() {
-          return sourcePortPromise;
-        })
-        .then(function() {
-          self.debug('tunnel changeState OMX_StateExecuting', nextComponent.cname);
-          self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
-          nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
-        })
-        .catch(console.log.bind(console));
+    if (this.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
+      this.debug('tunnel changeState OMX_StateIdle');
+      this.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
     }
 
-    if (self.name === "video_decode") {
-      this.component.on("eventPortSettingsChanged", doTunnel);
+    this.debug('tunnel from', this.cname, this.out_port, 'to', nextComponent.cname, nextComponent.in_port);
+    this.tunnelTo(this.out_port, nextComponent, nextComponent.in_port);
+
+    var sourcePortPromise = this.enableOutputPort();
+    var sinkPortPromise = nextComponent.enableInputPort();
+
+    if (nextComponent.getState() === omx.OMX_STATETYPE.OMX_StateLoaded) {
+      this.info('Error: nextComponent OMX_StateLoaded');
+    }
+
+    sinkPortPromise
+      .then(function() {
+        return sourcePortPromise;
+      })
+      .then(() => {
+        this.debug('tunnel changeState OMX_StateExecuting', nextComponent.cname);
+        this.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+        nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+      })
+      .catch(console.log.bind(console));
+  }
+  tunnel(nextComponent: Component) {
+    if (this.name === "video_decode") {
+      this.component.on("eventPortSettingsChanged", () => {
+        this.doTunnel(nextComponent);
+      });
     } else {
-      doTunnel();
+      this.doTunnel(nextComponent);
     }
 
     this.on('finish', function() {
@@ -464,7 +464,7 @@ export class Component extends stream.Duplex {
       //      console.log('TUNNEL.flush');
       //      TUNNEL.flush();
       //      console.log('disableInputPortBuffer');
-      //      //    self.component.disableInputPortBuffer();
+      //      //    this.component.disableInputPortBuffer();
       //      console.log('disable');
       //      TUNNEL.disable();
       //      console.log('teardown');
