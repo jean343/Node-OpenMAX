@@ -417,11 +417,17 @@ NAN_METHOD(COMPONENTTYPE::tunnelTo) {
   COMPONENTTYPE* source = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info.This());
 
   int sourcePort = (int) Nan::To<int>(info[0]).FromJust();
-  COMPONENTTYPE* sink = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
+
+  OMX_HANDLETYPE sink_comp = NULL;
+  Nan::MaybeLocal<v8::Object> info1 = Nan::To<v8::Object>(info[1]);
+  if (!info1.IsEmpty()) {
+    COMPONENTTYPE* sink = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info1.ToLocalChecked());
+    sink_comp = sink->comp;
+  }
 
   int sinkPort = (int) Nan::To<int>(info[2]).FromJust();
 
-  OMX_ERRORTYPE rc = OMX_SetupTunnel(source->comp, sourcePort, sink->comp, sinkPort);
+  OMX_ERRORTYPE rc = OMX_SetupTunnel(source->comp, sourcePort, sink_comp, sinkPort);
   if (rc != OMX_ErrorNone) {
     char buf[255];
     sprintf(buf, "OMX_SetupTunnel() returned error: %s", OMX_consts::err2str(rc));

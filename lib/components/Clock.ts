@@ -18,6 +18,7 @@ export class Clock extends omx.Component {
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigTimeClockState, {
       eState: omx.OMX_TIME_CLOCKSTATE.OMX_TIME_ClockStateStopped
     });
+    this.emit('finish');
     return this;
   };
 

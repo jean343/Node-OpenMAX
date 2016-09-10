@@ -11,11 +11,12 @@ var Node_OMX: def.Node_OMX = require('bindings')('Node_OMX');
 export enum VERBOSE_LEVEL {
   None,
   Info,
-  Debug
+  Debug,
+  Stack
 }
 
 export class EventHandlers {
-  constructor(public eEvent: omx.OMX_EVENTTYPE, public nData1: number, public nData2: number, public fulfill, public reject) {
+  constructor(public eEvent: omx.OMX_EVENTTYPE, public nData1: number, public nData2: number, public fulfill, public reject, public stack?) {
   }
 }
 
@@ -123,6 +124,9 @@ export class Component extends stream.Duplex {
           x.fulfill(this);
         }
         if (isError) {
+          if (x.stack) {
+            console.error(x.stack);
+          }
           x.reject(nData1);
         }
         this.registeredEventHandlers.splice(i, 1);
@@ -234,8 +238,13 @@ export class Component extends stream.Duplex {
 
   registeredEventHandlers: Array<EventHandlers> = [];
   registerEventHandler(eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
+    var stack;
+    if (Component.verbose >= VERBOSE_LEVEL.Stack) {
+      var err = new Error;
+      stack = err.stack;
+    }
     return new Promise((fulfill, reject) => {
-      this.registeredEventHandlers.push(new EventHandlers(eEvent, nData1, nData2, fulfill, reject));
+      this.registeredEventHandlers.push(new EventHandlers(eEvent, nData1, nData2, fulfill, reject, stack));
     });
   }
 
@@ -459,19 +468,20 @@ export class Component extends stream.Duplex {
       this.doTunnel(nextComponent);
     }
 
-    this.on('finish', function() {
-      //      console.log('Component on finish');
-      //      console.log('TUNNEL.flush');
-      //      TUNNEL.flush();
-      //      console.log('disableInputPortBuffer');
-      //      //    this.component.disableInputPortBuffer();
-      //      console.log('disable');
-      //      TUNNEL.disable();
-      //      console.log('teardown');
-      //      TUNNEL.teardown();
-      //      console.log('teardown complete');
+    this.on('finish', () => {
+      this.info("Tunnel on finish")
+      try {
+        this.disablePort(this.out_port).then(() => {
+          this.component.tunnelTo(this.out_port, null, 0);
+        });
+        nextComponent.disablePort(nextComponent.in_port).then(() => {
+          nextComponent.tunnelTo(nextComponent.in_port, null, 0);
+        });
 
-      nextComponent.emit('finish');
+        nextComponent.emit('finish');
+      } catch (e) {
+        console.log(e);
+      }
     });
 
     return nextComponent;
