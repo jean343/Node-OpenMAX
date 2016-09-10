@@ -77,7 +77,9 @@ export class Component extends stream.Duplex {
       .then(() => {
         return this.disableAllPorts();
       })
-      .then(this.changeState(omx.OMX_STATETYPE.OMX_StateIdle));
+      .then(() => {
+        return this.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
+      });
   }
 
   initHost() {
