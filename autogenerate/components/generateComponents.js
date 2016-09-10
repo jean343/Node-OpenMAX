@@ -1,3 +1,5 @@
+// TODO check: https://jan.newmarch.name/RPi/OpenMAX/Components/
+
 var request = require('request');
 var cheerio = require('cheerio');
 var upperCamelCase = require('uppercamelcase');
@@ -194,6 +196,27 @@ function prototypes(nameCamel) {
     var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);\n\
     format.bEnabled = 1;\n\
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);\n\
+    return this;\n\
+  };",
+        disable: "() {\n\
+    var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);\n\
+    format.bEnabled = 0;\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);\n\
+    return this;\n\
+  };"
+      };
+    case 'Clock':
+      return {
+        run: "() {\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigTimeClockState, {\n\
+      eState: omx.OMX_TIME_CLOCKSTATE.OMX_TIME_ClockStateRunning\n\
+    });\n\
+    return this;\n\
+  };",
+        stop: "() {\n\
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigTimeClockState, {\n\
+      eState: omx.OMX_TIME_CLOCKSTATE.OMX_TIME_ClockStateStopped\n\
+    });\n\
     return this;\n\
   };"
       };

@@ -29,21 +29,31 @@ TransformFilter.on('finish', function () {
   this.push(null);
 });
 
+var Clock;
 var Camera;
 var VideoRender;
 Camera = new omx.Camera();
 Camera.init()
+        .then(function () {
+          Clock = new omx.Clock();
+          return Clock.init();
+        })
         .then(function () {
           VideoRender = new omx.VideoRender();
           return VideoRender.init();
         })
         .then(function () {
           Camera.setFormat().enable();
-          Camera
+          Clock.run();
+
+          Clock
+                  .tunnel(Camera)
                   .pipe(TransformFilter)
                   .pipe(VideoRender)
                   .on('finish', function () {
                     console.log("Done");
                   });
         });
-setTimeout(process.exit, 5 * 1000);
+setTimeout(function () {
+  Clock.stop();
+}, 5000);

@@ -20,5 +20,11 @@ enable() {
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
     return this;
   };
+disable() {
+    var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
+    format.bEnabled = 0;
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
+    return this;
+  };
 
 }

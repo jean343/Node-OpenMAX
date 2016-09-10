@@ -32,18 +32,26 @@ class TransformFilter extends stream.Duplex {
   };
 }
 
+var Clock = new omx.Clock();
 var Camera = new omx.Camera();
 var VideoRender: omx.VideoRender;
 var tf = new TransformFilter();
 
 Camera.init()
   .then(function() {
+    Clock = new omx.Clock();
+    return Clock.init();
+  })
+  .then(function() {
     VideoRender = new omx.VideoRender();
     return VideoRender.init();
   })
   .then(function() {
     Camera.setFormat().enable();
-    Camera
+    Clock.run();
+
+    Clock
+      .tunnel(Camera)
       .pipe(tf)
       .pipe(VideoRender)
       .on('finish', function() {
@@ -51,3 +59,7 @@ Camera.init()
       });
   })
   .catch(console.log.bind(console, "Error:"));
+  
+setTimeout(() => {
+  Clock.stop();
+}, 5000);
