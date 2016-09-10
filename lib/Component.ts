@@ -445,8 +445,8 @@ export class Component extends stream.Duplex {
       })
       .then(() => {
         this.debug('tunnel changeState OMX_StateExecuting', nextComponent.cname);
-        this.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
         nextComponent.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+        this.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
       })
       .catch(console.log.bind(console));
   }
