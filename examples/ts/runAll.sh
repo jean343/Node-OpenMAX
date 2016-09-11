@@ -1,5 +1,7 @@
 npm install
 
+tsc
+
 echo Running CameraEffects
 node dist/CameraEffects
 
