@@ -217,6 +217,7 @@ function prototypes(nameCamel) {
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigTimeClockState, {\n\
       eState: omx.OMX_TIME_CLOCKSTATE.OMX_TIME_ClockStateStopped\n\
     });\n\
+    this.emit('finish');\n\
     return this;\n\
   };"
       };
