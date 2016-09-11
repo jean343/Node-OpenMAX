@@ -239,6 +239,9 @@ export class Component extends stream.Duplex {
         this.debug('changeState OMX_StateLoaded done');
         this.component.close();
       })
+      .then(() => {
+        this.push(null);
+      })
       .catch(console.log.bind(console, "Error:"));
   }
 
@@ -272,7 +275,7 @@ export class Component extends stream.Duplex {
       this.info('tunnel from', this.cname, out_port, 'to', sink.cname, in_port);
       return this.component.tunnelTo(out_port, sink.component, in_port);
     } else {
-      this.info('destroy tunnel from', this.cname, out_port, this.component);
+      this.info('destroy tunnel from', this.cname, out_port);
       return this.component.tunnelTo(out_port, undefined, 0);
     }
   }
@@ -512,7 +515,6 @@ export class Component extends stream.Duplex {
     // Catch EOF
     if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
       this.info("Received OMX_BUFFERFLAG_EOS");
-      this.push(null);
 
       //dispose on EOS.
       if (this.autoClose) {

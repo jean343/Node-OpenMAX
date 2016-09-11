@@ -80,6 +80,7 @@
     "perf/CameraPipe.ts",
     "perf/CameraTunnel.ts",
     "perf/Memory.ts",
+    "spec/components/CameraSpec.ts",
     "spec/components/ComponentSpec.ts",
     "spec/components/SimpleVideoDecoderRenderSpec.ts",
     "spec/components/VideoDecodeSpec.ts",
