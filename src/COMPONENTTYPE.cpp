@@ -90,15 +90,6 @@ COMPONENTTYPE::COMPONENTTYPE(char const *name) {
 
 COMPONENTTYPE::~COMPONENTTYPE() {
   plog("~COMPONENTTYPE(%s, %p)", name, this);
-
-  OMX_ERRORTYPE rc;
-  rc = OMX_FreeHandle(comp);
-  if (rc != OMX_ErrorNone) {
-    char buf[255];
-    sprintf(buf, "OMX_FreeHandle() returned error: %s", OMX_consts::err2str(rc));
-    Nan::ThrowError(buf);
-    return;
-  }
 }
 
 NAN_METHOD(COMPONENTTYPE::New) {
@@ -140,6 +131,15 @@ NAN_METHOD(COMPONENTTYPE::close) {
   uv_close(reinterpret_cast<uv_handle_t*> (&obj->uvEventHandler), uvEventHandlerDestroy);
   uv_close(reinterpret_cast<uv_handle_t*> (&obj->uvBufferHandler), uvBufferHandlerDestroy);
   uv_close(reinterpret_cast<uv_handle_t*> (&obj->uvPortSettingsChangedHandler), NULL);
+
+  OMX_ERRORTYPE rc;
+  rc = OMX_FreeHandle(obj->comp);
+  if (rc != OMX_ErrorNone) {
+    char buf[255];
+    sprintf(buf, "OMX_FreeHandle() returned error: %s", OMX_consts::err2str(rc));
+    Nan::ThrowError(buf);
+    return;
+  }
 }
 
 NAN_METHOD(COMPONENTTYPE::getState) {
@@ -419,9 +419,8 @@ NAN_METHOD(COMPONENTTYPE::tunnelTo) {
   int sourcePort = (int) Nan::To<int>(info[0]).FromJust();
 
   OMX_HANDLETYPE sink_comp = NULL;
-  Nan::MaybeLocal<v8::Object> info1 = Nan::To<v8::Object>(info[1]);
-  if (!info1.IsEmpty()) {
-    COMPONENTTYPE* sink = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(info1.ToLocalChecked());
+  if (!info[1]->IsUndefined() && !info[1]->IsNull()) {
+    COMPONENTTYPE* sink = Nan::ObjectWrap::Unwrap<COMPONENTTYPE>(Nan::To<v8::Object>(info[1]).ToLocalChecked());
     sink_comp = sink->comp;
   }
 

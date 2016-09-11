@@ -217,6 +217,12 @@ export class Component extends stream.Duplex {
       })
       .then(() => {
         this.debug('disablePortBuffers done');
+        this.tunnelTo(this.in_port);
+        this.tunnelTo(this.out_port);
+        return Promise.resolve()
+      })
+      .then(() => {
+        this.debug('teardown tunnel done');
         if (this.getState() !== omx.OMX_STATETYPE.OMX_StateIdle && this.getState() !== omx.OMX_STATETYPE.OMX_StateLoaded) {
           return this.changeState(omx.OMX_STATETYPE.OMX_StateIdle)
         } else {
@@ -260,8 +266,15 @@ export class Component extends stream.Duplex {
   getState(): omx.OMX_STATETYPE {
     return this.component.getState();
   }
-  tunnelTo(out_port: number, sink: any, in_port: number) {
-    return this.component.tunnelTo(out_port, sink.component, in_port);
+  tunnelTo(out_port: number, sink?: Component, in_port?: number) {
+    if (!out_port) return;
+    if (sink) {
+      this.info('tunnel from', this.cname, out_port, 'to', sink.cname, in_port);
+      return this.component.tunnelTo(out_port, sink.component, in_port);
+    } else {
+      this.info('destroy tunnel from', this.cname, out_port, this.component);
+      return this.component.tunnelTo(out_port, undefined, 0);
+    }
   }
   getParameter(port: number, index: omx.OMX_INDEXTYPE) {
     return this.component.getParameter(port, index);
@@ -438,7 +451,6 @@ export class Component extends stream.Duplex {
       this.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
     }
 
-    this.debug('tunnel from', this.cname, this.out_port, 'to', nextComponent.cname, nextComponent.in_port);
     this.tunnelTo(this.out_port, nextComponent, nextComponent.in_port);
 
     var sourcePortPromise = this.enableOutputPort();
@@ -470,18 +482,7 @@ export class Component extends stream.Duplex {
 
     this.on('finish', () => {
       this.info("Tunnel on finish")
-      try {
-        this.disablePort(this.out_port).then(() => {
-          this.component.tunnelTo(this.out_port, null, 0);
-        });
-        nextComponent.disablePort(nextComponent.in_port).then(() => {
-          nextComponent.tunnelTo(nextComponent.in_port, null, 0);
-        });
-
-        nextComponent.emit('finish');
-      } catch (e) {
-        console.log(e);
-      }
+      this.close();
     });
 
     return nextComponent;
