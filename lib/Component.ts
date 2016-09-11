@@ -38,6 +38,8 @@ export class Component extends stream.Duplex {
   graphics: omx.Graphics = null;
 
   autoClose = true;
+  closing = false;
+  closed = false;
 
   in_list: Array<any>;
   out_list: Array<any>;
@@ -209,6 +211,10 @@ export class Component extends stream.Duplex {
   }
 
   close() {
+    if (this.closing) {
+      return Promise.resolve();
+    }
+    this.closing = true;
     this.info('close');
     return this.flush()
       .then(() => {
@@ -226,7 +232,7 @@ export class Component extends stream.Duplex {
         if (this.getState() !== omx.OMX_STATETYPE.OMX_StateIdle && this.getState() !== omx.OMX_STATETYPE.OMX_StateLoaded) {
           return this.changeState(omx.OMX_STATETYPE.OMX_StateIdle)
         } else {
-          return Promise.resolve()
+          return Promise.resolve();
         }
       })
       .then(() => {
@@ -241,6 +247,7 @@ export class Component extends stream.Duplex {
       })
       .then(() => {
         this.push(null);
+        this.closed = true;
       })
       .catch(console.log.bind(console, "Error:"));
   }

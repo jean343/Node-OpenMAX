@@ -117,4 +117,51 @@ describe("Camera", function() {
     expect(f).toEqual({ bEnabled: 0 });
   });
 
+  it("should tunnel and pipe to stream", function(done) {
+    var Clock = new omx.Clock();
+    Clock.init()
+      .then(function() {
+        Camera.setFormat().enable();
+        Clock.run();
+
+        Clock
+          .tunnel(Camera)
+          .pipe(ws)
+          .on('finish', function() {
+            done();
+          });
+        setTimeout(() => {
+          Clock.stop();
+        }, 100);
+      })
+      .catch(console.log.bind(console, "Error:"));
+
+  });
+
+  xit("should tunnel to renderer", function(done) {
+    var Clock = new omx.Clock();
+    var VideoRender: omx.VideoRender;
+    Clock.init()
+      .then(function() {
+        VideoRender = new omx.VideoRender();
+        return VideoRender.init();
+      })
+      .then(function() {
+        Camera.setFormat().enable();
+        Clock.run();
+
+        Clock
+          .tunnel(Camera)
+          .tunnel(VideoRender)
+          .on('finish', function() {
+            done();
+          });
+        setTimeout(() => {
+          Clock.stop();
+        }, 100);
+      })
+      .catch(console.log.bind(console, "Error:"));
+
+  });
+
 });
