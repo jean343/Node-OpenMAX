@@ -1,4 +1,5 @@
 #include "BUFFERHEADERTYPE.h"
+#include "log.h"
 Nan::Persistent<v8::Function> BUFFERHEADERTYPE::constructor;
 
 NAN_MODULE_INIT(BUFFERHEADERTYPE::Init) {
@@ -16,9 +17,11 @@ NAN_MODULE_INIT(BUFFERHEADERTYPE::Init) {
 }
 
 BUFFERHEADERTYPE::BUFFERHEADERTYPE(OMX_BUFFERHEADERTYPE* buf) : buf(buf), first_packet(true) {
+  plog("BUFFERHEADERTYPE(%p)", this);
 }
 
 BUFFERHEADERTYPE::~BUFFERHEADERTYPE() {
+  plog("~BUFFERHEADERTYPE(%p)", this);
 }
 
 NAN_METHOD(BUFFERHEADERTYPE::New) {
