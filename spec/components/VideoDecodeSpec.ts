@@ -20,10 +20,19 @@ describe("VideoDecode", function() {
 
   beforeEach(function(done) {
     VideoDecode = new omx.VideoDecode();
-    VideoDecode.init().then(function() {
-      done();
-    });
+    VideoDecode.init()
+      .then(function() {
+        done();
+      })
+      .catch(console.log.bind(console));
     ws = new WritableFilter();
+  });
+
+  afterEach(function(done) {
+    VideoDecode.close()
+      .then(function() {
+        done();
+      })
   });
 
   it("should have right ports", function() {
@@ -72,10 +81,15 @@ describe("VideoDecode", function() {
   });
 
   it("should trigger port definition changed and have right settings", function(done) {
+    var eventPortSettingsChanged = false;
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
     fs.createReadStream("spec/data/video-LQ-30frames.h264")
       .pipe(VideoDecode)
-      .pipe(ws);
+      .pipe(ws)
+      .on('finish', () => {
+        expect(eventPortSettingsChanged).toBe(true);
+        done();
+      });
 
     VideoDecode.component.on("eventPortSettingsChanged", function() {
       var f = VideoDecode.getParameter(VideoDecode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
@@ -101,7 +115,7 @@ describe("VideoDecode", function() {
           pNativeWindow: false
         }
       });
-      done();
+      eventPortSettingsChanged = true;
     });
   });
 
