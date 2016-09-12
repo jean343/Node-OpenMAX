@@ -7,7 +7,7 @@ export class AudioRender extends omx.Component {
     super('audio_render', name);
     this.setPorts(100, 0);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

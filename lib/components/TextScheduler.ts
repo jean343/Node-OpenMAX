@@ -7,7 +7,7 @@ export class TextScheduler extends omx.Component {
     super('text_scheduler', name);
     this.setPorts(150, 151);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

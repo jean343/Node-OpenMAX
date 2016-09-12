@@ -7,7 +7,7 @@ export class ReadMedia extends omx.Component {
     super('read_media', name);
     this.setPorts(113, 110);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

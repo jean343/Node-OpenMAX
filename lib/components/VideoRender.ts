@@ -7,7 +7,7 @@ export class VideoRender extends omx.Component {
     super('video_render', name);
     this.setPorts(90, 0);
   }
-  
+
   // ---- Text can be edited below this line --------
   setBufferCount (countIN: number) {
     var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);

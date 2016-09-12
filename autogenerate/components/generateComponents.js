@@ -96,7 +96,7 @@ export class " + nameCamel + " extends omx.Component {\n\
     super('" + name + "', name);\n\
     this.setPorts(" + inPort + ", " + outPort + ");\n\
   }\n\
-  \n\
+\n\
   // ---- Text can be edited below this line --------\n\
   " + customCode.trim() + "\n\
   // ---- Text can be edited above this line --------\n\

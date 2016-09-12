@@ -7,7 +7,7 @@ export class VideoScheduler extends omx.Component {
     super('video_scheduler', name);
     this.setPorts(10, 11);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

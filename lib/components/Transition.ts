@@ -7,7 +7,7 @@ export class Transition extends omx.Component {
     super('transition', name);
     this.setPorts(210, 212);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

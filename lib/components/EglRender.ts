@@ -7,7 +7,7 @@ export class EglRender extends omx.Component {
     super('egl_render', name);
     this.setPorts(220, 221);
   }
-  
+
   // ---- Text can be edited below this line --------
   setBufferCount (countIN: number, countOUT: number) {
     var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);

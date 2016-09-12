@@ -7,7 +7,7 @@ export class VideoSplitter extends omx.Component {
     super('video_splitter', name);
     this.setPorts(250, 251);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

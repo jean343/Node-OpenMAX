@@ -7,7 +7,7 @@ export class AudioMixer extends omx.Component {
     super('audio_mixer', name);
     this.setPorts(230, 231);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

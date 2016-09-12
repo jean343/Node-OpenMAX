@@ -7,7 +7,7 @@ export class WriteMedia extends omx.Component {
     super('write_media', name);
     this.setPorts(170, 0);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

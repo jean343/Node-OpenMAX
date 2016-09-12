@@ -7,7 +7,7 @@ export class Camera extends omx.Component {
     super('camera', name);
     this.setPorts(73, 71);
   }
-  
+
   // ---- Text can be edited below this line --------
   setFormat() {
     var vf = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);

@@ -7,7 +7,7 @@ export class Source extends omx.Component {
     super('source', name);
     this.setPorts(0, 20);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

@@ -7,7 +7,7 @@ export class NullSink extends omx.Component {
     super('null_sink', name);
     this.setPorts(240, 0);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------

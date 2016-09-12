@@ -7,7 +7,7 @@ export class AudioDecode extends omx.Component {
     super('audio_decode', name);
     this.setPorts(120, 121);
   }
-  
+
   // ---- Text can be edited below this line --------
   
   // ---- Text can be edited above this line --------
