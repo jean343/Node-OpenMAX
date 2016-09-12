@@ -1,4 +1,4 @@
-//This file is auto-generated from 'node generateComponents.js' 
+// This file is auto-generated from 'node generateComponents.js' 
 
 import omx = require('../../')
 
@@ -8,5 +8,7 @@ export class AudioSplitter extends omx.Component {
     this.setPorts(260, 262);
   }
   
+  // ---- Text can be edited below this line --------
   
+  // ---- Text can be edited above this line --------
 }

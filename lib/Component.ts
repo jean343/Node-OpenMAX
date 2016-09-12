@@ -22,7 +22,7 @@ export class EventHandlers {
 
 export class Component extends stream.Duplex {
   static isOMXInit: boolean = false;
-  static verbose: VERBOSE_LEVEL = VERBOSE_LEVEL.None;
+  static verbose: VERBOSE_LEVEL = VERBOSE_LEVEL.Info;
   static logComponent: string = null;
   in_port: number;
   out_port: number;
@@ -523,10 +523,13 @@ export class Component extends stream.Duplex {
     if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
       this.info("Received OMX_BUFFERFLAG_EOS");
 
-      //dispose on EOS.
+      //self.fillBuffer(outputBuffer.header)
+      this.info("Received OMX_BUFFERFLAG_EOS fillBuffer");
+
       if (this.autoClose) {
         this.close();
       }
+
       return;
     } else {
       buffer.onBufferDone = function() {

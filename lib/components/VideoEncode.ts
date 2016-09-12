@@ -1,4 +1,4 @@
-//This file is auto-generated from 'node generateComponents.js' 
+// This file is auto-generated from 'node generateComponents.js' 
 
 import omx = require('../../')
 
@@ -8,6 +8,7 @@ export class VideoEncode extends omx.Component {
     this.setPorts(200, 201);
   }
   
+  // ---- Text can be edited below this line --------
   setVideoPortFormat (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {
     var format = {
       eCompressionFormat: eCompressionFormat
@@ -15,5 +16,5 @@ export class VideoEncode extends omx.Component {
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
     return this;
   };
-
+  // ---- Text can be edited above this line --------
 }

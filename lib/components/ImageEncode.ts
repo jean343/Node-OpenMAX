@@ -1,4 +1,4 @@
-//This file is auto-generated from 'node generateComponents.js' 
+// This file is auto-generated from 'node generateComponents.js' 
 
 import omx = require('../../')
 
@@ -8,11 +8,12 @@ export class ImageEncode extends omx.Component {
     this.setPorts(340, 341);
   }
   
+  // ---- Text can be edited below this line --------
   setInputFormat (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {
     var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);
     format.eCompressionFormat = eCompressionFormat;
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);
     return this;
   };
-
+  // ---- Text can be edited above this line --------
 }
