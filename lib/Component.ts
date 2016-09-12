@@ -22,7 +22,7 @@ export class EventHandlers {
 
 export class Component extends stream.Duplex {
   static isOMXInit: boolean = false;
-  static verbose: VERBOSE_LEVEL = VERBOSE_LEVEL.Info;
+  static verbose: VERBOSE_LEVEL = VERBOSE_LEVEL.None;
   static logComponent: string = null;
   in_port: number;
   out_port: number;
@@ -38,7 +38,7 @@ export class Component extends stream.Duplex {
   graphics: omx.Graphics = null;
 
   autoClose = true;
-  closing = false;
+  closingPromise = null;
   closed = false;
 
   in_list: Array<any>;
@@ -211,12 +211,11 @@ export class Component extends stream.Duplex {
   }
 
   close() {
-    if (this.closing) {
-      return Promise.resolve();
+    if (this.closingPromise) {
+      return this.closingPromise;
     }
-    this.closing = true;
     this.info('close');
-    return this.flush()
+    this.closingPromise = this.flush()
       .then(() => {
         this.debug('flush done');
         return this.disablePortBuffers([this.in_port, this.out_port])
@@ -250,6 +249,7 @@ export class Component extends stream.Duplex {
         this.closed = true;
       })
       .catch(console.log.bind(console, "Error:"));
+    return this.closingPromise;
   }
 
   registeredEventHandlers: Array<EventHandlers> = [];

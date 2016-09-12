@@ -65,4 +65,19 @@ describe("Component", function() {
       });
   });
 
+  it("should call close twice", function(done) {
+    var vd = new omx.VideoDecode();
+    vd.init()
+      .then(function() {
+        vd.close().then(() => {
+          expect(vd.closed).toEqual(true);
+          done();
+        });
+        vd.close().then(() => {
+          expect(vd.closed).toEqual(true);
+          done();
+        });
+      });
+  });
+
 });
