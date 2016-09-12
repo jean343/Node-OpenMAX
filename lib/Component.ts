@@ -499,15 +499,14 @@ export class Component extends stream.Duplex {
   }
 
   initRead() {
-    var self = this;
     if (this.firstReadPacket) {
       this.debug('initRead firstReadPacket');
       this.firstReadPacket = false;
       return this.enableOutputPortBuffer()
-        .then(function() {
-          if (self.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
-            self.debug('initRead changeState OMX_StateExecuting');
-            return self.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+        .then(() => {
+          if (this.getState() !== omx.OMX_STATETYPE.OMX_StateExecuting) {
+            this.debug('initRead changeState OMX_StateExecuting');
+            return this.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
           }
         })
         .catch(console.log.bind(console));
@@ -516,65 +515,52 @@ export class Component extends stream.Duplex {
     }
   }
   readDone(outputBuffer) {
-    var self = this;
     var buffer: Buffer = outputBuffer.buf;
 
     // Catch EOF
     if (outputBuffer.header.nFlags & 0x00000001/*OMX_BUFFERFLAG_EOS*/) {
       this.info("Received OMX_BUFFERFLAG_EOS");
-
-      //self.fillBuffer(outputBuffer.header)
-      this.info("Received OMX_BUFFERFLAG_EOS fillBuffer");
-
       if (this.autoClose) {
         this.close();
       }
 
       return;
     } else {
-      buffer.onBufferDone = function() {
-        self.fillBuffer(outputBuffer.header);
+      buffer.onBufferDone = () => {
+        this.fillBuffer(outputBuffer.header);
       };
     }
     this.push(buffer);
   }
+  readyToRead() {
+    this.info('_read eventPortSettingsChanged');
+    this.hasPortSettingsChanged = true;
+    var portDefinition = this.component.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    this.debug('_read portDefinition', portDefinition);
+    this.emit('portDefinitionChanged', portDefinition);
+
+    this.initRead()
+      .then(() => {
+        this.debug('initRead done');
+        for (var i = 0; i < this.out_list.length; i++) {
+          this.fillBuffer(this.out_list[i].header);
+        }
+      })
+      .catch(console.log.bind(console));
+  }
   _read() {
     this.debug('_read');
-    var self = this;
 
-    function read() {
-      self.debug('read');
-      self.initRead()
-        .then(function() {
-          self.debug('initRead done');
-          for (var i = 0; i < self.out_list.length; i++) {
-            self.fillBuffer(self.out_list[i].header);
-          }
-        })
-        .catch(console.log.bind(console));
-    }
-    function portDefinitionChanged() {
-      self.info('_read eventPortSettingsChanged');
-      self.hasPortSettingsChanged = true;
-      var portDefinition = self.component.getParameter(self.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
-      self.debug('_read portDefinition', portDefinition);
-      self.emit('portDefinitionChanged', portDefinition);
-      read();
-    }
-
-    if (this.hasPortSettingsChanged) {
-
-    } else {
-      if (self.name === "video_decode") {
-        this.component.on("eventPortSettingsChanged", portDefinitionChanged);
+    if (!this.hasPortSettingsChanged) {
+      if (this.name === "video_decode") {
+        this.component.on("eventPortSettingsChanged", this.readyToRead.bind(this));
       } else {
-        portDefinitionChanged();
+        this.readyToRead();
       }
     }
   }
   writeRecursive(chunk: Buffer, offset: number) {
     "use strict";
-    var self = this;
 
     this.debug('writeRecursive', chunk.length, offset);
 
