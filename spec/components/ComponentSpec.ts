@@ -65,16 +65,22 @@ describe("Component", function() {
       });
   });
 
-  it("should call close twice", function(done) {
+  it("should call close n times", function(done) {
+    var total = 5;
     var vd = new omx.VideoDecode();
     vd.init()
       .then(function() {
-        vd.close().then(() => {
-          expect(vd.closed).toEqual(true);
-          done();
-        });
-        vd.close().then(() => {
-          expect(vd.closed).toEqual(true);
+        var called = 0;
+        var promises = [];
+        for (var i = 0; i < total; i++) {
+          promises.push(vd.close()
+            .then(() => {
+              expect(vd.closed).toEqual(true);
+              called++;
+            }));
+        }
+        Promise.all(promises).then(() => {
+          expect(called).toEqual(total);
           done();
         });
       });
