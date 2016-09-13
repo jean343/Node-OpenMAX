@@ -199,7 +199,7 @@ export class Component extends stream.Duplex {
 
         this.emptyBuffer(inputBuffer.header)
           .then(() => {
-            if (this.name === "video_render") {
+            if (this.out_port === 0) { // Output node
               if (this.autoClose) {
                 this.close();
               }
