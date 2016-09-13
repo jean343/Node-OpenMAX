@@ -32,26 +32,13 @@ class WriteFileFilter extends stream.Duplex {
   };
 }
 
-var VideoDecode1: omx.VideoDecode;
-var VideoDecode2: omx.VideoDecode;
-var VideoEncode: omx.VideoEncode;
-var VideoRender: omx.VideoRender;
+var VideoDecode1 = new omx.VideoDecode('VideoDecode1');
+var VideoDecode2 = new omx.VideoDecode('VideoDecode2');
+var VideoEncode = new omx.VideoEncode();
+var VideoRender = new omx.VideoRender();
 var writeFileFilter = new WriteFileFilter();
 
-VideoDecode1 = new omx.VideoDecode('VideoDecode1');
-VideoDecode1.init()
-  .then(function() {
-    VideoDecode2 = new omx.VideoDecode('VideoDecode2');
-    return VideoDecode2.init();
-  })
-  .then(function() {
-    VideoEncode = new omx.VideoEncode();
-    return VideoEncode.init();
-  })
-  .then(function() {
-    VideoRender = new omx.VideoRender();
-    return VideoRender.init();
-  })
+omx.Component.initAll([VideoDecode1, VideoDecode2, VideoEncode, VideoRender])
   .then(function() {
     VideoDecode1.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
     VideoDecode2.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
@@ -87,4 +74,7 @@ VideoDecode1.init()
           process.exit();
         });
     }
-  });
+  })
+  .catch(console.log.bind(console, "Error:"));
+
+setTimeout(function(){},10000);

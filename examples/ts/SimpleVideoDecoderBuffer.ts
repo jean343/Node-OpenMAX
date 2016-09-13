@@ -15,10 +15,9 @@ class WritableFilter extends stream.Writable {
   };
 }
 
-var VideoDecode: omx.VideoDecode;
+var VideoDecode = new omx.VideoDecode();
 var ws = new WritableFilter();
 
-VideoDecode = new omx.VideoDecode();
 VideoDecode.init()
   .then(function() {
     VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);

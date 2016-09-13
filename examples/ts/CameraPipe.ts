@@ -2,17 +2,9 @@ import omx = require('openmax');
 
 var Clock = new omx.Clock();
 var Camera = new omx.Camera();
-var VideoRender: omx.VideoRender;
+var VideoRender = new omx.VideoRender();
 
-Camera.init()
-  .then(function() {
-    Clock = new omx.Clock();
-    return Clock.init();
-  })
-  .then(function() {
-    VideoRender = new omx.VideoRender();
-    return VideoRender.init();
-  })
+omx.Component.initAll([Clock, Camera, VideoRender])
   .then(function() {
     Camera.setFormat().enable();
     Clock.run();

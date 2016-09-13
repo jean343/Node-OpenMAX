@@ -11,6 +11,9 @@ node dist/CameraPipe
 echo Running CameraTunnel
 node dist/CameraTunnel
 
+#echo Running SimpleDecoderEncoder
+#node dist/SimpleDecoderEncoder
+
 echo Running SimpleVideoDecoderBuffer
 node dist/SimpleVideoDecoderBuffer
 

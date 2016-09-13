@@ -1,19 +1,11 @@
 "use strict";
 var omx = require('openmax');
 
-var Clock;
-var Camera;
-var VideoRender;
-Camera = new omx.Camera();
-Camera.init()
-        .then(function () {
-          Clock = new omx.Clock();
-          return Clock.init();
-        })
-        .then(function () {
-          VideoRender = new omx.VideoRender();
-          return VideoRender.init();
-        })
+var Clock = new omx.Clock();
+var Camera = new omx.Camera();
+var VideoRender = new omx.VideoRender();
+
+omx.Component.initAll([Clock, Camera, VideoRender])
         .then(function () {
           Camera.setFormat().enable();
           Clock.run();
