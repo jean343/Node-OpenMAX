@@ -85,6 +85,12 @@ export class Component extends stream.Duplex {
       });
   }
 
+  static initAll(components) {
+    return Promise.all(components.map((component: omx.Component) => {
+      return component.init();
+    }));
+  }
+
   initHost() {
     if (!Component.isOMXInit) {
       Node_OMX.bcm_host_init();
