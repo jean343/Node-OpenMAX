@@ -1,4 +1,4 @@
-import omx = require('../');
+import omx = require('../index');
 import stream = require('stream');
 import events = require('events');
 import utils = require('./utils');

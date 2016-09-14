@@ -1,4 +1,4 @@
-import omx = require('../');
+import omx = require('../index');
 
 export function log(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
 //  console.log('on %s caught event', name, omx.OMX_EVENTTYPE[eEvent], nData1, nData2);

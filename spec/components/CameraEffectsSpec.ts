@@ -1,4 +1,4 @@
-import omx = require('../../');
+import omx = require('../../index');
 
 describe("Camera", function() {
   var Camera: omx.Camera;

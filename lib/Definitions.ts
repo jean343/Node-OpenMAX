@@ -1,4 +1,4 @@
-import omx = require('../');
+import omx = require('../index');
 
 export interface Node_OMX {
   bcm_host_init();

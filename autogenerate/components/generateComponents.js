@@ -89,7 +89,7 @@ function template(oldFileContent, name, nameCamel, inPorts, outPorts) {
 
   return "// This file is auto-generated from 'node generateComponents.js' \n\
 \n\
-import omx = require('../../')\n\
+import omx = require('../../index')\n\
 \n\
 export class " + nameCamel + " extends omx.Component {\n\
   constructor(name?: string) {\n\

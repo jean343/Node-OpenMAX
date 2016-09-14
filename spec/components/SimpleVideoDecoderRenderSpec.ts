@@ -1,5 +1,5 @@
 import fs = require('fs');
-import omx = require('../../');
+import omx = require('../../index');
 
 describe("SimpleVideoDecoderRenderSpec", function() {
   var VideoDecode: omx.VideoDecode;

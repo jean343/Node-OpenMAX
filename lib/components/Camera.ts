@@ -1,6 +1,6 @@
 // This file is auto-generated from 'node generateComponents.js' 
 
-import omx = require('../../')
+import omx = require('../../index')
 import clamp = require('clamp')
 
 export class Camera extends omx.Component {

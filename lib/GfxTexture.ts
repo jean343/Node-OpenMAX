@@ -1,4 +1,4 @@
-import omx = require('../');
+import omx = require('../index');
 import def = require('./Definitions');
 var Node_OMX: def.Node_OMX = require('bindings')('Node_OMX');
 

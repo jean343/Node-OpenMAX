@@ -1,4 +1,4 @@
-import omx = require('../');
+import omx = require('../index');
 
 var Clock = new omx.Clock();
 var Camera = new omx.Camera();

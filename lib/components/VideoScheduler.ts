@@ -1,6 +1,6 @@
 // This file is auto-generated from 'node generateComponents.js' 
 
-import omx = require('../../')
+import omx = require('../../index')
 
 export class VideoScheduler extends omx.Component {
   constructor(name?: string) {

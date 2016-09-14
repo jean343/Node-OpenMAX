@@ -1,4 +1,4 @@
-import omx = require('../');
+import omx = require('../index');
 import fs = require('fs');
 
 (function play() {

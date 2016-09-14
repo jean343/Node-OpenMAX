@@ -1,5 +1,5 @@
 import stream = require('stream');
-import omx = require('../');
+import omx = require('../index');
 
 class TransformFilter extends stream.Duplex {
   constructor() {

@@ -1,5 +1,5 @@
 import fs = require('fs');
-import omx = require('../../');
+import omx = require('../../index');
 import stream = require('stream');
 
 class WritableFilter extends stream.Writable {
