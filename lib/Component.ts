@@ -4,7 +4,7 @@ import events = require('events');
 import utils = require('./utils');
 import printEvent = require('./printEvent');
 import def = require('./Definitions');
-var Promise = require('promise');
+import Promise = require('promise');
 
 var Node_OMX: def.Node_OMX = require('bindings')('Node_OMX');
 

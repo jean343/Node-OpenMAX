@@ -1,0 +1,6 @@
+export enum CameraZoom {
+  CAMERA_ZOOM_1X = 0x10000,
+  CAMERA_ZOOM_2X = 0x20000,
+  CAMERA_ZOOM_3X = 0x30000,
+  CAMERA_ZOOM_4X = 0x40000
+}

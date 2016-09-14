@@ -1,6 +1,7 @@
 export * from "./lib/flags/Audio"
 export * from "./lib/flags/BLOCK_TYPE"
 export * from "./lib/flags/Broadcom"
+export * from "./lib/flags/Camera"
 export * from "./lib/flags/Component"
 export * from "./lib/flags/ContentPipe"
 export * from "./lib/flags/Core"
