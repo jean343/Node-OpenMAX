@@ -22,8 +22,7 @@
   "scripts": {
     "preinstall": "typings install || exit 0",
     "install": "node-gyp rebuild || exit 0",
-    "test": "./node_modules/jasmine-node/bin/jasmine-node dist/spec/",
-    "test-watch": "./node_modules/jasmine-node/bin/jasmine-node --autotest dist/spec/",
+    "test": "./node_modules/jasmine/bin/jasmine.js",
     "make": "make -j 4 -C build/"
   },
   "repository": {
@@ -32,7 +31,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "jasmine-node": "^1.14.5",
+    "jasmine": "^2.5.1",
     "typescript": "^1.7.5"
   }
 }
