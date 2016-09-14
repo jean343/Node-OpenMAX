@@ -18,3 +18,5 @@ omx.Component.initAll([VideoDecode, VideoRender])
       });
 
   });
+
+setTimeout(process.exit, 6000);

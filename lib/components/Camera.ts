@@ -10,19 +10,19 @@ export class Camera extends omx.Component {
   }
 
   // ---- Text can be edited below this line --------
-  setFormat() {
+  setFormat(): Camera {
     var vf = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
     vf.video.nSliceHeight = vf.video.nFrameHeight;
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, vf);
     return this;
   };
-  enable() {
+  enable(): Camera {
     var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
     format.bEnabled = 1;
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
     return this;
   };
-  disable() {
+  disable(): Camera {
     var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
     format.bEnabled = 0;
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
@@ -41,7 +41,12 @@ export class Camera extends omx.Component {
     });
   }
 
-  getContrast() {
+  getCamplusId(): number {
+    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraCamplusId);
+    return p.nU32;
+  }
+  
+  getContrast(): number {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast);
     return p.nContrast;
   }
@@ -51,7 +56,7 @@ export class Camera extends omx.Component {
     this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast, { nContrast: nContrast });
   }
 
-  getBrightness() {
+  getBrightness(): number {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonBrightness);
     return p.nBrightness;
   }
@@ -61,7 +66,7 @@ export class Camera extends omx.Component {
     this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonBrightness, { nBrightness: nBrightness });
   }
 
-  getSaturation() {
+  getSaturation(): number {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonSaturation);
     return p.nSaturation;
   }

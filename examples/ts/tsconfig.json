@@ -13,24 +13,10 @@
     "outDir": "dist"
   },
   "filesGlob": [
-    "**/*.ts",
-    "!node_modules/**/*.ts",
-    "!dist/**/*.ts"
+    "./*.ts"
   ],
-  "atom": {
-    "rewriteTsconfig": true
-  },
-  "files": [
-    "CameraEffects.ts",
-    "CameraPipe.ts",
-    "CameraTunnel.ts",
-    "SimpleDecoderEncoder.ts",
-    "SimpleVideoDecoderBuffer.ts",
-    "SimpleVideoDecoderRender.ts",
-    "SimpleVideoDecoderRenderBuffer.ts",
-    "SimpleVideoDecoderRenderTunnel.ts",
-    "typings/async/async.d.ts",
-    "typings/node/node.d.ts",
-    "typings/tsd.d.ts"
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }

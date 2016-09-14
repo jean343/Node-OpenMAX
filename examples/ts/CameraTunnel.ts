@@ -21,3 +21,5 @@ omx.Component.initAll([Clock, Camera, VideoRender])
 setTimeout(() => {
   Clock.stop();
 }, 5000);
+
+setTimeout(process.exit, 6000);
