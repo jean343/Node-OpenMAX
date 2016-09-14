@@ -99,3 +99,4 @@ export enum OMX_BUFFERSUPPLIERTYPE {
   OMX_BufferSupplyVendorStartUnused = 0x7F000000,
   OMX_BufferSupplyMax = 0x7FFFFFFF
 }
+export const OMX_ALL: number = 0xFFFFFFFF

@@ -13,11 +13,12 @@
   ],
   "typings": "./dist/index.d.ts",
   "dependencies": {
+    "async": "2.0.1",
     "bindings": "~1.2.1",
+    "clamp": "^1.0.1",
     "fps": "0.0.3",
     "nan": "^2.4.0",
-    "promise": "^7.1.1",
-    "async": "2.0.1"
+    "promise": "^7.1.1"
   },
   "scripts": {
     "preinstall": "typings install || exit 0",

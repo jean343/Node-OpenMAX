@@ -1,4 +1,3 @@
-import fs = require('fs');
 import omx = require('../../');
 import stream = require('stream');
 

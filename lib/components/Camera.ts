@@ -1,6 +1,7 @@
 // This file is auto-generated from 'node generateComponents.js' 
 
 import omx = require('../../')
+import clamp = require('clamp')
 
 export class Camera extends omx.Component {
   constructor(name?: string) {
@@ -27,5 +28,14 @@ export class Camera extends omx.Component {
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
     return this;
   };
+  
+  getContrast() {
+    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast);
+    return p.nContrast;
+  }
+  setContrast(contrast: number) {
+    contrast = clamp(contrast, -100, 100);
+    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast, { nContrast: contrast });
+  }
   // ---- Text can be edited above this line --------
 }
