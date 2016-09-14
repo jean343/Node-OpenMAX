@@ -29,12 +29,12 @@ export class Camera extends omx.Component {
     return this;
   };
 
-  getDigitalZoom() {
+  getDigitalZoom(): omx.CameraZoom {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonDigitalZoom);
-    return p;
+    return p.xWidth;
   }
-  setDigitalZoom(zoom?: omx.Camera) {
-    if (zoom === undefined) zoom = 0x10000;
+  setDigitalZoom(zoom?: omx.CameraZoom) {
+    if (zoom === undefined) zoom = omx.CameraZoom.CAMERA_ZOOM_1X;
     this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonDigitalZoom, {
       xWidth: zoom,
       xHeight: zoom

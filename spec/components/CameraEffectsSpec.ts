@@ -5,7 +5,8 @@ describe("Camera", function() {
   var Clock: omx.Clock;
   var VideoRender: omx.VideoRender;
   var pipeline;
-  var t = (d, time?: number) => { setTimeout(d, time || 200) };
+  var timeout = 200;
+  var t = (d, time?: number) => { setTimeout(d, time || timeout) };
 
   beforeAll(function(done) {
     Camera = new omx.Camera();
@@ -42,34 +43,30 @@ describe("Camera", function() {
     Camera.setDigitalZoom();
   });
 
-  it("should set getDigitalZoom", function(done) {
+  it("should have default DigitalZoom", function() {
     var p = Camera.getDigitalZoom();
-    console.log(p)
-    t(done);
+    expect(p).toEqual(omx.CameraZoom.CAMERA_ZOOM_1X);
   });
   it("should set DigitalZoom", function(done) {
-    Camera.setDigitalZoom(0x10000);
-    t(done, 2000);
-  });
-  it("should set DigitalZoom", function(done) {
-    Camera.setDigitalZoom(0x20000);
-    t(done, 2000);
-  });
-  it("should set DigitalZoom", function(done) {
-    Camera.setDigitalZoom(0x30000);
-    t(done, 2000);
-  });
-  it("should set DigitalZoom", function(done) {
-    Camera.setDigitalZoom(0x40000);
-    t(done, 2000);
-  });
-  it("should set DigitalZoom", function(done) {
-    Camera.setDigitalZoom(0x50000);
-    t(done, 2000);
-  });
-  it("should set DigitalZoom", function(done) {
-    Camera.setDigitalZoom(0x60000);
-    t(done, 2000);
+    var zooms = [
+      omx.CameraZoom.CAMERA_ZOOM_1X,
+      omx.CameraZoom.CAMERA_ZOOM_2X,
+      omx.CameraZoom.CAMERA_ZOOM_3X,
+      omx.CameraZoom.CAMERA_ZOOM_4X,
+      omx.CameraZoom.CAMERA_ZOOM_5X,
+      omx.CameraZoom.CAMERA_ZOOM_6X,
+      omx.CameraZoom.CAMERA_ZOOM_7X,
+      omx.CameraZoom.CAMERA_ZOOM_8X
+    ];
+    (function next() {
+      var zoom = zooms.shift();
+      if (zooms.length===0){
+        done();
+        return;
+      }
+      Camera.setDigitalZoom(zoom);
+      setTimeout(next, timeout);
+    })();
   });
 
   it("should have default Contrast", function() {
