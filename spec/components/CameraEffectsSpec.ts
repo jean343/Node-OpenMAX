@@ -41,13 +41,13 @@ describe("Camera", function() {
     Camera.setBrightness();
     Camera.setSaturation();
     Camera.setDigitalZoom();
-    Camera.setVideoFramerate(30);
-    Camera.setFrameStabilisation(false);
+    Camera.setVideoFramerate();
+    Camera.setFrameStabilisation();
+    Camera.setExposure();
   });
 
   it("should have default DigitalZoom", function() {
-    var p = Camera.getDigitalZoom();
-    expect(p).toEqual(omx.CameraZoom.CAMERA_ZOOM_1X);
+    expect(Camera.getDigitalZoom()).toEqual(omx.CameraZoom.CAMERA_ZOOM_1X);
   });
   it("should set DigitalZoom", function(done) {
     var zooms = [
@@ -67,6 +67,7 @@ describe("Camera", function() {
         return;
       }
       Camera.setDigitalZoom(zoom);
+      expect(Camera.getDigitalZoom()).toEqual(zoom);
       setTimeout(next, timeout);
     })();
   });
@@ -130,12 +131,12 @@ describe("Camera", function() {
     expect(Camera.getSaturation()).toEqual(-30);
     t(done);
   });
-  
+
   it("should get VideoFramerate", function() {
     Camera.setVideoFramerate(15);
     expect(Camera.getVideoFramerate()).toEqual(15);
   });
-  
+
   it("should have default FrameStabilisation", function() {
     expect(Camera.getFrameStabilisation()).toEqual(false);
   });
@@ -143,6 +144,39 @@ describe("Camera", function() {
     Camera.setFrameStabilisation(true);
     expect(Camera.getFrameStabilisation()).toEqual(true);
     t(done);
+  });
+
+  it("should have default Exposure", function() {
+    expect(Camera.getExposure()).toEqual(omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAuto);
+  });
+  it("should set Exposure", function(done) {
+    var exposures = [
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlOff,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAuto,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlNight,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlBackLight,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSpotLight,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSports,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSnow,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlBeach,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlLargeAperture,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSmallAperture,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlVeryLong,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlFixedFps,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlNightWithPreview,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAntishake,
+      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlFireworks,
+    ];
+    (function next() {
+      var exposure = exposures.shift();
+      if (exposures.length === 0) {
+        done();
+        return;
+      }
+      Camera.setExposure(exposure);
+      expect(Camera.getExposure()).toEqual(exposure);
+      setTimeout(next, timeout);
+    })();
   });
 
 });

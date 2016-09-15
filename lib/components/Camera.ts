@@ -60,7 +60,7 @@ export class Camera extends omx.Component {
       nU32: nU32
     });
   }
-  
+
   getCameraDevicesPresent(): number {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraDevicesPresent);
     return p.nU32;
@@ -72,6 +72,15 @@ export class Camera extends omx.Component {
   }
   setFrameStabilisation(enabled?: boolean) {
     this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonFrameStabilisation, { bStab: enabled });
+  }
+
+  getExposure(): omx.OMX_EXPOSURECONTROLTYPE {
+    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposure);
+    return p.eExposureControl;
+  }
+  setExposure(exposureControl?: omx.OMX_EXPOSURECONTROLTYPE) {
+    if (exposureControl === undefined) exposureControl = omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAuto;
+    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposure, { eExposureControl: exposureControl });
   }
 
   getContrast(): number {
@@ -108,7 +117,8 @@ export class Camera extends omx.Component {
     var p = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigVideoFramerate);
     return p.xEncodeFramerate >> 16;
   }
-  setVideoFramerate(fps: number) {
+  setVideoFramerate(fps?: number) {
+    if (fps === undefined) fps = 30;
     this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigVideoFramerate, { xEncodeFramerate: fps << 16 });
   }
   // ---- Text can be edited above this line --------
