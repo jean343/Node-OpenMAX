@@ -45,7 +45,22 @@ export class Camera extends omx.Component {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraCamplusId);
     return p.nU32;
   }
-  
+  setCamplusId(nU32: number): number {
+    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraCamplusId, {
+      nU32: nU32
+    });
+  }
+
+  getCameraDeviceNumber(): number {
+    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraDeviceNumber);
+    return p.nU32;
+  }
+  setCameraDeviceNumber(nU32: number) {
+    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraDeviceNumber, {
+      nU32: nU32
+    });
+  }
+
   getContrast(): number {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast);
     return p.nContrast;
@@ -74,6 +89,14 @@ export class Camera extends omx.Component {
     if (nSaturation === undefined) nSaturation = 0;
     nSaturation = clamp(nSaturation, -100, 100);
     this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonSaturation, { nSaturation: nSaturation });
+  }
+
+  getVideoFramerate(): number {
+    var p = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigVideoFramerate);
+    return p.xEncodeFramerate >> 16;
+  }
+  setVideoFramerate(fps: number) {
+    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigVideoFramerate, { xEncodeFramerate: fps << 16 });
   }
   // ---- Text can be edited above this line --------
 }

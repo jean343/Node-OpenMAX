@@ -41,6 +41,7 @@ describe("Camera", function() {
     Camera.setBrightness();
     Camera.setSaturation();
     Camera.setDigitalZoom();
+    Camera.setVideoFramerate(30);
   });
 
   it("should have default DigitalZoom", function() {
@@ -60,7 +61,7 @@ describe("Camera", function() {
     ];
     (function next() {
       var zoom = zooms.shift();
-      if (zooms.length===0){
+      if (zooms.length === 0) {
         done();
         return;
       }
@@ -127,6 +128,11 @@ describe("Camera", function() {
     Camera.setSaturation(-30);
     expect(Camera.getSaturation()).toEqual(-30);
     t(done);
+  });
+  
+  it("should get VideoFramerate", function() {
+    Camera.setVideoFramerate(15);
+    expect(Camera.getVideoFramerate()).toEqual(15);
   });
 
 });

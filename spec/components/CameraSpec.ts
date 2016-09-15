@@ -116,6 +116,14 @@ describe("Camera", function() {
     expect(f).toEqual({ bEnabled: 0 });
   });
 
+  it("should get CamplusId", function() {
+    expect(Camera.getCamplusId()).toBeGreaterThan(0);
+  });
+
+  it("should get CameraDeviceNumber", function() {
+    expect(Camera.getCameraDeviceNumber()).toEqual(0);
+  });
+  
   it("should tunnel and pipe to stream", function(done) {
     var Clock = new omx.Clock();
     Clock.init()
