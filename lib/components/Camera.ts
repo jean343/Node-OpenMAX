@@ -66,6 +66,14 @@ export class Camera extends omx.Component {
     return p.nU32;
   }
 
+  getFrameStabilisation(): boolean {
+    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonFrameStabilisation);
+    return !!p.bStab;
+  }
+  setFrameStabilisation(enabled?: boolean) {
+    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonFrameStabilisation, { bStab: enabled });
+  }
+
   getContrast(): number {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast);
     return p.nContrast;
