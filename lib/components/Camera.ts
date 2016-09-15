@@ -60,6 +60,11 @@ export class Camera extends omx.Component {
       nU32: nU32
     });
   }
+  
+  getCameraDevicesPresent(): number {
+    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraDevicesPresent);
+    return p.nU32;
+  }
 
   getContrast(): number {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast);

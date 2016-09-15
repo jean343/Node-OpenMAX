@@ -123,6 +123,10 @@ describe("Camera", function() {
   it("should get CameraDeviceNumber", function() {
     expect(Camera.getCameraDeviceNumber()).toEqual(0);
   });
+
+  it("should get CameraDevicesPresent", function() {
+    expect(Camera.getCameraDevicesPresent()).toBeGreaterThan(0);
+  });
   
   it("should tunnel and pipe to stream", function(done) {
     var Clock = new omx.Clock();
