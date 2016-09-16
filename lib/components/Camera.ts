@@ -3,51 +3,6 @@
 import omx = require('../../index')
 import clamp = require('clamp')
 
-export class ExposureValue {
-  metering: omx.OMX_METERINGTYPE = omx.OMX_METERINGTYPE.OMX_MeteringModeAverage;
-  /**
-   * Fixed point value stored as Q16
-   */
-  eVCompensation = 0;
-  /**
-   * e.g. nApertureFNumber = 2 implies "f/2" - Q16 format
-   */
-  apertureFNumber = 0;
-  /**
-   * Whether aperture number is defined automatically
-   */
-  autoAperture: boolean = false;
-  /**
-   * Shutterspeed in milliseconds
-   */
-  shutterSpeedMsec = 0;
-  /**
-   * Whether shutter speed is defined automatically
-   */
-  autoShutterSpeed: boolean = true;
-  /**
-   * e.g. nSensitivity = 100 implies "ISO 100"
-   */
-  sensitivity = 0;
-  /**
-   * Whether sensitivity is defined automatically
-   */
-  autoSensitivity: boolean = true;
-
-  constructor(p?: any) {
-    if (p) {
-      this.metering = p.eMetering;
-      this.eVCompensation = p.xEVCompensation;
-      this.apertureFNumber = p.nApertureFNumber;
-      this.autoAperture = !!p.bAutoAperture;
-      this.shutterSpeedMsec = p.nShutterSpeedMsec;
-      this.autoShutterSpeed = !!p.bAutoShutterSpeed;
-      this.sensitivity = p.nSensitivity;
-      this.autoSensitivity = !!p.bAutoSensitivity;
-    }
-  }
-}
-
 export class Camera extends omx.Component {
   constructor(name?: string) {
     super('camera', name);
@@ -128,23 +83,23 @@ export class Camera extends omx.Component {
     this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposure, { eExposureControl: exposureControl });
   }
 
-  getExposureValue(): omx.ExposureValue {
+  getExposureValue(): omx.OMX_CONFIG_EXPOSUREVALUETYPE {
     var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposureValue);
-    return new omx.ExposureValue(p);
+    return new omx.OMX_CONFIG_EXPOSUREVALUETYPE(p);
   }
   setExposureValue(value?: ExposureValue) {
-    Object.assign(new omx.ExposureValue(), value);
-    var v = {
-      eMetering: value.metering,
-      xEVCompensation: value.eVCompensation,
-      nApertureFNumber: value.apertureFNumber,
-      bAutoAperture: !!value.autoAperture,
-      nShutterSpeedMsec: value.shutterSpeedMsec,
-      bAutoShutterSpeed: !!value.autoShutterSpeed,
-      nSensitivity: value.sensitivity,
-      bAutoSensitivity: !!value.autoSensitivity
-    };
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposureValue, v);
+//    Object.assign(new omx.OMX_CONFIG_EXPOSUREVALUETYPE(), value);
+    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposureValue, value);
+  }
+
+  getFocusControl(): number {
+    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigFocusControl);
+    return p.nContrast;
+  }
+  setFocusControl(nContrast?: number) {
+    if (nContrast === undefined) nContrast = 0;
+    nContrast = clamp(nContrast, -100, 100);
+    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigFocusControl, { nContrast: nContrast });
   }
 
   getContrast(): number {

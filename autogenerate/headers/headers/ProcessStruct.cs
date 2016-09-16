@@ -33,7 +33,14 @@ namespace headers
             foreach (string file in files)
             {
                 string sourcestring = File.ReadAllText(Path.Combine(path, "source", file + ".h"));
-                cstruct.AddRange(StructParser.parse(sourcestring, "struct"));
+                List<CStruct> structs = StructParser.parse(sourcestring, "struct");
+                cstruct.AddRange(structs);
+
+                Directory.CreateDirectory(Path.Combine(path, @"..\..\..\lib\classes"));
+                using (StreamWriter sw = new StreamWriter(Path.GetFullPath(Path.Combine(path, @"..\..\..\lib\classes", file + ".ts"))))
+                {
+                    writeTs(sw, file, structs);
+                }
             }
 
             using (StreamWriter sw = new StreamWriter(Path.GetFullPath(Path.Combine(path, @"..\..\..\src", "ParametersGet.cpp"))))
@@ -57,6 +64,95 @@ namespace headers
                 sw.WriteLine(@"void Parameters::SetParameter(OMX_HANDLETYPE *handle, int port, OMX_INDEXTYPE nParamIndex, v8::Local<v8::Object> param) {");
                 writeAllCasesCpp(sw, OMX_INDEXTYPE, cstruct, WriteType.set);
                 sw.WriteLine(@"}");
+            }
+        }
+
+        private void writeTs(StreamWriter sw, string file, List<CStruct> cstructs)
+        {
+            sw.WriteLine(@"import omx = require('../../index')");
+            foreach (CStruct cstruct in cstructs)
+            {
+                if (blackList.Contains(cstruct.name)) continue;
+                if (cstruct.name.Length == 0)
+                {
+                    return;
+                }
+
+                var nameTrimmed = cstruct.name;
+
+                sw.WriteLine(@"export class " + nameTrimmed + " {");
+
+                foreach (CField f in cstruct.fields)
+                {
+                    if (f.name == "nSize" || f.name == "nVersion" || f.name == "nPortIndex") continue;
+
+                    // Remove the array info
+                    if (Regex.IsMatch(f.name, @"\[\w*?\]"))
+                    {
+                        continue;
+                    }
+                    string nameNoArray = Regex.Replace(f.name, @"\[\w*?\]", "");
+
+                    if (
+                        f.type == "OMX_STRING" ||
+                        f.type == "OMX_PTR" ||
+                        f.type == "OMX_BRCM_POOL_T" ||
+                        f.type == "struct" ||
+                        f.type == "OMX_BRCM_PERFSTATS" ||
+                        f.type == "OMX_CONFIG_LENSCALIBRATIONVALUETYPE"
+                        ) continue;
+                    //f.comment
+                    if (f.comment.Length>0)
+                    {
+                        sw.WriteLine(@"  /**
+   * {0}
+   */", f.comment);
+                    }
+
+                    string nameNoType = nameNoArray;
+                    if (file != "OMX_Broadcom" && !Char.IsDigit(nameNoArray[1]))
+                    {
+                        //nameNoType = Char.ToLowerInvariant(nameNoArray[1]) + nameNoArray.Substring(2);
+                    }
+
+                    string tsType = cToTs(f.type);
+                    sw.WriteLine(@"  {0}{1};", nameNoType, tsType != null ? ": " + tsType : "");
+                }
+
+
+                
+                sw.WriteLine(@"  constructor(p?: any) {");
+                sw.WriteLine(@"    if (p) {");
+                sw.WriteLine(@"      Object.assign(this, p);");
+                sw.WriteLine(@"    }");
+                sw.WriteLine(@"  }");
+                
+
+                sw.WriteLine(@"}");
+            }
+        }
+
+        private string cToTs(string cType)
+        {
+            cType = cType.TrimEnd(new char[] { '*' });
+            switch (cType)
+            {
+                case "OMX_U8":
+                case "OMX_U16":
+                case "OMX_U32":
+                case "OMX_S8":
+                case "OMX_S16":
+                case "OMX_S32":
+                    return "number";
+                case "OMX_BOOL":
+                    return "boolean";
+                case "OMX_NATIVE_DEVICETYPE":
+                case "OMX_BUFFERADDRESSHANDLETYPE":
+                case "OMX_HANDLETYPE":
+                case "OMX_NATIVE_WINDOWTYPE":
+                    return null;
+                default:
+                    return "omx." + cType;
             }
         }
 
@@ -187,9 +283,14 @@ namespace headers
                 bool canBeNull = f.type == "OMX_STRING";
 
                 string castTo = null;
-                if (f.type == "OMX_U64")
+                switch (f.type)
                 {
-                    castTo = "double";
+                    case "OMX_U64":
+                        castTo = "(double)";
+                        break;
+                    case "OMX_BOOL":
+                        castTo = "!!";
+                        break;
                 }
 
                 if (canBeNull)
@@ -205,7 +306,7 @@ namespace headers
                     sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}(format.{0}));", nameNoArray, f.type);
                 }
                 else {
-                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", nameNoArray, castTo != null ? "(" + castTo + ")" : "", fname, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", nameNoArray, castTo != null ? castTo : "", fname, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
                 }
             }
 

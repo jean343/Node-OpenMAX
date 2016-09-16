@@ -271,7 +271,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PORTDEFINITIONTYPE(OMX_AUDIO_PORTDEFINITIONT
   if (format.cMIMEType != NULL)
     Nan::Set(ret, Nan::New("cMIMEType").ToLocalChecked(), Nan::New(format.cMIMEType).ToLocalChecked()); // MIME type of data for the port
   Nan::Set(ret, Nan::New("pNativeRender").ToLocalChecked(), Nan::New(format.pNativeRender)); // < platform specific reference for an output device, otherwise this field is 0
-  Nan::Set(ret, Nan::New("bFlagErrorConcealment").ToLocalChecked(), Nan::New(format.bFlagErrorConcealment)); // Turns on error concealment if it is supported by the OMX component
+  Nan::Set(ret, Nan::New("bFlagErrorConcealment").ToLocalChecked(), Nan::New(!!format.bFlagErrorConcealment)); // Turns on error concealment if it is supported by the OMX component
   Nan::Set(ret, Nan::New("eEncoding").ToLocalChecked(), Nan::New(format.eEncoding)); // Type of data expected for this port (e.g. PCM, AMR, MP3, etc)
   return scope.Escape(ret);
 }
@@ -290,7 +290,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_PCMMODETYPE(OMX_AUDIO_PARAM_PCMMODETYP
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels (e.g. 2 for stereo)
   Nan::Set(ret, Nan::New("eNumData").ToLocalChecked(), Nan::New(format.eNumData)); // indicates PCM data as signed or unsigned
   Nan::Set(ret, Nan::New("eEndian").ToLocalChecked(), Nan::New(format.eEndian)); // indicates PCM data as little or big endian
-  Nan::Set(ret, Nan::New("bInterleaved").ToLocalChecked(), Nan::New(format.bInterleaved)); // True for normal interleaved data; false for non-interleaved data (e.g. block data)
+  Nan::Set(ret, Nan::New("bInterleaved").ToLocalChecked(), Nan::New(!!format.bInterleaved)); // True for normal interleaved data; false for non-interleaved data (e.g. block data)
   Nan::Set(ret, Nan::New("nBitPerSample").ToLocalChecked(), Nan::New(format.nBitPerSample)); // Bit per sample
   Nan::Set(ret, Nan::New("nSamplingRate").ToLocalChecked(), Nan::New(format.nSamplingRate)); // Sampling rate of the source data. Use 0 for variable or unknown sampling rate.
   Nan::Set(ret, Nan::New("ePCMMode").ToLocalChecked(), Nan::New(format.ePCMMode)); // PCM mode enumeration
@@ -362,8 +362,8 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_VORBISTYPE(OMX_AUDIO_PARAM_VORBISTYPE 
   Nan::Set(ret, Nan::New("nSampleRate").ToLocalChecked(), Nan::New(format.nSampleRate)); // Sampling rate of the source data. Use 0 for variable or unknown sampling rate.
   Nan::Set(ret, Nan::New("nAudioBandWidth").ToLocalChecked(), Nan::New(format.nAudioBandWidth)); // Audio band width (in Hz) to which an encoder should limit the audio signal. Use 0 to let encoder decide
   Nan::Set(ret, Nan::New("nQuality").ToLocalChecked(), Nan::New(format.nQuality)); // Sets encoding quality to n, between -1 (low) and 10 (high). In the default mode of operation, teh quality level is 3. Normal quality range is 0 - 10.
-  Nan::Set(ret, Nan::New("bManaged").ToLocalChecked(), Nan::New(format.bManaged)); // Set bitrate management mode. This turns off the normal VBR encoding, but allows hard or soft bitrate constraints to be enforced by the encoder. This mode can be slower, and may also be lower quality. It is primarily useful for streaming.
-  Nan::Set(ret, Nan::New("bDownmix").ToLocalChecked(), Nan::New(format.bDownmix)); // Downmix input from stereo to mono (has no effect on non-stereo streams). Useful for lower-bitrate encoding.
+  Nan::Set(ret, Nan::New("bManaged").ToLocalChecked(), Nan::New(!!format.bManaged)); // Set bitrate management mode. This turns off the normal VBR encoding, but allows hard or soft bitrate constraints to be enforced by the encoder. This mode can be slower, and may also be lower quality. It is primarily useful for streaming.
+  Nan::Set(ret, Nan::New("bDownmix").ToLocalChecked(), Nan::New(!!format.bDownmix)); // Downmix input from stereo to mono (has no effect on non-stereo streams). Useful for lower-bitrate encoding.
   return scope.Escape(ret);
 }
 
@@ -404,7 +404,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_SBCTYPE(OMX_AUDIO_PARAM_SBCTYPE &forma
   Nan::Set(ret, Nan::New("nBlocks").ToLocalChecked(), Nan::New(format.nBlocks)); // Number of blocks
   Nan::Set(ret, Nan::New("nSubbands").ToLocalChecked(), Nan::New(format.nSubbands)); // Number of subbands
   Nan::Set(ret, Nan::New("nBitPool").ToLocalChecked(), Nan::New(format.nBitPool)); // Bitpool value
-  Nan::Set(ret, Nan::New("bEnableBitrate").ToLocalChecked(), Nan::New(format.bEnableBitrate)); // Use bitrate value instead of bitpool
+  Nan::Set(ret, Nan::New("bEnableBitrate").ToLocalChecked(), Nan::New(!!format.bEnableBitrate)); // Use bitrate value instead of bitpool
   Nan::Set(ret, Nan::New("eChannelMode").ToLocalChecked(), Nan::New(format.eChannelMode)); // Channel mode enumeration
   Nan::Set(ret, Nan::New("eSBCAllocType").ToLocalChecked(), Nan::New(format.eSBCAllocType)); // SBC Allocation method type
   return scope.Escape(ret);
@@ -423,10 +423,10 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_G723TYPE(OMX_AUDIO_PARAM_G723TYPE &for
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
   Nan::Set(ret, Nan::New("eBitRate").ToLocalChecked(), Nan::New(format.eBitRate)); // todo: Should this be moved to a config?
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
-  Nan::Set(ret, Nan::New("bPostFilter").ToLocalChecked(), Nan::New(format.bPostFilter)); // Enable Post Filter
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bPostFilter").ToLocalChecked(), Nan::New(!!format.bPostFilter)); // Enable Post Filter
   return scope.Escape(ret);
 }
 
@@ -442,7 +442,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_G729TYPE(OMX_AUDIO_PARAM_G729TYPE &for
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
   Nan::Set(ret, Nan::New("eBitType").ToLocalChecked(), Nan::New(format.eBitType));
   return scope.Escape(ret);
 }
@@ -461,24 +461,24 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_AMRTYPE(OMX_AUDIO_PARAM_AMRTYPE &forma
 v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_GSMFRTYPE(OMX_AUDIO_PARAM_GSMFRTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_GSMHRTYPE(OMX_AUDIO_PARAM_GSMHRTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_GSMEFRTYPE(OMX_AUDIO_PARAM_GSMEFRTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
@@ -486,8 +486,8 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_TDMAFRTYPE(OMX_AUDIO_PARAM_TDMAFRTYPE 
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
@@ -495,8 +495,8 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_TDMAEFRTYPE(OMX_AUDIO_PARAM_TDMAEFRTYP
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
@@ -504,8 +504,8 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_PDCFRTYPE(OMX_AUDIO_PARAM_PDCFRTYPE &f
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
@@ -513,8 +513,8 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_PDCEFRTYPE(OMX_AUDIO_PARAM_PDCEFRTYPE 
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
@@ -522,8 +522,8 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_PDCHRTYPE(OMX_AUDIO_PARAM_PDCHRTYPE &f
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
-  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(format.bDTX)); // Enable Discontinuous Transmisssion
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable High Pass Filter
+  Nan::Set(ret, Nan::New("bDTX").ToLocalChecked(), Nan::New(!!format.bDTX)); // Enable Discontinuous Transmisssion
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable High Pass Filter
   return scope.Escape(ret);
 }
 
@@ -553,12 +553,12 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_EVRCTYPE(OMX_AUDIO_PARAM_EVRCTYPE &for
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
   Nan::Set(ret, Nan::New("eCDMARate").ToLocalChecked(), Nan::New(format.eCDMARate)); // actual Frame rate
-  Nan::Set(ret, Nan::New("bRATE_REDUCon").ToLocalChecked(), Nan::New(format.bRATE_REDUCon)); // RATE_REDUCtion is requested for this frame
+  Nan::Set(ret, Nan::New("bRATE_REDUCon").ToLocalChecked(), Nan::New(!!format.bRATE_REDUCon)); // RATE_REDUCtion is requested for this frame
   Nan::Set(ret, Nan::New("nMinBitRate").ToLocalChecked(), Nan::New(format.nMinBitRate)); // minmal rate for the encoder = 1,2,3,4, default = 1
   Nan::Set(ret, Nan::New("nMaxBitRate").ToLocalChecked(), Nan::New(format.nMaxBitRate)); // maximal rate for the encoder = 1,2,3,4, default = 4
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable encoder's High Pass Filter
-  Nan::Set(ret, Nan::New("bNoiseSuppressor").ToLocalChecked(), Nan::New(format.bNoiseSuppressor)); // Enable encoder's noise suppressor pre-processing
-  Nan::Set(ret, Nan::New("bPostFilter").ToLocalChecked(), Nan::New(format.bPostFilter)); // Enable decoder's post Filter
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable encoder's High Pass Filter
+  Nan::Set(ret, Nan::New("bNoiseSuppressor").ToLocalChecked(), Nan::New(!!format.bNoiseSuppressor)); // Enable encoder's noise suppressor pre-processing
+  Nan::Set(ret, Nan::New("bPostFilter").ToLocalChecked(), Nan::New(!!format.bPostFilter)); // Enable decoder's post Filter
   return scope.Escape(ret);
 }
 
@@ -567,12 +567,12 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_SMVTYPE(OMX_AUDIO_PARAM_SMVTYPE &forma
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannels").ToLocalChecked(), Nan::New(format.nChannels)); // Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
   Nan::Set(ret, Nan::New("eCDMARate").ToLocalChecked(), Nan::New(format.eCDMARate)); // Frame rate
-  Nan::Set(ret, Nan::New("bRATE_REDUCon").ToLocalChecked(), Nan::New(format.bRATE_REDUCon)); // RATE_REDUCtion is requested for this frame
+  Nan::Set(ret, Nan::New("bRATE_REDUCon").ToLocalChecked(), Nan::New(!!format.bRATE_REDUCon)); // RATE_REDUCtion is requested for this frame
   Nan::Set(ret, Nan::New("nMinBitRate").ToLocalChecked(), Nan::New(format.nMinBitRate)); // minmal rate for the encoder = 1,2,3,4, default = 1 ??
   Nan::Set(ret, Nan::New("nMaxBitRate").ToLocalChecked(), Nan::New(format.nMaxBitRate)); // maximal rate for the encoder = 1,2,3,4, default = 4 ??
-  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(format.bHiPassFilter)); // Enable encoder's High Pass Filter ??
-  Nan::Set(ret, Nan::New("bNoiseSuppressor").ToLocalChecked(), Nan::New(format.bNoiseSuppressor)); // Enable encoder's noise suppressor pre-processing
-  Nan::Set(ret, Nan::New("bPostFilter").ToLocalChecked(), Nan::New(format.bPostFilter)); // Enable decoder's post Filter ??
+  Nan::Set(ret, Nan::New("bHiPassFilter").ToLocalChecked(), Nan::New(!!format.bHiPassFilter)); // Enable encoder's High Pass Filter ??
+  Nan::Set(ret, Nan::New("bNoiseSuppressor").ToLocalChecked(), Nan::New(!!format.bNoiseSuppressor)); // Enable encoder's noise suppressor pre-processing
+  Nan::Set(ret, Nan::New("bPostFilter").ToLocalChecked(), Nan::New(!!format.bPostFilter)); // Enable decoder's post Filter ??
   return scope.Escape(ret);
 }
 
@@ -581,7 +581,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_PARAM_MIDITYPE(OMX_AUDIO_PARAM_MIDITYPE &for
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nFileSize").ToLocalChecked(), Nan::New(format.nFileSize)); // size of the MIDI file in bytes, where the entire MIDI file passed in, otherwise if 0x0, the MIDI data is merged and streamed (instead of passed as an entire MIDI file)
   Nan::Set(ret, Nan::New("sMaxPolyphony").ToLocalChecked(), GET_OMX_BU32(format.sMaxPolyphony));
-  Nan::Set(ret, Nan::New("bLoadDefaultSound").ToLocalChecked(), Nan::New(format.bLoadDefaultSound)); // Whether to load default sound bank at initialization
+  Nan::Set(ret, Nan::New("bLoadDefaultSound").ToLocalChecked(), Nan::New(!!format.bLoadDefaultSound)); // Whether to load default sound bank at initialization
   Nan::Set(ret, Nan::New("eMidiFormat").ToLocalChecked(), Nan::New(format.eMidiFormat)); // Version of the MIDI file
   return scope.Escape(ret);
 }
@@ -638,7 +638,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_MIDISTATUSTYPE(OMX_AUDIO_CONFIG_MIDIS
   Nan::Set(ret, Nan::New("nNumTracks").ToLocalChecked(), Nan::New(format.nNumTracks)); // Number of MIDI tracks in the file, read only field. NOTE: May not return a meaningful value until the entire file is parsed and buffered.
   Nan::Set(ret, Nan::New("nDuration").ToLocalChecked(), Nan::New(format.nDuration)); // The length of the currently open MIDI resource in milliseconds. NOTE: May not return a meaningful value until the entire file is parsed and buffered.
   Nan::Set(ret, Nan::New("nPosition").ToLocalChecked(), Nan::New(format.nPosition)); // Current Position of the MIDI resource being played in milliseconds
-  Nan::Set(ret, Nan::New("bVibra").ToLocalChecked(), Nan::New(format.bVibra)); // Does Vibra track exist? NOTE: May not return a meaningful value until the entire file is parsed and buffered.
+  Nan::Set(ret, Nan::New("bVibra").ToLocalChecked(), Nan::New(!!format.bVibra)); // Does Vibra track exist? NOTE: May not return a meaningful value until the entire file is parsed and buffered.
   Nan::Set(ret, Nan::New("nNumMetaEvents").ToLocalChecked(), Nan::New(format.nNumMetaEvents)); // Total number of MIDI Meta Events in the currently open MIDI resource. NOTE: May not return a meaningful value until the entire file is parsed and buffered.
   Nan::Set(ret, Nan::New("nNumActiveVoices").ToLocalChecked(), Nan::New(format.nNumActiveVoices)); // Number of active voices in the currently playing MIDI resource. NOTE: May not return a meaningful value until the entire file is parsed and buffered.
   Nan::Set(ret, Nan::New("eMIDIPlayBackState").ToLocalChecked(), Nan::New(format.eMIDIPlayBackState)); // MIDI playback state enumeration, read only field
@@ -668,7 +668,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_MIDIMETAEVENTDATATYPE(OMX_AUDIO_CONFI
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_VOLUMETYPE(OMX_AUDIO_CONFIG_VOLUMETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bLinear").ToLocalChecked(), Nan::New(format.bLinear)); // Is the volume to be set in linear (0.100) or logarithmic scale (mB)
+  Nan::Set(ret, Nan::New("bLinear").ToLocalChecked(), Nan::New(!!format.bLinear)); // Is the volume to be set in linear (0.100) or logarithmic scale (mB)
   Nan::Set(ret, Nan::New("sVolume").ToLocalChecked(), GET_OMX_BS32(format.sVolume));
   return scope.Escape(ret);
 }
@@ -677,9 +677,9 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_CHANNELVOLUMETYPE(OMX_AUDIO_CONFIG_CH
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannel").ToLocalChecked(), Nan::New(format.nChannel)); // channel to select from 0 to N-1, using OMX_ALL to apply volume settings to all channels
-  Nan::Set(ret, Nan::New("bLinear").ToLocalChecked(), Nan::New(format.bLinear)); // Is the volume to be set in linear (0.100) or logarithmic scale (mB)
+  Nan::Set(ret, Nan::New("bLinear").ToLocalChecked(), Nan::New(!!format.bLinear)); // Is the volume to be set in linear (0.100) or logarithmic scale (mB)
   Nan::Set(ret, Nan::New("sVolume").ToLocalChecked(), GET_OMX_BS32(format.sVolume));
-  Nan::Set(ret, Nan::New("bIsMIDI").ToLocalChecked(), Nan::New(format.bIsMIDI)); // TRUE if nChannel refers to a MIDI channel, FALSE otherwise
+  Nan::Set(ret, Nan::New("bIsMIDI").ToLocalChecked(), Nan::New(!!format.bIsMIDI)); // TRUE if nChannel refers to a MIDI channel, FALSE otherwise
   return scope.Escape(ret);
 }
 
@@ -693,7 +693,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_BALANCETYPE(OMX_AUDIO_CONFIG_BALANCET
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_MUTETYPE(OMX_AUDIO_CONFIG_MUTETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bMute").ToLocalChecked(), Nan::New(format.bMute)); // Mute setting for this port
+  Nan::Set(ret, Nan::New("bMute").ToLocalChecked(), Nan::New(!!format.bMute)); // Mute setting for this port
   return scope.Escape(ret);
 }
 
@@ -701,22 +701,22 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_CHANNELMUTETYPE(OMX_AUDIO_CONFIG_CHAN
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nChannel").ToLocalChecked(), Nan::New(format.nChannel)); // channel to select from 0 to N-1, using OMX_ALL to apply mute settings to all channels
-  Nan::Set(ret, Nan::New("bMute").ToLocalChecked(), Nan::New(format.bMute)); // Mute setting for this channel
-  Nan::Set(ret, Nan::New("bIsMIDI").ToLocalChecked(), Nan::New(format.bIsMIDI)); // TRUE if nChannel refers to a MIDI channel, FALSE otherwise
+  Nan::Set(ret, Nan::New("bMute").ToLocalChecked(), Nan::New(!!format.bMute)); // Mute setting for this channel
+  Nan::Set(ret, Nan::New("bIsMIDI").ToLocalChecked(), Nan::New(!!format.bIsMIDI)); // TRUE if nChannel refers to a MIDI channel, FALSE otherwise
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_LOUDNESSTYPE(OMX_AUDIO_CONFIG_LOUDNESSTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bLoudness").ToLocalChecked(), Nan::New(format.bLoudness)); // Enable/disable for loudness
+  Nan::Set(ret, Nan::New("bLoudness").ToLocalChecked(), Nan::New(!!format.bLoudness)); // Enable/disable for loudness
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_BASSTYPE(OMX_AUDIO_CONFIG_BASSTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable)); // Enable/disable for bass control
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable)); // Enable/disable for bass control
   Nan::Set(ret, Nan::New("nBass").ToLocalChecked(), Nan::New(format.nBass)); // bass setting for the port, as a continuous value from -100 to 100 (0 means no change in bass level)
   return scope.Escape(ret);
 }
@@ -724,7 +724,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_BASSTYPE(OMX_AUDIO_CONFIG_BASSTYPE &f
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_TREBLETYPE(OMX_AUDIO_CONFIG_TREBLETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable)); // Enable/disable for treble control
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable)); // Enable/disable for treble control
   Nan::Set(ret, Nan::New("nTreble").ToLocalChecked(), Nan::New(format.nTreble)); // treble setting for the port, as a continuous value from -100 to 100 (0 means no change in treble level)
   return scope.Escape(ret);
 }
@@ -732,7 +732,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_TREBLETYPE(OMX_AUDIO_CONFIG_TREBLETYP
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_EQUALIZERTYPE(OMX_AUDIO_CONFIG_EQUALIZERTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable)); // Enable/disable for equalizer
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable)); // Enable/disable for equalizer
   Nan::Set(ret, Nan::New("sBandIndex").ToLocalChecked(), GET_OMX_BU32(format.sBandIndex));
   Nan::Set(ret, Nan::New("sCenterFreq").ToLocalChecked(), GET_OMX_BU32(format.sCenterFreq));
   Nan::Set(ret, Nan::New("sBandLevel").ToLocalChecked(), GET_OMX_BS32(format.sBandLevel));
@@ -742,7 +742,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_EQUALIZERTYPE(OMX_AUDIO_CONFIG_EQUALI
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE(OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable)); // Enable/disable for stereo widening control
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable)); // Enable/disable for stereo widening control
   Nan::Set(ret, Nan::New("eWideningType").ToLocalChecked(), Nan::New(format.eWideningType)); // Stereo widening algorithm type
   Nan::Set(ret, Nan::New("nStereoWidening").ToLocalChecked(), Nan::New(format.nStereoWidening)); // stereo widening setting for the port, as a continuous value from 0 to 100
   return scope.Escape(ret);
@@ -751,7 +751,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE(OMX_AUDIO_CONFIG_S
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_CHORUSTYPE(OMX_AUDIO_CONFIG_CHORUSTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable)); // Enable/disable for chorus
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable)); // Enable/disable for chorus
   Nan::Set(ret, Nan::New("sDelay").ToLocalChecked(), GET_OMX_BU32(format.sDelay));
   Nan::Set(ret, Nan::New("sModulationRate").ToLocalChecked(), GET_OMX_BU32(format.sModulationRate));
   Nan::Set(ret, Nan::New("nModulationDepth").ToLocalChecked(), Nan::New(format.nModulationDepth)); // depth of modulation as a percentage of delay (i.e. 0 to 100)
@@ -762,7 +762,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_CHORUSTYPE(OMX_AUDIO_CONFIG_CHORUSTYP
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_REVERBERATIONTYPE(OMX_AUDIO_CONFIG_REVERBERATIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable)); // Enable/disable for reverberation control
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable)); // Enable/disable for reverberation control
   Nan::Set(ret, Nan::New("sRoomLevel").ToLocalChecked(), GET_OMX_BS32(format.sRoomLevel));
   Nan::Set(ret, Nan::New("sRoomHighFreqLevel").ToLocalChecked(), GET_OMX_BS32(format.sRoomHighFreqLevel));
   Nan::Set(ret, Nan::New("sReflectionsLevel").ToLocalChecked(), GET_OMX_BS32(format.sReflectionsLevel));
@@ -787,7 +787,7 @@ v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_ECHOCANCELATIONTYPE(OMX_AUDIO_CONFIG_
 v8::Local<v8::Object> GET_OMX_AUDIO_CONFIG_NOISEREDUCTIONTYPE(OMX_AUDIO_CONFIG_NOISEREDUCTIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bNoiseReduction").ToLocalChecked(), Nan::New(format.bNoiseReduction)); // Enable/disable for noise reduction
+  Nan::Set(ret, Nan::New("bNoiseReduction").ToLocalChecked(), Nan::New(!!format.bNoiseReduction)); // Enable/disable for noise reduction
   return scope.Escape(ret);
 }
 
@@ -801,7 +801,7 @@ v8::Local<v8::Object> GET_OMX_BUFFERFRAGMENTTYPE(OMX_BUFFERFRAGMENTTYPE &format)
 v8::Local<v8::Object> GET_OMX_PARAM_IJGSCALINGTYPE(OMX_PARAM_IJGSCALINGTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled));
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled));
   return scope.Escape(ret);
 }
 
@@ -820,16 +820,16 @@ v8::Local<v8::Object> GET_OMX_CONFIG_DISPLAYREGIONTYPE(OMX_CONFIG_DISPLAYREGIONT
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("set").ToLocalChecked(), Nan::New(format.set));
   Nan::Set(ret, Nan::New("num").ToLocalChecked(), Nan::New(format.num));
-  Nan::Set(ret, Nan::New("fullscreen").ToLocalChecked(), Nan::New(format.fullscreen));
+  Nan::Set(ret, Nan::New("fullscreen").ToLocalChecked(), Nan::New(!!format.fullscreen));
   Nan::Set(ret, Nan::New("transform").ToLocalChecked(), Nan::New(format.transform));
   Nan::Set(ret, Nan::New("dest_rect").ToLocalChecked(), GET_OMX_DISPLAYRECTTYPE(format.dest_rect));
   Nan::Set(ret, Nan::New("src_rect").ToLocalChecked(), GET_OMX_DISPLAYRECTTYPE(format.src_rect));
-  Nan::Set(ret, Nan::New("noaspect").ToLocalChecked(), Nan::New(format.noaspect));
+  Nan::Set(ret, Nan::New("noaspect").ToLocalChecked(), Nan::New(!!format.noaspect));
   Nan::Set(ret, Nan::New("mode").ToLocalChecked(), Nan::New(format.mode));
   Nan::Set(ret, Nan::New("pixel_x").ToLocalChecked(), Nan::New(format.pixel_x));
   Nan::Set(ret, Nan::New("pixel_y").ToLocalChecked(), Nan::New(format.pixel_y));
   Nan::Set(ret, Nan::New("layer").ToLocalChecked(), Nan::New(format.layer));
-  Nan::Set(ret, Nan::New("copyprotect_required").ToLocalChecked(), Nan::New(format.copyprotect_required));
+  Nan::Set(ret, Nan::New("copyprotect_required").ToLocalChecked(), Nan::New(!!format.copyprotect_required));
   Nan::Set(ret, Nan::New("alpha").ToLocalChecked(), Nan::New(format.alpha));
   Nan::Set(ret, Nan::New("wfc_context_width").ToLocalChecked(), Nan::New(format.wfc_context_width));
   Nan::Set(ret, Nan::New("wfc_context_height").ToLocalChecked(), Nan::New(format.wfc_context_height));
@@ -853,19 +853,19 @@ v8::Local<v8::Object> GET_OMX_PARAM_RESIZETYPE(OMX_PARAM_RESIZETYPE &format) {
   Nan::Set(ret, Nan::New("nMaxWidth").ToLocalChecked(), Nan::New(format.nMaxWidth));
   Nan::Set(ret, Nan::New("nMaxHeight").ToLocalChecked(), Nan::New(format.nMaxHeight));
   Nan::Set(ret, Nan::New("nMaxBytes").ToLocalChecked(), Nan::New(format.nMaxBytes));
-  Nan::Set(ret, Nan::New("bPreserveAspectRatio").ToLocalChecked(), Nan::New(format.bPreserveAspectRatio));
-  Nan::Set(ret, Nan::New("bAllowUpscaling").ToLocalChecked(), Nan::New(format.bAllowUpscaling));
+  Nan::Set(ret, Nan::New("bPreserveAspectRatio").ToLocalChecked(), Nan::New(!!format.bPreserveAspectRatio));
+  Nan::Set(ret, Nan::New("bAllowUpscaling").ToLocalChecked(), Nan::New(!!format.bAllowUpscaling));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_PARAM_TESTINTERFACETYPE(OMX_PARAM_TESTINTERFACETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bTest").ToLocalChecked(), Nan::New(format.bTest));
-  Nan::Set(ret, Nan::New("bSetExtra").ToLocalChecked(), Nan::New(format.bSetExtra));
+  Nan::Set(ret, Nan::New("bTest").ToLocalChecked(), Nan::New(!!format.bTest));
+  Nan::Set(ret, Nan::New("bSetExtra").ToLocalChecked(), Nan::New(!!format.bSetExtra));
   Nan::Set(ret, Nan::New("nExtra").ToLocalChecked(), Nan::New(format.nExtra));
-  Nan::Set(ret, Nan::New("bSetError").ToLocalChecked(), Nan::New(format.bSetError));
-  Nan::Set(ret, Nan::New("stateError").ToLocalChecked(), Nan::New(format.stateError));
+  Nan::Set(ret, Nan::New("bSetError").ToLocalChecked(), Nan::New(!!format.bSetError));
+  Nan::Set(ret, Nan::New("stateError").ToLocalChecked(), Nan::New(!!format.stateError));
   return scope.Escape(ret);
 }
 
@@ -938,7 +938,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_CODECCONFIGTYPE(OMX_PARAM_CODECCONFIGTYPE &f
 v8::Local<v8::Object> GET_OMX_PARAM_STILLSFUNCTIONTYPE(OMX_PARAM_STILLSFUNCTIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bBuffer").ToLocalChecked(), Nan::New(format.bBuffer));
+  Nan::Set(ret, Nan::New("bBuffer").ToLocalChecked(), Nan::New(!!format.bBuffer));
   return scope.Escape(ret);
 }
 
@@ -960,7 +960,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_TUNNELSETUPTYPE(OMX_PARAM_TUNNELSETUPTYPE &f
 v8::Local<v8::Object> GET_OMX_PARAM_BRCMPORTEGLTYPE(OMX_PARAM_BRCMPORTEGLTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bPortIsEGL").ToLocalChecked(), Nan::New(format.bPortIsEGL));
+  Nan::Set(ret, Nan::New("bPortIsEGL").ToLocalChecked(), Nan::New(!!format.bPortIsEGL));
   return scope.Escape(ret);
 }
 
@@ -980,7 +980,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_TRANSITIONCONTROLTYPE(OMX_CONFIG_TRANSITION
   Nan::Set(ret, Nan::New("nPosEnd").ToLocalChecked(), Nan::New(format.nPosEnd));
   Nan::Set(ret, Nan::New("nPosIncrement").ToLocalChecked(), Nan::New(format.nPosIncrement));
   Nan::Set(ret, Nan::New("nFrameIncrement").ToLocalChecked(), GET_OMX_TICKS(format.nFrameIncrement));
-  Nan::Set(ret, Nan::New("bSwapInputs").ToLocalChecked(), Nan::New(format.bSwapInputs));
+  Nan::Set(ret, Nan::New("bSwapInputs").ToLocalChecked(), Nan::New(!!format.bSwapInputs));
   Nan::Set(ret, Nan::New("name").ToLocalChecked(), Nan::New(format.name));
   Nan::Set(ret, Nan::New("property").ToLocalChecked(), Nan::New(format.property));
   return scope.Escape(ret);
@@ -1102,7 +1102,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_BRCMCAMERASTATSTYPE(OMX_CONFIG_BRCMCAMERAST
 v8::Local<v8::Object> GET_OMX_CONFIG_BRCMIOPERFSTATSTYPE(OMX_CONFIG_BRCMIOPERFSTATSTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled)); // Enable/disable I/O performance statistics
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled)); // Enable/disable I/O performance statistics
   return scope.Escape(ret);
 }
 
@@ -1153,7 +1153,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_INTERLACETYPE(OMX_CONFIG_INTERLACETYPE &for
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("eMode").ToLocalChecked(), Nan::New(format.eMode)); // The interlace type of the content
-  Nan::Set(ret, Nan::New("bRepeatFirstField").ToLocalChecked(), Nan::New(format.bRepeatFirstField)); // Whether to repeat the first field
+  Nan::Set(ret, Nan::New("bRepeatFirstField").ToLocalChecked(), Nan::New(!!format.bRepeatFirstField)); // Whether to repeat the first field
   return scope.Escape(ret);
 }
 
@@ -1191,7 +1191,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_CODECREQUIREMENTSTYPE(OMX_PARAM_CODECREQUIRE
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nCallbackID").ToLocalChecked(), Nan::New(format.nCallbackID));
-  Nan::Set(ret, Nan::New("bTryHWCodec").ToLocalChecked(), Nan::New(format.bTryHWCodec));
+  Nan::Set(ret, Nan::New("bTryHWCodec").ToLocalChecked(), Nan::New(!!format.bTryHWCodec));
   return scope.Escape(ret);
 }
 
@@ -1212,17 +1212,17 @@ v8::Local<v8::Object> GET_OMX_PARAM_CAMERAFLASHTYPE(OMX_PARAM_CAMERAFLASHTYPE &f
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("eFlashType").ToLocalChecked(), Nan::New(format.eFlashType));
-  Nan::Set(ret, Nan::New("bRedEyeUsesTorchMode").ToLocalChecked(), Nan::New(format.bRedEyeUsesTorchMode));
+  Nan::Set(ret, Nan::New("bRedEyeUsesTorchMode").ToLocalChecked(), Nan::New(!!format.bRedEyeUsesTorchMode));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_CONFIG_CAMERAFLASHCONFIGTYPE(OMX_CONFIG_CAMERAFLASHCONFIGTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bUsePreFlash").ToLocalChecked(), Nan::New(format.bUsePreFlash));
-  Nan::Set(ret, Nan::New("bUseFocusDistanceInfo").ToLocalChecked(), Nan::New(format.bUseFocusDistanceInfo));
+  Nan::Set(ret, Nan::New("bUsePreFlash").ToLocalChecked(), Nan::New(!!format.bUsePreFlash));
+  Nan::Set(ret, Nan::New("bUseFocusDistanceInfo").ToLocalChecked(), Nan::New(!!format.bUseFocusDistanceInfo));
   Nan::Set(ret, Nan::New("eFlashSync").ToLocalChecked(), Nan::New(format.eFlashSync));
-  Nan::Set(ret, Nan::New("bIgnoreChargeState").ToLocalChecked(), Nan::New(format.bIgnoreChargeState));
+  Nan::Set(ret, Nan::New("bIgnoreChargeState").ToLocalChecked(), Nan::New(!!format.bIgnoreChargeState));
   return scope.Escape(ret);
 }
 
@@ -1254,14 +1254,14 @@ v8::Local<v8::Object> GET_OMX_PARAM_CAMERADISABLEALGORITHMTYPE(OMX_PARAM_CAMERAD
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("eAlgorithm").ToLocalChecked(), Nan::New(format.eAlgorithm));
-  Nan::Set(ret, Nan::New("bDisabled").ToLocalChecked(), Nan::New(format.bDisabled));
+  Nan::Set(ret, Nan::New("bDisabled").ToLocalChecked(), Nan::New(!!format.bDisabled));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE(OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
   Nan::Set(ret, Nan::New("name").ToLocalChecked(), Nan::New(format.name));
   Nan::Set(ret, Nan::New("property").ToLocalChecked(), Nan::New(format.property));
   return scope.Escape(ret);
@@ -1277,14 +1277,14 @@ v8::Local<v8::Object> GET_OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY(OMX_CONFIG_BRC
 v8::Local<v8::Object> GET_OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE(OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_PARAM_BRCMALLOWMEMCHANGETYPE(OMX_PARAM_BRCMALLOWMEMCHANGETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
   return scope.Escape(ret);
 }
 
@@ -1298,14 +1298,14 @@ v8::Local<v8::Object> GET_OMX_CONFIG_CAMERAUSECASETYPE(OMX_CONFIG_CAMERAUSECASET
 v8::Local<v8::Object> GET_OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE(OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bUseBuffers").ToLocalChecked(), Nan::New(format.bUseBuffers));
+  Nan::Set(ret, Nan::New("bUseBuffers").ToLocalChecked(), Nan::New(!!format.bUseBuffers));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_PARAM_BRCMRETAINMEMORYTYPE(OMX_PARAM_BRCMRETAINMEMORYTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
   return scope.Escape(ret);
 }
 
@@ -1335,7 +1335,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_CAMERAFEATURESTYPE(OMX_CONFIG_CAMERAFEATURE
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("eHasMechanicalShutter").ToLocalChecked(), Nan::New(format.eHasMechanicalShutter));
-  Nan::Set(ret, Nan::New("bHasLens").ToLocalChecked(), Nan::New(format.bHasLens));
+  Nan::Set(ret, Nan::New("bHasLens").ToLocalChecked(), Nan::New(!!format.bHasLens));
   return scope.Escape(ret);
 }
 
@@ -1343,7 +1343,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_REQUESTCALLBACKTYPE(OMX_CONFIG_REQUESTCALLB
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nIndex").ToLocalChecked(), Nan::New(format.nIndex));
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
   return scope.Escape(ret);
 }
 
@@ -1366,7 +1366,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_FOCUSREGIONXYTYPE(OMX_CONFIG_FOCUSREGIONXYT
   Nan::Set(ret, Nan::New("nIndex").ToLocalChecked(), Nan::New(format.nIndex));
   Nan::Set(ret, Nan::New("nTotalRegions").ToLocalChecked(), Nan::New(format.nTotalRegions));
   Nan::Set(ret, Nan::New("nValidRegions").ToLocalChecked(), Nan::New(format.nValidRegions));
-  Nan::Set(ret, Nan::New("bLockToFaces").ToLocalChecked(), Nan::New(format.bLockToFaces));
+  Nan::Set(ret, Nan::New("bLockToFaces").ToLocalChecked(), Nan::New(!!format.bLockToFaces));
   Nan::Set(ret, Nan::New("xFaceTolerance").ToLocalChecked(), Nan::New(format.xFaceTolerance));
   return scope.Escape(ret);
 }
@@ -1413,11 +1413,11 @@ v8::Local<v8::Object> GET_OMX_CONFIG_DRAWBOXLINEPARAMS(OMX_CONFIG_DRAWBOXLINEPAR
   Nan::Set(ret, Nan::New("sOtherFaceColour").ToLocalChecked(), GET_OMX_YUVCOLOUR(format.sOtherFaceColour));
   Nan::Set(ret, Nan::New("sOtherFaceSmileColour").ToLocalChecked(), GET_OMX_YUVCOLOUR(format.sOtherFaceSmileColour));
   Nan::Set(ret, Nan::New("sOtherFaceBlinkColour").ToLocalChecked(), GET_OMX_YUVCOLOUR(format.sOtherFaceBlinkColour));
-  Nan::Set(ret, Nan::New("bShowFocusRegionsWhenIdle").ToLocalChecked(), Nan::New(format.bShowFocusRegionsWhenIdle)); // Are focus regions displayed when just in viewfinder/AF idle
+  Nan::Set(ret, Nan::New("bShowFocusRegionsWhenIdle").ToLocalChecked(), Nan::New(!!format.bShowFocusRegionsWhenIdle)); // Are focus regions displayed when just in viewfinder/AF idle
   Nan::Set(ret, Nan::New("sFocusRegionColour").ToLocalChecked(), GET_OMX_YUVCOLOUR(format.sFocusRegionColour));
-  Nan::Set(ret, Nan::New("bShowAfState").ToLocalChecked(), Nan::New(format.bShowAfState)); // Change to the colours specified below if AF cycle has run
-  Nan::Set(ret, Nan::New("bShowOnlyPrimaryAfState").ToLocalChecked(), Nan::New(format.bShowOnlyPrimaryAfState)); // Only show the primary face when displaying the AF status
-  Nan::Set(ret, Nan::New("bCombineNonFaceRegions").ToLocalChecked(), Nan::New(format.bCombineNonFaceRegions)); // Combine all regions not defined as faces into one single box covering them all
+  Nan::Set(ret, Nan::New("bShowAfState").ToLocalChecked(), Nan::New(!!format.bShowAfState)); // Change to the colours specified below if AF cycle has run
+  Nan::Set(ret, Nan::New("bShowOnlyPrimaryAfState").ToLocalChecked(), Nan::New(!!format.bShowOnlyPrimaryAfState)); // Only show the primary face when displaying the AF status
+  Nan::Set(ret, Nan::New("bCombineNonFaceRegions").ToLocalChecked(), Nan::New(!!format.bCombineNonFaceRegions)); // Combine all regions not defined as faces into one single box covering them all
   Nan::Set(ret, Nan::New("sAfLockPrimaryFaceColour").ToLocalChecked(), GET_OMX_YUVCOLOUR(format.sAfLockPrimaryFaceColour));
   Nan::Set(ret, Nan::New("sAfLockOtherFaceColour").ToLocalChecked(), GET_OMX_YUVCOLOUR(format.sAfLockOtherFaceColour));
   Nan::Set(ret, Nan::New("sAfLockFocusRegionColour").ToLocalChecked(), GET_OMX_YUVCOLOUR(format.sAfLockFocusRegionColour));
@@ -1430,7 +1430,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_DRAWBOXLINEPARAMS(OMX_CONFIG_DRAWBOXLINEPAR
 v8::Local<v8::Object> GET_OMX_PARAM_CAMERARMITYPE(OMX_PARAM_CAMERARMITYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled));
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled));
   Nan::Set(ret, Nan::New("sRmiName").ToLocalChecked(), Nan::New(format.sRmiName));
   Nan::Set(ret, Nan::New("nInputBufferHeight").ToLocalChecked(), Nan::New(format.nInputBufferHeight));
   Nan::Set(ret, Nan::New("nRmiBufferSize").ToLocalChecked(), Nan::New(format.nRmiBufferSize));
@@ -1462,8 +1462,8 @@ v8::Local<v8::Object> GET_OMX_PARAM_BRCMU64TYPE(OMX_PARAM_BRCMU64TYPE &format) {
 v8::Local<v8::Object> GET_OMX_PARAM_BRCMTHUMBNAILTYPE(OMX_PARAM_BRCMTHUMBNAILTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable)); // Enable generation of thumbnails during still capture
-  Nan::Set(ret, Nan::New("bUsePreview").ToLocalChecked(), Nan::New(format.bUsePreview)); // Use the preview image (as is) as thumbnail
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable)); // Enable generation of thumbnails during still capture
+  Nan::Set(ret, Nan::New("bUsePreview").ToLocalChecked(), Nan::New(!!format.bUsePreview)); // Use the preview image (as is) as thumbnail
   Nan::Set(ret, Nan::New("nWidth").ToLocalChecked(), Nan::New(format.nWidth)); // Desired width of the thumbnail
   Nan::Set(ret, Nan::New("nHeight").ToLocalChecked(), Nan::New(format.nHeight)); // Desired height of the thumbnail
   return scope.Escape(ret);
@@ -1480,7 +1480,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_BRCMASPECTRATIOTYPE(OMX_PARAM_BRCMASPECTRATI
 v8::Local<v8::Object> GET_OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE(OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bStartWithValidFrame").ToLocalChecked(), Nan::New(format.bStartWithValidFrame)); // Decoder will only start emitting frames from a non-corrupted frame
+  Nan::Set(ret, Nan::New("bStartWithValidFrame").ToLocalChecked(), Nan::New(!!format.bStartWithValidFrame)); // Decoder will only start emitting frames from a non-corrupted frame
   return scope.Escape(ret);
 }
 
@@ -1539,14 +1539,14 @@ v8::Local<v8::Object> GET_OMX_CONFIG_STATICBOXTYPE(OMX_CONFIG_STATICBOXTYPE &for
   Nan::Set(ret, Nan::New("nIndex").ToLocalChecked(), Nan::New(format.nIndex));
   Nan::Set(ret, Nan::New("nTotalBoxes").ToLocalChecked(), Nan::New(format.nTotalBoxes));
   Nan::Set(ret, Nan::New("nValidBoxes").ToLocalChecked(), Nan::New(format.nValidBoxes));
-  Nan::Set(ret, Nan::New("bDrawOtherBoxes").ToLocalChecked(), Nan::New(format.bDrawOtherBoxes));
+  Nan::Set(ret, Nan::New("bDrawOtherBoxes").ToLocalChecked(), Nan::New(!!format.bDrawOtherBoxes));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_CONFIG_PORTBOOLEANTYPE(OMX_CONFIG_PORTBOOLEANTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled));
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled));
   return scope.Escape(ret);
 }
 
@@ -1569,7 +1569,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_BRCMDRMENCRYPTIONTYPE(OMX_PARAM_BRCMDRMENCRY
 v8::Local<v8::Object> GET_OMX_CONFIG_BUFFERSTALLTYPE(OMX_CONFIG_BUFFERSTALLTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bStalled").ToLocalChecked(), Nan::New(format.bStalled)); // Whether we are stalled
+  Nan::Set(ret, Nan::New("bStalled").ToLocalChecked(), Nan::New(!!format.bStalled)); // Whether we are stalled
   Nan::Set(ret, Nan::New("nDelay").ToLocalChecked(), Nan::New(format.nDelay)); // Delay in real time (us) from last buffer to current time
   return scope.Escape(ret);
 }
@@ -1577,7 +1577,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_BUFFERSTALLTYPE(OMX_CONFIG_BUFFERSTALLTYPE 
 v8::Local<v8::Object> GET_OMX_CONFIG_LATENCYTARGETTYPE(OMX_CONFIG_LATENCYTARGETTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled)); // whether this mode is enabled
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled)); // whether this mode is enabled
   Nan::Set(ret, Nan::New("nFilter").ToLocalChecked(), Nan::New(format.nFilter)); // number of latency samples to filter on, good value: 1
   Nan::Set(ret, Nan::New("nTarget").ToLocalChecked(), Nan::New(format.nTarget)); // target latency, us
   Nan::Set(ret, Nan::New("nShift").ToLocalChecked(), Nan::New(format.nShift)); // shift for storing latency values, good value: 7
@@ -1590,7 +1590,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_LATENCYTARGETTYPE(OMX_CONFIG_LATENCYTARGETT
 v8::Local<v8::Object> GET_OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE(OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
   return scope.Escape(ret);
 }
 
@@ -1724,7 +1724,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_CUSTOMAWBGAINSTYPE(OMX_CONFIG_CUSTOMAWBGAIN
 v8::Local<v8::Object> GET_OMX_CONFIG_BRCMRENDERSTATSTYPE(OMX_CONFIG_BRCMRENDERSTATSTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("nValid").ToLocalChecked(), Nan::New(format.nValid));
+  Nan::Set(ret, Nan::New("nValid").ToLocalChecked(), Nan::New(!!format.nValid));
   Nan::Set(ret, Nan::New("nMatch").ToLocalChecked(), Nan::New(format.nMatch));
   Nan::Set(ret, Nan::New("nPeriod").ToLocalChecked(), Nan::New(format.nPeriod));
   Nan::Set(ret, Nan::New("nPhase").ToLocalChecked(), Nan::New(format.nPhase));
@@ -1738,20 +1738,20 @@ v8::Local<v8::Object> GET_OMX_CONFIG_BRCMRENDERSTATSTYPE(OMX_CONFIG_BRCMRENDERST
 v8::Local<v8::Object> GET_OMX_CONFIG_BRCMANNOTATETYPE(OMX_CONFIG_BRCMANNOTATETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
-  Nan::Set(ret, Nan::New("bShowShutter").ToLocalChecked(), Nan::New(format.bShowShutter));
-  Nan::Set(ret, Nan::New("bShowAnalogGain").ToLocalChecked(), Nan::New(format.bShowAnalogGain));
-  Nan::Set(ret, Nan::New("bShowLens").ToLocalChecked(), Nan::New(format.bShowLens));
-  Nan::Set(ret, Nan::New("bShowCaf").ToLocalChecked(), Nan::New(format.bShowCaf));
-  Nan::Set(ret, Nan::New("bShowMotion").ToLocalChecked(), Nan::New(format.bShowMotion));
-  Nan::Set(ret, Nan::New("bShowFrameNum").ToLocalChecked(), Nan::New(format.bShowFrameNum));
-  Nan::Set(ret, Nan::New("bEnableBackground").ToLocalChecked(), Nan::New(format.bEnableBackground));
-  Nan::Set(ret, Nan::New("bCustomBackgroundColour").ToLocalChecked(), Nan::New(format.bCustomBackgroundColour));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
+  Nan::Set(ret, Nan::New("bShowShutter").ToLocalChecked(), Nan::New(!!format.bShowShutter));
+  Nan::Set(ret, Nan::New("bShowAnalogGain").ToLocalChecked(), Nan::New(!!format.bShowAnalogGain));
+  Nan::Set(ret, Nan::New("bShowLens").ToLocalChecked(), Nan::New(!!format.bShowLens));
+  Nan::Set(ret, Nan::New("bShowCaf").ToLocalChecked(), Nan::New(!!format.bShowCaf));
+  Nan::Set(ret, Nan::New("bShowMotion").ToLocalChecked(), Nan::New(!!format.bShowMotion));
+  Nan::Set(ret, Nan::New("bShowFrameNum").ToLocalChecked(), Nan::New(!!format.bShowFrameNum));
+  Nan::Set(ret, Nan::New("bEnableBackground").ToLocalChecked(), Nan::New(!!format.bEnableBackground));
+  Nan::Set(ret, Nan::New("bCustomBackgroundColour").ToLocalChecked(), Nan::New(!!format.bCustomBackgroundColour));
   Nan::Set(ret, Nan::New("nBackgroundY").ToLocalChecked(), Nan::New(format.nBackgroundY));
   Nan::Set(ret, Nan::New("nBackgroundU").ToLocalChecked(), Nan::New(format.nBackgroundU));
   Nan::Set(ret, Nan::New("nBackgroundV").ToLocalChecked(), Nan::New(format.nBackgroundV));
   Nan::Set(ret, Nan::New("dummy1").ToLocalChecked(), Nan::New(format.dummy1));
-  Nan::Set(ret, Nan::New("bCustomTextColour").ToLocalChecked(), Nan::New(format.bCustomTextColour));
+  Nan::Set(ret, Nan::New("bCustomTextColour").ToLocalChecked(), Nan::New(!!format.bCustomTextColour));
   Nan::Set(ret, Nan::New("nTextY").ToLocalChecked(), Nan::New(format.nTextY));
   Nan::Set(ret, Nan::New("nTextU").ToLocalChecked(), Nan::New(format.nTextU));
   Nan::Set(ret, Nan::New("nTextV").ToLocalChecked(), Nan::New(format.nTextV));
@@ -1764,8 +1764,8 @@ v8::Local<v8::Object> GET_OMX_CONFIG_BRCMSTEREOSCOPICMODETYPE(OMX_CONFIG_BRCMSTE
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("eMode").ToLocalChecked(), Nan::New(format.eMode)); // Packing mode
-  Nan::Set(ret, Nan::New("bDecimate").ToLocalChecked(), Nan::New(format.bDecimate)); // Half/half mode (pixel aspect ratio = 1:2 or 2:1 if set. 1:1 if not set)
-  Nan::Set(ret, Nan::New("bSwapEyes").ToLocalChecked(), Nan::New(format.bSwapEyes)); // False = left eye first. True = right eye first.
+  Nan::Set(ret, Nan::New("bDecimate").ToLocalChecked(), Nan::New(!!format.bDecimate)); // Half/half mode (pixel aspect ratio = 1:2 or 2:1 if set. 1:1 if not set)
+  Nan::Set(ret, Nan::New("bSwapEyes").ToLocalChecked(), Nan::New(!!format.bSwapEyes)); // False = left eye first. True = right eye first.
   return scope.Escape(ret);
 }
 
@@ -1826,8 +1826,8 @@ v8::Local<v8::Object> GET_OMX_PARAM_PORTDEFINITIONTYPE(OMX_PARAM_PORTDEFINITIONT
   Nan::Set(ret, Nan::New("nBufferCountActual").ToLocalChecked(), Nan::New(format.nBufferCountActual)); // The actual number of buffers allocated on this port
   Nan::Set(ret, Nan::New("nBufferCountMin").ToLocalChecked(), Nan::New(format.nBufferCountMin)); // The minimum number of buffers this port requires
   Nan::Set(ret, Nan::New("nBufferSize").ToLocalChecked(), Nan::New(format.nBufferSize)); // Size, in bytes, for buffers to be used for this channel
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled)); // Ports default to enabled and are enabled/disabled by OMX_CommandPortEnable/OMX_CommandPortDisable. When disabled a port is unpopulated. A disabled port is not populated with buffers on a transition to IDLE.
-  Nan::Set(ret, Nan::New("bPopulated").ToLocalChecked(), Nan::New(format.bPopulated)); // Port is populated with all of its buffers as indicated by nBufferCountActual. A disabled port is always unpopulated. An enabled port is populated on a transition to OMX_StateIdle and unpopulated on a transition to loaded.
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled)); // Ports default to enabled and are enabled/disabled by OMX_CommandPortEnable/OMX_CommandPortDisable. When disabled a port is unpopulated. A disabled port is not populated with buffers on a transition to IDLE.
+  Nan::Set(ret, Nan::New("bPopulated").ToLocalChecked(), Nan::New(!!format.bPopulated)); // Port is populated with all of its buffers as indicated by nBufferCountActual. A disabled port is always unpopulated. An enabled port is populated on a transition to OMX_StateIdle and unpopulated on a transition to loaded.
   Nan::Set(ret, Nan::New("eDomain").ToLocalChecked(), Nan::New(format.eDomain)); // Domain of the port. Determines the contents of metadata below.
   if (format.eDomain == OMX_PortDomainAudio) {
     Nan::Set(ret, Nan::New("audio").ToLocalChecked(), GET_OMX_AUDIO_PORTDEFINITIONTYPE(format.format.audio));
@@ -1868,7 +1868,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_SUSPENSIONTYPE(OMX_PARAM_SUSPENSIONTYPE &for
 v8::Local<v8::Object> GET_OMX_CONFIG_BOOLEANTYPE(OMX_CONFIG_BOOLEANTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled));
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled));
   return scope.Escape(ret);
 }
 
@@ -1889,7 +1889,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_CONTENTPIPETYPE(OMX_PARAM_CONTENTPIPETYPE &f
 v8::Local<v8::Object> GET_OMX_RESOURCECONCEALMENTTYPE(OMX_RESOURCECONCEALMENTTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bResourceConcealmentForbidden").ToLocalChecked(), Nan::New(format.bResourceConcealmentForbidden)); // disallow the use of resource concealment methods (like degrading algorithm quality to lower resource consumption or functional bypass) on a component as a resolution to resource conflicts.
+  Nan::Set(ret, Nan::New("bResourceConcealmentForbidden").ToLocalChecked(), Nan::New(!!format.bResourceConcealmentForbidden)); // disallow the use of resource concealment methods (like degrading algorithm quality to lower resource consumption or functional bypass) on a component as a resolution to resource conflicts.
   return scope.Escape(ret);
 }
 
@@ -1924,7 +1924,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_METADATAITEMTYPE(OMX_CONFIG_METADATAITEMTYP
 v8::Local<v8::Object> GET_OMX_CONFIG_CONTAINERNODECOUNTTYPE(OMX_CONFIG_CONTAINERNODECOUNTTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bAllKeys").ToLocalChecked(), Nan::New(format.bAllKeys));
+  Nan::Set(ret, Nan::New("bAllKeys").ToLocalChecked(), Nan::New(!!format.bAllKeys));
   Nan::Set(ret, Nan::New("nParentNodeID").ToLocalChecked(), Nan::New(format.nParentNodeID));
   Nan::Set(ret, Nan::New("nNumNodes").ToLocalChecked(), Nan::New(format.nNumNodes));
   return scope.Escape(ret);
@@ -1933,26 +1933,26 @@ v8::Local<v8::Object> GET_OMX_CONFIG_CONTAINERNODECOUNTTYPE(OMX_CONFIG_CONTAINER
 v8::Local<v8::Object> GET_OMX_CONFIG_CONTAINERNODEIDTYPE(OMX_CONFIG_CONTAINERNODEIDTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bAllKeys").ToLocalChecked(), Nan::New(format.bAllKeys));
+  Nan::Set(ret, Nan::New("bAllKeys").ToLocalChecked(), Nan::New(!!format.bAllKeys));
   Nan::Set(ret, Nan::New("nParentNodeID").ToLocalChecked(), Nan::New(format.nParentNodeID));
   Nan::Set(ret, Nan::New("nNodeIndex").ToLocalChecked(), Nan::New(format.nNodeIndex));
   Nan::Set(ret, Nan::New("nNodeID").ToLocalChecked(), Nan::New(format.nNodeID));
   if (format.cNodeName != NULL)
     Nan::Set(ret, Nan::New("cNodeName").ToLocalChecked(), Nan::New(format.cNodeName).ToLocalChecked());
-  Nan::Set(ret, Nan::New("bIsLeafType").ToLocalChecked(), Nan::New(format.bIsLeafType));
+  Nan::Set(ret, Nan::New("bIsLeafType").ToLocalChecked(), Nan::New(!!format.bIsLeafType));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_PARAM_METADATAFILTERTYPE(OMX_PARAM_METADATAFILTERTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bAllKeys").ToLocalChecked(), Nan::New(format.bAllKeys)); // if true then this structure refers to all keys and the three key fields below are ignored
+  Nan::Set(ret, Nan::New("bAllKeys").ToLocalChecked(), Nan::New(!!format.bAllKeys)); // if true then this structure refers to all keys and the three key fields below are ignored
   Nan::Set(ret, Nan::New("eKeyCharset").ToLocalChecked(), Nan::New(format.eKeyCharset));
   Nan::Set(ret, Nan::New("nKeySizeUsed").ToLocalChecked(), Nan::New(format.nKeySizeUsed));
   Nan::Set(ret, Nan::New("nKey ").ToLocalChecked(), Nan::New(format.nKey ));
   Nan::Set(ret, Nan::New("nLanguageCountrySizeUsed").ToLocalChecked(), Nan::New(format.nLanguageCountrySizeUsed));
   Nan::Set(ret, Nan::New("nLanguageCountry").ToLocalChecked(), Nan::New(format.nLanguageCountry));
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled)); // if true then key is part of filter (e.g. retained for query later). If false then key is not part of filter
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled)); // if true then key is part of filter (e.g. retained for query later). If false then key is not part of filter
   return scope.Escape(ret);
 }
 
@@ -2039,7 +2039,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_TUNNELSTATUSTYPE(OMX_PARAM_TUNNELSTATUSTYPE 
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nIndex").ToLocalChecked(), Nan::New(format.nIndex)); // Query the nIndex'th port and fill in nPortIndex
-  Nan::Set(ret, Nan::New("bUseIndex").ToLocalChecked(), Nan::New(format.bUseIndex)); // If OMX_TRUE read nIndex, otherwise read nPortIndex
+  Nan::Set(ret, Nan::New("bUseIndex").ToLocalChecked(), Nan::New(!!format.bUseIndex)); // If OMX_TRUE read nIndex, otherwise read nPortIndex
   Nan::Set(ret, Nan::New("nTunneledPort").ToLocalChecked(), Nan::New(format.nTunneledPort)); // Port on tunnelled component
   return scope.Escape(ret);
 }
@@ -2054,7 +2054,7 @@ v8::Local<v8::Object> GET_OMX_IMAGE_PORTDEFINITIONTYPE(OMX_IMAGE_PORTDEFINITIONT
   Nan::Set(ret, Nan::New("nFrameHeight").ToLocalChecked(), Nan::New(format.nFrameHeight));
   Nan::Set(ret, Nan::New("nStride").ToLocalChecked(), Nan::New(format.nStride));
   Nan::Set(ret, Nan::New("nSliceHeight").ToLocalChecked(), Nan::New(format.nSliceHeight));
-  Nan::Set(ret, Nan::New("bFlagErrorConcealment").ToLocalChecked(), Nan::New(format.bFlagErrorConcealment));
+  Nan::Set(ret, Nan::New("bFlagErrorConcealment").ToLocalChecked(), Nan::New(!!format.bFlagErrorConcealment));
   Nan::Set(ret, Nan::New("eCompressionFormat").ToLocalChecked(), Nan::New(format.eCompressionFormat));
   Nan::Set(ret, Nan::New("eColorFormat").ToLocalChecked(), Nan::New(format.eColorFormat));
   Nan::Set(ret, Nan::New("pNativeWindow").ToLocalChecked(), Nan::New(format.pNativeWindow));
@@ -2136,7 +2136,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_IMAGEFILTERTYPE(OMX_CONFIG_IMAGEFILTERTYPE 
 v8::Local<v8::Object> GET_OMX_CONFIG_COLORENHANCEMENTTYPE(OMX_CONFIG_COLORENHANCEMENTTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bColorEnhancement").ToLocalChecked(), Nan::New(format.bColorEnhancement));
+  Nan::Set(ret, Nan::New("bColorEnhancement").ToLocalChecked(), Nan::New(!!format.bColorEnhancement));
   Nan::Set(ret, Nan::New("nCustomizedU").ToLocalChecked(), Nan::New(format.nCustomizedU));
   Nan::Set(ret, Nan::New("nCustomizedV").ToLocalChecked(), Nan::New(format.nCustomizedV));
   return scope.Escape(ret);
@@ -2201,14 +2201,14 @@ v8::Local<v8::Object> GET_OMX_CONFIG_RECTTYPE(OMX_CONFIG_RECTTYPE &format) {
 v8::Local<v8::Object> GET_OMX_PARAM_DEBLOCKINGTYPE(OMX_PARAM_DEBLOCKINGTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bDeblocking").ToLocalChecked(), Nan::New(format.bDeblocking));
+  Nan::Set(ret, Nan::New("bDeblocking").ToLocalChecked(), Nan::New(!!format.bDeblocking));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_CONFIG_FRAMESTABTYPE(OMX_CONFIG_FRAMESTABTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bStab").ToLocalChecked(), Nan::New(format.bStab));
+  Nan::Set(ret, Nan::New("bStab").ToLocalChecked(), Nan::New(!!format.bStab));
   return scope.Escape(ret);
 }
 
@@ -2230,7 +2230,7 @@ v8::Local<v8::Object> GET_OMX_PARAM_SENSORMODETYPE(OMX_PARAM_SENSORMODETYPE &for
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nFrameRate").ToLocalChecked(), Nan::New(format.nFrameRate));
-  Nan::Set(ret, Nan::New("bOneShot").ToLocalChecked(), Nan::New(format.bOneShot));
+  Nan::Set(ret, Nan::New("bOneShot").ToLocalChecked(), Nan::New(!!format.bOneShot));
   Nan::Set(ret, Nan::New("sFrameSize").ToLocalChecked(), GET_OMX_FRAMESIZETYPE(format.sFrameSize));
   return scope.Escape(ret);
 }
@@ -2289,7 +2289,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_PLANEBLENDTYPE(OMX_CONFIG_PLANEBLENDTYPE &f
 v8::Local<v8::Object> GET_OMX_PARAM_INTERLEAVETYPE(OMX_PARAM_INTERLEAVETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(format.bEnable));
+  Nan::Set(ret, Nan::New("bEnable").ToLocalChecked(), Nan::New(!!format.bEnable));
   Nan::Set(ret, Nan::New("nInterleavePortIndex").ToLocalChecked(), Nan::New(format.nInterleavePortIndex));
   return scope.Escape(ret);
 }
@@ -2319,8 +2319,8 @@ v8::Local<v8::Object> GET_OMX_CONFIG_DITHERTYPE(OMX_CONFIG_DITHERTYPE &format) {
 v8::Local<v8::Object> GET_OMX_CONFIG_CAPTUREMODETYPE(OMX_CONFIG_CAPTUREMODETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bContinuous").ToLocalChecked(), Nan::New(format.bContinuous)); // If true then ignore frame rate and emit capture data as fast as possible (otherwise obey port's frame rate).
-  Nan::Set(ret, Nan::New("bFrameLimited").ToLocalChecked(), Nan::New(format.bFrameLimited)); // If true then terminate capture after the port emits the specified number of frames (otherwise the port does not terminate the capture until instructed to do so by the client). Even if set, the client may manually terminate the capture prior to reaching the limit.
+  Nan::Set(ret, Nan::New("bContinuous").ToLocalChecked(), Nan::New(!!format.bContinuous)); // If true then ignore frame rate and emit capture data as fast as possible (otherwise obey port's frame rate).
+  Nan::Set(ret, Nan::New("bFrameLimited").ToLocalChecked(), Nan::New(!!format.bFrameLimited)); // If true then terminate capture after the port emits the specified number of frames (otherwise the port does not terminate the capture until instructed to do so by the client). Even if set, the client may manually terminate the capture prior to reaching the limit.
   Nan::Set(ret, Nan::New("nFrameLimit").ToLocalChecked(), Nan::New(format.nFrameLimit)); // Limit on number of frames emitted during a capture (only valid if bFrameLimited is set).
   return scope.Escape(ret);
 }
@@ -2331,26 +2331,26 @@ v8::Local<v8::Object> GET_OMX_CONFIG_EXPOSUREVALUETYPE(OMX_CONFIG_EXPOSUREVALUET
   Nan::Set(ret, Nan::New("eMetering").ToLocalChecked(), Nan::New(format.eMetering));
   Nan::Set(ret, Nan::New("xEVCompensation").ToLocalChecked(), Nan::New(format.xEVCompensation)); // Fixed point value stored as Q16
   Nan::Set(ret, Nan::New("nApertureFNumber").ToLocalChecked(), Nan::New(format.nApertureFNumber)); // e.g. nApertureFNumber = 2 implies "f/2" - Q16 format
-  Nan::Set(ret, Nan::New("bAutoAperture").ToLocalChecked(), Nan::New(format.bAutoAperture)); // Whether aperture number is defined automatically
+  Nan::Set(ret, Nan::New("bAutoAperture").ToLocalChecked(), Nan::New(!!format.bAutoAperture)); // Whether aperture number is defined automatically
   Nan::Set(ret, Nan::New("nShutterSpeedMsec").ToLocalChecked(), Nan::New(format.nShutterSpeedMsec)); // Shutterspeed in milliseconds
-  Nan::Set(ret, Nan::New("bAutoShutterSpeed").ToLocalChecked(), Nan::New(format.bAutoShutterSpeed)); // Whether shutter speed is defined automatically
+  Nan::Set(ret, Nan::New("bAutoShutterSpeed").ToLocalChecked(), Nan::New(!!format.bAutoShutterSpeed)); // Whether shutter speed is defined automatically
   Nan::Set(ret, Nan::New("nSensitivity").ToLocalChecked(), Nan::New(format.nSensitivity)); // e.g. nSensitivity = 100 implies "ISO 100"
-  Nan::Set(ret, Nan::New("bAutoSensitivity").ToLocalChecked(), Nan::New(format.bAutoSensitivity)); // Whether sensitivity is defined automatically
+  Nan::Set(ret, Nan::New("bAutoSensitivity").ToLocalChecked(), Nan::New(!!format.bAutoSensitivity)); // Whether sensitivity is defined automatically
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_CONFIG_FOCUSREGIONTYPE(OMX_CONFIG_FOCUSREGIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bCenter").ToLocalChecked(), Nan::New(format.bCenter));
-  Nan::Set(ret, Nan::New("bLeft").ToLocalChecked(), Nan::New(format.bLeft));
-  Nan::Set(ret, Nan::New("bRight").ToLocalChecked(), Nan::New(format.bRight));
-  Nan::Set(ret, Nan::New("bTop").ToLocalChecked(), Nan::New(format.bTop));
-  Nan::Set(ret, Nan::New("bBottom").ToLocalChecked(), Nan::New(format.bBottom));
-  Nan::Set(ret, Nan::New("bTopLeft").ToLocalChecked(), Nan::New(format.bTopLeft));
-  Nan::Set(ret, Nan::New("bTopRight").ToLocalChecked(), Nan::New(format.bTopRight));
-  Nan::Set(ret, Nan::New("bBottomLeft").ToLocalChecked(), Nan::New(format.bBottomLeft));
-  Nan::Set(ret, Nan::New("bBottomRight").ToLocalChecked(), Nan::New(format.bBottomRight));
+  Nan::Set(ret, Nan::New("bCenter").ToLocalChecked(), Nan::New(!!format.bCenter));
+  Nan::Set(ret, Nan::New("bLeft").ToLocalChecked(), Nan::New(!!format.bLeft));
+  Nan::Set(ret, Nan::New("bRight").ToLocalChecked(), Nan::New(!!format.bRight));
+  Nan::Set(ret, Nan::New("bTop").ToLocalChecked(), Nan::New(!!format.bTop));
+  Nan::Set(ret, Nan::New("bBottom").ToLocalChecked(), Nan::New(!!format.bBottom));
+  Nan::Set(ret, Nan::New("bTopLeft").ToLocalChecked(), Nan::New(!!format.bTopLeft));
+  Nan::Set(ret, Nan::New("bTopRight").ToLocalChecked(), Nan::New(!!format.bTopRight));
+  Nan::Set(ret, Nan::New("bBottomLeft").ToLocalChecked(), Nan::New(!!format.bBottomLeft));
+  Nan::Set(ret, Nan::New("bBottomRight").ToLocalChecked(), Nan::New(!!format.bBottomRight));
   return scope.Escape(ret);
 }
 
@@ -2358,15 +2358,15 @@ v8::Local<v8::Object> GET_OMX_PARAM_FOCUSSTATUSTYPE(OMX_PARAM_FOCUSSTATUSTYPE &f
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("eFocusStatus").ToLocalChecked(), Nan::New(format.eFocusStatus));
-  Nan::Set(ret, Nan::New("bCenterStatus").ToLocalChecked(), Nan::New(format.bCenterStatus));
-  Nan::Set(ret, Nan::New("bLeftStatus").ToLocalChecked(), Nan::New(format.bLeftStatus));
-  Nan::Set(ret, Nan::New("bRightStatus").ToLocalChecked(), Nan::New(format.bRightStatus));
-  Nan::Set(ret, Nan::New("bTopStatus").ToLocalChecked(), Nan::New(format.bTopStatus));
-  Nan::Set(ret, Nan::New("bBottomStatus").ToLocalChecked(), Nan::New(format.bBottomStatus));
-  Nan::Set(ret, Nan::New("bTopLeftStatus").ToLocalChecked(), Nan::New(format.bTopLeftStatus));
-  Nan::Set(ret, Nan::New("bTopRightStatus").ToLocalChecked(), Nan::New(format.bTopRightStatus));
-  Nan::Set(ret, Nan::New("bBottomLeftStatus").ToLocalChecked(), Nan::New(format.bBottomLeftStatus));
-  Nan::Set(ret, Nan::New("bBottomRightStatus").ToLocalChecked(), Nan::New(format.bBottomRightStatus));
+  Nan::Set(ret, Nan::New("bCenterStatus").ToLocalChecked(), Nan::New(!!format.bCenterStatus));
+  Nan::Set(ret, Nan::New("bLeftStatus").ToLocalChecked(), Nan::New(!!format.bLeftStatus));
+  Nan::Set(ret, Nan::New("bRightStatus").ToLocalChecked(), Nan::New(!!format.bRightStatus));
+  Nan::Set(ret, Nan::New("bTopStatus").ToLocalChecked(), Nan::New(!!format.bTopStatus));
+  Nan::Set(ret, Nan::New("bBottomStatus").ToLocalChecked(), Nan::New(!!format.bBottomStatus));
+  Nan::Set(ret, Nan::New("bTopLeftStatus").ToLocalChecked(), Nan::New(!!format.bTopLeftStatus));
+  Nan::Set(ret, Nan::New("bTopRightStatus").ToLocalChecked(), Nan::New(!!format.bTopRightStatus));
+  Nan::Set(ret, Nan::New("bBottomLeftStatus").ToLocalChecked(), Nan::New(!!format.bBottomLeftStatus));
+  Nan::Set(ret, Nan::New("bBottomRightStatus").ToLocalChecked(), Nan::New(!!format.bBottomRightStatus));
   return scope.Escape(ret);
 }
 
@@ -2432,7 +2432,7 @@ v8::Local<v8::Object> GET_OMX_TIME_CONFIG_ACTIVEREFCLOCKTYPE(OMX_TIME_CONFIG_ACT
 v8::Local<v8::Object> GET_OMX_OTHER_CONFIG_POWERTYPE(OMX_OTHER_CONFIG_POWERTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnablePM").ToLocalChecked(), Nan::New(format.bEnablePM)); // Flag to enable Power Management
+  Nan::Set(ret, Nan::New("bEnablePM").ToLocalChecked(), Nan::New(!!format.bEnablePM)); // Flag to enable Power Management
   return scope.Escape(ret);
 }
 
@@ -2502,7 +2502,7 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PORTDEFINITIONTYPE(OMX_VIDEO_PORTDEFINITIONT
   Nan::Set(ret, Nan::New("nSliceHeight").ToLocalChecked(), Nan::New(format.nSliceHeight));
   Nan::Set(ret, Nan::New("nBitrate").ToLocalChecked(), Nan::New(format.nBitrate));
   Nan::Set(ret, Nan::New("xFramerate").ToLocalChecked(), Nan::New(format.xFramerate));
-  Nan::Set(ret, Nan::New("bFlagErrorConcealment").ToLocalChecked(), Nan::New(format.bFlagErrorConcealment));
+  Nan::Set(ret, Nan::New("bFlagErrorConcealment").ToLocalChecked(), Nan::New(!!format.bFlagErrorConcealment));
   Nan::Set(ret, Nan::New("eCompressionFormat").ToLocalChecked(), Nan::New(format.eCompressionFormat));
   Nan::Set(ret, Nan::New("eColorFormat").ToLocalChecked(), Nan::New(format.eColorFormat));
   Nan::Set(ret, Nan::New("pNativeWindow").ToLocalChecked(), Nan::New(format.pNativeWindow));
@@ -2531,7 +2531,7 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_QUANTIZATIONTYPE(OMX_VIDEO_PARAM_QUANT
 v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_VIDEOFASTUPDATETYPE(OMX_VIDEO_PARAM_VIDEOFASTUPDATETYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnableVFU").ToLocalChecked(), Nan::New(format.bEnableVFU));
+  Nan::Set(ret, Nan::New("bEnableVFU").ToLocalChecked(), Nan::New(!!format.bEnableVFU));
   Nan::Set(ret, Nan::New("nFirstGOB").ToLocalChecked(), Nan::New(format.nFirstGOB));
   Nan::Set(ret, Nan::New("nFirstMB").ToLocalChecked(), Nan::New(format.nFirstMB));
   Nan::Set(ret, Nan::New("nNumMBs").ToLocalChecked(), Nan::New(format.nNumMBs));
@@ -2550,8 +2550,8 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_MOTIONVECTORTYPE(OMX_VIDEO_PARAM_MOTIO
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("eAccuracy").ToLocalChecked(), Nan::New(format.eAccuracy));
-  Nan::Set(ret, Nan::New("bUnrestrictedMVs").ToLocalChecked(), Nan::New(format.bUnrestrictedMVs));
-  Nan::Set(ret, Nan::New("bFourMV").ToLocalChecked(), Nan::New(format.bFourMV));
+  Nan::Set(ret, Nan::New("bUnrestrictedMVs").ToLocalChecked(), Nan::New(!!format.bUnrestrictedMVs));
+  Nan::Set(ret, Nan::New("bFourMV").ToLocalChecked(), Nan::New(!!format.bFourMV));
   Nan::Set(ret, Nan::New("sXSearchRange").ToLocalChecked(), Nan::New(format.sXSearchRange));
   Nan::Set(ret, Nan::New("sYSearchRange").ToLocalChecked(), Nan::New(format.sYSearchRange));
   return scope.Escape(ret);
@@ -2571,24 +2571,24 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_INTRAREFRESHTYPE(OMX_VIDEO_PARAM_INTRA
 v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_ERRORCORRECTIONTYPE(OMX_VIDEO_PARAM_ERRORCORRECTIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnableHEC").ToLocalChecked(), Nan::New(format.bEnableHEC));
-  Nan::Set(ret, Nan::New("bEnableResync").ToLocalChecked(), Nan::New(format.bEnableResync));
+  Nan::Set(ret, Nan::New("bEnableHEC").ToLocalChecked(), Nan::New(!!format.bEnableHEC));
+  Nan::Set(ret, Nan::New("bEnableResync").ToLocalChecked(), Nan::New(!!format.bEnableResync));
   Nan::Set(ret, Nan::New("nResynchMarkerSpacing").ToLocalChecked(), Nan::New(format.nResynchMarkerSpacing));
-  Nan::Set(ret, Nan::New("bEnableDataPartitioning").ToLocalChecked(), Nan::New(format.bEnableDataPartitioning));
-  Nan::Set(ret, Nan::New("bEnableRVLC").ToLocalChecked(), Nan::New(format.bEnableRVLC));
+  Nan::Set(ret, Nan::New("bEnableDataPartitioning").ToLocalChecked(), Nan::New(!!format.bEnableDataPartitioning));
+  Nan::Set(ret, Nan::New("bEnableRVLC").ToLocalChecked(), Nan::New(!!format.bEnableRVLC));
   return scope.Escape(ret);
 }
 
 v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_VBSMCTYPE(OMX_VIDEO_PARAM_VBSMCTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("b16x16").ToLocalChecked(), Nan::New(format.b16x16));
-  Nan::Set(ret, Nan::New("b16x8").ToLocalChecked(), Nan::New(format.b16x8));
-  Nan::Set(ret, Nan::New("b8x16").ToLocalChecked(), Nan::New(format.b8x16));
-  Nan::Set(ret, Nan::New("b8x8").ToLocalChecked(), Nan::New(format.b8x8));
-  Nan::Set(ret, Nan::New("b8x4").ToLocalChecked(), Nan::New(format.b8x4));
-  Nan::Set(ret, Nan::New("b4x8").ToLocalChecked(), Nan::New(format.b4x8));
-  Nan::Set(ret, Nan::New("b4x4").ToLocalChecked(), Nan::New(format.b4x4));
+  Nan::Set(ret, Nan::New("b16x16").ToLocalChecked(), Nan::New(!!format.b16x16));
+  Nan::Set(ret, Nan::New("b16x8").ToLocalChecked(), Nan::New(!!format.b16x8));
+  Nan::Set(ret, Nan::New("b8x16").ToLocalChecked(), Nan::New(!!format.b8x16));
+  Nan::Set(ret, Nan::New("b8x8").ToLocalChecked(), Nan::New(!!format.b8x8));
+  Nan::Set(ret, Nan::New("b8x4").ToLocalChecked(), Nan::New(!!format.b8x4));
+  Nan::Set(ret, Nan::New("b4x8").ToLocalChecked(), Nan::New(!!format.b4x8));
+  Nan::Set(ret, Nan::New("b4x4").ToLocalChecked(), Nan::New(!!format.b4x4));
   return scope.Escape(ret);
 }
 
@@ -2599,9 +2599,9 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_H263TYPE(OMX_VIDEO_PARAM_H263TYPE &for
   Nan::Set(ret, Nan::New("nBFrames").ToLocalChecked(), Nan::New(format.nBFrames));
   Nan::Set(ret, Nan::New("eProfile").ToLocalChecked(), Nan::New(format.eProfile));
   Nan::Set(ret, Nan::New("eLevel").ToLocalChecked(), Nan::New(format.eLevel));
-  Nan::Set(ret, Nan::New("bPLUSPTYPEAllowed").ToLocalChecked(), Nan::New(format.bPLUSPTYPEAllowed));
+  Nan::Set(ret, Nan::New("bPLUSPTYPEAllowed").ToLocalChecked(), Nan::New(!!format.bPLUSPTYPEAllowed));
   Nan::Set(ret, Nan::New("nAllowedPictureTypes").ToLocalChecked(), Nan::New(format.nAllowedPictureTypes));
-  Nan::Set(ret, Nan::New("bForceRoundingTypeToZero").ToLocalChecked(), Nan::New(format.bForceRoundingTypeToZero));
+  Nan::Set(ret, Nan::New("bForceRoundingTypeToZero").ToLocalChecked(), Nan::New(!!format.bForceRoundingTypeToZero));
   Nan::Set(ret, Nan::New("nPictureHeaderRepetition").ToLocalChecked(), Nan::New(format.nPictureHeaderRepetition));
   Nan::Set(ret, Nan::New("nGOBHeaderInterval").ToLocalChecked(), Nan::New(format.nGOBHeaderInterval));
   return scope.Escape(ret);
@@ -2621,19 +2621,19 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_MPEG4TYPE(OMX_VIDEO_PARAM_MPEG4TYPE &f
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
   Nan::Set(ret, Nan::New("nSliceHeaderSpacing").ToLocalChecked(), Nan::New(format.nSliceHeaderSpacing));
-  Nan::Set(ret, Nan::New("bSVH").ToLocalChecked(), Nan::New(format.bSVH));
-  Nan::Set(ret, Nan::New("bGov").ToLocalChecked(), Nan::New(format.bGov));
+  Nan::Set(ret, Nan::New("bSVH").ToLocalChecked(), Nan::New(!!format.bSVH));
+  Nan::Set(ret, Nan::New("bGov").ToLocalChecked(), Nan::New(!!format.bGov));
   Nan::Set(ret, Nan::New("nPFrames").ToLocalChecked(), Nan::New(format.nPFrames));
   Nan::Set(ret, Nan::New("nBFrames").ToLocalChecked(), Nan::New(format.nBFrames));
   Nan::Set(ret, Nan::New("nIDCVLCThreshold").ToLocalChecked(), Nan::New(format.nIDCVLCThreshold));
-  Nan::Set(ret, Nan::New("bACPred").ToLocalChecked(), Nan::New(format.bACPred));
+  Nan::Set(ret, Nan::New("bACPred").ToLocalChecked(), Nan::New(!!format.bACPred));
   Nan::Set(ret, Nan::New("nMaxPacketSize").ToLocalChecked(), Nan::New(format.nMaxPacketSize));
   Nan::Set(ret, Nan::New("nTimeIncRes").ToLocalChecked(), Nan::New(format.nTimeIncRes));
   Nan::Set(ret, Nan::New("eProfile").ToLocalChecked(), Nan::New(format.eProfile));
   Nan::Set(ret, Nan::New("eLevel").ToLocalChecked(), Nan::New(format.eLevel));
   Nan::Set(ret, Nan::New("nAllowedPictureTypes").ToLocalChecked(), Nan::New(format.nAllowedPictureTypes));
   Nan::Set(ret, Nan::New("nHeaderExtension").ToLocalChecked(), Nan::New(format.nHeaderExtension));
-  Nan::Set(ret, Nan::New("bReversibleVLC").ToLocalChecked(), Nan::New(format.bReversibleVLC));
+  Nan::Set(ret, Nan::New("bReversibleVLC").ToLocalChecked(), Nan::New(!!format.bReversibleVLC));
   return scope.Escape(ret);
 }
 
@@ -2655,9 +2655,9 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_RVTYPE(OMX_VIDEO_PARAM_RVTYPE &format)
   Nan::Set(ret, Nan::New("nBitstreamFlags").ToLocalChecked(), Nan::New(format.nBitstreamFlags));
   Nan::Set(ret, Nan::New("nBitstreamVersion").ToLocalChecked(), Nan::New(format.nBitstreamVersion));
   Nan::Set(ret, Nan::New("nMaxEncodeFrameSize").ToLocalChecked(), Nan::New(format.nMaxEncodeFrameSize));
-  Nan::Set(ret, Nan::New("bEnablePostFilter").ToLocalChecked(), Nan::New(format.bEnablePostFilter));
-  Nan::Set(ret, Nan::New("bEnableTemporalInterpolation").ToLocalChecked(), Nan::New(format.bEnableTemporalInterpolation));
-  Nan::Set(ret, Nan::New("bEnableLatencyMode").ToLocalChecked(), Nan::New(format.bEnableLatencyMode));
+  Nan::Set(ret, Nan::New("bEnablePostFilter").ToLocalChecked(), Nan::New(!!format.bEnablePostFilter));
+  Nan::Set(ret, Nan::New("bEnableTemporalInterpolation").ToLocalChecked(), Nan::New(!!format.bEnableTemporalInterpolation));
+  Nan::Set(ret, Nan::New("bEnableLatencyMode").ToLocalChecked(), Nan::New(!!format.bEnableLatencyMode));
   return scope.Escape(ret);
 }
 
@@ -2667,25 +2667,25 @@ v8::Local<v8::Object> GET_OMX_VIDEO_PARAM_AVCTYPE(OMX_VIDEO_PARAM_AVCTYPE &forma
   Nan::Set(ret, Nan::New("nSliceHeaderSpacing").ToLocalChecked(), Nan::New(format.nSliceHeaderSpacing));
   Nan::Set(ret, Nan::New("nPFrames").ToLocalChecked(), Nan::New(format.nPFrames));
   Nan::Set(ret, Nan::New("nBFrames").ToLocalChecked(), Nan::New(format.nBFrames));
-  Nan::Set(ret, Nan::New("bUseHadamard").ToLocalChecked(), Nan::New(format.bUseHadamard));
+  Nan::Set(ret, Nan::New("bUseHadamard").ToLocalChecked(), Nan::New(!!format.bUseHadamard));
   Nan::Set(ret, Nan::New("nRefFrames").ToLocalChecked(), Nan::New(format.nRefFrames));
   Nan::Set(ret, Nan::New("nRefIdx10ActiveMinus1").ToLocalChecked(), Nan::New(format.nRefIdx10ActiveMinus1));
   Nan::Set(ret, Nan::New("nRefIdx11ActiveMinus1").ToLocalChecked(), Nan::New(format.nRefIdx11ActiveMinus1));
-  Nan::Set(ret, Nan::New("bEnableUEP").ToLocalChecked(), Nan::New(format.bEnableUEP));
-  Nan::Set(ret, Nan::New("bEnableFMO").ToLocalChecked(), Nan::New(format.bEnableFMO));
-  Nan::Set(ret, Nan::New("bEnableASO").ToLocalChecked(), Nan::New(format.bEnableASO));
-  Nan::Set(ret, Nan::New("bEnableRS").ToLocalChecked(), Nan::New(format.bEnableRS));
+  Nan::Set(ret, Nan::New("bEnableUEP").ToLocalChecked(), Nan::New(!!format.bEnableUEP));
+  Nan::Set(ret, Nan::New("bEnableFMO").ToLocalChecked(), Nan::New(!!format.bEnableFMO));
+  Nan::Set(ret, Nan::New("bEnableASO").ToLocalChecked(), Nan::New(!!format.bEnableASO));
+  Nan::Set(ret, Nan::New("bEnableRS").ToLocalChecked(), Nan::New(!!format.bEnableRS));
   Nan::Set(ret, Nan::New("eProfile").ToLocalChecked(), Nan::New(format.eProfile));
   Nan::Set(ret, Nan::New("eLevel").ToLocalChecked(), Nan::New(format.eLevel));
   Nan::Set(ret, Nan::New("nAllowedPictureTypes").ToLocalChecked(), Nan::New(format.nAllowedPictureTypes));
-  Nan::Set(ret, Nan::New("bFrameMBsOnly").ToLocalChecked(), Nan::New(format.bFrameMBsOnly));
-  Nan::Set(ret, Nan::New("bMBAFF").ToLocalChecked(), Nan::New(format.bMBAFF));
-  Nan::Set(ret, Nan::New("bEntropyCodingCABAC").ToLocalChecked(), Nan::New(format.bEntropyCodingCABAC));
-  Nan::Set(ret, Nan::New("bWeightedPPrediction").ToLocalChecked(), Nan::New(format.bWeightedPPrediction));
+  Nan::Set(ret, Nan::New("bFrameMBsOnly").ToLocalChecked(), Nan::New(!!format.bFrameMBsOnly));
+  Nan::Set(ret, Nan::New("bMBAFF").ToLocalChecked(), Nan::New(!!format.bMBAFF));
+  Nan::Set(ret, Nan::New("bEntropyCodingCABAC").ToLocalChecked(), Nan::New(!!format.bEntropyCodingCABAC));
+  Nan::Set(ret, Nan::New("bWeightedPPrediction").ToLocalChecked(), Nan::New(!!format.bWeightedPPrediction));
   Nan::Set(ret, Nan::New("nWeightedBipredicitonMode").ToLocalChecked(), Nan::New(format.nWeightedBipredicitonMode));
-  Nan::Set(ret, Nan::New("bconstIpred").ToLocalChecked(), Nan::New(format.bconstIpred));
-  Nan::Set(ret, Nan::New("bDirect8x8Inference").ToLocalChecked(), Nan::New(format.bDirect8x8Inference));
-  Nan::Set(ret, Nan::New("bDirectSpatialTemporal").ToLocalChecked(), Nan::New(format.bDirectSpatialTemporal));
+  Nan::Set(ret, Nan::New("bconstIpred").ToLocalChecked(), Nan::New(!!format.bconstIpred));
+  Nan::Set(ret, Nan::New("bDirect8x8Inference").ToLocalChecked(), Nan::New(!!format.bDirect8x8Inference));
+  Nan::Set(ret, Nan::New("bDirectSpatialTemporal").ToLocalChecked(), Nan::New(!!format.bDirectSpatialTemporal));
   Nan::Set(ret, Nan::New("nCabacInitIdc").ToLocalChecked(), Nan::New(format.nCabacInitIdc));
   Nan::Set(ret, Nan::New("eLoopFilterMode").ToLocalChecked(), Nan::New(format.eLoopFilterMode));
   return scope.Escape(ret);
@@ -2717,7 +2717,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_FRAMERATETYPE(OMX_CONFIG_FRAMERATETYPE &for
 v8::Local<v8::Object> GET_OMX_CONFIG_INTRAREFRESHVOPTYPE(OMX_CONFIG_INTRAREFRESHVOPTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("IntraRefreshVOP").ToLocalChecked(), Nan::New(format.IntraRefreshVOP));
+  Nan::Set(ret, Nan::New("IntraRefreshVOP").ToLocalChecked(), Nan::New(!!format.IntraRefreshVOP));
   return scope.Escape(ret);
 }
 
@@ -2732,7 +2732,7 @@ v8::Local<v8::Object> GET_OMX_CONFIG_MACROBLOCKERRORMAPTYPE(OMX_CONFIG_MACROBLOC
 v8::Local<v8::Object> GET_OMX_CONFIG_MBERRORREPORTINGTYPE(OMX_CONFIG_MBERRORREPORTINGTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(format.bEnabled));
+  Nan::Set(ret, Nan::New("bEnabled").ToLocalChecked(), Nan::New(!!format.bEnabled));
   return scope.Escape(ret);
 }
 

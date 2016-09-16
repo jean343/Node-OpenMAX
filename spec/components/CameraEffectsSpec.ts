@@ -182,32 +182,32 @@ describe("Camera", function() {
   it("should have default Exposure Value", function() {
     var value = Camera.getExposureValue();
     expect(JSON.stringify(value)).toEqual(JSON.stringify({
-      metering: 0,
-      eVCompensation: 0,
-      apertureFNumber: 0,
-      autoAperture: false,
-      shutterSpeedMsec: 0,
-      autoShutterSpeed: true,
-      sensitivity: 0,
-      autoSensitivity: true
+      eMetering: 0,
+      xEVCompensation: 0,
+      nApertureFNumber: 0,
+      bAutoAperture: false,
+      nShutterSpeedMsec: 0,
+      bAutoShutterSpeed: true,
+      nSensitivity: 0,
+      bAutoSensitivity: true
     }));
   });
   it("should set Exposure Value", function(done) {
-    var value = new omx.ExposureValue();
-    value.shutterSpeedMsec = 1000;
-    value.autoSensitivity = false;
-    value.sensitivity = 4000;
+    var value = new omx.OMX_CONFIG_EXPOSUREVALUETYPE();
+    value.nShutterSpeedMsec = 500;
+    value.bAutoSensitivity = false;
+    value.nSensitivity = 4000;
     Camera.setExposureValue(value);
 
     expect(JSON.stringify(Camera.getExposureValue())).toEqual(JSON.stringify({
-      metering: 0,
-      eVCompensation: 0,
-      apertureFNumber: 0,
-      autoAperture: false,
-      shutterSpeedMsec: 1000,
-      autoShutterSpeed: true,
-      sensitivity: 4000,
-      autoSensitivity: false
+      eMetering: 0,
+      xEVCompensation: 0,
+      nApertureFNumber: 0,
+      bAutoAperture: false,
+      nShutterSpeedMsec: 499,
+      bAutoShutterSpeed: false,
+      nSensitivity: 4000,
+      bAutoSensitivity: false
     }));
 
     t(done);

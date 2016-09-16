@@ -1,0 +1,1 @@
+import omx = require('../../index')
