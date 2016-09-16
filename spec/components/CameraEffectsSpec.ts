@@ -179,4 +179,38 @@ describe("Camera", function() {
     })();
   });
 
+  it("should have default Exposure Value", function() {
+    var value = Camera.getExposureValue();
+    expect(JSON.stringify(value)).toEqual(JSON.stringify({
+      metering: 0,
+      eVCompensation: 0,
+      apertureFNumber: 0,
+      autoAperture: false,
+      shutterSpeedMsec: 0,
+      autoShutterSpeed: true,
+      sensitivity: 0,
+      autoSensitivity: true
+    }));
+  });
+  it("should set Exposure Value", function(done) {
+    var value = new omx.ExposureValue();
+    value.shutterSpeedMsec = 1000;
+    value.autoSensitivity = false;
+    value.sensitivity = 4000;
+    Camera.setExposureValue(value);
+
+    expect(JSON.stringify(Camera.getExposureValue())).toEqual(JSON.stringify({
+      metering: 0,
+      eVCompensation: 0,
+      apertureFNumber: 0,
+      autoAperture: false,
+      shutterSpeedMsec: 1000,
+      autoShutterSpeed: true,
+      sensitivity: 4000,
+      autoSensitivity: false
+    }));
+
+    t(done);
+  });
+
 });
