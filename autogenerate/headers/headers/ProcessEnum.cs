@@ -81,6 +81,11 @@ namespace headers
                     }
                     sw.WriteLine("\n}");
                 }
+
+                if (file == "OMX_Core")
+                {
+                    sw.WriteLine("export const OMX_ALL: number = 0xFFFFFFFF");
+                }
             }
         }
 
