@@ -134,7 +134,7 @@ namespace headers
                 Struct cstruct = cstructs.Where(a => a.name == field.reference).FirstOrDefault();
                 if (cstruct != null)
                 {
-                    res.Add(field.name, cstruct);
+                    res.Add(field.originalName, cstruct);
                 }
             }
             return res;

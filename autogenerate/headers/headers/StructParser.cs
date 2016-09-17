@@ -10,17 +10,17 @@ namespace headers
     public class CField
     {
         public string type;
-        public string name;
+        public string originalName;
         public string comment;
         internal string nameNoArray;
         internal bool canBeSet = true;
         internal string typeTS;
         internal bool canBeNull;
 
-        public CField(string type, string name, string comment)
+        public CField(string type, string originalName, string comment)
         {
             this.type = type;
-            this.name = name;
+            this.originalName = originalName;
             this.comment = Regex.Replace(comment.Replace("*", " "), @"\s+", @" ");
         }
 
@@ -28,7 +28,7 @@ namespace headers
         public override bool Equals(object obj)
         {
             CField o = (CField)obj;
-            return type == o.type && name == o.name && comment == o.comment;
+            return type == o.type && originalName == o.originalName && comment == o.comment;
         }
 
         public string reference
