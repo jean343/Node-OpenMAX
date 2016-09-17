@@ -1098,7 +1098,6 @@ v8::Local<v8::Object> GET_OMX_CONFIG_BRCMCAMERASTATSTYPE(OMX_CONFIG_BRCMCAMERAST
   return scope.Escape(ret);
 }
 
-
 v8::Local<v8::Object> GET_OMX_CONFIG_BRCMIOPERFSTATSTYPE(OMX_CONFIG_BRCMIOPERFSTATSTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();

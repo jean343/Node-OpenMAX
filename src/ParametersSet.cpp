@@ -917,7 +917,6 @@ void SET_OMX_CONFIG_BRCMCAMERASTATSTYPE(OMX_CONFIG_BRCMCAMERASTATSTYPE &format, 
   format.nDroppedFrameCount = (OMX_U32) Nan::To<int>(Nan::Get(param, Nan::New("nDroppedFrameCount").ToLocalChecked()).ToLocalChecked()).FromJust();
 }
 
-
 void SET_OMX_CONFIG_BRCMIOPERFSTATSTYPE(OMX_CONFIG_BRCMIOPERFSTATSTYPE &format, v8::Local<v8::Object> param) {
   format.bEnabled = (OMX_BOOL) Nan::To<int>(Nan::Get(param, Nan::New("bEnabled").ToLocalChecked()).ToLocalChecked()).FromJust(); // Enable/disable I/O performance statistics
 }

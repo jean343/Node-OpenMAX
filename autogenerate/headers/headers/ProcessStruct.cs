@@ -12,28 +12,17 @@ namespace headers
     enum WriteType { get, set }
     class ProcessStruct
     {
-        string[] blackList = new string[] {
-                "OMX_COMPONENTTYPE",
-                "OMX_COMPONENTREGISTERTYPE",
-                "OMX_CALLBACKTYPE",
-                "OMX_BRCMBUFFERSTATSTYPE",
-                "OMX_PARAM_SOURCESEEDTYPE",
-                "OMX_FACEREGIONTYPE",
-                "OMX_PARAM_BRCMRECURSIONUNSAFETYPE",
-                "OMX_CONFIG_LENSCALIBRATIONVALUETYPE"
-            };
-
         public void convertStruct(string path, List<string> files)
         {
             // Parse the enum OMX_INDEXTYPE to get the references
             CStruct OMX_INDEXTYPE = StructParser.parse(File.ReadAllText(Path.Combine(path, "source", "OMX_Index.h")), "enum").First();
 
-            List<CStruct> cstruct = new List<CStruct>();
+            List<Struct> cstruct = new List<Struct>();
 
             foreach (string file in files)
             {
                 string sourcestring = File.ReadAllText(Path.Combine(path, "source", file + ".h"));
-                List<CStruct> structs = StructParser.parse(sourcestring, "struct");
+                List<Struct> structs = StructConverter.convert(StructParser.parse(sourcestring, "struct"));
                 cstruct.AddRange(structs);
 
                 Directory.CreateDirectory(Path.Combine(path, @"..\..\..\lib\classes"));
@@ -67,17 +56,11 @@ namespace headers
             }
         }
 
-        private void writeTs(StreamWriter sw, string file, List<CStruct> cstructs)
+        private void writeTs(StreamWriter sw, string file, List<Struct> cstructs)
         {
             sw.WriteLine(@"import omx = require('../../index')");
-            foreach (CStruct cstruct in cstructs)
+            foreach (Struct cstruct in cstructs)
             {
-                if (blackList.Contains(cstruct.name)) continue;
-                if (cstruct.name.Length == 0)
-                {
-                    return;
-                }
-
                 var nameTrimmed = cstruct.name;
 
                 sw.WriteLine(@"export class " + nameTrimmed + " {");
@@ -156,7 +139,7 @@ namespace headers
             }
         }
 
-        private void writeGetterSetter(StreamWriter sw, List<CStruct> cstructs, WriteType t)
+        private void writeGetterSetter(StreamWriter sw, List<Struct> cstructs, WriteType t)
         {
             /*string[] whiteList = new string[] {
                 "OMX_PARAM_PORTDEFINITIONTYPE" ,
@@ -166,11 +149,8 @@ namespace headers
                 "OMX_OTHER_PORTDEFINITIONTYPE",
                 "OMX_VIDEO_PARAM_PORTFORMATTYPE"
             };*/
-            foreach (CStruct cstruct in cstructs)
+            foreach (Struct cstruct in cstructs)
             {
-                //if (!whiteList.Contains(cstruct.name)) continue;
-                if (blackList.Contains(cstruct.name)) continue;
-
                 if (t == WriteType.get)
                 {
                     writeFunctionGetter(sw, cstruct, false, cstructs);
@@ -183,11 +163,8 @@ namespace headers
 
             sw.WriteLine();
 
-            foreach (CStruct cstruct in cstructs)
+            foreach (Struct cstruct in cstructs)
             {
-                //if (!whiteList.Contains(cstruct.name)) continue;
-                if (blackList.Contains(cstruct.name)) continue;
-
                 if (t == WriteType.get)
                 {
                     writeFunctionGetter(sw, cstruct, true, cstructs);
@@ -201,14 +178,14 @@ namespace headers
             }
         }
 
-        private Dictionary<string, CStruct> getAllStructs(CStruct OMX_INDEXTYPE, List<CStruct> cstructs)
+        private Dictionary<string, Struct> getAllStructs(CStruct OMX_INDEXTYPE, List<Struct> cstructs)
         {
-            Dictionary<string, CStruct> res = new Dictionary<string, CStruct>();
+            Dictionary<string, Struct> res = new Dictionary<string, Struct>();
             foreach (CField field in OMX_INDEXTYPE.fields)
             {
                 if (field.reference.Length == 0) continue;
 
-                CStruct cstruct = cstructs.Where(a => a.name == field.reference).FirstOrDefault();
+                Struct cstruct = cstructs.Where(a => a.name == field.reference).FirstOrDefault();
                 if (cstruct != null)
                 {
                     res.Add(field.name, cstruct);
@@ -216,15 +193,15 @@ namespace headers
             }
             return res;
         }
-        private void writeAllCasesCpp(StreamWriter sw, CStruct OMX_INDEXTYPE, List<CStruct> cstructs, WriteType t)
+        private void writeAllCasesCpp(StreamWriter sw, CStruct OMX_INDEXTYPE, List<Struct> cstructs, WriteType t)
         {
-            Dictionary<string, CStruct> allStructs = getAllStructs(OMX_INDEXTYPE, cstructs);
+            Dictionary<string, Struct> allStructs = getAllStructs(OMX_INDEXTYPE, cstructs);
 
             sw.WriteLine(@"  switch (nParamIndex) {");
             foreach (var row in allStructs)
             {
                 string index = row.Key;
-                CStruct cstruct = row.Value;
+                Struct cstruct = row.Value;
 
                 if (t == WriteType.get)
                 {
@@ -240,7 +217,7 @@ namespace headers
             sw.WriteLine(@"  }");
         }
         
-        private void writeFunctionGetter(StreamWriter sw, CStruct cstruct, bool writeBody, List<CStruct> cstructs)
+        private void writeFunctionGetter(StreamWriter sw, Struct cstruct, bool writeBody, List<Struct> cstructs)
         {
             if (cstruct.name.Length == 0)
             {
@@ -299,7 +276,7 @@ namespace headers
                     sw.Write("  ");
                 }
 
-                bool isObject = cstructs.Where(a => a.name == f.type).Count() > 0 && !blackList.Contains(f.type);
+                bool isObject = cstructs.Where(a => a.name == f.type).Count() > 0;
 
                 if (isObject)
                 {
@@ -313,7 +290,7 @@ namespace headers
             sw.WriteLine(@"  return scope.Escape(ret);");
             sw.WriteLine(@"}");
         }
-        private void writeFunctionSetter(StreamWriter sw, CStruct cstruct, bool writeBody, List<CStruct> cstructs)
+        private void writeFunctionSetter(StreamWriter sw, Struct cstruct, bool writeBody, List<Struct> cstructs)
         {
             if (cstruct.name.Length == 0)
             {
@@ -372,7 +349,7 @@ namespace headers
         }
 
 
-        private void writeCaseGet(StreamWriter sw, string indexName, CStruct cstruct)
+        private void writeCaseGet(StreamWriter sw, string indexName, Struct cstruct)
         {
             if (indexName == "OMX_IndexParamBrcmRecursionUnsafe" || indexName == "OMX_IndexParamSourceSeed") return;
 
@@ -392,7 +369,7 @@ namespace headers
             sw.WriteLine("      break;");
         }
 
-        private void writeCaseSet(StreamWriter sw, string indexName, CStruct cstruct)
+        private void writeCaseSet(StreamWriter sw, string indexName, Struct cstruct)
         {
             if (indexName == "OMX_IndexParamBrcmRecursionUnsafe" || indexName == "OMX_IndexParamSourceSeed") return;
 
