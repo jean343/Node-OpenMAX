@@ -62,6 +62,10 @@ export class OMX_AUDIO_PARAM_PCMMODETYPE {
    * PCM mode enumeration
    */
   ePCMMode: omx.OMX_AUDIO_PCMMODETYPE;
+  /**
+   * Slot i contains channel defined by eChannelMap[i]
+   */
+  eChannelMapping: omx.OMX_AUDIO_CHANNELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -115,6 +119,10 @@ export class OMX_AUDIO_PARAM_DDPTYPE {
   eBitStreamId: omx.OMX_AUDIO_DDPBITSTREAMID;
   eBitStreamMode: omx.OMX_AUDIO_DDPBITSTREAMMODE;
   eDolbySurroundMode: omx.OMX_AUDIO_DDPDOLBYSURROUNDMODE;
+  /**
+   * Slot i contains channel defined by eChannelMapping[i]
+   */
+  eChannelMapping: omx.OMX_AUDIO_CHANNELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -146,6 +154,10 @@ export class OMX_AUDIO_PARAM_DTSTYPE {
    * DTS frame size in bytes
    */
   nDtsFrameSizeBytes: number;
+  /**
+   * Slot i contains channel defined by eChannelMapping[i]
+   */
+  eChannelMapping: omx.OMX_AUDIO_CHANNELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -783,6 +795,10 @@ export class OMX_AUDIO_CONFIG_MIDIIMMEDIATEEVENTTYPE {
    * Size of immediate MIDI events or MIP message in bytes
    */
   nMidiEventSize: number;
+  /**
+   * MIDI event array to be rendered immediately, or an array for the MIP message buffer, where the size is indicated by nMidiEventSize
+   */
+  nMidiEvents: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -938,6 +954,10 @@ export class OMX_AUDIO_CONFIG_MIDIMETAEVENTDATATYPE {
    * size of the Meta Event in bytes
    */
   nMetaEventSize: number;
+  /**
+   * array of one or more bytes of meta data as indicated by the nMetaEventSize field
+   */
+  nData: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

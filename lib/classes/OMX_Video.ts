@@ -264,6 +264,10 @@ export class OMX_CONFIG_MACROBLOCKERRORMAPTYPE {
    * Size of the Error Map in bytes
    */
   nErrMapSize: number;
+  /**
+   * Error map hint
+   */
+  ErrMap: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

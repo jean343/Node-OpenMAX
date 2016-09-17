@@ -74,6 +74,10 @@ export class OMX_CONFIG_BOOLEANTYPE {
   }
 }
 export class OMX_PARAM_CONTENTURITYPE {
+  /**
+   * The URI name
+   */
+  contentURI: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -119,9 +123,11 @@ export class OMX_CONFIG_METADATAITEMTYPE {
   eSearchMode: omx.OMX_METADATASEARCHMODETYPE;
   eKeyCharset: omx.OMX_METADATACHARSETTYPE;
   nKeySizeUsed: number;
+  nKey: number;
   eValueCharset: omx.OMX_METADATACHARSETTYPE;
   nValueMaxSize: number;
   nValueSizeUsed: number;
+  nValue: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -157,7 +163,9 @@ export class OMX_PARAM_METADATAFILTERTYPE {
   bAllKeys: boolean;
   eKeyCharset: omx.OMX_METADATACHARSETTYPE;
   nKeySizeUsed: number;
+  nKey : number;
   nLanguageCountrySizeUsed: number;
+  nLanguageCountry: number;
   /**
    * if true then key is part of filter (e.g. retained for query later). If false then key is not part of filter
    */

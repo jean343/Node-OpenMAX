@@ -53,6 +53,7 @@ export class OMX_IMAGE_PARAM_QFACTORTYPE {
 }
 export class OMX_IMAGE_PARAM_QUANTIZATIONTABLETYPE {
   eQuantizationTable: omx.OMX_IMAGE_QUANTIZATIONTABLETYPE;
+  nQuantizationMatrix: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -61,6 +62,8 @@ export class OMX_IMAGE_PARAM_QUANTIZATIONTABLETYPE {
 }
 export class OMX_IMAGE_PARAM_HUFFMANTTABLETYPE {
   eHuffmanTable: omx.OMX_IMAGE_HUFFMANTABLETYPE;
+  nNumberOfHuffmanCodeOfLength: number;
+  nHuffmanTable: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

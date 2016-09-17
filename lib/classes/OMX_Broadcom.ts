@@ -80,6 +80,7 @@ export class OMX_PARAM_TESTINTERFACETYPE {
   bSetExtra: boolean;
   nExtra: number;
   bSetError: boolean;
+  stateError: boolean;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -87,6 +88,8 @@ export class OMX_PARAM_TESTINTERFACETYPE {
   }
 }
 export class OMX_CONFIG_VISUALISATIONTYPE {
+  name: number;
+  property: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -94,6 +97,7 @@ export class OMX_CONFIG_VISUALISATIONTYPE {
   }
 }
 export class OMX_CONFIG_BRCMAUDIODESTINATIONTYPE {
+  sName: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -101,6 +105,7 @@ export class OMX_CONFIG_BRCMAUDIODESTINATIONTYPE {
   }
 }
 export class OMX_CONFIG_BRCMAUDIOSOURCETYPE {
+  sName: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -108,6 +113,7 @@ export class OMX_CONFIG_BRCMAUDIOSOURCETYPE {
   }
 }
 export class OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS {
+  coeff: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -115,6 +121,7 @@ export class OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS {
   }
 }
 export class OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8 {
+  coeff: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -148,6 +155,7 @@ export class OMX_PARAM_DELIVERYFORMATTYPE {
 }
 export class OMX_PARAM_CODECCONFIGTYPE {
   bCodecConfigIsComplete: number;
+  nData: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -190,6 +198,7 @@ export class OMX_PARAM_BRCMPORTEGLTYPE {
 export class OMX_CONFIG_IMAGEFILTERPARAMSTYPE {
   eImageFilter: omx.OMX_IMAGEFILTERTYPE;
   nNumParams: number;
+  nParams: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -202,6 +211,8 @@ export class OMX_CONFIG_TRANSITIONCONTROLTYPE {
   nPosIncrement: number;
   nFrameIncrement: omx.OMX_TICKS;
   bSwapInputs: boolean;
+  name: number;
+  property: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -303,6 +314,7 @@ export class OMX_CONFIG_CAMERASENSORMODETYPE {
 }
 export class OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE {
   nCount: number;
+  sData;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -414,6 +426,10 @@ export class OMX_CONFIG_FACEDETECTIONREGIONTYPE {
    * Height of the image, hence reference for the face coordinates
    */
   nImageHeight: number;
+  /**
+   * variable length array of face regions
+   */
+  sRegion;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -436,6 +452,7 @@ export class OMX_CONFIG_INTERLACETYPE {
   }
 }
 export class OMX_PARAM_CAMERAISPTUNERTYPE {
+  tuner_name: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -568,6 +585,8 @@ export class OMX_PARAM_CAMERADISABLEALGORITHMTYPE {
 }
 export class OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE {
   bEnable: boolean;
+  name: number;
+  property: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -631,9 +650,13 @@ export class OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE {
   }
 }
 export class OMX_CONFIG_CAMERAINFOTYPE {
+  cameraname: number;
+  lensname: number;
   nModelId: number;
   nManufacturerId: number;
   nRevNum: number;
+  sSerialNumber: number;
+  sEpromVersion: number;
   xFNumber: number;
   xFocalLength: number;
   constructor(p?: any) {
@@ -680,6 +703,7 @@ export class OMX_CONFIG_FOCUSREGIONXYTYPE {
   nValidRegions: number;
   bLockToFaces: boolean;
   xFaceTolerance: number;
+  sRegion: omx.OMX_FOCUSREGIONXY;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -814,6 +838,7 @@ export class OMX_CONFIG_DRAWBOXLINEPARAMS {
 }
 export class OMX_PARAM_CAMERARMITYPE {
   bEnabled: boolean;
+  sRmiName: number;
   nInputBufferHeight: number;
   nRmiBufferSize: number;
   constructor(p?: any) {
@@ -903,6 +928,7 @@ export class OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE {
   }
 }
 export class OMX_CONFIG_FLASHINFOTYPE {
+  sFlashName: number;
   eFlashType: omx.OMX_CAMERAFLASHTYPE;
   nDeviceId: number;
   nDeviceVersion: number;
@@ -967,6 +993,7 @@ export class OMX_CONFIG_STATICBOXTYPE {
   nTotalBoxes: number;
   nValidBoxes: number;
   bDrawOtherBoxes: boolean;
+  sBoxes: omx.OMX_STATICBOX;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -992,6 +1019,7 @@ export class OMX_PARAM_CAMERACAPTUREMODETYPE {
 export class OMX_PARAM_BRCMDRMENCRYPTIONTYPE {
   eEncryption: omx.OMX_BRCMDRMENCRYPTIONTYPE;
   nConfigDataLen: number;
+  configData: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -1169,6 +1197,10 @@ export class OMX_PARAM_BRCMCONFIGFILECHUNKTYPE {
    * Offset of this chunk in the file
    */
   offset: number;
+  /**
+   * Chunk data
+   */
+  data: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -1236,6 +1268,10 @@ export class OMX_CONFIG_ZEROSHUTTERLAGTYPE {
   }
 }
 export class OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE {
+  /**
+   * Configuration data (a VD3_CONFIGURE_T)
+   */
+  config: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -1265,6 +1301,7 @@ export class OMX_CONFIG_BRCMRENDERSTATSTYPE {
   nPixelClockNominal: number;
   nPixelClock: number;
   nHvsStatus: number;
+  dummy0: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -1293,6 +1330,7 @@ export class OMX_CONFIG_BRCMANNOTATETYPE {
    * Text size: 6-150 pixels
    */
   nTextSize: number;
+  sText: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -1343,7 +1381,7 @@ export class OMX_PARAM_CAMERACLOCKINGMODETYPE {
 export class OMX_PARAM_CAMERARXCONFIG_TYPE {
   eDecode: omx.OMX_CAMERARXDECODETYPE;
   eEncode: omx.OMX_CAMERARXENCODETYPE;
-  eUnpack: omx.OMX_CAMERARXUNPACKYPE;
+  eUnpack;
   ePack: omx.OMX_CAMERARXPACKTYPE;
   nDataLanes: number;
   nEncodeBlockLength: number;

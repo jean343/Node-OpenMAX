@@ -12,6 +12,10 @@ export class OMX_PARAM_PORTSUMMARYTYPE {
    * Bitfield, 1 if output port, 0 if input port, max 256 ports
    */
   portDir: number;
+  /**
+   * Port Indexes
+   */
+  portIndex: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

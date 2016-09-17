@@ -15,6 +15,10 @@ export class OMX_PRIORITYMGMTTYPE {
   }
 }
 export class OMX_PARAM_COMPONENTROLETYPE {
+  /**
+   * name of standard component which defines component role
+   */
+  cRole: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -77,6 +81,10 @@ export class OMX_OTHER_EXTRADATATYPE {
    * Size of the supporting data to follow
    */
   nDataSize: number;
+  /**
+   * Supporting data hint
+   */
+  data: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

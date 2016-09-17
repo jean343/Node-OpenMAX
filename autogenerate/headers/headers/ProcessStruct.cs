@@ -67,12 +67,6 @@ namespace headers
 
                 foreach (CField f in cstruct.fields)
                 {
-                    // Remove the array info
-                    if (Regex.IsMatch(f.name, @"\[\w*?\]"))
-                    {
-                        continue;
-                    }
-                    string nameNoArray = Regex.Replace(f.name, @"\[\w*?\]", "");
 
                     if (
                         f.type == "OMX_STRING" ||
@@ -90,8 +84,8 @@ namespace headers
    */", f.comment);
                     }
 
-                    string nameNoType = nameNoArray;
-                    if (file != "OMX_Broadcom" && !Char.IsDigit(nameNoArray[1]))
+                    string nameNoType = f.nameNoArray;
+                    if (file != "OMX_Broadcom" && !Char.IsDigit(f.nameNoArray[1]))
                     {
                         //nameNoType = Char.ToLowerInvariant(nameNoArray[1]) + nameNoArray.Substring(2);
                     }
@@ -131,6 +125,9 @@ namespace headers
                 case "OMX_BUFFERADDRESSHANDLETYPE":
                 case "OMX_HANDLETYPE":
                 case "OMX_NATIVE_WINDOWTYPE":
+                case "OMX_BRCMBUFFERSTATSTYPE":
+                case "OMX_FACEREGIONTYPE":
+                case "OMX_CAMERARXUNPACKYPE":
                     return null;
                 default:
                     return "omx." + cType;
@@ -229,11 +226,6 @@ namespace headers
 
             foreach (CField f in cstruct.fields)
             {
-                // Remove the array info
-                string nameNoArray = Regex.Replace(f.name, @"\[\w*?\]", "");
-
-                string fname = nameNoArray;
-
                 if (
                     f.type == "OMX_PTR" ||
                     f.type == "OMX_STATICBOX" ||
@@ -245,10 +237,10 @@ namespace headers
                     ) continue;
 
                 // Special code for OMX_IndexParamPortDefinition
-                if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(nameNoArray))
+                if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.nameNoArray))
                 {
-                    sw.WriteLine(@"  if (format.eDomain == OMX_PortDomain" + Utils.FirstCharToUpper(nameNoArray) + ") {");
-                    sw.WriteLine(@"    Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_OMX_{1}_PORTDEFINITIONTYPE(format.format.{0}));", nameNoArray, nameNoArray.ToUpper());
+                    sw.WriteLine(@"  if (format.eDomain == OMX_PortDomain" + Utils.FirstCharToUpper(f.nameNoArray) + ") {");
+                    sw.WriteLine(@"    Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_OMX_{1}_PORTDEFINITIONTYPE(format.format.{0}));", f.nameNoArray, f.nameNoArray.ToUpper());
                     sw.WriteLine(@"  }");
                     continue;
                 }
@@ -268,7 +260,7 @@ namespace headers
 
                 if (canBeNull)
                 {
-                    sw.WriteLine(@"  if (format.{0} != NULL)", nameNoArray);
+                    sw.WriteLine(@"  if (format.{0} != NULL)", f.nameNoArray);
                     sw.Write("  ");
                 }
 
@@ -276,10 +268,10 @@ namespace headers
 
                 if (isObject)
                 {
-                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}(format.{0}));", nameNoArray, f.type);
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}(format.{0}));", f.nameNoArray, f.type);
                 }
                 else {
-                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", nameNoArray, castTo != null ? castTo : "", fname, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", f.nameNoArray, castTo != null ? castTo : "", f.nameNoArray, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
                 }
             }
 
@@ -300,11 +292,10 @@ namespace headers
             foreach (CField f in cstruct.fields)
             {
                 // Remove the array info
-                if (Regex.IsMatch(f.name, @"\[\w*?\]"))
+                if (!f.canBeSet)
                 {
                     continue;
                 }
-                string nameNoArray = Regex.Replace(f.name, @"\[\w*?\]", "");
 
                 if (
                     f.type == "OMX_STRING" ||
@@ -316,11 +307,11 @@ namespace headers
                     ) continue;
 
                 // Special code for OMX_IndexParamPortDefinition
-                if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(nameNoArray))
+                if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.nameNoArray))
                 {
-                    sw.WriteLine(@"  if (format.eDomain == OMX_PortDomain" + Utils.FirstCharToUpper(nameNoArray) + ") {");
-                    sw.WriteLine(@"    v8::Local<v8::Object> obj = Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{0}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked();", nameNoArray);
-                    sw.WriteLine(@"    SET_OMX_{1}_PORTDEFINITIONTYPE(format.format.{0}, obj);", nameNoArray, nameNoArray.ToUpper());
+                    sw.WriteLine(@"  if (format.eDomain == OMX_PortDomain" + Utils.FirstCharToUpper(f.nameNoArray) + ") {");
+                    sw.WriteLine(@"    v8::Local<v8::Object> obj = Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{0}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked();", f.nameNoArray);
+                    sw.WriteLine(@"    SET_OMX_{1}_PORTDEFINITIONTYPE(format.format.{0}, obj);", f.nameNoArray, f.nameNoArray.ToUpper());
                     sw.WriteLine(@"  }");
                     continue;
                 }
@@ -329,14 +320,14 @@ namespace headers
 
                 if (isObject)
                 {
-                    sw.WriteLine(@"  if (Nan::Has(param, Nan::New(""{0}"").ToLocalChecked()).FromJust())", nameNoArray);
+                    sw.WriteLine(@"  if (Nan::Has(param, Nan::New(""{0}"").ToLocalChecked()).FromJust())", f.nameNoArray);
                     sw.WriteLine(@"  {");
-                    sw.WriteLine(@"    SET_{1}(format.{0}, Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{0}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());", nameNoArray, f.type);
+                    sw.WriteLine(@"    SET_{1}(format.{0}, Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{0}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());", f.nameNoArray, f.type);
                     sw.WriteLine(@"  }");
                 }
                 else
                 {
-                    sw.WriteLine(@"  format.{1} = ({0}) Nan::To<int>(Nan::Get(param, Nan::New(""{1}"").ToLocalChecked()).ToLocalChecked()).FromJust();{2}", f.type, nameNoArray, f.comment.Length == 0 ? "" : " // " + f.comment);
+                    sw.WriteLine(@"  format.{1} = ({0}) Nan::To<int>(Nan::Get(param, Nan::New(""{1}"").ToLocalChecked()).ToLocalChecked()).FromJust();{2}", f.type, f.nameNoArray, f.comment.Length == 0 ? "" : " // " + f.comment);
                 }
             }
             sw.WriteLine(@"}");

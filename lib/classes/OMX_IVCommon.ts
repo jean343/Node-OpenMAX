@@ -1,5 +1,13 @@
 import omx = require('../../index')
 export class OMX_CONFIG_COLORCONVERSIONTYPE {
+  /**
+   * Stored in signed Q16 format
+   */
+  xColorMatrix: number;
+  /**
+   * Stored in signed Q16 format
+   */
+  xColorOffset: number;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

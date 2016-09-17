@@ -12,6 +12,8 @@ namespace headers
         public string type;
         public string name;
         public string comment;
+        internal string nameNoArray;
+        internal bool canBeSet = true;
 
         public CField(string type, string name, string comment)
         {
