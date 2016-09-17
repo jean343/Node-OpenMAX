@@ -703,7 +703,6 @@ export class OMX_CONFIG_FOCUSREGIONXYTYPE {
   nValidRegions: number;
   bLockToFaces: boolean;
   xFaceTolerance: number;
-  sRegion: omx.OMX_FOCUSREGIONXY;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
@@ -993,7 +992,6 @@ export class OMX_CONFIG_STATICBOXTYPE {
   nTotalBoxes: number;
   nValidBoxes: number;
   bDrawOtherBoxes: boolean;
-  sBoxes: omx.OMX_STATICBOX;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

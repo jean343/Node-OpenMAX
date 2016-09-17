@@ -268,8 +268,6 @@ v8::Local<v8::Object> GET_OMX_VIDEO_CONFIG_NALSIZE(OMX_VIDEO_CONFIG_NALSIZE &for
 v8::Local<v8::Object> GET_OMX_AUDIO_PORTDEFINITIONTYPE(OMX_AUDIO_PORTDEFINITIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  if (format.cMIMEType != NULL)
-    Nan::Set(ret, Nan::New("cMIMEType").ToLocalChecked(), Nan::New(format.cMIMEType).ToLocalChecked()); // MIME type of data for the port
   Nan::Set(ret, Nan::New("pNativeRender").ToLocalChecked(), Nan::New(format.pNativeRender)); // < platform specific reference for an output device, otherwise this field is 0
   Nan::Set(ret, Nan::New("bFlagErrorConcealment").ToLocalChecked(), Nan::New(!!format.bFlagErrorConcealment)); // Turns on error concealment if it is supported by the OMX component
   Nan::Set(ret, Nan::New("eEncoding").ToLocalChecked(), Nan::New(format.eEncoding)); // Type of data expected for this port (e.g. PCM, AMR, MP3, etc)
@@ -1912,8 +1910,6 @@ v8::Local<v8::Object> GET_OMX_CONFIG_METADATAITEMTYPE(OMX_CONFIG_METADATAITEMTYP
   Nan::Set(ret, Nan::New("nKeySizeUsed").ToLocalChecked(), Nan::New(format.nKeySizeUsed));
   Nan::Set(ret, Nan::New("nKey").ToLocalChecked(), Nan::New(format.nKey));
   Nan::Set(ret, Nan::New("eValueCharset").ToLocalChecked(), Nan::New(format.eValueCharset));
-  if (format.sLanguageCountry != NULL)
-    Nan::Set(ret, Nan::New("sLanguageCountry").ToLocalChecked(), Nan::New(format.sLanguageCountry).ToLocalChecked());
   Nan::Set(ret, Nan::New("nValueMaxSize").ToLocalChecked(), Nan::New(format.nValueMaxSize));
   Nan::Set(ret, Nan::New("nValueSizeUsed").ToLocalChecked(), Nan::New(format.nValueSizeUsed));
   Nan::Set(ret, Nan::New("nValue").ToLocalChecked(), Nan::New(format.nValue));
@@ -1936,8 +1932,6 @@ v8::Local<v8::Object> GET_OMX_CONFIG_CONTAINERNODEIDTYPE(OMX_CONFIG_CONTAINERNOD
   Nan::Set(ret, Nan::New("nParentNodeID").ToLocalChecked(), Nan::New(format.nParentNodeID));
   Nan::Set(ret, Nan::New("nNodeIndex").ToLocalChecked(), Nan::New(format.nNodeIndex));
   Nan::Set(ret, Nan::New("nNodeID").ToLocalChecked(), Nan::New(format.nNodeID));
-  if (format.cNodeName != NULL)
-    Nan::Set(ret, Nan::New("cNodeName").ToLocalChecked(), Nan::New(format.cNodeName).ToLocalChecked());
   Nan::Set(ret, Nan::New("bIsLeafType").ToLocalChecked(), Nan::New(!!format.bIsLeafType));
   return scope.Escape(ret);
 }
@@ -2046,8 +2040,6 @@ v8::Local<v8::Object> GET_OMX_PARAM_TUNNELSTATUSTYPE(OMX_PARAM_TUNNELSTATUSTYPE 
 v8::Local<v8::Object> GET_OMX_IMAGE_PORTDEFINITIONTYPE(OMX_IMAGE_PORTDEFINITIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  if (format.cMIMEType != NULL)
-    Nan::Set(ret, Nan::New("cMIMEType").ToLocalChecked(), Nan::New(format.cMIMEType).ToLocalChecked());
   Nan::Set(ret, Nan::New("pNativeRender").ToLocalChecked(), Nan::New(format.pNativeRender));
   Nan::Set(ret, Nan::New("nFrameWidth").ToLocalChecked(), Nan::New(format.nFrameWidth));
   Nan::Set(ret, Nan::New("nFrameHeight").ToLocalChecked(), Nan::New(format.nFrameHeight));
@@ -2492,8 +2484,6 @@ v8::Local<v8::Object> GET_OMX_MARKTYPE(OMX_MARKTYPE &format) {
 v8::Local<v8::Object> GET_OMX_VIDEO_PORTDEFINITIONTYPE(OMX_VIDEO_PORTDEFINITIONTYPE &format) {
   Nan::EscapableHandleScope scope;
   v8::Local<v8::Object> ret = Nan::New<v8::Object>();
-  if (format.cMIMEType != NULL)
-    Nan::Set(ret, Nan::New("cMIMEType").ToLocalChecked(), Nan::New(format.cMIMEType).ToLocalChecked());
   Nan::Set(ret, Nan::New("pNativeRender").ToLocalChecked(), Nan::New(format.pNativeRender));
   Nan::Set(ret, Nan::New("nFrameWidth").ToLocalChecked(), Nan::New(format.nFrameWidth));
   Nan::Set(ret, Nan::New("nFrameHeight").ToLocalChecked(), Nan::New(format.nFrameHeight));

@@ -67,16 +67,6 @@ namespace headers
 
                 foreach (CField f in cstruct.fields)
                 {
-
-                    if (
-                        f.type == "OMX_STRING" ||
-                        f.type == "OMX_PTR" ||
-                        f.type == "OMX_BRCM_POOL_T" ||
-                        f.type == "struct" ||
-                        f.type == "OMX_BRCM_PERFSTATS" ||
-                        f.type == "OMX_CONFIG_LENSCALIBRATIONVALUETYPE"
-                        ) continue;
-                    //f.comment
                     if (f.comment.Length>0)
                     {
                         sw.WriteLine(@"  /**
@@ -226,16 +216,6 @@ namespace headers
 
             foreach (CField f in cstruct.fields)
             {
-                if (
-                    f.type == "OMX_PTR" ||
-                    f.type == "OMX_STATICBOX" ||
-                    f.type == "OMX_BRCM_POOL_T" ||
-                    f.type == "struct" ||
-                    f.type == "OMX_BRCM_PERFSTATS" ||
-                    f.type == "OMX_CONFIG_LENSCALIBRATIONVALUETYPE" ||
-                    f.type == "OMX_FOCUSREGIONXY"
-                    ) continue;
-
                 // Special code for OMX_IndexParamPortDefinition
                 if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.nameNoArray))
                 {
@@ -296,15 +276,6 @@ namespace headers
                 {
                     continue;
                 }
-
-                if (
-                    f.type == "OMX_STRING" ||
-                    f.type == "OMX_PTR" ||
-                    f.type == "OMX_BRCM_POOL_T" ||
-                    f.type == "struct" ||
-                    f.type == "OMX_BRCM_PERFSTATS" ||
-                    f.type == "OMX_CONFIG_LENSCALIBRATIONVALUETYPE"
-                    ) continue;
 
                 // Special code for OMX_IndexParamPortDefinition
                 if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.nameNoArray))
