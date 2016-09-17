@@ -12,7 +12,7 @@ namespace headers
         public string type;
         public string originalName;
         public string comment;
-        internal string nameNoArray;
+        internal string name;
         internal bool canBeSet = true;
         internal string typeTS;
         internal bool canBeNull;
