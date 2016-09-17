@@ -9,8 +9,8 @@ export class EglRender extends omx.Component {
   }
 
   // ---- Text can be edited below this line --------
-  setBufferCount (countIN: number, countOUT: number) {
-    var portdef = this.getParameter(this.in_port, omx.INDEXTYPE.IndexParamPortDefinition);
+  setBufferCount(countIN: number, countOUT: number) {
+    var portdef: omx.PARAM_PORTDEFINITIONTYPE = this.getParameter(this.in_port, omx.INDEXTYPE.IndexParamPortDefinition);
     portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);
     this.setParameter(this.in_port, omx.INDEXTYPE.IndexParamPortDefinition, portdef);
 

@@ -10,7 +10,7 @@ export class ImageEncode extends omx.Component {
 
   // ---- Text can be edited below this line --------
   setInputFormat(eCompressionFormat: omx.IMAGE_CODINGTYPE) {
-    var format = this.getParameter(this.out_port, omx.INDEXTYPE.IndexParamImagePortFormat);
+    var format: omx.IMAGE_PARAM_PORTFORMATTYPE = this.getParameter(this.out_port, omx.INDEXTYPE.IndexParamImagePortFormat);
     format.eCompressionFormat = eCompressionFormat;
     this.setParameter(this.out_port, omx.INDEXTYPE.IndexParamImagePortFormat, format);
     return this;
