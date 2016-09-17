@@ -22,7 +22,7 @@ namespace headers
             foreach (string file in files)
             {
                 string sourcestring = File.ReadAllText(Path.Combine(path, "source", file + ".h"));
-                List<Struct> structs = StructConverter.convert(StructParser.parse(sourcestring, "struct"));
+                List<Struct> structs = new StructConverter().convert(StructParser.parse(sourcestring, "struct"));
                 cstruct.AddRange(structs);
 
                 Directory.CreateDirectory(Path.Combine(path, @"..\..\..\lib\classes"));
@@ -73,18 +73,14 @@ namespace headers
    * {0}
    */", f.comment);
                     }
-
-                    string nameNoType = f.nameNoArray;
+                    
                     if (file != "OMX_Broadcom" && !Char.IsDigit(f.nameNoArray[1]))
                     {
                         //nameNoType = Char.ToLowerInvariant(nameNoArray[1]) + nameNoArray.Substring(2);
                     }
-
-                    string tsType = cToTs(f.type);
-                    sw.WriteLine(@"  {0}{1};", nameNoType, tsType != null ? ": " + tsType : "");
+                    
+                    sw.WriteLine(@"  {0}{1};", f.nameNoArray, f.typeTS != null ? ": " + f.typeTS : "");
                 }
-
-
                 
                 sw.WriteLine(@"  constructor(p?: any) {");
                 sw.WriteLine(@"    if (p) {");
@@ -92,48 +88,13 @@ namespace headers
                 sw.WriteLine(@"    }");
                 sw.WriteLine(@"  }");
                 
-
                 sw.WriteLine(@"}");
             }
         }
 
-        private string cToTs(string cType)
-        {
-            cType = cType.TrimEnd(new char[] { '*' });
-            switch (cType)
-            {
-                case "OMX_U8":
-                case "OMX_U16":
-                case "OMX_U32":
-                case "OMX_S8":
-                case "OMX_S16":
-                case "OMX_S32":
-                    return "number";
-                case "OMX_BOOL":
-                    return "boolean";
-                case "OMX_NATIVE_DEVICETYPE":
-                case "OMX_BUFFERADDRESSHANDLETYPE":
-                case "OMX_HANDLETYPE":
-                case "OMX_NATIVE_WINDOWTYPE":
-                case "OMX_BRCMBUFFERSTATSTYPE":
-                case "OMX_FACEREGIONTYPE":
-                case "OMX_CAMERARXUNPACKYPE":
-                    return null;
-                default:
-                    return "omx." + cType;
-            }
-        }
 
         private void writeGetterSetter(StreamWriter sw, List<Struct> cstructs, WriteType t)
         {
-            /*string[] whiteList = new string[] {
-                "OMX_PARAM_PORTDEFINITIONTYPE" ,
-                "OMX_AUDIO_PORTDEFINITIONTYPE",
-                "OMX_VIDEO_PORTDEFINITIONTYPE",
-                "OMX_IMAGE_PORTDEFINITIONTYPE",
-                "OMX_OTHER_PORTDEFINITIONTYPE",
-                "OMX_VIDEO_PARAM_PORTFORMATTYPE"
-            };*/
             foreach (Struct cstruct in cstructs)
             {
                 if (t == WriteType.get)
@@ -225,8 +186,6 @@ namespace headers
                     continue;
                 }
 
-                bool canBeNull = f.type == "OMX_STRING";
-
                 string castTo = null;
                 switch (f.type)
                 {
@@ -238,7 +197,7 @@ namespace headers
                         break;
                 }
 
-                if (canBeNull)
+                if (f.canBeNull)
                 {
                     sw.WriteLine(@"  if (format.{0} != NULL)", f.nameNoArray);
                     sw.Write("  ");
@@ -251,7 +210,7 @@ namespace headers
                     sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}(format.{0}));", f.nameNoArray, f.type);
                 }
                 else {
-                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", f.nameNoArray, castTo != null ? castTo : "", f.nameNoArray, canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", f.nameNoArray, castTo != null ? castTo : "", f.nameNoArray, f.canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
                 }
             }
 
