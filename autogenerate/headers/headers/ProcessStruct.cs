@@ -67,8 +67,6 @@ namespace headers
 
                 foreach (CField f in cstruct.fields)
                 {
-                    if (f.name == "nSize" || f.name == "nVersion" || f.name == "nPortIndex") continue;
-
                     // Remove the array info
                     if (Regex.IsMatch(f.name, @"\[\w*?\]"))
                     {
@@ -231,8 +229,6 @@ namespace headers
 
             foreach (CField f in cstruct.fields)
             {
-                if (f.name == "nSize" || f.name == "nVersion" || f.name == "nPortIndex") continue;
-
                 // Remove the array info
                 string nameNoArray = Regex.Replace(f.name, @"\[\w*?\]", "");
 
@@ -303,8 +299,6 @@ namespace headers
 
             foreach (CField f in cstruct.fields)
             {
-                if (f.name == "nSize" || f.name == "nVersion" || f.name == "nPortIndex") continue;
-
                 // Remove the array info
                 if (Regex.IsMatch(f.name, @"\[\w*?\]"))
                 {
@@ -357,9 +351,8 @@ namespace headers
             sw.WriteLine("    {");
 
             sw.WriteLine("      {0} format;", cstruct.name);
-
-            bool hasPort = cstruct.fields.Any(a => a.name == "nPortIndex");
-            string hasPortStr = hasPort ? ", port" : "";
+            
+            string hasPortStr = cstruct.hasPort ? ", port" : "";
 
             sw.WriteLine("      GetParameterTemplate(&format{0}, handle, nParamIndex);", hasPortStr);
 
@@ -377,9 +370,8 @@ namespace headers
             sw.WriteLine("    {");
 
             sw.WriteLine("      {0} format;", cstruct.name);
-
-            bool hasPort = cstruct.fields.Any(a => a.name == "nPortIndex");
-            string hasPortStr = hasPort ? ", port" : "";
+            
+            string hasPortStr = cstruct.hasPort ? ", port" : "";
             
             sw.WriteLine("      OMX_consts::InitOMXParams(&format{0});", hasPortStr);
 
