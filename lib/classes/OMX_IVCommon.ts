@@ -1,5 +1,5 @@
 import omx = require('../../index')
-export class OMX_CONFIG_COLORCONVERSIONTYPE {
+export class CONFIG_COLORCONVERSIONTYPE {
   /**
    * Stored in signed Q16 format
    */
@@ -14,7 +14,7 @@ export class OMX_CONFIG_COLORCONVERSIONTYPE {
     }
   }
 }
-export class OMX_CONFIG_SCALEFACTORTYPE {
+export class CONFIG_SCALEFACTORTYPE {
   /**
    * Fixed point value stored as Q16
    */
@@ -29,15 +29,15 @@ export class OMX_CONFIG_SCALEFACTORTYPE {
     }
   }
 }
-export class OMX_CONFIG_IMAGEFILTERTYPE {
-  eImageFilter: omx.OMX_IMAGEFILTERTYPE;
+export class CONFIG_IMAGEFILTERTYPE {
+  eImageFilter: omx.IMAGEFILTERTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_COLORENHANCEMENTTYPE {
+export class CONFIG_COLORENHANCEMENTTYPE {
   bColorEnhancement: boolean;
   nCustomizedU: number;
   nCustomizedV: number;
@@ -47,7 +47,7 @@ export class OMX_CONFIG_COLORENHANCEMENTTYPE {
     }
   }
 }
-export class OMX_CONFIG_COLORKEYTYPE {
+export class CONFIG_COLORKEYTYPE {
   nARGBColor: number;
   nARGBMask: number;
   constructor(p?: any) {
@@ -56,16 +56,16 @@ export class OMX_CONFIG_COLORKEYTYPE {
     }
   }
 }
-export class OMX_CONFIG_COLORBLENDTYPE {
+export class CONFIG_COLORBLENDTYPE {
   nRGBAlphaConstant: number;
-  eColorBlend: omx.OMX_COLORBLENDTYPE;
+  eColorBlend: omx.COLORBLENDTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_FRAMESIZETYPE {
+export class FRAMESIZETYPE {
   nWidth: number;
   nHeight: number;
   constructor(p?: any) {
@@ -74,7 +74,7 @@ export class OMX_FRAMESIZETYPE {
     }
   }
 }
-export class OMX_CONFIG_ROTATIONTYPE {
+export class CONFIG_ROTATIONTYPE {
   nRotation: number;
   constructor(p?: any) {
     if (p) {
@@ -82,15 +82,15 @@ export class OMX_CONFIG_ROTATIONTYPE {
     }
   }
 }
-export class OMX_CONFIG_MIRRORTYPE {
-  eMirror: omx.OMX_MIRRORTYPE;
+export class CONFIG_MIRRORTYPE {
+  eMirror: omx.MIRRORTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_POINTTYPE {
+export class CONFIG_POINTTYPE {
   nX: number;
   nY: number;
   constructor(p?: any) {
@@ -99,7 +99,7 @@ export class OMX_CONFIG_POINTTYPE {
     }
   }
 }
-export class OMX_CONFIG_RECTTYPE {
+export class CONFIG_RECTTYPE {
   nLeft: number;
   nTop: number;
   nWidth: number;
@@ -110,7 +110,7 @@ export class OMX_CONFIG_RECTTYPE {
     }
   }
 }
-export class OMX_PARAM_DEBLOCKINGTYPE {
+export class PARAM_DEBLOCKINGTYPE {
   bDeblocking: boolean;
   constructor(p?: any) {
     if (p) {
@@ -118,7 +118,7 @@ export class OMX_PARAM_DEBLOCKINGTYPE {
     }
   }
 }
-export class OMX_CONFIG_FRAMESTABTYPE {
+export class CONFIG_FRAMESTABTYPE {
   bStab: boolean;
   constructor(p?: any) {
     if (p) {
@@ -126,33 +126,33 @@ export class OMX_CONFIG_FRAMESTABTYPE {
     }
   }
 }
-export class OMX_CONFIG_WHITEBALCONTROLTYPE {
-  eWhiteBalControl: omx.OMX_WHITEBALCONTROLTYPE;
+export class CONFIG_WHITEBALCONTROLTYPE {
+  eWhiteBalControl: omx.WHITEBALCONTROLTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_EXPOSURECONTROLTYPE {
-  eExposureControl: omx.OMX_EXPOSURECONTROLTYPE;
+export class CONFIG_EXPOSURECONTROLTYPE {
+  eExposureControl: omx.EXPOSURECONTROLTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_SENSORMODETYPE {
+export class PARAM_SENSORMODETYPE {
   nFrameRate: number;
   bOneShot: boolean;
-  sFrameSize: omx.OMX_FRAMESIZETYPE;
+  sFrameSize: omx.FRAMESIZETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_CONTRASTTYPE {
+export class CONFIG_CONTRASTTYPE {
   nContrast: number;
   constructor(p?: any) {
     if (p) {
@@ -160,7 +160,7 @@ export class OMX_CONFIG_CONTRASTTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRIGHTNESSTYPE {
+export class CONFIG_BRIGHTNESSTYPE {
   nBrightness: number;
   constructor(p?: any) {
     if (p) {
@@ -168,7 +168,7 @@ export class OMX_CONFIG_BRIGHTNESSTYPE {
     }
   }
 }
-export class OMX_CONFIG_BACKLIGHTTYPE {
+export class CONFIG_BACKLIGHTTYPE {
   nBacklight: number;
   nTimeout: number;
   constructor(p?: any) {
@@ -177,7 +177,7 @@ export class OMX_CONFIG_BACKLIGHTTYPE {
     }
   }
 }
-export class OMX_CONFIG_GAMMATYPE {
+export class CONFIG_GAMMATYPE {
   nGamma: number;
   constructor(p?: any) {
     if (p) {
@@ -185,7 +185,7 @@ export class OMX_CONFIG_GAMMATYPE {
     }
   }
 }
-export class OMX_CONFIG_SATURATIONTYPE {
+export class CONFIG_SATURATIONTYPE {
   nSaturation: number;
   constructor(p?: any) {
     if (p) {
@@ -193,7 +193,7 @@ export class OMX_CONFIG_SATURATIONTYPE {
     }
   }
 }
-export class OMX_CONFIG_LIGHTNESSTYPE {
+export class CONFIG_LIGHTNESSTYPE {
   nLightness: number;
   constructor(p?: any) {
     if (p) {
@@ -201,7 +201,7 @@ export class OMX_CONFIG_LIGHTNESSTYPE {
     }
   }
 }
-export class OMX_CONFIG_PLANEBLENDTYPE {
+export class CONFIG_PLANEBLENDTYPE {
   nDepth: number;
   nAlpha: number;
   constructor(p?: any) {
@@ -210,7 +210,7 @@ export class OMX_CONFIG_PLANEBLENDTYPE {
     }
   }
 }
-export class OMX_PARAM_INTERLEAVETYPE {
+export class PARAM_INTERLEAVETYPE {
   bEnable: boolean;
   nInterleavePortIndex: number;
   constructor(p?: any) {
@@ -219,35 +219,35 @@ export class OMX_PARAM_INTERLEAVETYPE {
     }
   }
 }
-export class OMX_CONFIG_TRANSITIONEFFECTTYPE {
-  eEffect: omx.OMX_TRANSITIONEFFECTTYPE;
+export class CONFIG_TRANSITIONEFFECTTYPE {
+  eEffect: omx.TRANSITIONEFFECTTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_DATAUNITTYPE {
-  eUnitType: omx.OMX_DATAUNITTYPE;
-  eEncapsulationType: omx.OMX_DATAUNITENCAPSULATIONTYPE;
+export class PARAM_DATAUNITTYPE {
+  eUnitType: omx.DATAUNITTYPE;
+  eEncapsulationType: omx.DATAUNITENCAPSULATIONTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_DITHERTYPE {
+export class CONFIG_DITHERTYPE {
   /**
    * Type of dithering to use
    */
-  eDither: omx.OMX_DITHERTYPE;
+  eDither: omx.DITHERTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_CAPTUREMODETYPE {
+export class CONFIG_CAPTUREMODETYPE {
   /**
    * If true then ignore frame rate and emit capture data as fast as possible (otherwise obey port's frame rate).
    */
@@ -266,8 +266,8 @@ export class OMX_CONFIG_CAPTUREMODETYPE {
     }
   }
 }
-export class OMX_CONFIG_EXPOSUREVALUETYPE {
-  eMetering: omx.OMX_METERINGTYPE;
+export class CONFIG_EXPOSUREVALUETYPE {
+  eMetering: omx.METERINGTYPE;
   /**
    * Fixed point value stored as Q16
    */
@@ -302,7 +302,7 @@ export class OMX_CONFIG_EXPOSUREVALUETYPE {
     }
   }
 }
-export class OMX_CONFIG_FOCUSREGIONTYPE {
+export class CONFIG_FOCUSREGIONTYPE {
   bCenter: boolean;
   bLeft: boolean;
   bRight: boolean;
@@ -318,8 +318,8 @@ export class OMX_CONFIG_FOCUSREGIONTYPE {
     }
   }
 }
-export class OMX_PARAM_FOCUSSTATUSTYPE {
-  eFocusStatus: omx.OMX_FOCUSSTATUSTYPE;
+export class PARAM_FOCUSSTATUSTYPE {
+  eFocusStatus: omx.FOCUSSTATUSTYPE;
   bCenterStatus: boolean;
   bLeftStatus: boolean;
   bRightStatus: boolean;

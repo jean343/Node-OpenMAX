@@ -33,7 +33,7 @@ var VideoDecode = new omx.VideoDecode('VideoDecode1');
 var VideoRender = new omx.VideoRender();
 omx.Component.initAll([VideoDecode, VideoRender])
         .then(function () {
-          VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+          VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
           fs.createReadStream("../../spec/data/video-LQ.h264")
                   .pipe(VideoDecode)
                   .pipe(TransformFilter)

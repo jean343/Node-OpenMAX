@@ -1,5 +1,5 @@
 import omx = require('../../index')
-export class OMX_PARAM_PORTSUMMARYTYPE {
+export class PARAM_PORTSUMMARYTYPE {
   /**
    * Total number of ports
    */
@@ -22,14 +22,14 @@ export class OMX_PARAM_PORTSUMMARYTYPE {
     }
   }
 }
-export class OMX_PARAM_MARKCOMPARISONTYPE {
+export class PARAM_MARKCOMPARISONTYPE {
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_TUNNELSTATUSTYPE {
+export class PARAM_TUNNELSTATUSTYPE {
   /**
    * Query the nIndex'th port and fill in nPortIndex
    */

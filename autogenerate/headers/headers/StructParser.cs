@@ -10,17 +10,22 @@ namespace headers
     public class CField
     {
         public string type;
+        public string omxName;
         public string originalName;
         public string comment;
         internal string name;
         internal bool canBeSet = true;
         internal string typeTS;
         internal bool canBeNull;
+        internal string originalType;
+        internal string castTo;
 
-        public CField(string type, string originalName, string comment)
+        public CField(string type, string omxName, string comment)
         {
             this.type = type;
-            this.originalName = originalName;
+            this.omxName = omxName;
+            this.originalName = Regex.Replace(omxName, @"\[\w*?\]", "");
+            name = originalName;
             this.comment = Regex.Replace(comment.Replace("*", " "), @"\s+", @" ");
         }
 

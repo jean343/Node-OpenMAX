@@ -17,7 +17,7 @@ describe("Component", function() {
     var vd = new omx.VideoDecode();
     vd.init()
       .then(function() {
-        expect(vd.getState()).toEqual(omx.OMX_STATETYPE.OMX_StateIdle);
+        expect(vd.getState()).toEqual(omx.STATETYPE.StateIdle);
         done();
       })
       .catch(console.log.bind(console));
@@ -27,10 +27,10 @@ describe("Component", function() {
     var vd = new omx.VideoDecode();
     vd.init()
       .then(function() {
-        return vd.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+        return vd.changeState(omx.STATETYPE.StateExecuting);
       })
       .then(function() {
-        expect(vd.getState()).toEqual(omx.OMX_STATETYPE.OMX_StateExecuting);
+        expect(vd.getState()).toEqual(omx.STATETYPE.StateExecuting);
         done();
       })
       .catch(console.log.bind(console));
@@ -40,10 +40,10 @@ describe("Component", function() {
     var vd = new omx.VideoDecode();
     vd.init()
       .then(function() {
-        return vd.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
+        return vd.changeState(omx.STATETYPE.StateIdle);
       })
       .then(function() {
-        return vd.changeState(omx.OMX_STATETYPE.OMX_StateIdle);
+        return vd.changeState(omx.STATETYPE.StateIdle);
       })
       .then(null, function() {
         done();
@@ -55,10 +55,10 @@ describe("Component", function() {
     var vd = new omx.VideoDecode();
     vd.init()
       .then(function() {
-        return vd.changeState(omx.OMX_STATETYPE.OMX_StateLoaded);
+        return vd.changeState(omx.STATETYPE.StateLoaded);
       })
       .then(function() {
-        return vd.changeState(omx.OMX_STATETYPE.OMX_StateExecuting);
+        return vd.changeState(omx.STATETYPE.StateExecuting);
       })
       .catch(function() {
         done();

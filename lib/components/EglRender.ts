@@ -10,13 +10,13 @@ export class EglRender extends omx.Component {
 
   // ---- Text can be edited below this line --------
   setBufferCount (countIN: number, countOUT: number) {
-    var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    var portdef = this.getParameter(this.in_port, omx.INDEXTYPE.IndexParamPortDefinition);
     portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);
-    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);
+    this.setParameter(this.in_port, omx.INDEXTYPE.IndexParamPortDefinition, portdef);
 
-    portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    portdef = this.getParameter(this.out_port, omx.INDEXTYPE.IndexParamPortDefinition);
     portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);
-    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);
+    this.setParameter(this.out_port, omx.INDEXTYPE.IndexParamPortDefinition, portdef);
     return this;
   };
   // ---- Text can be edited above this line --------

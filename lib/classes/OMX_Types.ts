@@ -1,5 +1,5 @@
 import omx = require('../../index')
-export class OMX_BU32 {
+export class BU32 {
   /**
    * actual value
    */
@@ -18,7 +18,7 @@ export class OMX_BU32 {
     }
   }
 }
-export class OMX_BS32 {
+export class BS32 {
   /**
    * actual value
    */
@@ -37,7 +37,7 @@ export class OMX_BS32 {
     }
   }
 }
-export class OMX_TICKS {
+export class TICKS {
   /**
    * low bits of the signed 64 bit tick value
    */
@@ -52,7 +52,7 @@ export class OMX_TICKS {
     }
   }
 }
-export class OMX_MARKTYPE {
+export class MARKTYPE {
   /**
    * The component that will generate a mark event upon processing the mark.
    */

@@ -11,134 +11,134 @@ export class Camera extends omx.Component {
 
   // ---- Text can be edited below this line --------
   setFormat(): Camera {
-    var vf = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    var vf = this.getParameter(this.out_port, omx.INDEXTYPE.IndexParamPortDefinition);
     vf.video.nSliceHeight = vf.video.nFrameHeight;
-    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, vf);
+    this.setParameter(this.out_port, omx.INDEXTYPE.IndexParamPortDefinition, vf);
     return this;
   };
   enable(): Camera {
-    var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
+    var format = this.getParameter(this.out_port, omx.INDEXTYPE.IndexConfigPortCapturing);
     format.bEnabled = 1;
-    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
+    this.setParameter(this.out_port, omx.INDEXTYPE.IndexConfigPortCapturing, format);
     return this;
   };
   disable(): Camera {
-    var format = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
+    var format = this.getParameter(this.out_port, omx.INDEXTYPE.IndexConfigPortCapturing);
     format.bEnabled = 0;
-    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing, format);
+    this.setParameter(this.out_port, omx.INDEXTYPE.IndexConfigPortCapturing, format);
     return this;
   };
 
   getDigitalZoom(): omx.CameraZoom {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonDigitalZoom);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonDigitalZoom);
     return p.xWidth;
   }
   setDigitalZoom(zoom?: omx.CameraZoom) {
     if (zoom === undefined) zoom = omx.CameraZoom.CAMERA_ZOOM_1X;
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonDigitalZoom, {
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonDigitalZoom, {
       xWidth: zoom,
       xHeight: zoom
     });
   }
 
   getCamplusId(): number {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraCamplusId);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexParamCameraCamplusId);
     return p.nU32;
   }
-  setCamplusId(nU32: number): number {
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraCamplusId, {
+  setCamplusId(nU32: number) {
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexParamCameraCamplusId, {
       nU32: nU32
     });
   }
 
   getCameraDeviceNumber(): number {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraDeviceNumber);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexParamCameraDeviceNumber);
     return p.nU32;
   }
   setCameraDeviceNumber(nU32: number) {
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraDeviceNumber, {
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexParamCameraDeviceNumber, {
       nU32: nU32
     });
   }
 
   getCameraDevicesPresent(): number {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexParamCameraDevicesPresent);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexParamCameraDevicesPresent);
     return p.nU32;
   }
 
   getFrameStabilisation(): boolean {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonFrameStabilisation);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonFrameStabilisation);
     return !!p.bStab;
   }
   setFrameStabilisation(enabled?: boolean) {
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonFrameStabilisation, { bStab: enabled });
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonFrameStabilisation, { bStab: enabled });
   }
 
-  getExposure(): omx.OMX_EXPOSURECONTROLTYPE {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposure);
+  getExposure(): omx.EXPOSURECONTROLTYPE {
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonExposure);
     return p.eExposureControl;
   }
-  setExposure(exposureControl?: omx.OMX_EXPOSURECONTROLTYPE) {
-    if (exposureControl === undefined) exposureControl = omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAuto;
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposure, { eExposureControl: exposureControl });
+  setExposure(exposureControl?: omx.EXPOSURECONTROLTYPE) {
+    if (exposureControl === undefined) exposureControl = omx.EXPOSURECONTROLTYPE.ExposureControlAuto;
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonExposure, { eExposureControl: exposureControl });
   }
 
-  getExposureValue(): omx.OMX_CONFIG_EXPOSUREVALUETYPE {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposureValue);
-    return new omx.OMX_CONFIG_EXPOSUREVALUETYPE(p);
+  getExposureValue(): omx.CONFIG_EXPOSUREVALUETYPE {
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonExposureValue);
+    return new omx.CONFIG_EXPOSUREVALUETYPE(p);
   }
-  setExposureValue(value?: ExposureValue) {
-//    Object.assign(new omx.OMX_CONFIG_EXPOSUREVALUETYPE(), value);
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonExposureValue, value);
+  setExposureValue(value?: omx.CONFIG_EXPOSUREVALUETYPE) {
+//    Object.assign(new omx.CONFIG_EXPOSUREVALUETYPE(), value);
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonExposureValue, value);
   }
 
   getFocusControl(): number {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigFocusControl);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigFocusControl);
     return p.nContrast;
   }
   setFocusControl(nContrast?: number) {
     if (nContrast === undefined) nContrast = 0;
     nContrast = clamp(nContrast, -100, 100);
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigFocusControl, { nContrast: nContrast });
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigFocusControl, { nContrast: nContrast });
   }
 
   getContrast(): number {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonContrast);
     return p.nContrast;
   }
   setContrast(nContrast?: number) {
     if (nContrast === undefined) nContrast = 0;
     nContrast = clamp(nContrast, -100, 100);
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonContrast, { nContrast: nContrast });
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonContrast, { nContrast: nContrast });
   }
 
   getBrightness(): number {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonBrightness);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonBrightness);
     return p.nBrightness;
   }
   setBrightness(nBrightness?: number) {
     if (nBrightness === undefined) nBrightness = 50;
     nBrightness = clamp(nBrightness, 0, 100);
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonBrightness, { nBrightness: nBrightness });
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonBrightness, { nBrightness: nBrightness });
   }
 
   getSaturation(): number {
-    var p = this.getParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonSaturation);
+    var p = this.getParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonSaturation);
     return p.nSaturation;
   }
   setSaturation(nSaturation?: number) {
     if (nSaturation === undefined) nSaturation = 0;
     nSaturation = clamp(nSaturation, -100, 100);
-    this.setParameter(omx.OMX_ALL, omx.OMX_INDEXTYPE.OMX_IndexConfigCommonSaturation, { nSaturation: nSaturation });
+    this.setParameter(omx.ALL, omx.INDEXTYPE.IndexConfigCommonSaturation, { nSaturation: nSaturation });
   }
 
   getVideoFramerate(): number {
-    var p = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigVideoFramerate);
+    var p = this.getParameter(this.out_port, omx.INDEXTYPE.IndexConfigVideoFramerate);
     return p.xEncodeFramerate >> 16;
   }
   setVideoFramerate(fps?: number) {
     if (fps === undefined) fps = 30;
-    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigVideoFramerate, { xEncodeFramerate: fps << 16 });
+    this.setParameter(this.out_port, omx.INDEXTYPE.IndexConfigVideoFramerate, { xEncodeFramerate: fps << 16 });
   }
   // ---- Text can be edited above this line --------
 }

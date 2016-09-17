@@ -147,25 +147,25 @@ describe("Camera", function() {
   });
 
   it("should have default Exposure", function() {
-    expect(Camera.getExposure()).toEqual(omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAuto);
+    expect(Camera.getExposure()).toEqual(omx.EXPOSURECONTROLTYPE.ExposureControlAuto);
   });
   it("should set Exposure", function(done) {
     var exposures = [
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlOff,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAuto,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlNight,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlBackLight,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSpotLight,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSports,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSnow,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlBeach,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlLargeAperture,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlSmallAperture,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlVeryLong,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlFixedFps,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlNightWithPreview,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlAntishake,
-      omx.OMX_EXPOSURECONTROLTYPE.OMX_ExposureControlFireworks,
+      omx.EXPOSURECONTROLTYPE.ExposureControlOff,
+      omx.EXPOSURECONTROLTYPE.ExposureControlAuto,
+      omx.EXPOSURECONTROLTYPE.ExposureControlNight,
+      omx.EXPOSURECONTROLTYPE.ExposureControlBackLight,
+      omx.EXPOSURECONTROLTYPE.ExposureControlSpotLight,
+      omx.EXPOSURECONTROLTYPE.ExposureControlSports,
+      omx.EXPOSURECONTROLTYPE.ExposureControlSnow,
+      omx.EXPOSURECONTROLTYPE.ExposureControlBeach,
+      omx.EXPOSURECONTROLTYPE.ExposureControlLargeAperture,
+      omx.EXPOSURECONTROLTYPE.ExposureControlSmallAperture,
+      omx.EXPOSURECONTROLTYPE.ExposureControlVeryLong,
+      omx.EXPOSURECONTROLTYPE.ExposureControlFixedFps,
+      omx.EXPOSURECONTROLTYPE.ExposureControlNightWithPreview,
+      omx.EXPOSURECONTROLTYPE.ExposureControlAntishake,
+      omx.EXPOSURECONTROLTYPE.ExposureControlFireworks,
     ];
     (function next() {
       var exposure = exposures.shift();
@@ -193,7 +193,7 @@ describe("Camera", function() {
     }));
   });
   it("should set Exposure Value", function(done) {
-    var value = new omx.OMX_CONFIG_EXPOSUREVALUETYPE();
+    var value = new omx.CONFIG_EXPOSUREVALUETYPE();
     value.nShutterSpeedMsec = 500;
     value.bAutoSensitivity = false;
     value.nSensitivity = 4000;

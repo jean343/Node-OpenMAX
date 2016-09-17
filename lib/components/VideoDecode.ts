@@ -9,21 +9,21 @@ export class VideoDecode extends omx.Component {
   }
 
   // ---- Text can be edited below this line --------
-  setVideoPortFormat (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {
-    var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+  setVideoPortFormat (eCompressionFormat: omx.VIDEO_CODINGTYPE) {
+    var format = this.getParameter(this.in_port, omx.INDEXTYPE.IndexParamVideoPortFormat);
     format.eCompressionFormat = eCompressionFormat;
-    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+    this.setParameter(this.in_port, omx.INDEXTYPE.IndexParamVideoPortFormat, format);
     return this;
   };
 setBufferCount(countIN: number, countOUT: number) {
-    var portdef = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    var portdef = this.getParameter(this.in_port, omx.INDEXTYPE.IndexParamPortDefinition);
     portdef.nBufferCountActual = Math.max(countIN, portdef.nBufferCountMin);
     portdef.nBufferSize = 65536;
-    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);
+    this.setParameter(this.in_port, omx.INDEXTYPE.IndexParamPortDefinition, portdef);
 
-    portdef = this.getParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    portdef = this.getParameter(this.out_port, omx.INDEXTYPE.IndexParamPortDefinition);
     portdef.nBufferCountActual = Math.max(countOUT, portdef.nBufferCountMin);
-    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, portdef);
+    this.setParameter(this.out_port, omx.INDEXTYPE.IndexParamPortDefinition, portdef);
     return this;
   };
   // ---- Text can be edited above this line --------

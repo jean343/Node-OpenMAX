@@ -9,10 +9,10 @@ export class ImageDecode extends omx.Component {
   }
 
   // ---- Text can be edited below this line --------
-  setInputFormat (eCompressionFormat: omx.OMX_IMAGE_CODINGTYPE) {
-    var format = this.getParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat);
+  setInputFormat (eCompressionFormat: omx.IMAGE_CODINGTYPE) {
+    var format = this.getParameter(this.in_port, omx.INDEXTYPE.IndexParamImagePortFormat);
     format.eCompressionFormat = eCompressionFormat;
-    this.setParameter(this.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamImagePortFormat, format);
+    this.setParameter(this.in_port, omx.INDEXTYPE.IndexParamImagePortFormat, format);
     return this;
   };
   // ---- Text can be edited above this line --------

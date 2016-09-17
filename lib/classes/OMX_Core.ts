@@ -1,5 +1,5 @@
 import omx = require('../../index')
-export class OMX_PRIORITYMGMTTYPE {
+export class PRIORITYMGMTTYPE {
   /**
    * Priority of the component group
    */
@@ -14,7 +14,7 @@ export class OMX_PRIORITYMGMTTYPE {
     }
   }
 }
-export class OMX_PARAM_COMPONENTROLETYPE {
+export class PARAM_COMPONENTROLETYPE {
   /**
    * name of standard component which defines component role
    */
@@ -25,7 +25,7 @@ export class OMX_PARAM_COMPONENTROLETYPE {
     }
   }
 }
-export class OMX_BUFFERHEADERTYPE {
+export class BUFFERHEADERTYPE {
   /**
    * Pointer to actual block of memory that is acting as the buffer
    */
@@ -53,7 +53,7 @@ export class OMX_BUFFERHEADERTYPE {
   /**
    * Timestamp corresponding to the sample starting at the first logical sample boundary in the buffer. Timestamps of successive samples within the buffer may be inferred by adding the duration of the of the preceding buffer to the timestamp of the preceding buffer.
    */
-  nTimeStamp: omx.OMX_TICKS;
+  nTimeStamp: omx.TICKS;
   /**
    * buffer specific flags
    */
@@ -72,11 +72,11 @@ export class OMX_BUFFERHEADERTYPE {
     }
   }
 }
-export class OMX_OTHER_EXTRADATATYPE {
+export class OTHER_EXTRADATATYPE {
   /**
    * Extra Data type
    */
-  eType: omx.OMX_EXTRADATATYPE;
+  eType: omx.EXTRADATATYPE;
   /**
    * Size of the supporting data to follow
    */
@@ -91,7 +91,7 @@ export class OMX_OTHER_EXTRADATATYPE {
     }
   }
 }
-export class OMX_PORT_PARAM_TYPE {
+export class PORT_PARAM_TYPE {
   /**
    * The number of ports for this component
    */
@@ -106,18 +106,18 @@ export class OMX_PORT_PARAM_TYPE {
     }
   }
 }
-export class OMX_PARAM_BUFFERSUPPLIERTYPE {
+export class PARAM_BUFFERSUPPLIERTYPE {
   /**
    * buffer supplier
    */
-  eBufferSupplier: omx.OMX_BUFFERSUPPLIERTYPE;
+  eBufferSupplier: omx.BUFFERSUPPLIERTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_TUNNELSETUPTYPE {
+export class TUNNELSETUPTYPE {
   /**
    * bit flags for tunneling
    */
@@ -125,7 +125,7 @@ export class OMX_TUNNELSETUPTYPE {
   /**
    * supplier preference
    */
-  eSupplier: omx.OMX_BUFFERSUPPLIERTYPE;
+  eSupplier: omx.BUFFERSUPPLIERTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

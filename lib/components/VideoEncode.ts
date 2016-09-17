@@ -9,11 +9,11 @@ export class VideoEncode extends omx.Component {
   }
 
   // ---- Text can be edited below this line --------
-  setVideoPortFormat (eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE) {
+  setVideoPortFormat (eCompressionFormat: omx.VIDEO_CODINGTYPE) {
     var format = {
       eCompressionFormat: eCompressionFormat
     };
-    this.setParameter(this.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+    this.setParameter(this.out_port, omx.INDEXTYPE.IndexParamVideoPortFormat, format);
     return this;
   };
   // ---- Text can be edited above this line --------

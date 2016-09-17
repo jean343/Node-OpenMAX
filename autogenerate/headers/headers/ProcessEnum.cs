@@ -70,10 +70,12 @@ namespace headers
                     MemberInfo[] memberInfos = clazz.GetMembers(BindingFlags.Public | BindingFlags.Static);
                     Array enumValues = Enum.GetValues(clazz);
 
-                    sw.WriteLine("export enum " + clazz.Name + " {");
+                    string clazzName = StructConverter.cleanClassName(clazz.Name);
+
+                    sw.WriteLine("export enum " + clazzName + " {");
                     for (int i = 0; i < memberInfos.Length; i++)
                     {
-                        sw.Write("  {0} = 0x{1:X}", memberInfos[i].Name, (long)enumValues.GetValue(i));
+                        sw.Write("  {0} = 0x{1:X}", StructConverter.cleanClassName(memberInfos[i].Name), (long)enumValues.GetValue(i));
                         if (i < memberInfos.Length - 1)
                         {
                             sw.WriteLine(",");
@@ -84,7 +86,7 @@ namespace headers
 
                 if (file == "OMX_Core")
                 {
-                    sw.WriteLine("export const OMX_ALL: number = 0xFFFFFFFF");
+                    sw.WriteLine("export const ALL: number = 0xFFFFFFFF");
                 }
             }
         }

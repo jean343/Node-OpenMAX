@@ -1,5 +1,5 @@
 import omx = require('../../index')
-export class OMX_AUDIO_PORTDEFINITIONTYPE {
+export class AUDIO_PORTDEFINITIONTYPE {
   /**
    * < platform specific reference for an output device, otherwise this field is 0
    */
@@ -11,14 +11,14 @@ export class OMX_AUDIO_PORTDEFINITIONTYPE {
   /**
    * Type of data expected for this port (e.g. PCM, AMR, MP3, etc)
    */
-  eEncoding: omx.OMX_AUDIO_CODINGTYPE;
+  eEncoding: omx.AUDIO_CODINGTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_PORTFORMATTYPE {
+export class AUDIO_PARAM_PORTFORMATTYPE {
   /**
    * Indicates the enumeration index for the format from 0x0 to N-1
    */
@@ -26,14 +26,14 @@ export class OMX_AUDIO_PARAM_PORTFORMATTYPE {
   /**
    * Type of data expected for this port (e.g. PCM, AMR, MP3, etc)
    */
-  eEncoding: omx.OMX_AUDIO_CODINGTYPE;
+  eEncoding: omx.AUDIO_CODINGTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_PCMMODETYPE {
+export class AUDIO_PARAM_PCMMODETYPE {
   /**
    * Number of channels (e.g. 2 for stereo)
    */
@@ -41,11 +41,11 @@ export class OMX_AUDIO_PARAM_PCMMODETYPE {
   /**
    * indicates PCM data as signed or unsigned
    */
-  eNumData: omx.OMX_NUMERICALDATATYPE;
+  eNumData: omx.NUMERICALDATATYPE;
   /**
    * indicates PCM data as little or big endian
    */
-  eEndian: omx.OMX_ENDIANTYPE;
+  eEndian: omx.ENDIANTYPE;
   /**
    * True for normal interleaved data; false for non-interleaved data (e.g. block data)
    */
@@ -61,18 +61,18 @@ export class OMX_AUDIO_PARAM_PCMMODETYPE {
   /**
    * PCM mode enumeration
    */
-  ePCMMode: omx.OMX_AUDIO_PCMMODETYPE;
+  ePCMMode: omx.AUDIO_PCMMODETYPE;
   /**
    * Slot i contains channel defined by eChannelMap[i]
    */
-  eChannelMapping: omx.OMX_AUDIO_CHANNELTYPE;
+  eChannelMapping: omx.AUDIO_CHANNELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_MP3TYPE {
+export class AUDIO_PARAM_MP3TYPE {
   /**
    * Number of channels
    */
@@ -92,18 +92,18 @@ export class OMX_AUDIO_PARAM_MP3TYPE {
   /**
    * Channel mode enumeration
    */
-  eChannelMode: omx.OMX_AUDIO_CHANNELMODETYPE;
+  eChannelMode: omx.AUDIO_CHANNELMODETYPE;
   /**
    * MP3 stream format
    */
-  eFormat: omx.OMX_AUDIO_MP3STREAMFORMATTYPE;
+  eFormat: omx.AUDIO_MP3STREAMFORMATTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_DDPTYPE {
+export class AUDIO_PARAM_DDPTYPE {
   /**
    * Number of channels
    */
@@ -116,20 +116,20 @@ export class OMX_AUDIO_PARAM_DDPTYPE {
    * Sampling rate of the source data. Use 0 for variable or unknown sampling rate.
    */
   nSampleRate: number;
-  eBitStreamId: omx.OMX_AUDIO_DDPBITSTREAMID;
-  eBitStreamMode: omx.OMX_AUDIO_DDPBITSTREAMMODE;
-  eDolbySurroundMode: omx.OMX_AUDIO_DDPDOLBYSURROUNDMODE;
+  eBitStreamId: omx.AUDIO_DDPBITSTREAMID;
+  eBitStreamMode: omx.AUDIO_DDPBITSTREAMMODE;
+  eDolbySurroundMode: omx.AUDIO_DDPDOLBYSURROUNDMODE;
   /**
    * Slot i contains channel defined by eChannelMapping[i]
    */
-  eChannelMapping: omx.OMX_AUDIO_CHANNELTYPE;
+  eChannelMapping: omx.AUDIO_CHANNELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_DTSTYPE {
+export class AUDIO_PARAM_DTSTYPE {
   /**
    * Number of channels
    */
@@ -157,14 +157,14 @@ export class OMX_AUDIO_PARAM_DTSTYPE {
   /**
    * Slot i contains channel defined by eChannelMapping[i]
    */
-  eChannelMapping: omx.OMX_AUDIO_CHANNELTYPE;
+  eChannelMapping: omx.AUDIO_CHANNELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_AACPROFILETYPE {
+export class AUDIO_PARAM_AACPROFILETYPE {
   /**
    * Number of channels
    */
@@ -196,22 +196,22 @@ export class OMX_AUDIO_PARAM_AACPROFILETYPE {
   /**
    * AAC profile enumeration
    */
-  eAACProfile: omx.OMX_AUDIO_AACPROFILETYPE;
+  eAACProfile: omx.AUDIO_AACPROFILETYPE;
   /**
    * AAC stream format enumeration
    */
-  eAACStreamFormat: omx.OMX_AUDIO_AACSTREAMFORMATTYPE;
+  eAACStreamFormat: omx.AUDIO_AACSTREAMFORMATTYPE;
   /**
    * Channel mode enumeration
    */
-  eChannelMode: omx.OMX_AUDIO_CHANNELMODETYPE;
+  eChannelMode: omx.AUDIO_CHANNELMODETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_VORBISTYPE {
+export class AUDIO_PARAM_VORBISTYPE {
   /**
    * Number of channels
    */
@@ -254,7 +254,7 @@ export class OMX_AUDIO_PARAM_VORBISTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_WMATYPE {
+export class AUDIO_PARAM_WMATYPE {
   /**
    * Number of channels
    */
@@ -266,11 +266,11 @@ export class OMX_AUDIO_PARAM_WMATYPE {
   /**
    * Version of WMA stream / data
    */
-  eFormat: omx.OMX_AUDIO_WMAFORMATTYPE;
+  eFormat: omx.AUDIO_WMAFORMATTYPE;
   /**
    * Profile of WMA stream / data
    */
-  eProfile: omx.OMX_AUDIO_WMAPROFILETYPE;
+  eProfile: omx.AUDIO_WMAPROFILETYPE;
   /**
    * Sampling rate of the source data
    */
@@ -293,7 +293,7 @@ export class OMX_AUDIO_PARAM_WMATYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_RATYPE {
+export class AUDIO_PARAM_RATYPE {
   /**
    * Number of channels
    */
@@ -325,14 +325,14 @@ export class OMX_AUDIO_PARAM_RATYPE {
   /**
    * is the RealAudio audio format
    */
-  eFormat: omx.OMX_AUDIO_RAFORMATTYPE;
+  eFormat: omx.AUDIO_RAFORMATTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_SBCTYPE {
+export class AUDIO_PARAM_SBCTYPE {
   /**
    * Number of channels
    */
@@ -364,18 +364,18 @@ export class OMX_AUDIO_PARAM_SBCTYPE {
   /**
    * Channel mode enumeration
    */
-  eChannelMode: omx.OMX_AUDIO_CHANNELMODETYPE;
+  eChannelMode: omx.AUDIO_CHANNELMODETYPE;
   /**
    * SBC Allocation method type
    */
-  eSBCAllocType: omx.OMX_AUDIO_SBCALLOCMETHODTYPE;
+  eSBCAllocType: omx.AUDIO_SBCALLOCMETHODTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_ADPCMTYPE {
+export class AUDIO_PARAM_ADPCMTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -394,7 +394,7 @@ export class OMX_AUDIO_PARAM_ADPCMTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_G723TYPE {
+export class AUDIO_PARAM_G723TYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -406,7 +406,7 @@ export class OMX_AUDIO_PARAM_G723TYPE {
   /**
    * todo: Should this be moved to a config?
    */
-  eBitRate: omx.OMX_AUDIO_G723RATE;
+  eBitRate: omx.AUDIO_G723RATE;
   /**
    * Enable High Pass Filter
    */
@@ -421,19 +421,19 @@ export class OMX_AUDIO_PARAM_G723TYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_G726TYPE {
+export class AUDIO_PARAM_G726TYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
   nChannels: number;
-  eG726Mode: omx.OMX_AUDIO_G726MODE;
+  eG726Mode: omx.AUDIO_G726MODE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_G729TYPE {
+export class AUDIO_PARAM_G729TYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -442,14 +442,14 @@ export class OMX_AUDIO_PARAM_G729TYPE {
    * Enable Discontinuous Transmisssion
    */
   bDTX: boolean;
-  eBitType: omx.OMX_AUDIO_G729TYPE;
+  eBitType: omx.AUDIO_G729TYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_AMRTYPE {
+export class AUDIO_PARAM_AMRTYPE {
   /**
    * Number of channels
    */
@@ -461,22 +461,22 @@ export class OMX_AUDIO_PARAM_AMRTYPE {
   /**
    * AMR Band Mode enumeration
    */
-  eAMRBandMode: omx.OMX_AUDIO_AMRBANDMODETYPE;
+  eAMRBandMode: omx.AUDIO_AMRBANDMODETYPE;
   /**
    * AMR DTX Mode enumeration
    */
-  eAMRDTXMode: omx.OMX_AUDIO_AMRDTXMODETYPE;
+  eAMRDTXMode: omx.AUDIO_AMRDTXMODETYPE;
   /**
    * AMR frame format enumeration
    */
-  eAMRFrameFormat: omx.OMX_AUDIO_AMRFRAMEFORMATTYPE;
+  eAMRFrameFormat: omx.AUDIO_AMRFRAMEFORMATTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_GSMFRTYPE {
+export class AUDIO_PARAM_GSMFRTYPE {
   /**
    * Enable Discontinuous Transmisssion
    */
@@ -491,7 +491,7 @@ export class OMX_AUDIO_PARAM_GSMFRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_GSMHRTYPE {
+export class AUDIO_PARAM_GSMHRTYPE {
   /**
    * Enable Discontinuous Transmisssion
    */
@@ -506,7 +506,7 @@ export class OMX_AUDIO_PARAM_GSMHRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_GSMEFRTYPE {
+export class AUDIO_PARAM_GSMEFRTYPE {
   /**
    * Enable Discontinuous Transmisssion
    */
@@ -521,7 +521,7 @@ export class OMX_AUDIO_PARAM_GSMEFRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_TDMAFRTYPE {
+export class AUDIO_PARAM_TDMAFRTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -540,7 +540,7 @@ export class OMX_AUDIO_PARAM_TDMAFRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_TDMAEFRTYPE {
+export class AUDIO_PARAM_TDMAEFRTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -559,7 +559,7 @@ export class OMX_AUDIO_PARAM_TDMAEFRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_PDCFRTYPE {
+export class AUDIO_PARAM_PDCFRTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -578,7 +578,7 @@ export class OMX_AUDIO_PARAM_PDCFRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_PDCEFRTYPE {
+export class AUDIO_PARAM_PDCEFRTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -597,7 +597,7 @@ export class OMX_AUDIO_PARAM_PDCEFRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_PDCHRTYPE {
+export class AUDIO_PARAM_PDCHRTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -616,7 +616,7 @@ export class OMX_AUDIO_PARAM_PDCHRTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_QCELP8TYPE {
+export class AUDIO_PARAM_QCELP8TYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -628,7 +628,7 @@ export class OMX_AUDIO_PARAM_QCELP8TYPE {
   /**
    * Frame rate
    */
-  eCDMARate: omx.OMX_AUDIO_CDMARATETYPE;
+  eCDMARate: omx.AUDIO_CDMARATETYPE;
   /**
    * minmal rate for the encoder = 1,2,3,4, default = 1
    */
@@ -643,7 +643,7 @@ export class OMX_AUDIO_PARAM_QCELP8TYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_QCELP13TYPE {
+export class AUDIO_PARAM_QCELP13TYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -651,7 +651,7 @@ export class OMX_AUDIO_PARAM_QCELP13TYPE {
   /**
    * Frame rate
    */
-  eCDMARate: omx.OMX_AUDIO_CDMARATETYPE;
+  eCDMARate: omx.AUDIO_CDMARATETYPE;
   /**
    * minmal rate for the encoder = 1,2,3,4, default = 1
    */
@@ -666,7 +666,7 @@ export class OMX_AUDIO_PARAM_QCELP13TYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_EVRCTYPE {
+export class AUDIO_PARAM_EVRCTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -674,7 +674,7 @@ export class OMX_AUDIO_PARAM_EVRCTYPE {
   /**
    * actual Frame rate
    */
-  eCDMARate: omx.OMX_AUDIO_CDMARATETYPE;
+  eCDMARate: omx.AUDIO_CDMARATETYPE;
   /**
    * RATE_REDUCtion is requested for this frame
    */
@@ -705,7 +705,7 @@ export class OMX_AUDIO_PARAM_EVRCTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_SMVTYPE {
+export class AUDIO_PARAM_SMVTYPE {
   /**
    * Number of channels in the data stream (not necessarily the same as the number of channels to be rendered.
    */
@@ -713,7 +713,7 @@ export class OMX_AUDIO_PARAM_SMVTYPE {
   /**
    * Frame rate
    */
-  eCDMARate: omx.OMX_AUDIO_CDMARATETYPE;
+  eCDMARate: omx.AUDIO_CDMARATETYPE;
   /**
    * RATE_REDUCtion is requested for this frame
    */
@@ -744,7 +744,7 @@ export class OMX_AUDIO_PARAM_SMVTYPE {
     }
   }
 }
-export class OMX_AUDIO_PARAM_MIDITYPE {
+export class AUDIO_PARAM_MIDITYPE {
   /**
    * size of the MIDI file in bytes, where the entire MIDI file passed in, otherwise if 0x0, the MIDI data is merged and streamed (instead of passed as an entire MIDI file)
    */
@@ -752,7 +752,7 @@ export class OMX_AUDIO_PARAM_MIDITYPE {
   /**
    * Specifies the maximum simultaneous polyphonic voices. A value of zero indicates that the default polyphony of the device is used
    */
-  sMaxPolyphony: omx.OMX_BU32;
+  sMaxPolyphony: omx.BU32;
   /**
    * Whether to load default sound bank at initialization
    */
@@ -760,14 +760,14 @@ export class OMX_AUDIO_PARAM_MIDITYPE {
   /**
    * Version of the MIDI file
    */
-  eMidiFormat: omx.OMX_AUDIO_MIDIFORMATTYPE;
+  eMidiFormat: omx.AUDIO_MIDIFORMATTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_PARAM_MIDILOADUSERSOUNDTYPE {
+export class AUDIO_PARAM_MIDILOADUSERSOUNDTYPE {
   /**
    * DLS file index to be loaded
    */
@@ -779,18 +779,18 @@ export class OMX_AUDIO_PARAM_MIDILOADUSERSOUNDTYPE {
   /**
    * Midi sound bank type enumeration
    */
-  eMidiSoundBank: omx.OMX_AUDIO_MIDISOUNDBANKTYPE;
+  eMidiSoundBank: omx.AUDIO_MIDISOUNDBANKTYPE;
   /**
    * Midi sound bank layout enumeration
    */
-  eMidiSoundBankLayout: omx.OMX_AUDIO_MIDISOUNDBANKLAYOUTTYPE;
+  eMidiSoundBankLayout: omx.AUDIO_MIDISOUNDBANKLAYOUTTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_CONFIG_MIDIIMMEDIATEEVENTTYPE {
+export class AUDIO_CONFIG_MIDIIMMEDIATEEVENTTYPE {
   /**
    * Size of immediate MIDI events or MIP message in bytes
    */
@@ -805,7 +805,7 @@ export class OMX_AUDIO_CONFIG_MIDIIMMEDIATEEVENTTYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_MIDISOUNDBANKPROGRAMTYPE {
+export class AUDIO_CONFIG_MIDISOUNDBANKPROGRAMTYPE {
   /**
    * Valid channel values range from 1 to 16
    */
@@ -828,19 +828,19 @@ export class OMX_AUDIO_CONFIG_MIDISOUNDBANKPROGRAMTYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_MIDICONTROLTYPE {
+export class AUDIO_CONFIG_MIDICONTROLTYPE {
   /**
    * Pitch transposition in semitones, stored as Q22.10 format based on JAVA MMAPI (JSR-135) requirement
    */
-  sPitchTransposition: omx.OMX_BS32;
+  sPitchTransposition: omx.BS32;
   /**
    * Relative playback rate, stored as Q14.17 fixed-point number based on JSR-135 requirement
    */
-  sPlayBackRate: omx.OMX_BU32;
+  sPlayBackRate: omx.BU32;
   /**
    * Tempo in beats per minute (BPM), stored as Q22.10 fixed-point number based on JSR-135 requirement
    */
-  sTempo: omx.OMX_BU32;
+  sTempo: omx.BU32;
   /**
    * Specifies the maximum simultaneous polyphonic voices. A value of zero indicates that the default polyphony of the device is used
    */
@@ -883,7 +883,7 @@ export class OMX_AUDIO_CONFIG_MIDICONTROLTYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_MIDISTATUSTYPE {
+export class AUDIO_CONFIG_MIDISTATUSTYPE {
   /**
    * Number of MIDI tracks in the file, read only field. NOTE: May not return a meaningful value until the entire file is parsed and buffered.
    */
@@ -911,14 +911,14 @@ export class OMX_AUDIO_CONFIG_MIDISTATUSTYPE {
   /**
    * MIDI playback state enumeration, read only field
    */
-  eMIDIPlayBackState: omx.OMX_AUDIO_MIDIPLAYBACKSTATETYPE;
+  eMIDIPlayBackState: omx.AUDIO_MIDIPLAYBACKSTATETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_CONFIG_MIDIMETAEVENTTYPE {
+export class AUDIO_CONFIG_MIDIMETAEVENTTYPE {
   /**
    * Index of Meta Event
    */
@@ -945,7 +945,7 @@ export class OMX_AUDIO_CONFIG_MIDIMETAEVENTTYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_MIDIMETAEVENTDATATYPE {
+export class AUDIO_CONFIG_MIDIMETAEVENTDATATYPE {
   /**
    * Index of Meta Event
    */
@@ -964,7 +964,7 @@ export class OMX_AUDIO_CONFIG_MIDIMETAEVENTDATATYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_VOLUMETYPE {
+export class AUDIO_CONFIG_VOLUMETYPE {
   /**
    * Is the volume to be set in linear (0.100) or logarithmic scale (mB)
    */
@@ -972,14 +972,14 @@ export class OMX_AUDIO_CONFIG_VOLUMETYPE {
   /**
    * Volume linear setting in the 0..100 range, OR Volume logarithmic setting for this port. The values for volume are in mB (millibels = 1/100 dB) relative to a gain of 1 (e.g. the output is the same as the input level). Values are in mB from nMax (maximum volume) to nMin mB (typically negative). Since the volume is "voltage" and not a "power", it takes a setting of -600 mB to decrease the volume by 1/2. If a component cannot accurately set the volume to the requested value, it must set the volume to the closest value BELOW the requested value. When getting the volume setting, the current actual volume must be returned.
    */
-  sVolume: omx.OMX_BS32;
+  sVolume: omx.BS32;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_CONFIG_CHANNELVOLUMETYPE {
+export class AUDIO_CONFIG_CHANNELVOLUMETYPE {
   /**
    * channel to select from 0 to N-1, using OMX_ALL to apply volume settings to all channels
    */
@@ -991,7 +991,7 @@ export class OMX_AUDIO_CONFIG_CHANNELVOLUMETYPE {
   /**
    * Volume linear setting in the 0..100 range, OR Volume logarithmic setting for this port. The values for volume are in mB (millibels = 1/100 dB) relative to a gain of 1 (e.g. the output is the same as the input level). Values are in mB from nMax (maximum volume) to nMin mB (typically negative). Since the volume is "voltage" and not a "power", it takes a setting of -600 mB to decrease the volume by 1/2. If a component cannot accurately set the volume to the requested value, it must set the volume to the closest value BELOW the requested value. When getting the volume setting, the current actual volume must be returned.
    */
-  sVolume: omx.OMX_BS32;
+  sVolume: omx.BS32;
   /**
    * TRUE if nChannel refers to a MIDI channel, FALSE otherwise
    */
@@ -1002,7 +1002,7 @@ export class OMX_AUDIO_CONFIG_CHANNELVOLUMETYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_BALANCETYPE {
+export class AUDIO_CONFIG_BALANCETYPE {
   /**
    * balance setting for this port (-100 to 100, where -100 indicates all left, and no right
    */
@@ -1013,7 +1013,7 @@ export class OMX_AUDIO_CONFIG_BALANCETYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_MUTETYPE {
+export class AUDIO_CONFIG_MUTETYPE {
   /**
    * Mute setting for this port
    */
@@ -1024,7 +1024,7 @@ export class OMX_AUDIO_CONFIG_MUTETYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_CHANNELMUTETYPE {
+export class AUDIO_CONFIG_CHANNELMUTETYPE {
   /**
    * channel to select from 0 to N-1, using OMX_ALL to apply mute settings to all channels
    */
@@ -1043,7 +1043,7 @@ export class OMX_AUDIO_CONFIG_CHANNELMUTETYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_LOUDNESSTYPE {
+export class AUDIO_CONFIG_LOUDNESSTYPE {
   /**
    * Enable/disable for loudness
    */
@@ -1054,7 +1054,7 @@ export class OMX_AUDIO_CONFIG_LOUDNESSTYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_BASSTYPE {
+export class AUDIO_CONFIG_BASSTYPE {
   /**
    * Enable/disable for bass control
    */
@@ -1069,7 +1069,7 @@ export class OMX_AUDIO_CONFIG_BASSTYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_TREBLETYPE {
+export class AUDIO_CONFIG_TREBLETYPE {
   /**
    * Enable/disable for treble control
    */
@@ -1084,7 +1084,7 @@ export class OMX_AUDIO_CONFIG_TREBLETYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_EQUALIZERTYPE {
+export class AUDIO_CONFIG_EQUALIZERTYPE {
   /**
    * Enable/disable for equalizer
    */
@@ -1092,22 +1092,22 @@ export class OMX_AUDIO_CONFIG_EQUALIZERTYPE {
   /**
    * Band number to be set. Upper Limit is N-1, where N is the number of bands, lower limit is 0
    */
-  sBandIndex: omx.OMX_BU32;
+  sBandIndex: omx.BU32;
   /**
    * Center frequecies in Hz. This is a read only element and is used to determine the lower, center and upper frequency of this band.
    */
-  sCenterFreq: omx.OMX_BU32;
+  sCenterFreq: omx.BU32;
   /**
    * band level in millibels
    */
-  sBandLevel: omx.OMX_BS32;
+  sBandLevel: omx.BS32;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE {
+export class AUDIO_CONFIG_STEREOWIDENINGTYPE {
   /**
    * Enable/disable for stereo widening control
    */
@@ -1115,7 +1115,7 @@ export class OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE {
   /**
    * Stereo widening algorithm type
    */
-  eWideningType: omx.OMX_AUDIO_STEREOWIDENINGTYPE;
+  eWideningType: omx.AUDIO_STEREOWIDENINGTYPE;
   /**
    * stereo widening setting for the port, as a continuous value from 0 to 100
    */
@@ -1126,7 +1126,7 @@ export class OMX_AUDIO_CONFIG_STEREOWIDENINGTYPE {
     }
   }
 }
-export class OMX_AUDIO_CONFIG_CHORUSTYPE {
+export class AUDIO_CONFIG_CHORUSTYPE {
   /**
    * Enable/disable for chorus
    */
@@ -1134,11 +1134,11 @@ export class OMX_AUDIO_CONFIG_CHORUSTYPE {
   /**
    * average delay in milliseconds
    */
-  sDelay: omx.OMX_BU32;
+  sDelay: omx.BU32;
   /**
    * rate of modulation in millihertz
    */
-  sModulationRate: omx.OMX_BU32;
+  sModulationRate: omx.BU32;
   /**
    * depth of modulation as a percentage of delay (i.e. 0 to 100)
    */
@@ -1146,14 +1146,14 @@ export class OMX_AUDIO_CONFIG_CHORUSTYPE {
   /**
    * Feedback from chorus output to input in percentage
    */
-  nFeedback: omx.OMX_BU32;
+  nFeedback: omx.BU32;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_CONFIG_REVERBERATIONTYPE {
+export class AUDIO_CONFIG_REVERBERATIONTYPE {
   /**
    * Enable/disable for reverberation control
    */
@@ -1161,35 +1161,35 @@ export class OMX_AUDIO_CONFIG_REVERBERATIONTYPE {
   /**
    * Intensity level for the whole room effect (i.e. both early reflections and late reverberation) in millibels
    */
-  sRoomLevel: omx.OMX_BS32;
+  sRoomLevel: omx.BS32;
   /**
    * Attenuation at high frequencies relative to the intensity at low frequencies in millibels
    */
-  sRoomHighFreqLevel: omx.OMX_BS32;
+  sRoomHighFreqLevel: omx.BS32;
   /**
    * Intensity level of early reflections (relative to room value), in millibels
    */
-  sReflectionsLevel: omx.OMX_BS32;
+  sReflectionsLevel: omx.BS32;
   /**
    * Delay time of the first reflection relative to the direct path, in milliseconds
    */
-  sReflectionsDelay: omx.OMX_BU32;
+  sReflectionsDelay: omx.BU32;
   /**
    * Intensity level of late reverberation relative to room level, in millibels
    */
-  sReverbLevel: omx.OMX_BS32;
+  sReverbLevel: omx.BS32;
   /**
    * Time delay from the first early reflection to the beginning of the late reverberation section, in milliseconds
    */
-  sReverbDelay: omx.OMX_BU32;
+  sReverbDelay: omx.BU32;
   /**
    * Late reverberation decay time at low frequencies, in milliseconds
    */
-  sDecayTime: omx.OMX_BU32;
+  sDecayTime: omx.BU32;
   /**
    * Ratio of high frequency decay time relative to low frequency decay time in percent
    */
-  nDecayHighFreqRatio: omx.OMX_BU32;
+  nDecayHighFreqRatio: omx.BU32;
   /**
    * Modal density in the late reverberation decay, in percent (i.e. 0 - 100)
    */
@@ -1201,25 +1201,25 @@ export class OMX_AUDIO_CONFIG_REVERBERATIONTYPE {
   /**
    * Reference high frequency in Hertz. This is the frequency used as the reference for all the high-frequency settings above
    */
-  sReferenceHighFreq: omx.OMX_BU32;
+  sReferenceHighFreq: omx.BU32;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_CONFIG_ECHOCANCELATIONTYPE {
+export class AUDIO_CONFIG_ECHOCANCELATIONTYPE {
   /**
    * Echo cancelation settings
    */
-  eEchoCancelation: omx.OMX_AUDIO_ECHOCANTYPE;
+  eEchoCancelation: omx.AUDIO_ECHOCANTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_AUDIO_CONFIG_NOISEREDUCTIONTYPE {
+export class AUDIO_CONFIG_NOISEREDUCTIONTYPE {
   /**
    * Enable/disable for noise reduction
    */

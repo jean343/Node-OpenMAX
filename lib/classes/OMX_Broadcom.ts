@@ -1,5 +1,5 @@
 import omx = require('../../index')
-export class OMX_BUFFERFRAGMENTTYPE {
+export class BUFFERFRAGMENTTYPE {
   /**
    * number of bytes in the buffer
    */
@@ -10,7 +10,7 @@ export class OMX_BUFFERFRAGMENTTYPE {
     }
   }
 }
-export class OMX_PARAM_IJGSCALINGTYPE {
+export class PARAM_IJGSCALINGTYPE {
   bEnabled: boolean;
   constructor(p?: any) {
     if (p) {
@@ -18,7 +18,7 @@ export class OMX_PARAM_IJGSCALINGTYPE {
     }
   }
 }
-export class OMX_DISPLAYRECTTYPE {
+export class DISPLAYRECTTYPE {
   x_offset: number;
   y_offset: number;
   width: number;
@@ -29,15 +29,15 @@ export class OMX_DISPLAYRECTTYPE {
     }
   }
 }
-export class OMX_CONFIG_DISPLAYREGIONTYPE {
-  set: omx.OMX_DISPLAYSETTYPE;
+export class CONFIG_DISPLAYREGIONTYPE {
+  set: omx.DISPLAYSETTYPE;
   num: number;
   fullscreen: boolean;
-  transform: omx.OMX_DISPLAYTRANSFORMTYPE;
-  dest_rect: omx.OMX_DISPLAYRECTTYPE;
-  src_rect: omx.OMX_DISPLAYRECTTYPE;
+  transform: omx.DISPLAYTRANSFORMTYPE;
+  dest_rect: omx.DISPLAYRECTTYPE;
+  src_rect: omx.DISPLAYRECTTYPE;
   noaspect: boolean;
-  mode: omx.OMX_DISPLAYMODETYPE;
+  mode: omx.DISPLAYMODETYPE;
   pixel_x: number;
   pixel_y: number;
   layer: number;
@@ -51,8 +51,8 @@ export class OMX_CONFIG_DISPLAYREGIONTYPE {
     }
   }
 }
-export class OMX_PARAM_SOURCETYPE {
-  eType: omx.OMX_SOURCETYPE;
+export class PARAM_SOURCETYPE {
+  eType: omx.SOURCETYPE;
   nParam: number;
   nFrameCount: number;
   xFrameRate: number;
@@ -62,8 +62,8 @@ export class OMX_PARAM_SOURCETYPE {
     }
   }
 }
-export class OMX_PARAM_RESIZETYPE {
-  eMode: omx.OMX_RESIZEMODETYPE;
+export class PARAM_RESIZETYPE {
+  eMode: omx.RESIZEMODETYPE;
   nMaxWidth: number;
   nMaxHeight: number;
   nMaxBytes: number;
@@ -75,7 +75,7 @@ export class OMX_PARAM_RESIZETYPE {
     }
   }
 }
-export class OMX_PARAM_TESTINTERFACETYPE {
+export class PARAM_TESTINTERFACETYPE {
   bTest: boolean;
   bSetExtra: boolean;
   nExtra: number;
@@ -87,7 +87,7 @@ export class OMX_PARAM_TESTINTERFACETYPE {
     }
   }
 }
-export class OMX_CONFIG_VISUALISATIONTYPE {
+export class CONFIG_VISUALISATIONTYPE {
   name: number;
   property: number;
   constructor(p?: any) {
@@ -96,7 +96,7 @@ export class OMX_CONFIG_VISUALISATIONTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIODESTINATIONTYPE {
+export class CONFIG_BRCMAUDIODESTINATIONTYPE {
   sName: number;
   constructor(p?: any) {
     if (p) {
@@ -104,7 +104,7 @@ export class OMX_CONFIG_BRCMAUDIODESTINATIONTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIOSOURCETYPE {
+export class CONFIG_BRCMAUDIOSOURCETYPE {
   sName: number;
   constructor(p?: any) {
     if (p) {
@@ -112,7 +112,7 @@ export class OMX_CONFIG_BRCMAUDIOSOURCETYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS {
+export class CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS {
   coeff: number;
   constructor(p?: any) {
     if (p) {
@@ -120,7 +120,7 @@ export class OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8 {
+export class CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8 {
   coeff: number;
   constructor(p?: any) {
     if (p) {
@@ -128,32 +128,32 @@ export class OMX_CONFIG_BRCMAUDIODOWNMIXCOEFFICIENTS8x8 {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIOMAXSAMPLE {
+export class CONFIG_BRCMAUDIOMAXSAMPLE {
   nMaxSample: number;
-  nTimeStamp: omx.OMX_TICKS;
+  nTimeStamp: omx.TICKS;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_PLAYMODETYPE {
-  eMode: omx.OMX_PLAYMODETYPE;
+export class CONFIG_PLAYMODETYPE {
+  eMode: omx.PLAYMODETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_DELIVERYFORMATTYPE {
-  eFormat: omx.OMX_DELIVERYFORMATTYPE;
+export class PARAM_DELIVERYFORMATTYPE {
+  eFormat: omx.DELIVERYFORMATTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CODECCONFIGTYPE {
+export class PARAM_CODECCONFIGTYPE {
   bCodecConfigIsComplete: number;
   nData: number;
   constructor(p?: any) {
@@ -162,7 +162,7 @@ export class OMX_PARAM_CODECCONFIGTYPE {
     }
   }
 }
-export class OMX_PARAM_STILLSFUNCTIONTYPE {
+export class PARAM_STILLSFUNCTIONTYPE {
   bBuffer: boolean;
   constructor(p?: any) {
     if (p) {
@@ -170,7 +170,7 @@ export class OMX_PARAM_STILLSFUNCTIONTYPE {
     }
   }
 }
-export class OMX_PARAM_BUFFERADDRESSTYPE {
+export class PARAM_BUFFERADDRESSTYPE {
   nAllocLen: number;
   handle;
   constructor(p?: any) {
@@ -179,15 +179,15 @@ export class OMX_PARAM_BUFFERADDRESSTYPE {
     }
   }
 }
-export class OMX_PARAM_TUNNELSETUPTYPE {
-  sSetup: omx.OMX_TUNNELSETUPTYPE;
+export class PARAM_TUNNELSETUPTYPE {
+  sSetup: omx.TUNNELSETUPTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_BRCMPORTEGLTYPE {
+export class PARAM_BRCMPORTEGLTYPE {
   bPortIsEGL: boolean;
   constructor(p?: any) {
     if (p) {
@@ -195,8 +195,8 @@ export class OMX_PARAM_BRCMPORTEGLTYPE {
     }
   }
 }
-export class OMX_CONFIG_IMAGEFILTERPARAMSTYPE {
-  eImageFilter: omx.OMX_IMAGEFILTERTYPE;
+export class CONFIG_IMAGEFILTERPARAMSTYPE {
+  eImageFilter: omx.IMAGEFILTERTYPE;
   nNumParams: number;
   nParams: number;
   constructor(p?: any) {
@@ -205,11 +205,11 @@ export class OMX_CONFIG_IMAGEFILTERPARAMSTYPE {
     }
   }
 }
-export class OMX_CONFIG_TRANSITIONCONTROLTYPE {
+export class CONFIG_TRANSITIONCONTROLTYPE {
   nPosStart: number;
   nPosEnd: number;
   nPosIncrement: number;
-  nFrameIncrement: omx.OMX_TICKS;
+  nFrameIncrement: omx.TICKS;
   bSwapInputs: boolean;
   name: number;
   property: number;
@@ -219,45 +219,45 @@ export class OMX_CONFIG_TRANSITIONCONTROLTYPE {
     }
   }
 }
-export class OMX_CONFIG_AUDIOMONOTRACKCONTROLTYPE {
-  eMode: omx.OMX_AUDIOMONOTRACKOPERATIONSTYPE;
+export class CONFIG_AUDIOMONOTRACKCONTROLTYPE {
+  eMode: omx.AUDIOMONOTRACKOPERATIONSTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CAMERAIMAGEPOOLTYPE {
+export class PARAM_CAMERAIMAGEPOOLTYPE {
   nNumHiResVideoFrames: number;
   nHiResVideoWidth: number;
   nHiResVideoHeight: number;
-  eHiResVideoType: omx.OMX_COLOR_FORMATTYPE;
+  eHiResVideoType: omx.COLOR_FORMATTYPE;
   nNumHiResStillsFrames: number;
   nHiResStillsWidth: number;
   nHiResStillsHeight: number;
-  eHiResStillsType: omx.OMX_COLOR_FORMATTYPE;
+  eHiResStillsType: omx.COLOR_FORMATTYPE;
   nNumLoResFrames: number;
   nLoResWidth: number;
   nLoResHeight: number;
-  eLoResType: omx.OMX_COLOR_FORMATTYPE;
+  eLoResType: omx.COLOR_FORMATTYPE;
   nNumSnapshotFrames: number;
-  eSnapshotType: omx.OMX_COLOR_FORMATTYPE;
-  eInputPoolMode: omx.OMX_CAMERAIMAGEPOOLINPUTMODETYPE;
+  eSnapshotType: omx.COLOR_FORMATTYPE;
+  eInputPoolMode: omx.CAMERAIMAGEPOOLINPUTMODETYPE;
   nNumInputVideoFrames: number;
   nInputVideoWidth: number;
   nInputVideoHeight: number;
-  eInputVideoType: omx.OMX_COLOR_FORMATTYPE;
+  eInputVideoType: omx.COLOR_FORMATTYPE;
   nNumInputStillsFrames: number;
   nInputStillsWidth: number;
   nInputStillsHeight: number;
-  eInputStillsType: omx.OMX_COLOR_FORMATTYPE;
+  eInputStillsType: omx.COLOR_FORMATTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_IMAGEPOOLSIZETYPE {
+export class PARAM_IMAGEPOOLSIZETYPE {
   width: number;
   height: number;
   num_pages: number;
@@ -267,21 +267,21 @@ export class OMX_PARAM_IMAGEPOOLSIZETYPE {
     }
   }
 }
-export class OMX_PARAM_IMAGEPOOLEXTERNALTYPE {
+export class PARAM_IMAGEPOOLEXTERNALTYPE {
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_RUTILFIFOINFOTYPE {
+export class PARAM_RUTILFIFOINFOTYPE {
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_ILFIFOCONFIG {
+export class PARAM_ILFIFOCONFIG {
   /**
    * The size of the FIFO's data area
    */
@@ -296,14 +296,14 @@ export class OMX_PARAM_ILFIFOCONFIG {
     }
   }
 }
-export class OMX_CONFIG_CAMERASENSORMODETYPE {
+export class CONFIG_CAMERASENSORMODETYPE {
   nModeIndex: number;
   nNumModes: number;
   nWidth: number;
   nHeight: number;
   nPaddingRight: number;
   nPaddingDown: number;
-  eColorFormat: omx.OMX_COLOR_FORMATTYPE;
+  eColorFormat: omx.COLOR_FORMATTYPE;
   nFrameRateMax: number;
   nFrameRateMin: number;
   constructor(p?: any) {
@@ -312,7 +312,7 @@ export class OMX_CONFIG_CAMERASENSORMODETYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE {
+export class CONFIG_BRCMPORTBUFFERSTATSTYPE {
   nCount: number;
   sData;
   constructor(p?: any) {
@@ -321,7 +321,7 @@ export class OMX_CONFIG_BRCMPORTBUFFERSTATSTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMPORTSTATSTYPE {
+export class CONFIG_BRCMPORTSTATSTYPE {
   nImageCount: number;
   nBufferCount: number;
   nFrameCount: number;
@@ -329,8 +329,8 @@ export class OMX_CONFIG_BRCMPORTSTATSTYPE {
   nDiscards: number;
   nEOS: number;
   nMaxFrameSize: number;
-  nByteCount: omx.OMX_TICKS;
-  nMaxTimeDelta: omx.OMX_TICKS;
+  nByteCount: omx.TICKS;
+  nMaxTimeDelta: omx.TICKS;
   /**
    * Number of corrupt macroblocks in the stream
    */
@@ -341,7 +341,7 @@ export class OMX_CONFIG_BRCMPORTSTATSTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMCAMERASTATSTYPE {
+export class CONFIG_BRCMCAMERASTATSTYPE {
   nOutFrameCount: number;
   nDroppedFrameCount: number;
   constructor(p?: any) {
@@ -350,7 +350,7 @@ export class OMX_CONFIG_BRCMCAMERASTATSTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMIOPERFSTATSTYPE {
+export class CONFIG_BRCMIOPERFSTATSTYPE {
   /**
    * Enable/disable I/O performance statistics
    */
@@ -361,7 +361,7 @@ export class OMX_CONFIG_BRCMIOPERFSTATSTYPE {
     }
   }
 }
-export class OMX_CONFIG_SHARPNESSTYPE {
+export class CONFIG_SHARPNESSTYPE {
   nSharpness: number;
   constructor(p?: any) {
     if (p) {
@@ -369,24 +369,24 @@ export class OMX_CONFIG_SHARPNESSTYPE {
     }
   }
 }
-export class OMX_CONFIG_FLICKERCANCELTYPE {
-  eFlickerCancel: omx.OMX_COMMONFLICKERCANCELTYPE;
+export class CONFIG_FLICKERCANCELTYPE {
+  eFlickerCancel: omx.COMMONFLICKERCANCELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_REDEYEREMOVALTYPE {
-  eMode: omx.OMX_REDEYEREMOVALTYPE;
+export class CONFIG_REDEYEREMOVALTYPE {
+  eMode: omx.REDEYEREMOVALTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_FACEDETECTIONCONTROLTYPE {
-  eMode: omx.OMX_FACEDETECTIONCONTROLTYPE;
+export class CONFIG_FACEDETECTIONCONTROLTYPE {
+  eMode: omx.FACEDETECTIONCONTROLTYPE;
   /**
    * number of frames to apply this setting for, 0 for unlimited
    */
@@ -405,7 +405,7 @@ export class OMX_CONFIG_FACEDETECTIONCONTROLTYPE {
     }
   }
 }
-export class OMX_CONFIG_FACEDETECTIONREGIONTYPE {
+export class CONFIG_FACEDETECTIONREGIONTYPE {
   /**
    * first requested region number, allowing retrieval of many regions over several requests
    */
@@ -436,11 +436,11 @@ export class OMX_CONFIG_FACEDETECTIONREGIONTYPE {
     }
   }
 }
-export class OMX_CONFIG_INTERLACETYPE {
+export class CONFIG_INTERLACETYPE {
   /**
    * The interlace type of the content
    */
-  eMode: omx.OMX_INTERLACETYPE;
+  eMode: omx.INTERLACETYPE;
   /**
    * Whether to repeat the first field
    */
@@ -451,7 +451,7 @@ export class OMX_CONFIG_INTERLACETYPE {
     }
   }
 }
-export class OMX_PARAM_CAMERAISPTUNERTYPE {
+export class PARAM_CAMERAISPTUNERTYPE {
   tuner_name: number;
   constructor(p?: any) {
     if (p) {
@@ -459,22 +459,22 @@ export class OMX_PARAM_CAMERAISPTUNERTYPE {
     }
   }
 }
-export class OMX_CONFIG_IMAGEPTRTYPE {
+export class CONFIG_IMAGEPTRTYPE {
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_AFASSISTTYPE {
-  eMode: omx.OMX_AFASSISTTYPE;
+export class CONFIG_AFASSISTTYPE {
+  eMode: omx.AFASSISTTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_INPUTCROPTYPE {
+export class CONFIG_INPUTCROPTYPE {
   /**
    * Fraction of the width for the top left corner of the rectangle
    */
@@ -497,7 +497,7 @@ export class OMX_CONFIG_INPUTCROPTYPE {
     }
   }
 }
-export class OMX_PARAM_CODECREQUIREMENTSTYPE {
+export class PARAM_CODECREQUIREMENTSTYPE {
   nCallbackID: number;
   bTryHWCodec: boolean;
   constructor(p?: any) {
@@ -506,23 +506,23 @@ export class OMX_PARAM_CODECREQUIREMENTSTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMEGLIMAGEMEMHANDLETYPE {
+export class CONFIG_BRCMEGLIMAGEMEMHANDLETYPE {
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_PRIVACYINDICATORTYPE {
-  ePrivacyIndicatorMode: omx.OMX_PRIVACYINDICATORTYPE;
+export class CONFIG_PRIVACYINDICATORTYPE {
+  ePrivacyIndicatorMode: omx.PRIVACYINDICATORTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CAMERAFLASHTYPE {
-  eFlashType: omx.OMX_CAMERAFLASHTYPE;
+export class PARAM_CAMERAFLASHTYPE {
+  eFlashType: omx.CAMERAFLASHTYPE;
   bRedEyeUsesTorchMode: boolean;
   constructor(p?: any) {
     if (p) {
@@ -530,10 +530,10 @@ export class OMX_PARAM_CAMERAFLASHTYPE {
     }
   }
 }
-export class OMX_CONFIG_CAMERAFLASHCONFIGTYPE {
+export class CONFIG_CAMERAFLASHCONFIGTYPE {
   bUsePreFlash: boolean;
   bUseFocusDistanceInfo: boolean;
-  eFlashSync: omx.OMX_CAMERAFLASHCONFIGSYNCTYPE;
+  eFlashSync: omx.CAMERAFLASHCONFIGSYNCTYPE;
   bIgnoreChargeState: boolean;
   constructor(p?: any) {
     if (p) {
@@ -541,7 +541,7 @@ export class OMX_CONFIG_CAMERAFLASHCONFIGTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE {
+export class CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE {
   /**
    * number of samples delay added by the codec
    */
@@ -556,7 +556,7 @@ export class OMX_CONFIG_BRCMAUDIOTRACKGAPLESSPLAYBACKTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE {
+export class CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE {
   nSrcPortIndex: number;
   nDstPortIndex: number;
   nXFade: number;
@@ -566,16 +566,16 @@ export class OMX_CONFIG_BRCMAUDIOTRACKCHANGECONTROLTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMPIXELVALUERANGETYPE {
-  ePixelValueRange: omx.OMX_BRCMPIXELVALUERANGETYPE;
+export class PARAM_BRCMPIXELVALUERANGETYPE {
+  ePixelValueRange: omx.BRCMPIXELVALUERANGETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CAMERADISABLEALGORITHMTYPE {
-  eAlgorithm: omx.OMX_CAMERADISABLEALGORITHMTYPE;
+export class PARAM_CAMERADISABLEALGORITHMTYPE {
+  eAlgorithm: omx.CAMERADISABLEALGORITHMTYPE;
   bDisabled: boolean;
   constructor(p?: any) {
     if (p) {
@@ -583,7 +583,7 @@ export class OMX_PARAM_CAMERADISABLEALGORITHMTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE {
+export class CONFIG_BRCMAUDIOEFFECTCONTROLTYPE {
   bEnable: boolean;
   name: number;
   property: number;
@@ -593,15 +593,15 @@ export class OMX_CONFIG_BRCMAUDIOEFFECTCONTROLTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMMINIMUMPROCESSINGLATENCY {
-  nOffset: omx.OMX_TICKS;
+export class CONFIG_BRCMMINIMUMPROCESSINGLATENCY {
+  nOffset: omx.TICKS;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE {
+export class PARAM_BRCMVIDEOAVCSEIENABLETYPE {
   bEnable: boolean;
   constructor(p?: any) {
     if (p) {
@@ -609,7 +609,7 @@ export class OMX_PARAM_BRCMVIDEOAVCSEIENABLETYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMALLOWMEMCHANGETYPE {
+export class PARAM_BRCMALLOWMEMCHANGETYPE {
   bEnable: boolean;
   constructor(p?: any) {
     if (p) {
@@ -617,15 +617,15 @@ export class OMX_PARAM_BRCMALLOWMEMCHANGETYPE {
     }
   }
 }
-export class OMX_CONFIG_CAMERAUSECASETYPE {
-  eUseCase: omx.OMX_CONFIG_CAMERAUSECASE;
+export class CONFIG_CAMERAUSECASETYPE {
+  eUseCase: omx.CONFIG_CAMERAUSECASE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE {
+export class PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE {
   bUseBuffers: boolean;
   constructor(p?: any) {
     if (p) {
@@ -633,7 +633,7 @@ export class OMX_PARAM_BRCMDISABLEPROPRIETARYTUNNELSTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMRETAINMEMORYTYPE {
+export class PARAM_BRCMRETAINMEMORYTYPE {
   bEnable: boolean;
   constructor(p?: any) {
     if (p) {
@@ -641,7 +641,7 @@ export class OMX_PARAM_BRCMRETAINMEMORYTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE {
+export class PARAM_BRCMOUTPUTBUFFERSIZETYPE {
   nBufferSize: number;
   constructor(p?: any) {
     if (p) {
@@ -649,7 +649,7 @@ export class OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE {
     }
   }
 }
-export class OMX_CONFIG_CAMERAINFOTYPE {
+export class CONFIG_CAMERAINFOTYPE {
   cameraname: number;
   lensname: number;
   nModelId: number;
@@ -665,8 +665,8 @@ export class OMX_CONFIG_CAMERAINFOTYPE {
     }
   }
 }
-export class OMX_CONFIG_CAMERAFEATURESTYPE {
-  eHasMechanicalShutter: omx.OMX_CONFIG_CAMERAFEATURESSHUTTER;
+export class CONFIG_CAMERAFEATURESTYPE {
+  eHasMechanicalShutter: omx.CONFIG_CAMERAFEATURESSHUTTER;
   bHasLens: boolean;
   constructor(p?: any) {
     if (p) {
@@ -674,8 +674,8 @@ export class OMX_CONFIG_CAMERAFEATURESTYPE {
     }
   }
 }
-export class OMX_CONFIG_REQUESTCALLBACKTYPE {
-  nIndex: omx.OMX_INDEXTYPE;
+export class CONFIG_REQUESTCALLBACKTYPE {
+  nIndex: omx.INDEXTYPE;
   bEnable: boolean;
   constructor(p?: any) {
     if (p) {
@@ -683,21 +683,21 @@ export class OMX_CONFIG_REQUESTCALLBACKTYPE {
     }
   }
 }
-export class OMX_FOCUSREGIONXY {
+export class FOCUSREGIONXY {
   xLeft: number;
   xTop: number;
   xWidth: number;
   xHeight: number;
   nWeight: number;
   nMask: number;
-  eType: omx.OMX_FOCUSREGIONTYPE;
+  eType: omx.FOCUSREGIONTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_FOCUSREGIONXYTYPE {
+export class CONFIG_FOCUSREGIONXYTYPE {
   nIndex: number;
   nTotalRegions: number;
   nValidRegions: number;
@@ -709,7 +709,7 @@ export class OMX_CONFIG_FOCUSREGIONXYTYPE {
     }
   }
 }
-export class OMX_CONFIG_U8TYPE {
+export class CONFIG_U8TYPE {
   /**
    * U8 value
    */
@@ -720,7 +720,7 @@ export class OMX_CONFIG_U8TYPE {
     }
   }
 }
-export class OMX_CONFIG_CAMERASETTINGSTYPE {
+export class CONFIG_CAMERASETTINGSTYPE {
   nExposure: number;
   nAnalogGain: number;
   nDigitalGain: number;
@@ -734,7 +734,7 @@ export class OMX_CONFIG_CAMERASETTINGSTYPE {
     }
   }
 }
-export class OMX_YUVCOLOUR {
+export class YUVCOLOUR {
   nY: number;
   nU: number;
   nV: number;
@@ -744,7 +744,7 @@ export class OMX_YUVCOLOUR {
     }
   }
 }
-export class OMX_CONFIG_DRAWBOXLINEPARAMS {
+export class CONFIG_DRAWBOXLINEPARAMS {
   /**
    * Size of the corners as a fraction of the complete side
    */
@@ -764,27 +764,27 @@ export class OMX_CONFIG_DRAWBOXLINEPARAMS {
   /**
    * YUV colour for the primary face
    */
-  sPrimaryFaceColour: omx.OMX_YUVCOLOUR;
+  sPrimaryFaceColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the primary face if smiling
    */
-  sPrimaryFaceSmileColour: omx.OMX_YUVCOLOUR;
+  sPrimaryFaceSmileColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the primary face if blinking
    */
-  sPrimaryFaceBlinkColour: omx.OMX_YUVCOLOUR;
+  sPrimaryFaceBlinkColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the all other faces
    */
-  sOtherFaceColour: omx.OMX_YUVCOLOUR;
+  sOtherFaceColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the all other faces if smiling
    */
-  sOtherFaceSmileColour: omx.OMX_YUVCOLOUR;
+  sOtherFaceSmileColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the all other faces if blinking
    */
-  sOtherFaceBlinkColour: omx.OMX_YUVCOLOUR;
+  sOtherFaceBlinkColour: omx.YUVCOLOUR;
   /**
    * Are focus regions displayed when just in viewfinder/AF idle
    */
@@ -792,7 +792,7 @@ export class OMX_CONFIG_DRAWBOXLINEPARAMS {
   /**
    * YUV colour for focus regions
    */
-  sFocusRegionColour: omx.OMX_YUVCOLOUR;
+  sFocusRegionColour: omx.YUVCOLOUR;
   /**
    * Change to the colours specified below if AF cycle has run
    */
@@ -808,34 +808,34 @@ export class OMX_CONFIG_DRAWBOXLINEPARAMS {
   /**
    * YUV colour for the primary face
    */
-  sAfLockPrimaryFaceColour: omx.OMX_YUVCOLOUR;
+  sAfLockPrimaryFaceColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the all other faces
    */
-  sAfLockOtherFaceColour: omx.OMX_YUVCOLOUR;
+  sAfLockOtherFaceColour: omx.YUVCOLOUR;
   /**
    * YUV colour for focus regions
    */
-  sAfLockFocusRegionColour: omx.OMX_YUVCOLOUR;
+  sAfLockFocusRegionColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the primary face
    */
-  sAfFailPrimaryFaceColour: omx.OMX_YUVCOLOUR;
+  sAfFailPrimaryFaceColour: omx.YUVCOLOUR;
   /**
    * YUV colour for the all other faces
    */
-  sAfFailOtherFaceColour: omx.OMX_YUVCOLOUR;
+  sAfFailOtherFaceColour: omx.YUVCOLOUR;
   /**
    * YUV colour for focus regions
    */
-  sAfFailFocusRegionColour: omx.OMX_YUVCOLOUR;
+  sAfFailFocusRegionColour: omx.YUVCOLOUR;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CAMERARMITYPE {
+export class PARAM_CAMERARMITYPE {
   bEnabled: boolean;
   sRmiName: number;
   nInputBufferHeight: number;
@@ -846,14 +846,14 @@ export class OMX_PARAM_CAMERARMITYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMSYNCOUTPUTTYPE {
+export class CONFIG_BRCMSYNCOUTPUTTYPE {
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_DRMVIEWTYPE {
+export class CONFIG_DRMVIEWTYPE {
   /**
    * Current view count
    */
@@ -868,7 +868,7 @@ export class OMX_CONFIG_DRMVIEWTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMU64TYPE {
+export class PARAM_BRCMU64TYPE {
   /**
    * low bits of the unsigned 64 bit value
    */
@@ -883,7 +883,7 @@ export class OMX_PARAM_BRCMU64TYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMTHUMBNAILTYPE {
+export class PARAM_BRCMTHUMBNAILTYPE {
   /**
    * Enable generation of thumbnails during still capture
    */
@@ -906,7 +906,7 @@ export class OMX_PARAM_BRCMTHUMBNAILTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMASPECTRATIOTYPE {
+export class PARAM_BRCMASPECTRATIOTYPE {
   nWidth: number;
   nHeight: number;
   constructor(p?: any) {
@@ -915,7 +915,7 @@ export class OMX_PARAM_BRCMASPECTRATIOTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE {
+export class PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE {
   /**
    * Decoder will only start emitting frames from a non-corrupted frame
    */
@@ -926,9 +926,9 @@ export class OMX_PARAM_BRCMVIDEODECODEERRORCONCEALMENTTYPE {
     }
   }
 }
-export class OMX_CONFIG_FLASHINFOTYPE {
+export class CONFIG_FLASHINFOTYPE {
   sFlashName: number;
-  eFlashType: omx.OMX_CAMERAFLASHTYPE;
+  eFlashType: omx.CAMERAFLASHTYPE;
   nDeviceId: number;
   nDeviceVersion: number;
   constructor(p?: any) {
@@ -937,57 +937,57 @@ export class OMX_CONFIG_FLASHINFOTYPE {
     }
   }
 }
-export class OMX_CONFIG_DYNAMICRANGEEXPANSIONTYPE {
-  eMode: omx.OMX_DYNAMICRANGEEXPANSIONMODETYPE;
+export class CONFIG_DYNAMICRANGEEXPANSIONTYPE {
+  eMode: omx.DYNAMICRANGEEXPANSIONMODETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_BRCMTHREADAFFINITYTYPE {
+export class PARAM_BRCMTHREADAFFINITYTYPE {
   /**
    * Thread CPU affinity
    */
-  eAffinity: omx.OMX_BRCMTHREADAFFINITYTYPE;
+  eAffinity: omx.BRCMTHREADAFFINITYTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_SCENEDETECTTYPE {
+export class CONFIG_SCENEDETECTTYPE {
   /**
    * Scene type detected
    */
-  eScene: omx.OMX_SCENEDETECTTYPE;
+  eScene: omx.SCENEDETECTTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_NALSTREAMFORMATTYPE {
-  eNaluFormat: omx.OMX_NALUFORMATSTYPE;
+export class NALSTREAMFORMATTYPE {
+  eNaluFormat: omx.NALUFORMATSTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_STATICBOX {
+export class STATICBOX {
   xLeft: number;
   xTop: number;
   xWidth: number;
   xHeight: number;
-  eType: omx.OMX_STATICBOXTYPE;
+  eType: omx.STATICBOXTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_STATICBOXTYPE {
+export class CONFIG_STATICBOXTYPE {
   nIndex: number;
   nTotalBoxes: number;
   nValidBoxes: number;
@@ -998,7 +998,7 @@ export class OMX_CONFIG_STATICBOXTYPE {
     }
   }
 }
-export class OMX_CONFIG_PORTBOOLEANTYPE {
+export class CONFIG_PORTBOOLEANTYPE {
   bEnabled: boolean;
   constructor(p?: any) {
     if (p) {
@@ -1006,16 +1006,16 @@ export class OMX_CONFIG_PORTBOOLEANTYPE {
     }
   }
 }
-export class OMX_PARAM_CAMERACAPTUREMODETYPE {
-  eMode: omx.OMX_CAMERACAPTUREMODETYPE;
+export class PARAM_CAMERACAPTUREMODETYPE {
+  eMode: omx.CAMERACAPTUREMODETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_BRCMDRMENCRYPTIONTYPE {
-  eEncryption: omx.OMX_BRCMDRMENCRYPTIONTYPE;
+export class PARAM_BRCMDRMENCRYPTIONTYPE {
+  eEncryption: omx.BRCMDRMENCRYPTIONTYPE;
   nConfigDataLen: number;
   configData: number;
   constructor(p?: any) {
@@ -1024,7 +1024,7 @@ export class OMX_PARAM_BRCMDRMENCRYPTIONTYPE {
     }
   }
 }
-export class OMX_CONFIG_BUFFERSTALLTYPE {
+export class CONFIG_BUFFERSTALLTYPE {
   /**
    * Whether we are stalled
    */
@@ -1039,7 +1039,7 @@ export class OMX_CONFIG_BUFFERSTALLTYPE {
     }
   }
 }
-export class OMX_CONFIG_LATENCYTARGETTYPE {
+export class CONFIG_LATENCYTARGETTYPE {
   /**
    * whether this mode is enabled
    */
@@ -1074,7 +1074,7 @@ export class OMX_CONFIG_LATENCYTARGETTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE {
+export class CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE {
   bEnable: boolean;
   constructor(p?: any) {
     if (p) {
@@ -1082,15 +1082,15 @@ export class OMX_CONFIG_BRCMUSEPROPRIETARYCALLBACKTYPE {
     }
   }
 }
-export class OMX_PARAM_TIMESTAMPMODETYPE {
-  eTimestampMode: omx.OMX_TIMESTAMPMODETYPE;
+export class PARAM_TIMESTAMPMODETYPE {
+  eTimestampMode: omx.TIMESTAMPMODETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_BRCMVEGLIMAGETYPE {
+export class BRCMVEGLIMAGETYPE {
   nWidth: number;
   nHeight: number;
   nStride: number;
@@ -1106,7 +1106,7 @@ export class OMX_BRCMVEGLIMAGETYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMFOVTYPE {
+export class CONFIG_BRCMFOVTYPE {
   /**
    * Horizontal field of view in degrees. 16p16 value
    */
@@ -1121,7 +1121,7 @@ export class OMX_CONFIG_BRCMFOVTYPE {
     }
   }
 }
-export class OMX_VIDEO_CONFIG_LEVEL_EXTEND {
+export class VIDEO_CONFIG_LEVEL_EXTEND {
   /**
    * Specifies maximum macro-blocks per second
    */
@@ -1140,7 +1140,7 @@ export class OMX_VIDEO_CONFIG_LEVEL_EXTEND {
     }
   }
 }
-export class OMX_VIDEO_EEDE_ENABLE {
+export class VIDEO_EEDE_ENABLE {
   enable: number;
   constructor(p?: any) {
     if (p) {
@@ -1148,7 +1148,7 @@ export class OMX_VIDEO_EEDE_ENABLE {
     }
   }
 }
-export class OMX_VIDEO_EEDE_LOSSRATE {
+export class VIDEO_EEDE_LOSSRATE {
   /**
    * loss rate, 5 means 5%
    */
@@ -1159,23 +1159,23 @@ export class OMX_VIDEO_EEDE_LOSSRATE {
     }
   }
 }
-export class OMX_PARAM_COLORSPACETYPE {
-  eColorSpace: omx.OMX_COLORSPACETYPE;
+export class PARAM_COLORSPACETYPE {
+  eColorSpace: omx.COLORSPACETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CAPTURESTATETYPE {
-  eCaptureState: omx.OMX_CAPTURESTATETYPE;
+export class PARAM_CAPTURESTATETYPE {
+  eCaptureState: omx.CAPTURESTATETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_BRCMCONFIGFILETYPE {
+export class PARAM_BRCMCONFIGFILETYPE {
   /**
    * Size of complete file data
    */
@@ -1186,7 +1186,7 @@ export class OMX_PARAM_BRCMCONFIGFILETYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMCONFIGFILECHUNKTYPE {
+export class PARAM_BRCMCONFIGFILECHUNKTYPE {
   /**
    * Number of bytes being transferred in this chunk
    */
@@ -1205,7 +1205,7 @@ export class OMX_PARAM_BRCMCONFIGFILECHUNKTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMFRAMERATERANGETYPE {
+export class PARAM_BRCMFRAMERATERANGETYPE {
   /**
    * Low end of framerate range. Q16 format
    */
@@ -1220,7 +1220,7 @@ export class OMX_PARAM_BRCMFRAMERATERANGETYPE {
     }
   }
 }
-export class OMX_PARAM_S32TYPE {
+export class PARAM_S32TYPE {
   /**
    * S32 value
    */
@@ -1231,7 +1231,7 @@ export class OMX_PARAM_S32TYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE {
+export class PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE {
   /**
    * Input. Zero size means internal video decoder buffer, mem_handle and phys_addr not returned in this case
    */
@@ -1250,7 +1250,7 @@ export class OMX_PARAM_BRCMVIDEODRMPROTECTBUFFERTYPE {
     }
   }
 }
-export class OMX_CONFIG_ZEROSHUTTERLAGTYPE {
+export class CONFIG_ZEROSHUTTERLAGTYPE {
   /**
    * Select ZSL mode from the camera.
    */
@@ -1265,7 +1265,7 @@ export class OMX_CONFIG_ZEROSHUTTERLAGTYPE {
     }
   }
 }
-export class OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE {
+export class PARAM_BRCMVIDEODECODECONFIGVD3TYPE {
   /**
    * Configuration data (a VD3_CONFIGURE_T)
    */
@@ -1276,7 +1276,7 @@ export class OMX_PARAM_BRCMVIDEODECODECONFIGVD3TYPE {
     }
   }
 }
-export class OMX_CONFIG_CUSTOMAWBGAINSTYPE {
+export class CONFIG_CUSTOMAWBGAINSTYPE {
   /**
    * Red gain - 16p16
    */
@@ -1291,7 +1291,7 @@ export class OMX_CONFIG_CUSTOMAWBGAINSTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMRENDERSTATSTYPE {
+export class CONFIG_BRCMRENDERSTATSTYPE {
   nValid: boolean;
   nMatch: number;
   nPeriod: number;
@@ -1306,7 +1306,7 @@ export class OMX_CONFIG_BRCMRENDERSTATSTYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMANNOTATETYPE {
+export class CONFIG_BRCMANNOTATETYPE {
   bEnable: boolean;
   bShowShutter: boolean;
   bShowAnalogGain: boolean;
@@ -1335,11 +1335,11 @@ export class OMX_CONFIG_BRCMANNOTATETYPE {
     }
   }
 }
-export class OMX_CONFIG_BRCMSTEREOSCOPICMODETYPE {
+export class CONFIG_BRCMSTEREOSCOPICMODETYPE {
   /**
    * Packing mode
    */
-  eMode: omx.OMX_BRCMSTEREOSCOPICMODETYPE;
+  eMode: omx.BRCMSTEREOSCOPICMODETYPE;
   /**
    * Half/half mode (pixel aspect ratio = 1:2 or 2:1 if set. 1:1 if not set)
    */
@@ -1354,33 +1354,33 @@ export class OMX_CONFIG_BRCMSTEREOSCOPICMODETYPE {
     }
   }
 }
-export class OMX_PARAM_CAMERAINTERFACETYPE {
+export class PARAM_CAMERAINTERFACETYPE {
   /**
    * Interface mode
    */
-  eMode: omx.OMX_CAMERAINTERFACETYPE;
+  eMode: omx.CAMERAINTERFACETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CAMERACLOCKINGMODETYPE {
+export class PARAM_CAMERACLOCKINGMODETYPE {
   /**
    * Clocking mode
    */
-  eMode: omx.OMX_CAMERACLOCKINGMODETYPE;
+  eMode: omx.CAMERACLOCKINGMODETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_CAMERARXCONFIG_TYPE {
-  eDecode: omx.OMX_CAMERARXDECODETYPE;
-  eEncode: omx.OMX_CAMERARXENCODETYPE;
+export class PARAM_CAMERARXCONFIG_TYPE {
+  eDecode: omx.CAMERARXDECODETYPE;
+  eEncode: omx.CAMERARXENCODETYPE;
   eUnpack;
-  ePack: omx.OMX_CAMERARXPACKTYPE;
+  ePack: omx.CAMERARXPACKTYPE;
   nDataLanes: number;
   nEncodeBlockLength: number;
   nEmbeddedDataLines: number;
@@ -1391,7 +1391,7 @@ export class OMX_PARAM_CAMERARXCONFIG_TYPE {
     }
   }
 }
-export class OMX_PARAM_CAMERARXTIMING_TYPE {
+export class PARAM_CAMERARXTIMING_TYPE {
   nTiming1: number;
   nTiming2: number;
   nTiming3: number;
@@ -1407,8 +1407,8 @@ export class OMX_PARAM_CAMERARXTIMING_TYPE {
     }
   }
 }
-export class OMX_PARAM_BAYERORDERTYPE {
-  eBayerOrder: omx.OMX_BAYERORDERTYPE;
+export class PARAM_BAYERORDERTYPE {
+  eBayerOrder: omx.BAYERORDERTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);

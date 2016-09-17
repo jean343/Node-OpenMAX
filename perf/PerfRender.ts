@@ -33,13 +33,13 @@ import stream = require('stream');
         return VideoRender.init();
       })
       .then(function() {
-        VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+        VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
         VideoDecode.setBufferCount(1, 1);
 
         VideoRender.setBufferCount(1);
 
         var configDisplay = {
-          set: omx.OMX_DISPLAYSETTYPE.OMX_DISPLAY_SET_DEST_RECT | omx.OMX_DISPLAYSETTYPE.OMX_DISPLAY_SET_FULLSCREEN | omx.OMX_DISPLAYSETTYPE.OMX_DISPLAY_SET_NOASPECT,
+          set: omx.DISPLAYSETTYPE.DISPLAY_SET_DEST_RECT | omx.DISPLAYSETTYPE.DISPLAY_SET_FULLSCREEN | omx.DISPLAYSETTYPE.DISPLAY_SET_NOASPECT,
           fullscreen: 0,
           noaspect: 0,
           dest_rect: {
@@ -50,9 +50,9 @@ import stream = require('stream');
           }
         };
 
-        //        console.log(VideoRender.getParameter(VideoRender.in_port, omx.OMX_INDEXTYPE.OMX_IndexConfigDisplayRegion));
-        VideoRender.setParameter(VideoRender.in_port, omx.OMX_INDEXTYPE.OMX_IndexConfigDisplayRegion, configDisplay);
-        //        console.log(VideoRender.getParameter(VideoRender.in_port, omx.OMX_INDEXTYPE.OMX_IndexConfigDisplayRegion));
+        //        console.log(VideoRender.getParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigDisplayRegion));
+        VideoRender.setParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigDisplayRegion, configDisplay);
+        //        console.log(VideoRender.getParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigDisplayRegion));
 
         console.time("start");
         var start = +new Date();
@@ -69,7 +69,7 @@ import stream = require('stream');
 
         var _i = i;
         setInterval(function() {
-          var param = VideoRender.getParameter(VideoRender.in_port, omx.OMX_INDEXTYPE.OMX_IndexConfigBrcmPortStats);
+          var param = VideoRender.getParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigBrcmPortStats);
           console.log("Fps " + _i + ": " + param.nFrameCount * 1000 / (+new Date() - start));
         }, 2000);
 

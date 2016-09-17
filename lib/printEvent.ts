@@ -1,55 +1,55 @@
 import omx = require('../index');
 
-export function log(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
-//  console.log('on %s caught event', name, omx.OMX_EVENTTYPE[eEvent], nData1, nData2);
+export function log(name: string, eEvent: omx.EVENTTYPE, nData1: number, nData2: number) {
+//  console.log('on %s caught event', name, omx.EVENTTYPE[eEvent], nData1, nData2);
 
   switch (eEvent) {
-    case omx.OMX_EVENTTYPE.OMX_EventCmdComplete:
-      //                console.log("event_handler::OMX_EventCmdComplete");
+    case omx.EVENTTYPE.EventCmdComplete:
+      //                console.log("event_handler::EventCmdComplete");
       switch (nData1) {
-        case omx.OMX_COMMANDTYPE.OMX_CommandStateSet:
+        case omx.COMMANDTYPE.CommandStateSet:
           console.log("callback state changed (%s) to %d", name, nData2);
           break;
-        case omx.OMX_COMMANDTYPE.OMX_CommandPortDisable:
+        case omx.COMMANDTYPE.CommandPortDisable:
           //              console.log("callback port disable %d", name, nData2);
           break;
-        case omx.OMX_COMMANDTYPE.OMX_CommandPortEnable:
+        case omx.COMMANDTYPE.CommandPortEnable:
           console.log("callback port enable %d", name, nData2);
           break;
-        case omx.OMX_COMMANDTYPE.OMX_CommandFlush:
+        case omx.COMMANDTYPE.CommandFlush:
           console.log("callback port flush %d", name, nData2);
           break;
-        case omx.OMX_COMMANDTYPE.OMX_CommandMarkBuffer:
+        case omx.COMMANDTYPE.CommandMarkBuffer:
           console.log("callback mark buffer %d", name, nData2);
           break;
         default:
           break;
       }
       break;
-    case omx.OMX_EVENTTYPE.OMX_EventBufferFlag:
-      console.log("event_handler::OMX_EventBufferFlag");
+    case omx.EVENTTYPE.EventBufferFlag:
+      console.log("event_handler::EventBufferFlag");
       break;
-    case omx.OMX_EVENTTYPE.OMX_EventPortSettingsChanged:
-      console.log("event_handler::OMX_EventPortSettingsChanged");
+    case omx.EVENTTYPE.EventPortSettingsChanged:
+      console.log("event_handler::EventPortSettingsChanged");
       break;
-    case omx.OMX_EVENTTYPE.OMX_EventMark:
-      console.log("event_handler::OMX_EventMark");
+    case omx.EVENTTYPE.EventMark:
+      console.log("event_handler::EventMark");
       break;
-    //        case omx.OMX_EVENTTYPE.OMX_EventParamOrConfigChanged:
-    //          console.log("event_handler::OMX_EventParamOrConfigChanged");
+    //        case omx.EVENTTYPE.EventParamOrConfigChanged:
+    //          console.log("event_handler::EventParamOrConfigChanged");
     //          break;
   }
   logError(name, eEvent, nData1, nData2);
 }
-export function logError(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) {
+export function logError(name: string, eEvent: omx.EVENTTYPE, nData1: number, nData2: number) {
   switch (eEvent) {
-    case omx.OMX_EVENTTYPE.OMX_EventError:
+    case omx.EVENTTYPE.EventError:
       var error = nData1;
       switch (error) {
-        case omx.OMX_ERRORTYPE.OMX_ErrorPortUnpopulated:
+        case omx.ERRORTYPE.ErrorPortUnpopulated:
           console.log("port unpopulated %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorSameState:
+        case omx.ERRORTYPE.ErrorSameState:
           //          if (error_mask & ILCLIENT_ERROR_SAMESTATE) {
           //            console.log("ignore error: same state (%d)", name, nData2);
           //            event = NULL;
@@ -57,7 +57,7 @@ export function logError(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number
           //          }
           console.log("same state %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorBadParameter:
+        case omx.ERRORTYPE.ErrorBadParameter:
           //          if (error_mask & ILCLIENT_ERROR_BADPARAMETER) {
           //            console.log("ignore error: bad parameter (%d)", name, nData2);
           //            event = NULL;
@@ -65,41 +65,41 @@ export function logError(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number
           //          }
           console.log("bad parameter %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorIncorrectStateTransition:
+        case omx.ERRORTYPE.ErrorIncorrectStateTransition:
           console.log("incorrect state transition %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorBadPortIndex:
+        case omx.ERRORTYPE.ErrorBadPortIndex:
           console.log("bad port index %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorStreamCorrupt:
+        case omx.ERRORTYPE.ErrorStreamCorrupt:
           console.log("stream corrupt %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorInsufficientResources:
+        case omx.ERRORTYPE.ErrorInsufficientResources:
           console.log("insufficient resources %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorUnsupportedSetting:
+        case omx.ERRORTYPE.ErrorUnsupportedSetting:
           console.log("unsupported setting %x (%d)", name, error, nData2);
           break;
-        case omx.OMX_ERRORTYPE.OMX_ErrorOverflow:
+        case omx.ERRORTYPE.ErrorOverflow:
           console.log("overflow %x (%d)", name, error, nData2);
           break;
-        //            case omx.OMX_ERRORTYPE.OMX_ErrorDiskFull:
+        //            case omx.ERRORTYPE.ErrorDiskFull:
         //              console.log("disk full %x (%d)", name, error, nData2);
         //              break;
-        //            case omx.OMX_ERRORTYPE.OMX_ErrorMaxFileSize:
+        //            case omx.ERRORTYPE.ErrorMaxFileSize:
         //              console.log("max file size %x (%d)", name, error, nData2);
         //              break;
-        //            case omx.OMX_ERRORTYPE.OMX_ErrorDrmUnauthorised:
+        //            case omx.ERRORTYPE.ErrorDrmUnauthorised:
         //              console.log("drm file is unauthorised %x (%d)", name, error, nData2);
         //              break;
-        //            case omx.OMX_ERRORTYPE.OMX_ErrorDrmExpired:
+        //            case omx.ERRORTYPE.ErrorDrmExpired:
         //              console.log("drm file has expired %x (%d)", name, error, nData2);
         //              break;
-        //            case omx.OMX_ERRORTYPE.OMX_ErrorDrmGeneral:
+        //            case omx.ERRORTYPE.ErrorDrmGeneral:
         //              console.log("drm library error %x (%d)", name, error, nData2);
         //              break;
         default:
-          console.log("Error on %s unexpected error", name, omx.OMX_ERRORTYPE[error], nData2);
+          console.log("Error on %s unexpected error", name, omx.ERRORTYPE[error], nData2);
           break;
       }
       break;
@@ -107,6 +107,6 @@ export function logError(name: string, eEvent: omx.OMX_EVENTTYPE, nData1: number
 }
 export function logHandlers(handlers: Array<omx.EventHandlers>) {
   for (var handler of handlers) {
-    console.log('    handler', omx.OMX_EVENTTYPE[handler.eEvent], handler.nData1, handler.nData2);
+    console.log('    handler', omx.EVENTTYPE[handler.eEvent], handler.nData1, handler.nData2);
   }
 }

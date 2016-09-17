@@ -1,9 +1,9 @@
 import omx = require('../../index')
-export class OMX_PARAM_PORTDEFINITIONTYPE {
+export class PARAM_PORTDEFINITIONTYPE {
   /**
    * Direction (input or output) of this port
    */
-  eDir: omx.OMX_DIRTYPE;
+  eDir: omx.DIRTYPE;
   /**
    * The actual number of buffers allocated on this port
    */
@@ -27,18 +27,18 @@ export class OMX_PARAM_PORTDEFINITIONTYPE {
   /**
    * Domain of the port. Determines the contents of metadata below.
    */
-  eDomain: omx.OMX_PORTDOMAINTYPE;
-  audio: omx.OMX_AUDIO_PORTDEFINITIONTYPE;
-  video: omx.OMX_VIDEO_PORTDEFINITIONTYPE;
-  image: omx.OMX_IMAGE_PORTDEFINITIONTYPE;
-  other: omx.OMX_OTHER_PORTDEFINITIONTYPE;
+  eDomain: omx.PORTDOMAINTYPE;
+  audio: omx.AUDIO_PORTDEFINITIONTYPE;
+  video: omx.VIDEO_PORTDEFINITIONTYPE;
+  image: omx.IMAGE_PORTDEFINITIONTYPE;
+  other: omx.OTHER_PORTDEFINITIONTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_U32TYPE {
+export class PARAM_U32TYPE {
   /**
    * U32 value
    */
@@ -49,23 +49,23 @@ export class OMX_PARAM_U32TYPE {
     }
   }
 }
-export class OMX_PARAM_SUSPENSIONPOLICYTYPE {
-  ePolicy: omx.OMX_SUSPENSIONPOLICYTYPE;
+export class PARAM_SUSPENSIONPOLICYTYPE {
+  ePolicy: omx.SUSPENSIONPOLICYTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_PARAM_SUSPENSIONTYPE {
-  eType: omx.OMX_SUSPENSIONTYPE;
+export class PARAM_SUSPENSIONTYPE {
+  eType: omx.SUSPENSIONTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_CONFIG_BOOLEANTYPE {
+export class CONFIG_BOOLEANTYPE {
   bEnabled: boolean;
   constructor(p?: any) {
     if (p) {
@@ -73,7 +73,7 @@ export class OMX_CONFIG_BOOLEANTYPE {
     }
   }
 }
-export class OMX_PARAM_CONTENTURITYPE {
+export class PARAM_CONTENTURITYPE {
   /**
    * The URI name
    */
@@ -84,7 +84,7 @@ export class OMX_PARAM_CONTENTURITYPE {
     }
   }
 }
-export class OMX_PARAM_CONTENTPIPETYPE {
+export class PARAM_CONTENTPIPETYPE {
   /**
    * The pipe handle
    */
@@ -95,7 +95,7 @@ export class OMX_PARAM_CONTENTPIPETYPE {
     }
   }
 }
-export class OMX_RESOURCECONCEALMENTTYPE {
+export class RESOURCECONCEALMENTTYPE {
   /**
    * disallow the use of resource concealment methods (like degrading algorithm quality to lower resource consumption or functional bypass) on a component as a resolution to resource conflicts.
    */
@@ -106,8 +106,8 @@ export class OMX_RESOURCECONCEALMENTTYPE {
     }
   }
 }
-export class OMX_CONFIG_METADATAITEMCOUNTTYPE {
-  eScopeMode: omx.OMX_METADATASCOPETYPE;
+export class CONFIG_METADATAITEMCOUNTTYPE {
+  eScopeMode: omx.METADATASCOPETYPE;
   nScopeSpecifier: number;
   nMetadataItemCount: number;
   constructor(p?: any) {
@@ -116,15 +116,15 @@ export class OMX_CONFIG_METADATAITEMCOUNTTYPE {
     }
   }
 }
-export class OMX_CONFIG_METADATAITEMTYPE {
-  eScopeMode: omx.OMX_METADATASCOPETYPE;
+export class CONFIG_METADATAITEMTYPE {
+  eScopeMode: omx.METADATASCOPETYPE;
   nScopeSpecifier: number;
   nMetadataItemIndex: number;
-  eSearchMode: omx.OMX_METADATASEARCHMODETYPE;
-  eKeyCharset: omx.OMX_METADATACHARSETTYPE;
+  eSearchMode: omx.METADATASEARCHMODETYPE;
+  eKeyCharset: omx.METADATACHARSETTYPE;
   nKeySizeUsed: number;
   nKey: number;
-  eValueCharset: omx.OMX_METADATACHARSETTYPE;
+  eValueCharset: omx.METADATACHARSETTYPE;
   nValueMaxSize: number;
   nValueSizeUsed: number;
   nValue: number;
@@ -134,7 +134,7 @@ export class OMX_CONFIG_METADATAITEMTYPE {
     }
   }
 }
-export class OMX_CONFIG_CONTAINERNODECOUNTTYPE {
+export class CONFIG_CONTAINERNODECOUNTTYPE {
   bAllKeys: boolean;
   nParentNodeID: number;
   nNumNodes: number;
@@ -144,7 +144,7 @@ export class OMX_CONFIG_CONTAINERNODECOUNTTYPE {
     }
   }
 }
-export class OMX_CONFIG_CONTAINERNODEIDTYPE {
+export class CONFIG_CONTAINERNODEIDTYPE {
   bAllKeys: boolean;
   nParentNodeID: number;
   nNodeIndex: number;
@@ -156,12 +156,12 @@ export class OMX_CONFIG_CONTAINERNODEIDTYPE {
     }
   }
 }
-export class OMX_PARAM_METADATAFILTERTYPE {
+export class PARAM_METADATAFILTERTYPE {
   /**
    * if true then this structure refers to all keys and the three key fields below are ignored
    */
   bAllKeys: boolean;
-  eKeyCharset: omx.OMX_METADATACHARSETTYPE;
+  eKeyCharset: omx.METADATACHARSETTYPE;
   nKeySizeUsed: number;
   nKey : number;
   nLanguageCountrySizeUsed: number;

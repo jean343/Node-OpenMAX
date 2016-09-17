@@ -15,7 +15,7 @@ ws._write = function (chunk, enc, next) {
 
 var VideoDecode = new omx.VideoDecode();
 VideoDecode.init().then(function () {
-  VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+  VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
   fs.createReadStream("../../spec/data/video-LQ.h264")
           .pipe(VideoDecode)
           .pipe(ws)

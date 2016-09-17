@@ -1,5 +1,5 @@
 import omx = require('../../index')
-export class OMX_VIDEO_PORTDEFINITIONTYPE {
+export class VIDEO_PORTDEFINITIONTYPE {
   pNativeRender;
   nFrameWidth: number;
   nFrameHeight: number;
@@ -8,8 +8,8 @@ export class OMX_VIDEO_PORTDEFINITIONTYPE {
   nBitrate: number;
   xFramerate: number;
   bFlagErrorConcealment: boolean;
-  eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE;
-  eColorFormat: omx.OMX_COLOR_FORMATTYPE;
+  eCompressionFormat: omx.VIDEO_CODINGTYPE;
+  eColorFormat: omx.COLOR_FORMATTYPE;
   pNativeWindow;
   constructor(p?: any) {
     if (p) {
@@ -17,10 +17,10 @@ export class OMX_VIDEO_PORTDEFINITIONTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_PORTFORMATTYPE {
+export class VIDEO_PARAM_PORTFORMATTYPE {
   nIndex: number;
-  eCompressionFormat: omx.OMX_VIDEO_CODINGTYPE;
-  eColorFormat: omx.OMX_COLOR_FORMATTYPE;
+  eCompressionFormat: omx.VIDEO_CODINGTYPE;
+  eColorFormat: omx.COLOR_FORMATTYPE;
   xFramerate: number;
   constructor(p?: any) {
     if (p) {
@@ -28,7 +28,7 @@ export class OMX_VIDEO_PARAM_PORTFORMATTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_QUANTIZATIONTYPE {
+export class VIDEO_PARAM_QUANTIZATIONTYPE {
   nQpI: number;
   nQpP: number;
   nQpB: number;
@@ -38,7 +38,7 @@ export class OMX_VIDEO_PARAM_QUANTIZATIONTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_VIDEOFASTUPDATETYPE {
+export class VIDEO_PARAM_VIDEOFASTUPDATETYPE {
   bEnableVFU: boolean;
   nFirstGOB: number;
   nFirstMB: number;
@@ -49,8 +49,8 @@ export class OMX_VIDEO_PARAM_VIDEOFASTUPDATETYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_BITRATETYPE {
-  eControlRate: omx.OMX_VIDEO_CONTROLRATETYPE;
+export class VIDEO_PARAM_BITRATETYPE {
+  eControlRate: omx.VIDEO_CONTROLRATETYPE;
   nTargetBitrate: number;
   constructor(p?: any) {
     if (p) {
@@ -58,8 +58,8 @@ export class OMX_VIDEO_PARAM_BITRATETYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_MOTIONVECTORTYPE {
-  eAccuracy: omx.OMX_VIDEO_MOTIONVECTORTYPE;
+export class VIDEO_PARAM_MOTIONVECTORTYPE {
+  eAccuracy: omx.VIDEO_MOTIONVECTORTYPE;
   bUnrestrictedMVs: boolean;
   bFourMV: boolean;
   sXSearchRange: number;
@@ -70,8 +70,8 @@ export class OMX_VIDEO_PARAM_MOTIONVECTORTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_INTRAREFRESHTYPE {
-  eRefreshMode: omx.OMX_VIDEO_INTRAREFRESHTYPE;
+export class VIDEO_PARAM_INTRAREFRESHTYPE {
+  eRefreshMode: omx.VIDEO_INTRAREFRESHTYPE;
   nAirMBs: number;
   nAirRef: number;
   nCirMBs: number;
@@ -82,7 +82,7 @@ export class OMX_VIDEO_PARAM_INTRAREFRESHTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_ERRORCORRECTIONTYPE {
+export class VIDEO_PARAM_ERRORCORRECTIONTYPE {
   bEnableHEC: boolean;
   bEnableResync: boolean;
   nResynchMarkerSpacing: number;
@@ -94,7 +94,7 @@ export class OMX_VIDEO_PARAM_ERRORCORRECTIONTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_VBSMCTYPE {
+export class VIDEO_PARAM_VBSMCTYPE {
   b16x16: boolean;
   b16x8: boolean;
   b8x16: boolean;
@@ -108,11 +108,11 @@ export class OMX_VIDEO_PARAM_VBSMCTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_H263TYPE {
+export class VIDEO_PARAM_H263TYPE {
   nPFrames: number;
   nBFrames: number;
-  eProfile: omx.OMX_VIDEO_H263PROFILETYPE;
-  eLevel: omx.OMX_VIDEO_H263LEVELTYPE;
+  eProfile: omx.VIDEO_H263PROFILETYPE;
+  eLevel: omx.VIDEO_H263LEVELTYPE;
   bPLUSPTYPEAllowed: boolean;
   nAllowedPictureTypes: number;
   bForceRoundingTypeToZero: boolean;
@@ -124,18 +124,18 @@ export class OMX_VIDEO_PARAM_H263TYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_MPEG2TYPE {
+export class VIDEO_PARAM_MPEG2TYPE {
   nPFrames: number;
   nBFrames: number;
-  eProfile: omx.OMX_VIDEO_MPEG2PROFILETYPE;
-  eLevel: omx.OMX_VIDEO_MPEG2LEVELTYPE;
+  eProfile: omx.VIDEO_MPEG2PROFILETYPE;
+  eLevel: omx.VIDEO_MPEG2LEVELTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_VIDEO_PARAM_MPEG4TYPE {
+export class VIDEO_PARAM_MPEG4TYPE {
   nSliceHeaderSpacing: number;
   bSVH: boolean;
   bGov: boolean;
@@ -145,8 +145,8 @@ export class OMX_VIDEO_PARAM_MPEG4TYPE {
   bACPred: boolean;
   nMaxPacketSize: number;
   nTimeIncRes: number;
-  eProfile: omx.OMX_VIDEO_MPEG4PROFILETYPE;
-  eLevel: omx.OMX_VIDEO_MPEG4LEVELTYPE;
+  eProfile: omx.VIDEO_MPEG4PROFILETYPE;
+  eLevel: omx.VIDEO_MPEG4LEVELTYPE;
   nAllowedPictureTypes: number;
   nHeaderExtension: number;
   bReversibleVLC: boolean;
@@ -156,16 +156,16 @@ export class OMX_VIDEO_PARAM_MPEG4TYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_WMVTYPE {
-  eFormat: omx.OMX_VIDEO_WMVFORMATTYPE;
+export class VIDEO_PARAM_WMVTYPE {
+  eFormat: omx.VIDEO_WMVFORMATTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_VIDEO_PARAM_RVTYPE {
-  eFormat: omx.OMX_VIDEO_RVFORMATTYPE;
+export class VIDEO_PARAM_RVTYPE {
+  eFormat: omx.VIDEO_RVFORMATTYPE;
   nBitsPerPixel: number;
   nPaddedWidth: number;
   nPaddedHeight: number;
@@ -182,7 +182,7 @@ export class OMX_VIDEO_PARAM_RVTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_AVCTYPE {
+export class VIDEO_PARAM_AVCTYPE {
   nSliceHeaderSpacing: number;
   nPFrames: number;
   nBFrames: number;
@@ -194,8 +194,8 @@ export class OMX_VIDEO_PARAM_AVCTYPE {
   bEnableFMO: boolean;
   bEnableASO: boolean;
   bEnableRS: boolean;
-  eProfile: omx.OMX_VIDEO_AVCPROFILETYPE;
-  eLevel: omx.OMX_VIDEO_AVCLEVELTYPE;
+  eProfile: omx.VIDEO_AVCPROFILETYPE;
+  eLevel: omx.VIDEO_AVCLEVELTYPE;
   nAllowedPictureTypes: number;
   bFrameMBsOnly: boolean;
   bMBAFF: boolean;
@@ -206,14 +206,14 @@ export class OMX_VIDEO_PARAM_AVCTYPE {
   bDirect8x8Inference: boolean;
   bDirectSpatialTemporal: boolean;
   nCabacInitIdc: number;
-  eLoopFilterMode: omx.OMX_VIDEO_AVCLOOPFILTERTYPE;
+  eLoopFilterMode: omx.VIDEO_AVCLOOPFILTERTYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_VIDEO_PARAM_PROFILELEVELTYPE {
+export class VIDEO_PARAM_PROFILELEVELTYPE {
   /**
    * type is OMX_VIDEO_AVCPROFILETYPE, OMX_VIDEO_H263PROFILETYPE, or OMX_VIDEO_MPEG4PROFILETYPE depending on context
    */
@@ -232,7 +232,7 @@ export class OMX_VIDEO_PARAM_PROFILELEVELTYPE {
     }
   }
 }
-export class OMX_VIDEO_CONFIG_BITRATETYPE {
+export class VIDEO_CONFIG_BITRATETYPE {
   nEncodeBitrate: number;
   constructor(p?: any) {
     if (p) {
@@ -240,7 +240,7 @@ export class OMX_VIDEO_CONFIG_BITRATETYPE {
     }
   }
 }
-export class OMX_CONFIG_FRAMERATETYPE {
+export class CONFIG_FRAMERATETYPE {
   /**
    * Q16 format
    */
@@ -251,7 +251,7 @@ export class OMX_CONFIG_FRAMERATETYPE {
     }
   }
 }
-export class OMX_CONFIG_INTRAREFRESHVOPTYPE {
+export class CONFIG_INTRAREFRESHVOPTYPE {
   IntraRefreshVOP: boolean;
   constructor(p?: any) {
     if (p) {
@@ -259,7 +259,7 @@ export class OMX_CONFIG_INTRAREFRESHVOPTYPE {
     }
   }
 }
-export class OMX_CONFIG_MACROBLOCKERRORMAPTYPE {
+export class CONFIG_MACROBLOCKERRORMAPTYPE {
   /**
    * Size of the Error Map in bytes
    */
@@ -274,7 +274,7 @@ export class OMX_CONFIG_MACROBLOCKERRORMAPTYPE {
     }
   }
 }
-export class OMX_CONFIG_MBERRORREPORTINGTYPE {
+export class CONFIG_MBERRORREPORTINGTYPE {
   bEnabled: boolean;
   constructor(p?: any) {
     if (p) {
@@ -282,7 +282,7 @@ export class OMX_CONFIG_MBERRORREPORTINGTYPE {
     }
   }
 }
-export class OMX_PARAM_MACROBLOCKSTYPE {
+export class PARAM_MACROBLOCKSTYPE {
   nMacroblocks: number;
   constructor(p?: any) {
     if (p) {
@@ -290,17 +290,17 @@ export class OMX_PARAM_MACROBLOCKSTYPE {
     }
   }
 }
-export class OMX_VIDEO_PARAM_AVCSLICEFMO {
+export class VIDEO_PARAM_AVCSLICEFMO {
   nNumSliceGroups: number;
   nSliceGroupMapType: number;
-  eSliceMode: omx.OMX_VIDEO_AVCSLICEMODETYPE;
+  eSliceMode: omx.VIDEO_AVCSLICEMODETYPE;
   constructor(p?: any) {
     if (p) {
       Object.assign(this, p);
     }
   }
 }
-export class OMX_VIDEO_CONFIG_AVCINTRAPERIOD {
+export class VIDEO_CONFIG_AVCINTRAPERIOD {
   nIDRPeriod: number;
   nPFrames: number;
   constructor(p?: any) {
@@ -309,7 +309,7 @@ export class OMX_VIDEO_CONFIG_AVCINTRAPERIOD {
     }
   }
 }
-export class OMX_VIDEO_CONFIG_NALSIZE {
+export class VIDEO_CONFIG_NALSIZE {
   nNaluBytes: number;
   constructor(p?: any) {
     if (p) {

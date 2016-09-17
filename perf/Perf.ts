@@ -64,7 +64,7 @@ class WritableFilter extends stream.Writable {
   }
   _write(chunk, enc, next) {
     this.fps.tick();
-    if (this.portDefinition.eColorFormat === omx.OMX_COLOR_FORMATTYPE.OMX_COLOR_FormatYUV420PackedPlanar) {
+    if (this.portDefinition.eColorFormat === omx.COLOR_FORMATTYPE.COLOR_FormatYUV420PackedPlanar) {
       omx.Component.copyAsync(chunk, buf, bufferFormat.video.nStride, bufferFormat.video.nSliceHeight,
         this.offsetX, this.offsetY, this.nStride, this.width, this.nSliceHeight, this.height, next);
     }
@@ -168,7 +168,7 @@ class WriteHTTP extends stream.Duplex {
       //        return Resize.init();
       //      })
       .then(function() {
-        VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+        VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
         VideoDecode.setBufferCount(4, 4);
 
         //        var format = {
@@ -193,17 +193,17 @@ class WriteHTTP extends stream.Duplex {
         //          }
         //        };
         //        console.log(format);
-        //        Resize.setParameter(Resize.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition, format);
+        //        Resize.setParameter(Resize.out_port, omx.INDEXTYPE.IndexParamPortDefinition, format);
 
         //        var format2 = {
-        //          eMode: omx.OMX_RESIZEMODETYPE.OMX_RESIZE_CROP,
+        //          eMode: omx.RESIZEMODETYPE.RESIZE_CROP,
         //          nMaxWidth: rw,
         //          nMaxHeight: rh,
         //          bPreserveAspectRatio: 0,
         //          bAllowUpscaling: 0
         //        };
         //        console.log('Resize2', format2);
-        //        Resize.setParameter(Resize.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamResize, format2);
+        //        Resize.setParameter(Resize.out_port, omx.INDEXTYPE.IndexParamResize, format2);
 
                         fs.createReadStream("spec/data/myth-160.h264")
 //        fs.createReadStream("spec/data/video-LQ-640.h264")
@@ -236,16 +236,16 @@ class WriteHTTP extends stream.Duplex {
       return VideoRender.init();
     })
     .then(function() {
-      VideoEncode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+      VideoEncode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
 
-      VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoBitrate, {
-        eControlRate: omx.OMX_VIDEO_CONTROLRATETYPE.OMX_Video_ControlRateDisable
+      VideoEncode.component.setParameter(VideoEncode.out_port, omx.INDEXTYPE.IndexParamVideoBitrate, {
+        eControlRate: omx.VIDEO_CONTROLRATETYPE.Video_ControlRateDisable
       });
 
-      var quantizationType = VideoEncode.component.getParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization);
+      var quantizationType = VideoEncode.component.getParameter(VideoEncode.out_port, omx.INDEXTYPE.IndexParamVideoQuantization);
       quantizationType.nQpI = 25;
       quantizationType.nQpP = quantizationType.nQpI;
-      VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization, quantizationType);
+      VideoEncode.component.setParameter(VideoEncode.out_port, omx.INDEXTYPE.IndexParamVideoQuantization, quantizationType);
 
       //      var http = require('http');
       //      http.createServer(function(req, res) {

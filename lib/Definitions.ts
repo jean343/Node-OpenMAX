@@ -12,14 +12,14 @@ export interface Node_OMX {
 
 export interface COMPONENTTYPE {
   close();
-  on(event: string, callback: (eEvent: omx.OMX_EVENTTYPE, nData1: number, nData2: number) => void);
+  on(event: string, callback: (eEvent: omx.EVENTTYPE, nData1: number, nData2: number) => void);
   emit(event: string);
-  setParameter(port: number, index: omx.OMX_INDEXTYPE, format: any);
-  changeState(state: omx.OMX_STATETYPE);
+  setParameter(port: number, index: omx.INDEXTYPE, format: any);
+  changeState(state: omx.STATETYPE);
   getState();
   tunnelTo(out_port: number, sink: any, in_port: number);
-  getParameter(port: number, index: omx.OMX_INDEXTYPE);
-  sendCommand(commandType: omx.OMX_COMMANDTYPE, port: number);
+  getParameter(port: number, index: omx.INDEXTYPE);
+  sendCommand(commandType: omx.COMMANDTYPE, port: number);
   useBuffer(port: number, buf: Buffer);
   freeBuffer(port: number, buf: Buffer);
   useEGLImage(port: number, buf: omx.EglImage);

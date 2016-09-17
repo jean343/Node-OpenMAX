@@ -40,7 +40,7 @@ describe("Camera", function() {
   });
 
   it("should have the right format", function() {
-    var f = Camera.getParameter(Camera.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+    var f = Camera.getParameter(Camera.out_port, omx.INDEXTYPE.IndexParamVideoPortFormat);
     expect(f).toEqual({
       nIndex: 0,
       eCompressionFormat: 0,
@@ -50,14 +50,14 @@ describe("Camera", function() {
   });
 
   it("should have the right port definition", function() {
-    var f = Camera.getParameter(Camera.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    var f = Camera.getParameter(Camera.out_port, omx.INDEXTYPE.IndexParamPortDefinition);
     expect(f).toEqual({
       eDir: 1,
       nBufferCountActual: 1,
       nBufferCountMin: 1,
       nBufferSize: 15360,
-      bEnabled: 0,
-      bPopulated: 0,
+      bEnabled: false,
+      bPopulated: false,
       eDomain: 1,
       video:
       {
@@ -68,7 +68,7 @@ describe("Camera", function() {
         nSliceHeight: 16,
         nBitrate: 0,
         xFramerate: 0,
-        bFlagErrorConcealment: 0,
+        bFlagErrorConcealment: false,
         eCompressionFormat: 0,
         eColorFormat: 20,
         pNativeWindow: false
@@ -78,14 +78,14 @@ describe("Camera", function() {
 
   it("should set format", function() {
     Camera.setFormat();
-    var f = Camera.getParameter(Camera.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    var f = Camera.getParameter(Camera.out_port, omx.INDEXTYPE.IndexParamPortDefinition);
     expect(f).toEqual({
       eDir: 1,
       nBufferCountActual: 1,
       nBufferCountMin: 1,
       nBufferSize: 460800,
-      bEnabled: 0,
-      bPopulated: 0,
+      bEnabled: false,
+      bPopulated: false,
       eDomain: 1,
       video:
       {
@@ -96,7 +96,7 @@ describe("Camera", function() {
         nSliceHeight: 480,
         nBitrate: 0,
         xFramerate: 0,
-        bFlagErrorConcealment: 0,
+        bFlagErrorConcealment: false,
         eCompressionFormat: 0,
         eColorFormat: 20,
         pNativeWindow: false
@@ -106,14 +106,14 @@ describe("Camera", function() {
 
   it("should enable", function() {
     Camera.enable();
-    var f = Camera.getParameter(Camera.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
-    expect(f).toEqual({ bEnabled: 1 });
+    var f = Camera.getParameter(Camera.out_port, omx.INDEXTYPE.IndexConfigPortCapturing);
+    expect(f).toEqual({ bEnabled: true });
   });
 
   it("should disable", function() {
     Camera.disable();
-    var f = Camera.getParameter(Camera.out_port, omx.OMX_INDEXTYPE.OMX_IndexConfigPortCapturing);
-    expect(f).toEqual({ bEnabled: 0 });
+    var f = Camera.getParameter(Camera.out_port, omx.INDEXTYPE.IndexConfigPortCapturing);
+    expect(f).toEqual({ bEnabled: false });
   });
 
   it("should get CamplusId", function() {
@@ -127,7 +127,7 @@ describe("Camera", function() {
   it("should get CameraDevicesPresent", function() {
     expect(Camera.getCameraDevicesPresent()).toBeGreaterThan(0);
   });
-  
+
   it("should tunnel and pipe to stream", function(done) {
     var Clock = new omx.Clock();
     Clock.init()

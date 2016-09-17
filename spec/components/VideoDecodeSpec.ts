@@ -41,7 +41,7 @@ describe("VideoDecode", function() {
   });
 
   it("should have the right format", function() {
-    var f = VideoDecode.getParameter(VideoDecode.in_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+    var f = VideoDecode.getParameter(VideoDecode.in_port, omx.INDEXTYPE.IndexParamVideoPortFormat);
     expect(f).toEqual({
       nIndex: 0,
       eCompressionFormat: 4,
@@ -51,14 +51,14 @@ describe("VideoDecode", function() {
   });
 
   it("should have the right port definition", function() {
-    var f = VideoDecode.getParameter(VideoDecode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+    var f = VideoDecode.getParameter(VideoDecode.out_port, omx.INDEXTYPE.IndexParamPortDefinition);
     expect(f).toEqual({
       eDir: 1,
       nBufferCountActual: 1,
       nBufferCountMin: 1,
       nBufferSize: 115200,
-      bEnabled: 0,
-      bPopulated: 0,
+      bEnabled: false,
+      bPopulated: false,
       eDomain: 1,
       video: {
         pNativeRender: false,
@@ -68,7 +68,7 @@ describe("VideoDecode", function() {
         nSliceHeight: 240,
         nBitrate: 0,
         xFramerate: 0,
-        bFlagErrorConcealment: 0,
+        bFlagErrorConcealment: false,
         eCompressionFormat: 0,
         eColorFormat: 20,
         pNativeWindow: false
@@ -77,12 +77,12 @@ describe("VideoDecode", function() {
   });
 
   it("should set video port format", function() {
-    VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+    VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
   });
 
   it("should trigger port definition changed and have right settings", function(done) {
     var eventPortSettingsChanged = false;
-    VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+    VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
     fs.createReadStream("spec/data/video-LQ-30frames.h264")
       .pipe(VideoDecode)
       .pipe(ws)
@@ -92,14 +92,14 @@ describe("VideoDecode", function() {
       });
 
     VideoDecode.component.on("eventPortSettingsChanged", function() {
-      var f = VideoDecode.getParameter(VideoDecode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+      var f = VideoDecode.getParameter(VideoDecode.out_port, omx.INDEXTYPE.IndexParamPortDefinition);
       expect(f).toEqual({
         eDir: 1,
         nBufferCountActual: 1,
         nBufferCountMin: 1,
         nBufferSize: 3133440,
-        bEnabled: 0,
-        bPopulated: 0,
+        bEnabled: false,
+        bPopulated: false,
         eDomain: 1,
         video: {
           pNativeRender: false,
@@ -109,7 +109,7 @@ describe("VideoDecode", function() {
           nSliceHeight: 1088,
           nBitrate: 0,
           xFramerate: 0,
-          bFlagErrorConcealment: 0,
+          bFlagErrorConcealment: false,
           eCompressionFormat: 0,
           eColorFormat: 20,
           pNativeWindow: false

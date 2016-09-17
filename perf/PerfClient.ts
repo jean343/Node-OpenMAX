@@ -29,7 +29,7 @@ var transformFilter = new TransformFilter();
       return VideoRender.init();
     })
     .then(function() {
-      VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+      VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
       VideoDecode.setBufferCount();
 
       http.get("http://localhost:3000", function(response) {

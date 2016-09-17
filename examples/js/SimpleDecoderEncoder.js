@@ -46,16 +46,16 @@ var VideoRender = new omx.VideoRender();
 var writeFileFilter = new WriteFileFilter();
 omx.Component.initAll([VideoDecode1, VideoDecode2, VideoEncode, VideoRender])
         .then(function () {
-          VideoDecode1.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-          VideoDecode2.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-          VideoEncode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
-          VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoBitrate, {
-            eControlRate: omx.OMX_VIDEO_CONTROLRATETYPE.OMX_Video_ControlRateDisable
+          VideoDecode1.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
+          VideoDecode2.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
+          VideoEncode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
+          VideoEncode.component.setParameter(VideoEncode.out_port, omx.INDEXTYPE.IndexParamVideoBitrate, {
+            eControlRate: omx.VIDEO_CONTROLRATETYPE.Video_ControlRateDisable
           });
-          var quantizationType = VideoEncode.component.getParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization);
+          var quantizationType = VideoEncode.component.getParameter(VideoEncode.out_port, omx.INDEXTYPE.IndexParamVideoQuantization);
           quantizationType.nQpI = 43;
           quantizationType.nQpP = quantizationType.nQpI;
-          VideoEncode.component.setParameter(VideoEncode.out_port, omx.OMX_INDEXTYPE.OMX_IndexParamVideoQuantization, quantizationType);
+          VideoEncode.component.setParameter(VideoEncode.out_port, omx.INDEXTYPE.IndexParamVideoQuantization, quantizationType);
           var useTunnel = false;
           if (useTunnel) {
           } else {

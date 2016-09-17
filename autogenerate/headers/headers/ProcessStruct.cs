@@ -14,21 +14,22 @@ namespace headers
     {
         public void convertStruct(string path, List<string> files)
         {
+            StructConverter sc = new StructConverter();
             // Parse the enum OMX_INDEXTYPE to get the references
-            CStruct OMX_INDEXTYPE = StructParser.parse(File.ReadAllText(Path.Combine(path, "source", "OMX_Index.h")), "enum").First();
+            CStruct OMX_INDEXTYPE = sc.convert(StructParser.parse(File.ReadAllText(Path.Combine(path, "source", "OMX_Index.h")), "enum").First());
 
             List<Struct> cstruct = new List<Struct>();
 
             foreach (string file in files)
             {
                 string sourcestring = File.ReadAllText(Path.Combine(path, "source", file + ".h"));
-                List<Struct> structs = new StructConverter().convert(StructParser.parse(sourcestring, "struct"));
+                List<Struct> structs = sc.convert(StructParser.parse(sourcestring, "struct"), file);
                 cstruct.AddRange(structs);
 
                 Directory.CreateDirectory(Path.Combine(path, @"..\..\..\lib\classes"));
                 using (StreamWriter sw = new StreamWriter(Path.GetFullPath(Path.Combine(path, @"..\..\..\lib\classes", file + ".ts"))))
                 {
-                    writeTs(sw, file, structs);
+                    writeTs(sw, structs);
                 }
             }
 
@@ -56,14 +57,12 @@ namespace headers
             }
         }
 
-        private void writeTs(StreamWriter sw, string file, List<Struct> cstructs)
+        private void writeTs(StreamWriter sw, List<Struct> cstructs)
         {
             sw.WriteLine(@"import omx = require('../../index')");
             foreach (Struct cstruct in cstructs)
             {
-                var nameTrimmed = cstruct.name;
-
-                sw.WriteLine(@"export class " + nameTrimmed + " {");
+                sw.WriteLine(@"export class " + cstruct.name + " {");
 
                 foreach (CField f in cstruct.fields)
                 {
@@ -72,11 +71,6 @@ namespace headers
                         sw.WriteLine(@"  /**
    * {0}
    */", f.comment);
-                    }
-                    
-                    if (file != "OMX_Broadcom" && !Char.IsDigit(f.name[1]))
-                    {
-                        //nameNoType = Char.ToLowerInvariant(nameNoArray[1]) + nameNoArray.Substring(2);
                     }
                     
                     sw.WriteLine(@"  {0}{1};", f.name, f.typeTS != null ? ": " + f.typeTS : "");
@@ -169,7 +163,7 @@ namespace headers
             {
                 return;
             }
-            sw.Write(@"v8::Local<v8::Object> GET_" + cstruct.name + "(" + cstruct.name + " &format)");
+            sw.Write(@"v8::Local<v8::Object> GET_" + cstruct.name + "(" + cstruct.originalName + " &format)");
             sw.WriteLine(writeBody ? " {" : ";");
             if (!writeBody) return;
             sw.WriteLine(@"  Nan::EscapableHandleScope scope;");
@@ -178,23 +172,12 @@ namespace headers
             foreach (CField f in cstruct.fields)
             {
                 // Special code for OMX_IndexParamPortDefinition
-                if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.name))
+                if (cstruct.originalName == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.name))
                 {
                     sw.WriteLine(@"  if (format.eDomain == OMX_PortDomain" + Utils.FirstCharToUpper(f.name) + ") {");
-                    sw.WriteLine(@"    Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_OMX_{1}_PORTDEFINITIONTYPE(format.format.{0}));", f.name, f.name.ToUpper());
+                    sw.WriteLine(@"    Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}_PORTDEFINITIONTYPE(format.format.{0}));", f.name, f.name.ToUpper());
                     sw.WriteLine(@"  }");
                     continue;
-                }
-
-                string castTo = null;
-                switch (f.type)
-                {
-                    case "OMX_U64":
-                        castTo = "(double)";
-                        break;
-                    case "OMX_BOOL":
-                        castTo = "!!";
-                        break;
                 }
 
                 if (f.canBeNull)
@@ -207,10 +190,10 @@ namespace headers
 
                 if (isObject)
                 {
-                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}(format.{0}));", f.name, f.type);
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), GET_{1}(format.{2}));", f.name, f.type, f.originalName);
                 }
                 else {
-                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{2}){3});{4}", f.name, castTo != null ? castTo : "", f.name, f.canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment);
+                    sw.WriteLine(@"  Nan::Set(ret, Nan::New(""{0}"").ToLocalChecked(), Nan::New({1}format.{5}){3});{4}", f.name, f.castTo != null ? f.castTo : "", f.name, f.canBeNull ? ".ToLocalChecked()" : "", f.comment.Length == 0 ? "" : " // " + f.comment, f.originalName);
                 }
             }
 
@@ -224,7 +207,7 @@ namespace headers
                 return;
             }
 
-            sw.Write(@"void SET_" + cstruct.name + "(" + cstruct.name + " &format, v8::Local<v8::Object> param)");
+            sw.Write(@"void SET_" + cstruct.name + "(" + cstruct.originalName + " &format, v8::Local<v8::Object> param)");
             sw.WriteLine(writeBody ? " {" : ";");
             if (!writeBody) return;
 
@@ -237,11 +220,11 @@ namespace headers
                 }
 
                 // Special code for OMX_IndexParamPortDefinition
-                if (cstruct.name == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.name))
+                if (cstruct.originalName == "OMX_PARAM_PORTDEFINITIONTYPE" && new string[] { "audio", "video", "image", "other" }.Contains(f.name))
                 {
                     sw.WriteLine(@"  if (format.eDomain == OMX_PortDomain" + Utils.FirstCharToUpper(f.name) + ") {");
                     sw.WriteLine(@"    v8::Local<v8::Object> obj = Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{0}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked();", f.name);
-                    sw.WriteLine(@"    SET_OMX_{1}_PORTDEFINITIONTYPE(format.format.{0}, obj);", f.name, f.name.ToUpper());
+                    sw.WriteLine(@"    SET_{1}_PORTDEFINITIONTYPE(format.format.{0}, obj);", f.name, f.name.ToUpper());
                     sw.WriteLine(@"  }");
                     continue;
                 }
@@ -252,12 +235,12 @@ namespace headers
                 {
                     sw.WriteLine(@"  if (Nan::Has(param, Nan::New(""{0}"").ToLocalChecked()).FromJust())", f.name);
                     sw.WriteLine(@"  {");
-                    sw.WriteLine(@"    SET_{1}(format.{0}, Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{0}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());", f.name, f.type);
+                    sw.WriteLine(@"    SET_{2}(format.{0}, Nan::To<v8::Object>(Nan::Get(param, Nan::New(""{1}"").ToLocalChecked()).ToLocalChecked()).ToLocalChecked());", f.originalName, f.name, f.type);
                     sw.WriteLine(@"  }");
                 }
                 else
                 {
-                    sw.WriteLine(@"  format.{1} = ({0}) Nan::To<int>(Nan::Get(param, Nan::New(""{1}"").ToLocalChecked()).ToLocalChecked()).FromJust();{2}", f.type, f.name, f.comment.Length == 0 ? "" : " // " + f.comment);
+                    sw.WriteLine(@"  format.{0} = ({1}) Nan::To<int>(Nan::Get(param, Nan::New(""{2}"").ToLocalChecked()).ToLocalChecked()).FromJust();{3}", f.originalName, f.originalType, f.name, f.comment.Length == 0 ? "" : " // " + f.comment);
                 }
             }
             sw.WriteLine(@"}");
@@ -271,7 +254,7 @@ namespace headers
             sw.WriteLine("    case {0}:", indexName);
             sw.WriteLine("    {");
 
-            sw.WriteLine("      {0} format;", cstruct.name);
+            sw.WriteLine("      {0} format;", cstruct.originalName);
             
             string hasPortStr = cstruct.hasPort ? ", port" : "";
 
@@ -290,7 +273,7 @@ namespace headers
             sw.WriteLine("    case {0}:", indexName);
             sw.WriteLine("    {");
 
-            sw.WriteLine("      {0} format;", cstruct.name);
+            sw.WriteLine("      {0} format;", cstruct.originalName);
             
             string hasPortStr = cstruct.hasPort ? ", port" : "";
             

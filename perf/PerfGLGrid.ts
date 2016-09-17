@@ -109,7 +109,7 @@ function range(start, end) {
         return EglRender.init();
       })
       .then(function() {
-        VideoDecode.setVideoPortFormat(omx.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC);
+        VideoDecode.setVideoPortFormat(omx.VIDEO_CODINGTYPE.VIDEO_CodingAVC);
         VideoDecode.setBufferCount(1, 1);
 
         EglRender.setBufferCount(1, 1);
