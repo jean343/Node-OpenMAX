@@ -91,14 +91,14 @@ fs.createReadStream("spec/data/video-LQ.h264")
 
 Use the OMX OMX_GetParameter and OMX_SetParameter to change eCompressionFormat to
 ```javascript
-var format = VideoDecode.component.getParameter(VideoDecode.component.in_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
+var format = VideoDecode.getParameter(VideoDecode.in_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat);
 format.eCompressionFormat = omx.Video.OMX_VIDEO_CODINGTYPE.OMX_VIDEO_CodingAVC;
-VideoDecode.component.setParameter(VideoDecode.component.in_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
+VideoDecode.setParameter(VideoDecode.in_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamVideoPortFormat, format);
 ```
 
 Get the complete OMX_IndexParamPortDefinition
 ```javascript
-var format = VideoDecode.component.getParameter(VideoDecode.component.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
+var format = VideoDecode.getParameter(VideoDecode.out_port, omx.Index.OMX_INDEXTYPE.OMX_IndexParamPortDefinition);
 // Outputs
 {
   eDir: 1,
