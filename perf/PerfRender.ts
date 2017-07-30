@@ -50,17 +50,12 @@ import stream = require('stream');
           }
         };
 
-        //        console.log(VideoRender.getParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigDisplayRegion));
         VideoRender.setParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigDisplayRegion, configDisplay);
-        //        console.log(VideoRender.getParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigDisplayRegion));
 
         console.time("start");
         var start = +new Date();
         fs.createReadStream("spec/data/myth-160.h264")
-//                          fs.createReadStream("spec/data/video-LQ-640.h264")
-          //        fs.createReadStream("spec/data/video-LQ-1280.h264")
           .pipe(VideoDecode)
-          //          .pipe(fps)
           .tunnel(VideoRender)
           .on('finish', function() {
             console.timeEnd("start");
@@ -71,7 +66,7 @@ import stream = require('stream');
         setInterval(function() {
           var param = VideoRender.getParameter(VideoRender.in_port, omx.INDEXTYPE.IndexConfigBrcmPortStats);
           console.log("Fps " + _i + ": " + param.nFrameCount * 1000 / (+new Date() - start));
-        }, 2000);
+        }, 1000);
 
         console.log('iter', i++);
         if (i <= rows * cols) {
