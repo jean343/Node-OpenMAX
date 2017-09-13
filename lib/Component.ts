@@ -299,7 +299,7 @@ export class Component extends stream.Duplex {
     return this.component.setParameter(port, index, format);
   }
   sendCommand(commandType: omx.COMMANDTYPE, port: number) {
-    this.debug('sendCommand',commandType, port);
+    this.debug('sendCommand', commandType, port);
     return this.component.sendCommand(commandType, port);
   }
   disableAllPorts() {
@@ -448,13 +448,13 @@ export class Component extends stream.Duplex {
   emptyBuffer(header) {
     return new Promise((fulfill, reject) => {
       this.emptyBufferDone = fulfill;
-      this.component.emptyBufferAsync(header, function() {
+      this.component.emptyBufferAsync(header, function () {
       });
     });
   }
   fillBuffer(header) {
     return new Promise((fulfill, reject) => {
-      this.component.fillBufferAsync(header, function() {
+      this.component.fillBufferAsync(header, function () {
         fulfill();
       });
     });
@@ -478,7 +478,7 @@ export class Component extends stream.Duplex {
     }
 
     sinkPortPromise
-      .then(function() {
+      .then(function () {
         return sourcePortPromise;
       })
       .then(() => {
@@ -536,6 +536,7 @@ export class Component extends stream.Duplex {
       buffer.onBufferDone = () => {
         this.fillBuffer(outputBuffer.header);
       };
+      buffer.usedLength = outputBuffer.header.nFilledLen;
     }
     this.push(buffer);
   }
