@@ -13,10 +13,11 @@ omx.Component.initAll([Clock, Camera, ImageEncode])
 
         var ws = require('stream').Writable();
         ws._write = function (chunk, enc, next) {
-            console.log("Received compressed frame with length: ", chunk.length);
             next();
 
             if (chunk.onBufferDone) {
+                console.log("Received compressed frame with length: ",
+                    chunk.length, " but used: ", chunk.usedLength);
                 chunk.onBufferDone();
             }
         };
